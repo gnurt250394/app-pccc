@@ -1,5 +1,5 @@
 const { createStore } = require('redux')
-const reducer = (state = {}, action) => {
+const reducer = (state = { test: "ok" }, action) => {
     switch(action.type){
         case 'LOGIN':
             state = {

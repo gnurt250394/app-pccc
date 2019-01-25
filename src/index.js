@@ -27,7 +27,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.Auth
+    initialRouteName: ScreenName.Signin
   }
 );
 

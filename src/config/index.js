@@ -8,3 +8,5 @@ export const ScreenName = {
     Signup: "Signup", 
     Signin: "Signin", 
 }
+
+export const toUpperCase = (str) => str.toUpperCase()

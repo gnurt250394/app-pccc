@@ -1,27 +1,66 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { ScreenName } from 'config'
+import { ScreenName, toUpperCase } from 'config'
 class Signin extends React.Component {
+    state = {
+        username: '',
+        password: '',
+    }
     render(){
+        AsyncStorage.getItem('test').then(console.log)
         return (
             <View style={styles.content}>
-                <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
-                <View style={{height: "60%"}}>
+                <View style={{height: "100%"}}>
                     <Image 
                         style={styles.logo}
-                        source={images.shino} />
-                    <Text style={styles.slogan}>好きな人 が いる こと</Text>
+                        source={images.logo} />
+                    <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Fire Protection')}</Text>
+
+                    <View style={styles.inputBox}>
+                        <Image 
+                            style={[styles.icon]}
+                            source={images.user} />
+                        <TextInput 
+                            placeholder="Tài khoản"
+                            placeholderTextColor="#DADADA"
+                            onChangeText={username => this.setState({username})}
+                            style={styles.loginInput} />
+                    </View>
+
+                    <View style={styles.inputBox}>
+                        <Image 
+                            style={[styles.icon]}
+                            source={images.key} />
+                        <TextInput 
+                            placeholder="Mật khẩu"
+                            placeholderTextColor="#DADADA"
+                            keyboardType="default"
+                            secureTextEntry={true}
+                            onChangeText={password => this.setState({password})}
+                            style={styles.loginInput} />
+                    </View>
+                    
                     <TouchableOpacity 
                         onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={styles.btnSignup}>
-                        <Text style={styles.textSignup}>Sign Up</Text>
+                        style={styles.btnLogin}>
+                        <Text style={styles.textLogin}>{toUpperCase("Đăng nhập")}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btnLogin}>
-                        <Text style={styles.textLogin}>Sign In</Text>
+
+                    <Text style={styles.forgot}>Quyên mật khẩu</Text>
+                    
+                    <TouchableOpacity 
+                        onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
+                        style={[styles.btnLogin, { backgroundColor: '#3A5A97'}]}>
+                        <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
                     </TouchableOpacity>
+
+                    <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 20, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20, color: 'red', marginLeft: 10}}>Đăng ký</Text>
+                    </View>
                 </View>
                 
             </View>
