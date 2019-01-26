@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Fire Protection</string>
+    
+    <string name="facebook_app_id">396920257778607</string>
 </resources>

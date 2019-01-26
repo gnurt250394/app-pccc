@@ -64,7 +64,7 @@ class Signin extends React.Component {
                     </TouchableOpacity>
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
+                        <Text style={{fontWeight: '300', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: 'red', marginLeft: 10}}>Đăng ký</Text>
                     </View>
                 </View>
