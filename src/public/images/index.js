@@ -3,4 +3,5 @@ module.exports = {
     logo: require('./logo.png'),
     user: require('./user.png'),
     key: require('./key.png'),
+    fb: require('./facebook.png'),
 }

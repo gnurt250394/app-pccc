@@ -4,11 +4,32 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { ScreenName, toUpperCase } from 'config'
+import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
+
 class Signin extends React.Component {
     state = {
         username: '',
         password: '',
     }
+    
+    onLoginFB = () => {
+        LoginManager.logInWithReadPermissions(["public_profile"]).then(
+            function(result) {
+              if (result.isCancelled) {
+                console.log("Login cancelled");
+              } else {
+                console.log(
+                  "Login success with permissions: " +
+                    result.grantedPermissions.toString()
+                );
+              }
+            },
+            function(error) {
+              console.log("Login fail with error: " + error);
+            }
+          );
+    }
+
     render(){
         AsyncStorage.getItem('test').then(console.log)
         return (
@@ -58,8 +79,11 @@ class Signin extends React.Component {
                         
                     </View>
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10}]}>
+                        onPress={this.onLoginFB}
+                        style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10, alignContent: 'center'}]}>
+                        {/* <Image 
+                            style={{width: 20, height: 20, backgroundColor: '#fff'}}
+                            source={images.fb} /> */}
                         <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
                     </TouchableOpacity>
 
