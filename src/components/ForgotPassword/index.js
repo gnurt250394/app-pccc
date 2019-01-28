@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import Header from './layout/Header'
-import Input from './layout/Input'
+import { Header, Input, Btn} from '../layout'
 import { ScreenName, toUpperCase } from 'config'
 
 class ForgotPassword extends React.Component {
@@ -20,11 +19,8 @@ class ForgotPassword extends React.Component {
                     </View>
 
                     <Input placeholder="Số điện thoại/Email" />
-                    <TouchableOpacity 
-                        // onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={[styles.btnLogin,]}>
-                        <Text style={styles.textLogin}>{toUpperCase("Gửi")}</Text>
-                    </TouchableOpacity>
+                    
+                    <Btn name="Gửi" />
                 </View>
             </View>
         )

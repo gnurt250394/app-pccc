@@ -1,9 +1,8 @@
 import React from 'react'
 import { TextInput } from 'react-native'
-import { connect } from 'react-redux'
 import styles from "public/css" 
 
-class Input extends React.Component {
+export default class Input extends React.Component {
     render(){
         return (
             <TextInput 
@@ -12,8 +11,7 @@ class Input extends React.Component {
                 keyboardType={this.props.keyboardType || "default" }
                 secureTextEntry={this.props.secureTextEntry }
                 onChangeText={this.props.onChangeText}
-                style={this.props.style || styles.input} />
+                style={this.props.style || [styles.input, this.props.customStyle || {}]} />
         )
     }
 }
-export default connect()(Input)

@@ -1,10 +1,9 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 
-class Header extends React.Component {
+export default class Header extends React.Component {
     render(){
         return (
             <View style={[styles.row, {height: 80, justifyContent: 'space-between',padding: 10}]} >
@@ -18,4 +17,4 @@ class Header extends React.Component {
         )
     }
 }
-export default connect()(Header)
+

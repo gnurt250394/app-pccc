@@ -9,6 +9,9 @@ export const ScreenName = {
     Signin: "Signin", 
     Register: "Register", 
     ForgotPassword: "ForgotPassword", 
+    Otp: "Otp",
+    ChangePassword: "ChangePassword",
+    NextStep: "NextStep",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

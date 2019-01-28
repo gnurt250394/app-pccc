@@ -5,6 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { ScreenName, toUpperCase } from 'config'
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
+import { Btn } from './layout'
 
 class Signin extends React.Component {
     state = {
@@ -65,11 +66,7 @@ class Signin extends React.Component {
                             style={styles.loginInput} />
                     </View>
                     
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={styles.btnLogin}>
-                        <Text style={styles.textLogin}>{toUpperCase("Đăng nhập")}</Text>
-                    </TouchableOpacity>
+                    <Btn name="Đăng nhập" />
 
                     <Text style={styles.forgot}>Quyên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>

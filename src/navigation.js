@@ -1,9 +1,11 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { ScreenName } from "config"
 import Auth from 'components/Auth'
-import Signup from 'components/Signup'
+import NextStep from 'components/Register/NextStep'
 import Signin from 'components/Signin'
 import ForgotPassword from 'components/ForgotPassword'
+import Otp from 'components/ForgotPassword/Otp'
+import ChangePassword from 'components/ForgotPassword/ChangePassword'
 
 const App = createStackNavigator(
   {
@@ -13,8 +15,8 @@ const App = createStackNavigator(
           header: null
       })
     },
-    [ScreenName.Signup]: {
-      screen: Signup,
+    [ScreenName.NextStep]: {
+      screen: NextStep,
       navigationOptions: () => ({
           header: null
       })
@@ -31,10 +33,22 @@ const App = createStackNavigator(
           header: null
       })
     },
+    [ScreenName.Otp]: {
+      screen: Otp,
+      navigationOptions: () => ({
+          header: null
+      })
+    },
+    [ScreenName.ChangePassword]: {
+      screen: ChangePassword,
+      navigationOptions: () => ({
+          header: null
+      })
+    },
    
   },
   {
-    initialRouteName: ScreenName.ForgotPassword
+    initialRouteName: ScreenName.NextStep
   }
 );
 
