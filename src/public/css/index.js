@@ -66,7 +66,10 @@ export default styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 16,
         backgroundColor: 'white',
-        width: "80%"
+        width: "80%",
+        borderBottomWidth: 1,
+        borderColor: '#ddd',
+        paddingBottom: 3
     },
     inputBox: {
         width: '80%', 
@@ -83,5 +86,10 @@ export default styles = StyleSheet.create({
         fontSize: 16,
         padding: 0,
         flex: 1
+    },
+    row: {
+        flexDirection: 'row',
+        marginBottom: 10
     }
+
 })

@@ -4,11 +4,33 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { ScreenName, toUpperCase } from 'config'
+import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
+import { Btn } from './layout'
+
 class Signin extends React.Component {
     state = {
         username: '',
         password: '',
     }
+    
+    onLoginFB = () => {
+        LoginManager.logInWithReadPermissions(["public_profile"]).then(
+            function(result) {
+              if (result.isCancelled) {
+                console.log("Login cancelled");
+              } else {
+                console.log(
+                  "Login success with permissions: " +
+                    result.grantedPermissions.toString()
+                );
+              }
+            },
+            function(error) {
+              console.log("Login fail with error: " + error);
+            }
+          );
+    }
+
     render(){
         AsyncStorage.getItem('test').then(console.log)
         return (
@@ -44,11 +66,7 @@ class Signin extends React.Component {
                             style={styles.loginInput} />
                     </View>
                     
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={styles.btnLogin}>
-                        <Text style={styles.textLogin}>{toUpperCase("Đăng nhập")}</Text>
-                    </TouchableOpacity>
+                    <Btn name="Đăng nhập" />
 
                     <Text style={styles.forgot}>Quyên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
@@ -57,14 +75,39 @@ class Signin extends React.Component {
                         <View style={{flex: 1, height: 1, backgroundColor: '#DADADA'}}></View>
                         
                     </View>
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Signup)}
-                        style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10}]}>
+                    {/* <TouchableOpacity 
+                        onPress={this.onLoginFB}
+                        style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10, alignContent: 'center'}]}>
+                        <Image 
+                            style={{width: 20, height: 20, backgroundColor: '#fff'}}
+                            source={images.fb} />
                         <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 40}}>
+                        <LoginButton
+                            // style={{padding: 20, alignSelf: 'center', width: '80%', marginTop: 10, justifyContent: 'center'}}
+                            onLoginFinished={
+                                (error, result) => {
+                                    console.log('result: ', result);
+                                if (error) {
+                                    console.log("login has error: " + result.error);
+                                } else if (result.isCancelled) {
+                                    console.log("login is cancelled.");
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then(
+                                    (data) => {
+                                        console.log(data.accessToken.toString())
+                                    }
+                                    )
+                                }
+                                }
+                            }
+                            onLogoutFinished={() => console.log("logout.")}/>
+                    </View>
+                    
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
+                        <Text style={{fontWeight: '300', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: 'red', marginLeft: 10}}>Đăng ký</Text>
                     </View>
                 </View>
