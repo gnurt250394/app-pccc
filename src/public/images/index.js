@@ -17,4 +17,8 @@ module.exports = {
     iconKey: require('./iconKey.png'),
     iconUser: require('./iconUser.png'),
     iconSell: require('./iconSell.png'),
+    home: require('./Home.png'),
+    more: require('./More.png'),
+    search: require('./Search.png'),
+    cart: require('./Cart.png'),
 }

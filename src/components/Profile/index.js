@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
+import { Footer } from '../layout'
 import { ScreenName } from 'config'
 
 class Profile extends React.Component {
@@ -13,72 +14,77 @@ class Profile extends React.Component {
 
     render(){
         return (
-            <View >
-                <StatusBar backgroundColor="#FB3C30" barStyle="light-content" />
-                <View style={{backgroundColor: '#FB3C30', paddingBottom: 30, paddingTop: 30}}>
-                    <Image 
-                        style={{width: 80, height: 80, alignSelf: 'center' }}
-                        source={images.userLight} />
-                    <Text style={style.title}>Nguyễn Văn Nam</Text>
-                </View>
-                <View style={{ marginTop: 30}}>
+            <View style={{flex: 1}}>
+                <ScrollView>
+                    <StatusBar backgroundColor="#FB3C30" barStyle="light-content" />
+                    <View style={{backgroundColor: '#FB3C30', paddingBottom: 30, paddingTop: 30}}>
+                        <Image 
+                            style={{width: 80, height: 80, alignSelf: 'center' }}
+                            source={images.userLight} />
+                        <Text style={style.title}>Nguyễn Văn Nam</Text>
+                    </View>
+                    <View style={{ marginTop: 30}}>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconUser} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Thông tin cá nhân</Text>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
+                            style={{ marginBottom: 15, flexDirection: 'row'}}>
                             <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
+                                style={style.icon}
+                                source={images.iconUser} />
+                            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                                <Text style={style.label}>Thông tin cá nhân</Text>
+                                <Image 
+                                    style={style.iconNext}
+                                    source={images.nextDark} />
+                            </View>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconShopping} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Mua hàng</Text>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
+                            style={{ marginBottom: 15, flexDirection: 'row'}}>
                             <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
+                                style={style.icon}
+                                source={images.iconShopping} />
+                            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                                <Text style={style.label}>Mua hàng</Text>
+                                <Image 
+                                    style={style.iconNext}
+                                    source={images.nextDark} />
+                            </View>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconSell} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Bán hàng</Text>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
+                            style={{ marginBottom: 15, flexDirection: 'row'}}>
                             <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconKey} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Thay đổi mật khẩu</Text>
+                                style={style.icon}
+                                source={images.iconSell} />
+                            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                                <Text style={style.label}>Bán hàng</Text>
+                                <Image 
+                                    style={style.iconNext}
+                                    source={images.nextDark} />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            style={{ marginBottom: 15, flexDirection: 'row'}}>
                             <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-                    
-                </View>
+                                style={style.icon}
+                                source={images.iconKey} />
+                            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                                <Text style={style.label}>Thay đổi mật khẩu</Text>
+                                <Image 
+                                    style={style.iconNext}
+                                    source={images.nextDark} />
+                            </View>
+                        </TouchableOpacity>
+                        
+                    </View>
+                </ScrollView>
+                
+                <Footer navigate={this.props.navigation.navigate}/>
+                
             </View>
         )
     }
