@@ -78,14 +78,36 @@ class Signin extends React.Component {
                         <View style={{flex: 1, height: 1, backgroundColor: '#DADADA'}}></View>
                         
                     </View>
-                    <TouchableOpacity 
+                    {/* <TouchableOpacity 
                         onPress={this.onLoginFB}
                         style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10, alignContent: 'center'}]}>
-                        {/* <Image 
+                        <Image 
                             style={{width: 20, height: 20, backgroundColor: '#fff'}}
-                            source={images.fb} /> */}
+                            source={images.fb} />
                         <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 40}}>
+                        <LoginButton
+                            // style={{padding: 20, alignSelf: 'center', width: '80%', marginTop: 10, justifyContent: 'center'}}
+                            onLoginFinished={
+                                (error, result) => {
+                                    console.log('result: ', result);
+                                if (error) {
+                                    console.log("login has error: " + result.error);
+                                } else if (result.isCancelled) {
+                                    console.log("login is cancelled.");
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then(
+                                    (data) => {
+                                        console.log(data.accessToken.toString())
+                                    }
+                                    )
+                                }
+                                }
+                            }
+                            onLogoutFinished={() => console.log("logout.")}/>
+                    </View>
+                    
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
                         <Text style={{fontWeight: '300', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>

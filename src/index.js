@@ -3,6 +3,7 @@ import { ScreenName } from "config"
 import Auth from 'components/Auth'
 import Signup from 'components/Signup'
 import Signin from 'components/Signin'
+import ForgotPassword from 'components/ForgotPassword'
 
 const App = createStackNavigator(
   {
@@ -24,10 +25,16 @@ const App = createStackNavigator(
           header: null
       })
     },
+    [ScreenName.ForgotPassword]: {
+      screen: ForgotPassword,
+      navigationOptions: () => ({
+          header: null
+      })
+    },
    
   },
   {
-    initialRouteName: ScreenName.Signin
+    initialRouteName: ScreenName.ForgotPassword
   }
 );
 
