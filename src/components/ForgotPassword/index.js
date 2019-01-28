@@ -12,7 +12,7 @@ class ForgotPassword extends React.Component {
         return (
             <View >
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                <Header title="Quên mật khẩu"/>
+                <Header title="Quên mật khẩu" onPress={() => this.props.navigation.goBack() }/>
                 <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                     <View style={{width: "70%", alignSelf: 'center'}}>
                         <Text style={{textAlign: "center", fontSize: 18}}>Nhập Số điện thoại hoặc Email của bạn đã sử dụng để tạo tài khoản</Text>

@@ -7,7 +7,7 @@ import { signup } from 'config/api'
 import { Header, Input, Btn} from '../layout'
 import { ScreenName, toUpperCase } from 'config'
 
-class Otp extends React.Component {
+class Complete extends React.Component {
     render(){
         return (
             <View >
@@ -19,16 +19,16 @@ class Otp extends React.Component {
                     </View>
                     <View style={[styles.row,{width: "70%", alignSelf: 'center', borderBottomColor: '#ddd', borderBottomWidth: 1, alignItems: 'center', paddingBottom: 0}]}>
                         <Input 
-                            customStyle={{ borderBottomWidth: 0, padding: 0}}
+                            customStyle={{margin: 0, borderBottomWidth: 0, padding: 0}}
                             placeholder="Nhập mã OTP" />
                         <TouchableOpacity style={{padding: 0, marginBottom: 0}}>
                             <Text>{toUpperCase("Gửi lại")} (60)</Text>
                         </TouchableOpacity>
                     </View>
-                    <Btn name="Tạo mật khẩu mới" />
+                    <Btn name="Hoàn tất đăng ký" />
                 </View>
             </View>
         )
     }
 }
-export default connect()(Otp)
+export default connect()(Complete)
