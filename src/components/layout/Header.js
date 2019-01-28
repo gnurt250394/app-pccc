@@ -7,7 +7,7 @@ export default class Header extends React.Component {
     render(){
         return (
             <View style={[styles.row, {height: 80, justifyContent: 'space-between',padding: 10}]} >
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                <TouchableOpacity onPress={this.props.onPress || null}>
                     <Image 
                         style={{width: 20, height: 20, }}
                         source={images.back} />

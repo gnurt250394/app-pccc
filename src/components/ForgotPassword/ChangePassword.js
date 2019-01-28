@@ -12,7 +12,7 @@ class ChangePassword extends React.Component {
         return (
             <View >
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                <Header title="Đổi mật khẩu mới"/>
+                <Header title="Đổi mật khẩu mới" onPress={() => this.props.navigation.goBack()}/>
                 <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                     <View></View>
                     <View>
