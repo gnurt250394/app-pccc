@@ -31,6 +31,10 @@ class Signin extends React.Component {
           );
     }
 
+    _signin = ()  => {
+        this.props.navigation.navigate(ScreenName.Profile)
+    }
+
     render(){
         AsyncStorage.getItem('test').then(console.log)
         return (
@@ -66,7 +70,9 @@ class Signin extends React.Component {
                             style={styles.loginInput} />
                     </View>
                     
-                    <Btn name="Đăng nhập" />
+                    <Btn
+                        onPress={this._signin} 
+                        name="Đăng nhập" />
 
                     <Text style={styles.forgot}>Quyên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>

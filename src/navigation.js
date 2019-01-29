@@ -11,6 +11,7 @@ import ChangePassword from 'components/ForgotPassword/ChangePassword'
 import ViewProfile from 'components/Profile/ViewProfile'
 import EditProfile from 'components/Profile/EditProfile'
 import Profile from 'components/Profile'
+import HomeScreen from 'components/Home'
 
 const App = createStackNavigator(
   {
@@ -80,10 +81,16 @@ const App = createStackNavigator(
           header: null
       })
     },
+    [ScreenName.HomeScreen]: {
+      screen: HomeScreen,
+      navigationOptions: () => ({
+          header: null
+      })
+    },
    
   },
   {
-    initialRouteName: ScreenName.Confirm
+    initialRouteName: ScreenName.Signin
   }
 );
 

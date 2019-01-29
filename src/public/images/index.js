@@ -21,4 +21,6 @@ module.exports = {
     more: require('./More.png'),
     search: require('./Search.png'),
     cart: require('./Cart.png'),
+    menu: require('./menu.png'),
+    next: require('./next.png'),
 }
