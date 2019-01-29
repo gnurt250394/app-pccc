@@ -16,6 +16,7 @@ export const ScreenName = {
     ViewProfile: "ViewProfile",
     EditProfile: "EditProfile",
     Profile: "Profile",
+    Confirm: "Confirm",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

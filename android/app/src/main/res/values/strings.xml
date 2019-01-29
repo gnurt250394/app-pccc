@@ -2,4 +2,6 @@
     <string name="app_name">Fire Protection</string>
     
     <string name="facebook_app_id">396920257778607</string>
+    <string name="fb_app_id">396920257778607</string>
+    <string name="ak_client_token">72dbdb213616219259a49c996b406a6c</string>
 </resources>
