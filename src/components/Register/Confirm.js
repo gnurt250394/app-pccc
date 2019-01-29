@@ -5,10 +5,43 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { Input, Btn, Header} from '../layout'
+import RNAccountKit from 'react-native-facebook-account-kit'
 
 class Confirm extends React.Component {
     state = {
-        fullname: "",
+        phone: "",
+    }
+
+    confirm = () => {
+        // if(this.state.phone.trim().length != 10){
+        //     Alert.alert(
+        //         'Thông báo',
+        //         'Số điện thoại không đúng.',
+        //         [
+        //           {text: 'OK'},
+        //         ],
+        //         {cancelable: false},
+        //       );
+        // }else{
+            // RNAccountKit.configure({
+            //     responseType: 'code',
+            //     // titleType: 'login',
+            //     initialAuthState: '',
+            //     initialPhoneCountryPrefix: '+84' + this.state.phone.replace(/^0+/, ""), 
+            //     defaultCountry: 'VN',
+            // })
+    
+            RNAccountKit.loginWithPhone()
+            .then((token) => {
+                if (!token) {
+                console.log('Login cancelled')
+                } else {
+                console.log(`Logged with phone. Token: ${token}`)
+                }
+            })
+        // }
+        
+       
     }
     
     render(){
@@ -22,8 +55,12 @@ class Confirm extends React.Component {
                     </View>
                     <Input 
                         // customStyle={{margin: 0, borderBottomWidth: 0, padding: 0}}
+                        keyboardType='numeric'
+                        onChangeText={phone => this.setState({phone})}
                         placeholder="Số điện thoại" />
-                    <Btn name="Gửi" />
+                    <Btn
+                        onPress={this.confirm} 
+                        name="Gửi" />
                 </View>
             </View>
         )
