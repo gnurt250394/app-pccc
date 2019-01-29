@@ -18,6 +18,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
+import io.underscope.react.fbak.RNAccountKitPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -39,8 +40,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new FBSDKPackage(getCallbackManager()),
-            new RNGestureHandlerPackage()
+          new FBSDKPackage(getCallbackManager()),
+          new RNGestureHandlerPackage(),
+          new RNAccountKitPackage()
       );
     }
 

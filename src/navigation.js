@@ -3,6 +3,7 @@ import { ScreenName } from "config"
 import Auth from 'components/Auth'
 import NextStep from 'components/Register/NextStep'
 import Complete from 'components/Register/Complete'
+import Confirm from 'components/Register/Confirm'
 import Signin from 'components/Signin'
 import ForgotPassword from 'components/ForgotPassword'
 import Otp from 'components/ForgotPassword/Otp'
@@ -73,10 +74,16 @@ const App = createStackNavigator(
           header: null
       })
     },
+    [ScreenName.Confirm]: {
+      screen: Confirm,
+      navigationOptions: () => ({
+          header: null
+      })
+    },
    
   },
   {
-    initialRouteName: ScreenName.Profile
+    initialRouteName: ScreenName.Confirm
   }
 );
 

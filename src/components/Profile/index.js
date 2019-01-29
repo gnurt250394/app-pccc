@@ -83,7 +83,7 @@ class Profile extends React.Component {
                     </View>
                 </ScrollView>
                 
-                <Footer navigate={this.props.navigation.navigate}/>
+                <Footer navigate={this.props.navigation.navigate} name={ScreenName.Profile}/>
                 
             </View>
         )
