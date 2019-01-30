@@ -16,14 +16,14 @@ class ViewProfile extends React.Component {
             <View >
                 <StatusBar backgroundColor="#FB3C30" barStyle="light-content" />
                 <View style={{backgroundColor: '#FB3C30', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                    <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.goBack()}>
                         <Image 
-                            style={{width: 20, height: 20, margin: 10 }}
+                            style={{width: 10, resizeMode: 'contain' }}
                             source={images.backLight} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.edit}>
+                    <TouchableOpacity style={{padding: 10}} onPress={this.edit}>
                         <Image 
-                            style={{width: 20, height: 20, margin: 10 }}
+                            style={{width: 20, resizeMode: 'contain' }}
                             source={images.edit} />
                     </TouchableOpacity>
                 </View>

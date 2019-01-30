@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { Input, Btn} from '../layout'
-
+import { ScreenName } from 'config'
 class NextStep extends React.Component {
     state = {
         fullname: "",
@@ -39,8 +39,10 @@ class NextStep extends React.Component {
                         onPress={() => console.log()}
                         name="Bước tiếp theo" />
 
-                    <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
-                    
+                    <TouchableOpacity 
+                             onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
+                           <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
+                    </TouchableOpacity>
                 </View>
                 
             </View>

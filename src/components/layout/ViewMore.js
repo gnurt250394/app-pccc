@@ -12,7 +12,7 @@ export default class ViewMore extends React.Component {
                 <Text style={{fontSize: 12, color: 'red'}}>Xem thêm</Text>
                 <Image 
                     style={{width: 20, height: 20, marginLeft: 5, marginRight: 5, }}
-                    source={images.next} />
+                    source={images.viewMore} />
             </TouchableOpacity>
         )
     }

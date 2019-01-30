@@ -78,7 +78,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.HomeScreen,
+    initialRouteName: ScreenName.Signin,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

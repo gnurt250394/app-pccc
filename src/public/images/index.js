@@ -36,4 +36,6 @@ module.exports = {
     binhCuuHoa: require('./binhCuuHoa.jpg'),
     heartYellow: require('./heartYellow.png'),
     heartRed: require('./heartRed.png'),
+    viewMore: require('./viewMore.png'),
+    slide: require('./slide.png'),
 }

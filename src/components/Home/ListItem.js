@@ -33,7 +33,7 @@ export default class ListItem extends React.Component {
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderWidth: 1, borderColor: '#ddd', marginLeft: 10, borderRadius: 10, marginBottom: 10,},
-    image: {width: 120, resizeMode: 'contain', margin: 10,},
+    image: {width: 120, height: 120, margin: 10,},
     name: { fontSize: 15, padding: 10, textAlign: 'left'},
     price: { fontSize: 15, padding: 10, textAlign: 'left', color: '#FB3C30', paddingTop: 0,},
 })

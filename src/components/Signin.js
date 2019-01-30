@@ -74,7 +74,10 @@ class Signin extends React.Component {
                         onPress={this._signin} 
                         name="Đăng nhập" />
 
-                    <Text style={styles.forgot}>Quên mật khẩu</Text>
+                    
+                    <Text 
+                        onPress={() => this.props.navigation.navigate(ScreenName.ForgotPassword)}
+                        style={styles.forgot}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#DADADA', }}></View>
                         <Text style={{color: '#DADADA', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
@@ -114,7 +117,10 @@ class Signin extends React.Component {
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
                         <Text style={{fontWeight: '300', fontSize: 18, color: '#A9A9A9'}}>Bạn chưa có tài khoản?</Text>
-                        <Text style={{fontWeight: 'bold', fontSize: 18, color: '#FB3C30', marginLeft: 10}}>Đăng ký</Text>
+                        <TouchableOpacity 
+                             onPress={() => this.props.navigation.navigate(ScreenName.NextStep)}>
+                            <Text style={{fontWeight: 'bold', fontSize: 18, color: '#FB3C30', marginLeft: 10}}>Đăng ký</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 
