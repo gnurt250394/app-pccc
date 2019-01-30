@@ -8,15 +8,19 @@ import { Footer, ViewMore } from '../layout'
 import { ScreenName } from 'config'
 import ListItem from './ListItem'
 let width = Dimensions.get('window').width
+// this.props.navigation.openDrawer();
 class HomeScreen extends React.Component {
     render(){
         return (
             <View style={{}}>
                 <ScrollView>
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                    <Image 
-                        style={[styles.icon, {margin: 10}]}
-                        source={images.menu} />
+
+                    <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                        <Image 
+                            style={[styles.icon, {margin: 10}]}
+                            source={images.menu} />
+                    </TouchableOpacity>
                     <Image 
                         style={{width: width, height: 150,marginBottom: 10 }}
                         source={images.slide} />
