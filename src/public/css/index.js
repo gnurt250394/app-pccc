@@ -5,18 +5,18 @@ export default styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 25,
         fontWeight: 'bold',
-        marginTop: 10,
+        // marginTop: 10,
         color: 'white',
         marginBottom: "15%",
     },
     btnLogin: {
-        backgroundColor: "#DA0006",
+        backgroundColor: "#FB3C30",
         width: "80%",
         alignSelf: "center",
         marginTop: 25,
         marginBottom: 25,
         borderRadius: 10,
-        padding: 10,
+        padding: 12,
     },
     btnSignup: {
         backgroundColor: "white",
@@ -29,7 +29,7 @@ export default styles = StyleSheet.create({
     textLogin: {
         alignSelf: 'center',
         fontWeight: "500",
-        fontSize: 18,
+        fontSize: 16,
         color: 'white',
     },
     textSignup: {
@@ -40,13 +40,12 @@ export default styles = StyleSheet.create({
     },
     logo: {
         width: 80,
-        height: 100,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        resizeMode: 'contain'
     },
     icon: {
-        width: 20,
-        height: 20,
-        marginRight: 10,
+        width: 18,
+        resizeMode: 'contain',
     },
     content: {
         flex: 1,
@@ -54,7 +53,7 @@ export default styles = StyleSheet.create({
     },
     forgot: {
         textAlign: 'center',
-        color: '#DA0006',
+        color: '#FB1A1A',
         fontSize: 18,
         textDecorationLine: 'underline'
     },
@@ -78,13 +77,14 @@ export default styles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderColor: '#ddd', 
         marginBottom: 20, 
-        paddingBottom: 5
+        paddingBottom: 0
     },
     loginInput: {
         alignSelf: 'center',
         color: '#393939',
         fontSize: 16,
         padding: 0,
+        paddingLeft: 10,
         flex: 1
     },
     row: {

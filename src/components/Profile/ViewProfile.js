@@ -19,7 +19,7 @@ class ViewProfile extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                         <Image 
                             style={{width: 20, height: 20, margin: 10 }}
-                            source={images.backDark} />
+                            source={images.backLight} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.edit}>
                         <Image 

@@ -4,4 +4,4 @@ import Input from './Input'
 import Footer from './Footer'
 import ViewMore from './ViewMore'
 
-module.exports = { Btn, Header, Input, ViewMore }
+module.exports = { Btn, Header, Input, ViewMore, Footer }

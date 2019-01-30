@@ -32,7 +32,7 @@ class Signin extends React.Component {
     }
 
     _signin = ()  => {
-        this.props.navigation.navigate(ScreenName.Profile)
+        this.props.navigation.navigate(ScreenName.HomeScreen)
     }
 
     render(){
@@ -74,24 +74,24 @@ class Signin extends React.Component {
                         onPress={this._signin} 
                         name="Đăng nhập" />
 
-                    <Text style={styles.forgot}>Quyên mật khẩu</Text>
+                    <Text style={styles.forgot}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#DADADA', }}></View>
                         <Text style={{color: '#DADADA', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
                         <View style={{flex: 1, height: 1, backgroundColor: '#DADADA'}}></View>
                         
                     </View>
-                    {/* <TouchableOpacity 
+                    <TouchableOpacity 
                         onPress={this.onLoginFB}
                         style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10, alignContent: 'center'}]}>
-                        <Image 
+                        {/* <Image 
                             style={{width: 20, height: 20, backgroundColor: '#fff'}}
-                            source={images.fb} />
+                            source={images.fb} /> */}
                         <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
-                    </TouchableOpacity> */}
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 40}}>
+                    </TouchableOpacity>
+                    {/* <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 40}}>
                         <LoginButton
-                            // style={{padding: 20, alignSelf: 'center', width: '80%', marginTop: 10, justifyContent: 'center'}}
+                            style={{padding: 20, alignSelf: 'center', width: '80%'}}
                             onLoginFinished={
                                 (error, result) => {
                                     console.log('result: ', result);
@@ -109,12 +109,12 @@ class Signin extends React.Component {
                                 }
                             }
                             onLogoutFinished={() => console.log("logout.")}/>
-                    </View>
+                    </View> */}
                     
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
-                        <Text style={{fontWeight: '300', fontSize: 18, color: 'gray'}}>Bạn chưa có tài khoản?</Text>
-                        <Text style={{fontWeight: 'bold', fontSize: 18, color: 'red', marginLeft: 10}}>Đăng ký</Text>
+                        <Text style={{fontWeight: '300', fontSize: 18, color: '#A9A9A9'}}>Bạn chưa có tài khoản?</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 18, color: '#FB3C30', marginLeft: 10}}>Đăng ký</Text>
                     </View>
                 </View>
                 
