@@ -4,15 +4,15 @@ import images from "public/images"
 import { connect } from 'react-redux'
 import { ScreenName } from 'config';
 
-class Footer extends React.Component {
+export default class Footer extends React.Component {
     
     render(){
         console.log(this.props);
         return (
             <View style={styles.layout}>
                 <TouchableOpacity 
-                    onPress={() => this.props.navigate(ScreenName.Profile)}
-                    style={[styles.btn]}>
+                    onPress={() => this.props.navigate(ScreenName.HomeScreen)}
+                    style={[styles.btn, this.props.name == ScreenName.HomeScreen && styles.active]}>
                     <Image 
                         style={styles.icon}
                         source={images.home} />
@@ -55,10 +55,10 @@ class Footer extends React.Component {
     }
 }
 
-export default connect()(Footer)
+// export default connect()(Footer)
 
 const styles = StyleSheet.create({
-    icon: {width: 30, height: 30, },
+    icon: {width: 20, height: 20, },
     btn: { padding: 10 },
     active: {backgroundColor: '#E69E22'},
     layout: {flexDirection: "row", borderTopColor: '#ddd', borderTopWidth: 1, justifyContent: "space-between"}

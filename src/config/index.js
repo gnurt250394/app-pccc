@@ -17,6 +17,11 @@ export const ScreenName = {
     EditProfile: "EditProfile",
     Profile: "Profile",
     Confirm: "Confirm",
+    HomeScreen: "HomeScreen",
+    More: "More",
+    Cart: "Cart",
+    Search: "Search",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()
+export const toPrice = (str) => str.toLocaleString()
