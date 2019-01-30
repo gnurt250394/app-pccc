@@ -28,31 +28,31 @@ class EditProfile extends React.Component {
                     
                 </View>
                 <View style={{ marginTop: 30}}>
-                    <View style={{ marginBottom: 15, flexDirection: 'row'}}>
+                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                         <Image 
                             style={style.icon}
                             source={images.iconUser} />
                         <Input placeholder="Họ và tên"/>
                     </View>
-                    <View style={{ marginBottom: 15, flexDirection: 'row'}}>
+                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                         <Image 
                             style={style.icon}
                             source={images.iconPhone} />
                         <Input placeholder="Số điện thoại"/>
                     </View>
-                    <View style={{ marginBottom: 15, flexDirection: 'row'}}>
+                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                         <Image 
                             style={style.icon}
                             source={images.iconEmail} />
                         <Input placeholder="Email của bạn"/>
                     </View>
-                    <View style={{ marginBottom: 15, flexDirection: 'row'}}>
+                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                         <Image 
                             style={style.icon}
                             source={images.iconCompany} />
                         <Input placeholder="Tên công ty (nếu có)"/>
                     </View>
-                    <View style={{ marginBottom: 15, flexDirection: 'row'}}>
+                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                         <Image 
                             style={style.icon}
                             source={images.iconThue} />
@@ -66,7 +66,7 @@ class EditProfile extends React.Component {
 export default connect()(EditProfile)
 
 const style = StyleSheet.create({
-    icon: {width: 35, height: 35, marginLeft: 10, marginRight: 10, marginTop: 10},
-    label: {color: '#585858', fontSize: 18, flex: 1},
+    icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10, marginTop: 8},
+    label: {color: '#585858', fontSize: 16, flex: 1},
     title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
 })

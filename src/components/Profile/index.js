@@ -52,8 +52,8 @@ class Profile extends React.Component {
 export default connect()(Profile)
 
 const style = StyleSheet.create({
-    icon: {width: 35, height: 35, marginLeft: 10, marginRight: 10},
+    icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
-    label: {color: '#585858', fontSize: 18, flex: 1, paddingTop: 5},
+    label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
     title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
 })

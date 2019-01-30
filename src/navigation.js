@@ -75,6 +75,7 @@ const App = createStackNavigator(
     [ScreenName.Profile]: Profile,
     [ScreenName.Confirm]: Confirm,
     [ScreenName.HomeScreen]: TabMain,
+    [ScreenName.Cart]: {screen: Cart},
    
   },
   {
