@@ -1,4 +1,4 @@
-import { createStackNavigator, createAppContainer, createBottomTabNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer, createBottomTabNavigator, createDrawerNavigator } from "react-navigation";
 import {Image, StyleSheet } from 'react-native'
 import React from 'react'
 import images from "public/images"
@@ -19,14 +19,21 @@ import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
 
+const MyDrawerNavigator = createDrawerNavigator({
+  [ScreenName.HomeScreen]: HomeScreen,
+  [ScreenName.More]: More,
+  [ScreenName.Search]: Search,
+  [ScreenName.Cart]: Cart,
+  [ScreenName.Profile]: Profile
+});
 
 const TabMain = createBottomTabNavigator(
   {
-    [ScreenName.HomeScreen]: {screen: HomeScreen},
-    [ScreenName.More]: {screen: More},
-    [ScreenName.Search]: {screen: Search},
-    [ScreenName.Cart]: {screen: Cart},
-    [ScreenName.Profile]: {screen: Profile}
+    [ScreenName.HomeScreen]: MyDrawerNavigator,
+    [ScreenName.More]: More,
+    [ScreenName.Search]: Search,
+    [ScreenName.Cart]: Cart,
+    [ScreenName.Profile]: Profile
   },
   
   {
@@ -60,6 +67,7 @@ const TabMain = createBottomTabNavigator(
     }),
   }
 );
+
 
 const App = createStackNavigator(
   {
