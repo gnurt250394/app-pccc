@@ -7,7 +7,45 @@ import { signup } from 'config/api'
 import { Footer, ViewMore } from '../layout'
 import { ScreenName } from 'config'
 import ListItem from './ListItem'
-let width = Dimensions.get('screen').width
+let width = Dimensions.get('window').width
+class HomeScreen extends React.Component {
+    render(){
+        return (
+            <View style={{}}>
+                <ScrollView>
+                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                    <Image 
+                        style={[styles.icon, {margin: 10}]}
+                        source={images.menu} />
+                    <Image 
+                        style={{width: width, height: 150,marginBottom: 10 }}
+                        source={images.slide} />
+                    <View style={[styles.row, style.heading]}>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm nổi bật</Text>
+                        <ViewMore />
+                    </View>
+                    <ListItem data={data} />
+                    <View style={[styles.row, style.heading]}>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm mới nhất</Text>
+                        <ViewMore />
+                    </View>
+                    <ListItem data={data} />
+                    <View style={[styles.row, style.heading]}>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm bán chạy</Text>
+                        <ViewMore />
+                    </View>
+                    <ListItem data={data} />
+                </ScrollView>
+            </View>
+        )
+    }
+}
+export default connect()(HomeScreen)
+
+const style = StyleSheet.create({
+    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'}
+})
+
 let data = [
     {
         id: 1,
@@ -34,40 +72,3 @@ let data = [
         like: false
     },
 ]
-class HomeScreen extends React.Component {
-    render(){
-        return (
-            <View style={{}}>
-                <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                    <Image 
-                        style={[styles.icon, {margin: 10}]}
-                        source={images.menu} />
-                    <Image 
-                        style={{width: width, resizeMode: 'contain', marginBottom: 10 }}
-                        source={images.gas} />
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm nổi bật</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} />
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm mới nhất</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} />
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm bán chạy</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} />
-                </ScrollView>
-            </View>
-        )
-    }
-}
-export default connect()(HomeScreen)
-
-const style = StyleSheet.create({
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'}
-})

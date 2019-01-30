@@ -12,6 +12,21 @@ class Profile extends React.Component {
         this.props.navigation.navigate(ScreenName.EditProfile)
     }
 
+    renderItem = (title, screen, icon) => {
+        return <TouchableOpacity 
+            onPress={() => this.props.navigation.navigate(screen)}
+            style={{ marginBottom: 15, flexDirection: 'row'}}>
+            <Image 
+                style={style.icon}
+                source={icon} />
+            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                <Text style={style.label}>{title}</Text>
+                <Image 
+                    style={style.iconNext}
+                    source={images.next} />
+            </View>
+        </TouchableOpacity>
+    }
     render(){
         return (
             <View style={{flex: 1}}>
@@ -24,61 +39,11 @@ class Profile extends React.Component {
                 </View>
                 <View style={{ marginTop: 30}}>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconUser} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Thông tin cá nhân</Text>
-                            <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconShopping} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Mua hàng</Text>
-                            <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconSell} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Bán hàng</Text>
-                            <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
-                        style={{ marginBottom: 15, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconKey} />
-                        <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
-                            <Text style={style.label}>Thay đổi mật khẩu</Text>
-                            <Image 
-                                style={style.iconNext}
-                                source={images.nextDark} />
-                        </View>
-                    </TouchableOpacity>
-                    
+                    {this.renderItem('Thông tin cá nhân', ScreenName.ViewProfile, images.iconUser)}
+                    {this.renderItem('Mua hàng', ScreenName.ViewProfile, images.iconShopping)}
+                    {this.renderItem('Bán hàng', ScreenName.ViewProfile, images.iconSell)}
+                    {this.renderItem('Thay đổi mật khẩu', ScreenName.ChangePassword, images.iconKey)}
+                    {this.renderItem('Đăng xuất', ScreenName.Signin, images.iconUser)}
                 </View>
             </View>
         )
@@ -87,8 +52,8 @@ class Profile extends React.Component {
 export default connect()(Profile)
 
 const style = StyleSheet.create({
-    icon: {width: 35, height: 35, marginLeft: 10, marginRight: 10},
-    iconNext: {width: 20, height: 20, marginLeft: 10, marginRight: 10},
-    label: {color: '#585858', fontSize: 18, flex: 1, paddingTop: 5},
+    icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
+    iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
+    label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
     title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
 })
