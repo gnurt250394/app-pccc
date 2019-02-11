@@ -29,7 +29,7 @@ const MyDrawerNavigator = createDrawerNavigator({
 
 const TabMain = createBottomTabNavigator(
   {
-    [ScreenName.HomeScreen]: MyDrawerNavigator,
+    [ScreenName.HomeScreen]: HomeScreen,
     [ScreenName.More]: More,
     [ScreenName.Search]: Search,
     [ScreenName.Cart]: Cart,
@@ -87,7 +87,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.Signin,
+    initialRouteName: ScreenName.Cart,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

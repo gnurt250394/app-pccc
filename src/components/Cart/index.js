@@ -1,31 +1,100 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { Btn, ViewMore } from '../layout'
-import { ScreenName, toPrice, toUpperCase } from 'config'
+import { ScreenName, toPrice, toUpperCase, removeItem, totalByValue } from 'config'
 import { FlatList } from 'react-native-gesture-handler';
 
 class Cart extends React.Component {
     constructor(props){
         super(props);
-        var totalPrice = data.map(item => item.price).reduce((prev, next) => prev + next);
+        var totalPrice = totalByValue(datas, 'price')
         this.state = {
-            totalPrice: totalPrice || 0
+            totalPrice: totalPrice || 0,
+            data: datas
         }
     }
+
+    _removeItem = index => () => {
+        Alert.alert(
+            'Xóa sản phẩm',
+            'Bạn có muốn xóa sản phẩm không',
+            [
+              {
+                text: 'Cancel',style: 'cancel',
+              },
+              {text: 'OK', onPress: () => {
+                let data = removeItem(this.state.data, index),
+                    totalPrice = totalByValue(data, 'price');
+
+                this.setState({  data, totalPrice  })
+              }},
+            ],
+            {cancelable: false},
+        );
+        
+    }
+
+    _addtract = index => () => {
+        let data = [...this.state.data];
+        data[index].total += 1;
+        let totalPrice = this.state.totalPrice += data[index].price;
+        this.setState({data, totalPrice })
+    }
+
+    _subtract = index => () => {
+        let data = [...this.state.data];
+        if(data[index].total > 1){
+            data[index].total -= 1;
+            let totalPrice = this.state.totalPrice -= data[index].price;
+            this.setState({data, totalPrice })
+        }
+        
+    }
     
-    renderItem = ({item}) => {
+    renderItem = ({item, index}) => {
         return <View style={style.box}>
             <Image source={images.binhCuuHoa} style={style.image}/>
             <View style={style.content}>
                 <Text style={style.name}>{item.name}</Text>
-                <Text style={style.price}>{toPrice(item.price)} đ</Text>
+                <Text style={style.price}>{toPrice(item.price * item.total)}</Text>
                 <Text style={style.supplier}>Nhà cung cấp: {item.supplier}</Text>
+                <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{borderWidth: 1, borderColor: '#ddd', flexDirection: 'row', justifyContent: 'space-between', width: '50%', alignItems: 'center'}}>
+                        <TouchableOpacity 
+                            onPress={this._subtract(index)}
+                            style={{borderRightColor: '#ddd', borderRightWidth: 1, padding: 10}}>
+                            <Text style={{fontSize: 20}}>-</Text>
+                        </TouchableOpacity>
+                        <Text style={{padding: 10 }}>{item.total}</Text>
+                        <TouchableOpacity  
+                            onPress={this._addtract(index)}
+                            style={{borderLeftColor: '#ddd', borderLeftWidth: 1, padding: 10}}>
+                            <Text style={{fontSize: 20}}>+</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={this._removeItem(index)} >
+                        <Image source={images.trash} style={ {width: 25, height: 25}}/>
+                    </TouchableOpacity>
+                    
+                </View>
             </View>
         </View>
+    }
+
+    showData = () => {
+        console.log('showData: ', this.state.data);
+        if(this.state.data.length == 0){
+            return <Text style={{textAlign: 'center', padding: 10}}>Bạn chưa có sản phẩm nào</Text>
+        }else{
+            return <FlatList 
+                        extraData={this.state}
+                        data={this.state.data}
+                        renderItem={this.renderItem}/>
+        }
     }
     render(){
         return (
@@ -33,12 +102,10 @@ class Cart extends React.Component {
                 <ScrollView>
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                     <Text style={style.heading}>Giỏ hàng</Text>
-                    <FlatList 
-                        data={data}
-                        renderItem={this.renderItem}/>
+                    {this.showData()}
                 <View style={style.totalBox}>
                     <Text style={style.total}>{toUpperCase('Tổng tiền')}:</Text>
-                    <Text style={style.total}>{toPrice(this.state.totalPrice)} đ</Text>
+                    <Text style={style.total}>{toPrice(this.state.totalPrice)}</Text>
                 </View>
                 
                 </ScrollView>
@@ -64,19 +131,21 @@ const style = StyleSheet.create({
 })
 
 
-let data = [
+let datas = [
     {
         id: 1,
         name: 'Bình chữa cháy 1',
         price: 250000,
         like: false,
-        supplier: 'lehoangnd'
+        supplier: 'lehoangnd',
+        total: 1
     },
     {
         id: 2,
         name: 'Bình chữa cháy 2',
         price: 220000,
         like: true,
-        supplier: 'lehoangnd'
+        supplier: 'lehoangnd',
+        total: 1
     },
 ]

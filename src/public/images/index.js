@@ -38,4 +38,5 @@ module.exports = {
     heartRed: require('./heartRed.png'),
     viewMore: require('./viewMore.png'),
     slide: require('./slide.png'),
+    trash: require('./trash.png'),
 }
