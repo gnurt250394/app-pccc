@@ -5,15 +5,14 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { Btn, ViewMore } from '../layout'
-import { ScreenName, toPrice, toUpperCase, removeItem, totalByValue } from 'config'
+import { ScreenName, toPrice, toUpperCase, removeItem, calTotalPrice } from 'config'
 import { FlatList } from 'react-native-gesture-handler';
 
 class Cart extends React.Component {
     constructor(props){
         super(props);
-        var totalPrice = totalByValue(datas, 'price')
         this.state = {
-            totalPrice: totalPrice || 0,
+            totalPrice: calTotalPrice(datas),
             data: datas
         }
     }
@@ -27,10 +26,9 @@ class Cart extends React.Component {
                 text: 'Cancel',style: 'cancel',
               },
               {text: 'OK', onPress: () => {
-                let data = removeItem(this.state.data, index),
-                    totalPrice = totalByValue(data, 'price');
-
-                this.setState({  data, totalPrice  })
+                let data = removeItem(this.state.data, index);
+                    totalPrice = calTotalPrice(data)
+                this.setState({  data, totalPrice});
               }},
             ],
             {cancelable: false},
@@ -86,7 +84,6 @@ class Cart extends React.Component {
     }
 
     showData = () => {
-        console.log('showData: ', this.state.data);
         if(this.state.data.length == 0){
             return <Text style={{textAlign: 'center', padding: 10}}>Bạn chưa có sản phẩm nào</Text>
         }else{
@@ -146,6 +143,6 @@ let datas = [
         price: 220000,
         like: true,
         supplier: 'lehoangnd',
-        total: 1
+        total: 2
     },
 ]

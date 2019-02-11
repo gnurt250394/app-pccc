@@ -29,3 +29,4 @@ export const toPrice = (str) => {
 }
 export const removeItem = (arr, i) => arr.slice(0, i).concat(arr.slice(i + 1, arr.length))
 export const totalByValue = (data, field) => data.length == 0 ? 0 : data.map(item => item[field]).reduce((prev, next) => prev + next);
+export const calTotalPrice = data => data.length == 0 ? 0 : data.map(item => item['price']*item['total']).reduce((prev, next) => prev + next);
