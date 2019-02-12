@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { ScreenName, toUpperCase } from 'config'
+import {StackActions,NavigationActions} from 'react-navigation'
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn } from './layout'
 
@@ -32,12 +33,15 @@ class Signin extends React.Component {
     }
 
     _signin = ()  => {
-        console.log(11);
-        this.props.navigation.navigate(ScreenName.HomeScreen)
+        const resetAction = StackActions.reset({
+            index:0,
+            actions: [NavigationActions.navigate({routeName: ScreenName.HomeScreen})]
+        })
+        this.props.navigation.dispatch(resetAction)
     }
 
     render(){
-        AsyncStorage.getItem('test').then(console.log)
+        // AsyncStorage.getItem('test').then(console.log)
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={{flex: 1, flexDirection: 'column'}}>

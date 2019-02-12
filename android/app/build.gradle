@@ -153,7 +153,9 @@ repositories {
 }
 
 dependencies {
+    implementation project(':react-native-fast-image')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    //noinspection GradleCompatible
     implementation "com.android.support:support-v4:27.1.1"
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-facebook-account-kit')
