@@ -16,11 +16,19 @@ class HomeScreen extends React.Component {
                 <ScrollView>
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
 
-                    <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
-                        <Image 
-                            style={[styles.icon, {margin: 10}]}
-                            source={images.menu} />
-                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                            <Image 
+                                style={[styles.icon, {margin: 10}]}
+                                source={images.menu} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                            <Image 
+                                style={[styles.icon, {margin: 10}]}
+                                source={images.filter} />
+                        </TouchableOpacity>
+                    </View>
                     <Image 
                         style={{width: width, height: 150,marginBottom: 10 }}
                         source={images.slide} />

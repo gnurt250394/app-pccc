@@ -5,12 +5,20 @@ import images from "public/images"
 import { ScreenName, toPrice } from 'config'
 
 export default class ListItem extends React.Component {
-    toggleLike(like){
-        return like = !like
+    constructor(props){
+        super(props);
+        this.state = {
+            data: this.props.data
+        }
     }
-    renderItem = ({item}) => {
+    toggleLike = (index) => () => {
+        let data = [...this.state.data];
+        data[index].like = !data[index].like
+        this.setState({data});
+    }
+    renderItem = ({item, index}) => {
         return <View style={style.box}>
-                <TouchableOpacity onPress={this.toggleLike(item.like)}>
+                <TouchableOpacity onPress={this.toggleLike(index)}>
                     <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, {alignSelf: 'flex-end', marginRight: 5,}]}/>
                 </TouchableOpacity>
                 <Image source={images.binhCuuHoa} style={style.image}/>
@@ -23,8 +31,9 @@ export default class ListItem extends React.Component {
         return (
             <FlatList
                 horizontal={true}
-                data={this.props.data}
+                data={this.state.data}
                 renderItem={this.renderItem}
+                keyExtractor={(item, index) => index.toString()}
             />
         )
     }

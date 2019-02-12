@@ -90,6 +90,7 @@ class Cart extends React.Component {
             return <FlatList 
                         extraData={this.state}
                         data={this.state.data}
+                        keyExtractor={(item, index) => index.toString()}
                         renderItem={this.renderItem}/>
         }
     }
