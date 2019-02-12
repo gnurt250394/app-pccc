@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -13,6 +13,7 @@ class EditProfile extends React.Component {
     }
     render(){
         return (
+            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View >
                 <StatusBar backgroundColor="#FB3C30" barStyle="light-content" />
                 <View style={{backgroundColor: '#FB3C30'}}>
@@ -60,6 +61,7 @@ class EditProfile extends React.Component {
                     </View>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

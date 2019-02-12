@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, TextInput, Alert } from 'react-native'
+import { View, Text, Keyboard, TouchableWithoutFeedback, StatusBar, TextInput, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -46,6 +46,7 @@ class Confirm extends React.Component {
     
     render(){
         return (
+            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View >
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <Header title="Xác thực tài khoản" onPress={() => this.props.navigation.goBack() }/>
@@ -63,6 +64,7 @@ class Confirm extends React.Component {
                         name="Gửi" />
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, StatusBar } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -38,6 +38,7 @@ class Signin extends React.Component {
     render(){
         AsyncStorage.getItem('test').then(console.log)
         return (
+            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={{flex: 1, flexDirection: 'column'}}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View>
@@ -125,6 +126,7 @@ class Signin extends React.Component {
                 </View>
                 
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

@@ -83,11 +83,11 @@ const App = createStackNavigator(
     [ScreenName.Profile]: Profile,
     [ScreenName.Confirm]: Confirm,
     [ScreenName.HomeScreen]: TabMain,
-    [ScreenName.Cart]: {screen: Cart},
+    [ScreenName.Cart]: Cart,
    
   },
   {
-    initialRouteName: ScreenName.Cart,
+    initialRouteName: ScreenName.Signin,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

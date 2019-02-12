@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, TextInput, Alert } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -10,6 +10,7 @@ import { ScreenName, toUpperCase } from 'config'
 class Complete extends React.Component {
     render(){
         return (
+            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View >
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <Header title="Nhập mã OTP" onPress={() => this.props.navigation.goBack() }/>
@@ -28,6 +29,7 @@ class Complete extends React.Component {
                     <Btn name="Hoàn tất đăng ký" />
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

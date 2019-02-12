@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, TextInput, Alert } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, Keyboard, StatusBar, TextInput, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -10,6 +10,7 @@ import { ScreenName, toUpperCase } from 'config'
 class ForgotPassword extends React.Component {
     render(){
         return (
+            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View >
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <Header title="Quên mật khẩu" onPress={() => this.props.navigation.goBack() }/>
@@ -23,6 +24,7 @@ class ForgotPassword extends React.Component {
                     <Btn name="Gửi" />
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         )
     }
 }
