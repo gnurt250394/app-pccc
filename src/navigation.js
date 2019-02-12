@@ -18,6 +18,7 @@ import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
+import Drawer from "./components/ScreenDrawer/Drawer";
 
 const TabMain = createBottomTabNavigator(
   {
@@ -62,7 +63,9 @@ const TabMain = createBottomTabNavigator(
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs:TabMain
- },);
+ },{
+   contentComponent:(props)=><Drawer {...props}/>
+ });
  
 const App = createStackNavigator(
   {
@@ -82,7 +85,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.Signin,
+    initialRouteName: ScreenName.Confirm,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
