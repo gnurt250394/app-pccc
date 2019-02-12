@@ -153,20 +153,20 @@ repositories {
 }
 
 dependencies {
-    implementation project(':react-native-gesture-handler')
-    implementation project(':react-native-fbsdk')
-    implementation project(':react-native-facebook-account-kit')
-    implementation project(':react-native-facebook-account-kit')
-    implementation project(':react-native-fbsdk')
-    implementation project(':react-native-gesture-handler')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:support-v4:27.1.1"
+    implementation project(':react-native-fbsdk')
+    implementation project(':react-native-facebook-account-kit')
+    implementation project(':react-native-gesture-handler')
+    //noinspection GradleCompatible
     implementation "com.android.support:support-v4:27.1.1"
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     // implementation "com.android.support:appcompat-v7:27.1.1"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    implementation 'com.facebook.react:react-native:+'
+    // From node_modules
     // facebook sdk
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.android.support:design:27.1.1'
 }
 
 // Run this once to be able to run the application with BUCK

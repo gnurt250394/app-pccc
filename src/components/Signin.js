@@ -32,6 +32,7 @@ class Signin extends React.Component {
     }
 
     _signin = ()  => {
+        console.log(11);
         this.props.navigation.navigate(ScreenName.HomeScreen)
     }
 
