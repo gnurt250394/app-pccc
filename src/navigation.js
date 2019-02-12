@@ -19,13 +19,7 @@ import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
 
-const MyDrawerNavigator = createDrawerNavigator({
-  [ScreenName.HomeScreen]: HomeScreen,
-  [ScreenName.More]: More,
-  [ScreenName.Search]: Search,
-  [ScreenName.Cart]: Cart,
-  [ScreenName.Profile]: Profile
-});
+
 
 const TabMain = createBottomTabNavigator(
   {
@@ -67,7 +61,9 @@ const TabMain = createBottomTabNavigator(
     }),
   }
 );
-
+const MyDrawerNavigator = createDrawerNavigator({
+  Tabs:TabMain
+ },);
 
 const App = createStackNavigator(
   {
@@ -82,7 +78,7 @@ const App = createStackNavigator(
     [ScreenName.EditProfile]: EditProfile,
     [ScreenName.Profile]: Profile,
     [ScreenName.Confirm]: Confirm,
-    [ScreenName.HomeScreen]: TabMain,
+    [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: {screen: Cart},
    
   },
