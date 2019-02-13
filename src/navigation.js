@@ -87,7 +87,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.Confirm,
+    initialRouteName: ScreenName.Signin,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

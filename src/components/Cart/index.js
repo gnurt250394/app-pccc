@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, Alert,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -7,7 +7,7 @@ import { signup } from 'config/api'
 import { Btn, ViewMore } from '../layout'
 import { ScreenName, toPrice, toUpperCase, removeItem, calTotalPrice } from 'config'
 import { FlatList } from 'react-native-gesture-handler';
-
+const {height} = Dimensions.get('window')
 class Cart extends React.Component {
     constructor(props){
         super(props);
@@ -63,18 +63,18 @@ class Cart extends React.Component {
                 <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{borderWidth: 1, borderColor: '#ddd', flexDirection: 'row', justifyContent: 'space-between', width: '50%', alignItems: 'center'}}>
                         <TouchableOpacity 
-                            onPress={this._subtract(index)}
+                            onPress={this._subtract(index).bind(null,this)}
                             style={{borderRightColor: '#ddd', borderRightWidth: 1, padding: 10}}>
                             <Text style={{fontSize: 20}}>-</Text>
                         </TouchableOpacity>
                         <Text style={{padding: 10 }}>{item.total}</Text>
                         <TouchableOpacity  
-                            onPress={this._addtract(index)}
+                            onPress={this._addtract(index).bind(null,this)}
                             style={{borderLeftColor: '#ddd', borderLeftWidth: 1, padding: 10}}>
                             <Text style={{fontSize: 20}}>+</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={this._removeItem(index)} >
+                    <TouchableOpacity onPress={this._removeItem(index).bind(null,this)} >
                         <Image source={images.trash} style={ {width: 25, height: 25}}/>
                     </TouchableOpacity>
                     
@@ -146,4 +146,20 @@ let datas = [
         supplier: 'lehoangnd',
         total: 2
     },
+    {
+        id: 2,
+        name: 'Bình chữa cháy 3',
+        price: 220000,
+        like: true,
+        supplier: 'lehoangnd',
+        total: 2
+    },
+    {
+        id: 2,
+        name: 'Bình chữa cháy 4',
+        price: 220000,
+        like: true,
+        supplier: 'lehoangnd',
+        total: 2
+    }
 ]

@@ -19,7 +19,7 @@ class Profile extends React.Component {
             <Image 
                 style={style.icon}
                 source={icon} />
-            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd',paddingBottom:10, flex: 1, flexDirection: 'row',alignItems:'center'}}>
                 <Text style={style.label}>{title}</Text>
                 <Image 
                     style={style.iconNext}

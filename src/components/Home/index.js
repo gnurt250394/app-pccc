@@ -20,7 +20,7 @@ class HomeScreen extends React.Component {
         return(
             list.map((data)=>{
                 return(
-                    <FastImage source={{uri:data.image}}
+                    <FastImage key={data.id} source={{uri:data.image}}
                         style={{height:'100%',width:'100%'}}
                     />
                 )

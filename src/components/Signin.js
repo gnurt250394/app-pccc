@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard,ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -14,22 +14,16 @@ class Signin extends React.Component {
         password: '',
     }
     
-    onLoginFB = () => {
-        LoginManager.logInWithReadPermissions(["public_profile"]).then(
-            function(result) {
-              if (result.isCancelled) {
-                console.log("Login cancelled");
-              } else {
-                console.log(
-                  "Login success with permissions: " +
-                    result.grantedPermissions.toString()
-                );
-              }
-            },
-            function(error) {
-              console.log("Login fail with error: " + error);
-            }
-          );
+    onLoginFB =async () => {
+       await  LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+        if (result.isCancelled) {
+          console.log("Login Cancelled");
+        } else {
+          console.log("Login Success permission granted:" + result.grantedPermissions);
+        }
+      }, function(error) {
+         console.log("some error occurred!!");
+      })
     }
 
     _signin = ()  => {
@@ -42,13 +36,18 @@ class Signin extends React.Component {
 
     render(){
         // AsyncStorage.getItem('test').then(console.log)
+        const user = this.props.navigation.getParam('user');
+        const pass = this.props.navigation.getParam('pass');
+        console.log(pass,'pass')
+        console.log(user,'user')
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={{flex: 1, flexDirection: 'column'}}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                <ScrollView>
                 <View>
                     <Image 
-                        style={[styles.logo, {marginTop: 30}]}
+                        style={[styles.logo, {marginTop: 20}]}
                         source={images.logo} />
                     <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Fire Protection')}</Text>
 
@@ -59,6 +58,7 @@ class Signin extends React.Component {
                         <TextInput 
                             placeholder="Tài khoản"
                             placeholderTextColor="#DADADA"
+                            value={user}
                             onChangeText={username => this.setState({username})}
                             style={styles.loginInput} />
                     </View>
@@ -71,6 +71,7 @@ class Signin extends React.Component {
                             placeholder="Mật khẩu"
                             placeholderTextColor="#DADADA"
                             keyboardType="default"
+                            value={pass}
                             secureTextEntry={true}
                             onChangeText={password => this.setState({password})}
                             style={styles.loginInput} />
@@ -129,7 +130,7 @@ class Signin extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                
+                </ScrollView>
             </View>
             </TouchableWithoutFeedback>
         )
