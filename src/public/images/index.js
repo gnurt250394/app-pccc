@@ -39,4 +39,6 @@ module.exports = {
     viewMore: require('./viewMore.png'),
     slide: require('./slide.png'),
     trash: require('./trash.png'),
+    share: require('./share.png'),
+    calender: require('./calender.png'),
 }
