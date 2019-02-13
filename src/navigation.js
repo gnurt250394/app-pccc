@@ -18,6 +18,7 @@ import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
+import Product from 'components/Product'
 
 const TabMain = createBottomTabNavigator(
   {
@@ -79,6 +80,7 @@ const App = createStackNavigator(
     [ScreenName.Confirm]: Confirm,
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: Cart,
+    [ScreenName.Product]: Product,
    
   },
   {

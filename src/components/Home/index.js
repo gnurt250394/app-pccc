@@ -36,17 +36,17 @@ class HomeScreen extends React.Component {
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm nổi bật</Text>
                         <ViewMore />
                     </View>
-                    <ListItem data={data} />
+                    <ListItem data={data} navigate={this.props.navigation.navigate} />
                     <View style={[styles.row, style.heading]}>
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm mới nhất</Text>
                         <ViewMore />
                     </View>
-                    <ListItem data={data} />
+                    <ListItem data={data} navigate={this.props.navigation.navigate} />
                     <View style={[styles.row, style.heading]}>
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm bán chạy</Text>
                         <ViewMore />
                     </View>
-                    <ListItem data={data} />
+                    <ListItem data={data} navigate={this.props.navigation.navigate} />
                 </ScrollView>
             </View>
         )
