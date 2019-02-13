@@ -8,6 +8,30 @@ import { Header, Input, Btn} from '../layout'
 import { ScreenName, toUpperCase } from 'config'
 
 class Otp extends React.Component {
+   constructor(props){
+       super(props)
+       this.state={
+           timer:60
+       }
+   }
+   componentDidUpdate(){
+    if(this.state.timer === 0){ 
+      clearInterval(this.interval);
+      this.setState({timer:''})
+    }
+  }
+  countDownTimer=()=>{
+  this.state.timer===0?  this.setState(()=> ({ timer: 60 }),
+    ()=>{
+        this.interval =  setInterval(
+            () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+            1000
+          );  
+    })
+    :
+    ()=>{}
+  
+  }
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -22,15 +46,24 @@ class Otp extends React.Component {
                         <Input 
                             customStyle={{ borderBottomWidth: 0, padding: 0}}
                             placeholder="Nhập mã OTP" />
-                        <TouchableOpacity style={{padding: 0, marginBottom: 0}}>
-                            <Text>{toUpperCase("Gửi lại")} (60)</Text>
+                        <TouchableOpacity style={{padding: 0, marginBottom: 0}}
+                        onPress={this.countDownTimer}>
+                            <Text>{toUpperCase("Gửi lại")} <Text style={{fontWeight:'bold'}}>{this.state.timer} </Text> </Text>
                         </TouchableOpacity>
                     </View>
-                    <Btn name="Tạo mật khẩu mới" />
+                    <Btn name="Tạo mật khẩu mới"
+                    onPress={()=>{this.props.navigation.navigate(ScreenName.ChangePassword)}}
+                     />
                 </View>
             </View>
             </TouchableWithoutFeedback>
         )
+    }
+    componentDidMount(){
+        this.interval = setInterval(
+            () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+            1000
+          );
     }
 }
 export default connect()(Otp)

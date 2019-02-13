@@ -3,6 +3,7 @@ import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyb
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
+import {StackActions,NavigationActions} from 'react-navigation'
 import { signup } from 'config/api'
 import { Input, Btn} from '../layout'
 import { ScreenName } from 'config'
@@ -14,6 +15,17 @@ class NextStep extends React.Component {
         rePassword: "",
     }
     
+    register=()=>{
+        const pushAction = StackActions.push({
+            routeName: ScreenName.Signin,
+            params:{
+                user: this.state.phone,
+                pass: this.state.password
+            }
+            
+        })
+        this.props.navigation.dispatch(pushAction)
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -37,7 +49,7 @@ class NextStep extends React.Component {
                     
                     <Btn 
                         customStyle={{marginTop:  50,}}
-                        onPress={() => console.log()}
+                        onPress={this.register}
                         name="Bước tiếp theo" />
 
                     <TouchableOpacity 

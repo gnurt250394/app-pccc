@@ -6,8 +6,21 @@ import styles from "public/css"
 import { signup } from 'config/api'
 import { Header, Input, Btn} from '../layout'
 import { ScreenName, toUpperCase } from 'config'
+import RNAccountKit from 'react-native-facebook-account-kit'
 
 class ForgotPassword extends React.Component {
+    nextPage=()=>{
+        // RNAccountKit.loginWithPhone()
+        // .then((token) => {
+        //   if (!token) {
+        //     console.log('Login cancelled')
+        //   } else {
+        //     console.log(`Logged with phone. Token: ${JSON.stringify(token)}`)
+          
+        //   }
+        // })
+        this.props.navigation.navigate(ScreenName.Otp)
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -21,7 +34,9 @@ class ForgotPassword extends React.Component {
 
                     <Input placeholder="Số điện thoại/Email" />
                     
-                    <Btn name="Gửi" />
+                    <Btn
+                    onPress={this.nextPage}
+                     name="Gửi" />
                 </View>
             </View>
             </TouchableWithoutFeedback>
