@@ -11,7 +11,7 @@ export const ScreenName = {
     ForgotPassword: "ForgotPassword", 
     Otp: "Otp",
     ChangePassword: "ChangePassword",
-    NextStep: "NextStep",
+    Register: "Register",
     Complete: "Complete",
     ViewProfile: "ViewProfile",
     EditProfile: "EditProfile",
@@ -21,7 +21,7 @@ export const ScreenName = {
     More: "More",
     Cart: "Cart",
     Search: "Search",
-    Product: "Product",
+    ProductDetail: "ProductDetail",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()
@@ -31,3 +31,8 @@ export const toPrice = (str) => {
 export const removeItem = (arr, i) => arr.slice(0, i).concat(arr.slice(i + 1, arr.length))
 export const totalByValue = (data, field) => data.length == 0 ? 0 : data.map(item => item[field]).reduce((prev, next) => prev + next);
 export const calTotalPrice = data => data.length == 0 ? 0 : data.map(item => item['price']*item['total']).reduce((prev, next) => prev + next);
+
+export const validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}

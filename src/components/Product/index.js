@@ -8,7 +8,7 @@ import { ViewMore } from '../layout'
 import { ScreenName, toPrice , toUpperCase} from 'config'
 import ListItem from './ListItem'
 let width = Dimensions.get('window').width
-class Product extends React.Component {
+class ProductDetail extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -24,18 +24,22 @@ class Product extends React.Component {
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <ScrollView>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <TouchableOpacity onPress={() =>  null} >
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
                             <Image 
                                 style={[styles.icon, {margin: 10, width: 10}]}
                                 source={images.back} />
                         </TouchableOpacity>
 
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
-                            <TouchableOpacity onPress={() =>  null} >
-                                <Image 
-                                    style={[styles.icon, {margin: 10}]}
-                                    source={images.cartRed} />
-                            </TouchableOpacity>
+                            <View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={() =>  null} >
+                                    <Image 
+                                        style={[styles.icon, {margin: 10,}]}
+                                        source={images.cartRed} />
+                                </TouchableOpacity>
+                                <Text style={styles.badge}>20</Text>
+                            </View>
+                            
 
                             <TouchableOpacity onPress={() =>  null} >
                                 <Image 
@@ -120,7 +124,7 @@ class Product extends React.Component {
         )
     }
 }
-export default connect()(Product)
+export default connect()(ProductDetail)
 
 const style = StyleSheet.create({
     icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},

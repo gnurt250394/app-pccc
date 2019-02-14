@@ -4,7 +4,7 @@ import React from 'react'
 import images from "public/images"
 import { ScreenName } from "config"
 import Auth from 'components/Auth'
-import NextStep from 'components/Register/NextStep'
+import Register from 'components/Register'
 import Complete from 'components/Register/Complete'
 import Confirm from 'components/Register/Confirm'
 import Signin from 'components/Signin'
@@ -18,7 +18,7 @@ import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
-import Product from 'components/Product'
+import ProductDetail from 'components/Product'
 
 const TabMain = createBottomTabNavigator(
   {
@@ -68,7 +68,7 @@ const MyDrawerNavigator = createDrawerNavigator({
 const App = createStackNavigator(
   {
     [ScreenName.Auth]: Auth,
-    [ScreenName.NextStep]: NextStep,
+    [ScreenName.Register]: Register,
     [ScreenName.Signin]: Signin,
     [ScreenName.ForgotPassword]: ForgotPassword,
     [ScreenName.Otp]: Otp,
@@ -76,15 +76,16 @@ const App = createStackNavigator(
     [ScreenName.Complete]: Complete,
     [ScreenName.ViewProfile]: ViewProfile,
     [ScreenName.EditProfile]: EditProfile,
-    [ScreenName.Profile]: Profile,
+    [ScreenName.Profile]: TabMain,
     [ScreenName.Confirm]: Confirm,
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: Cart,
-    [ScreenName.Product]: Product,
+    [ScreenName.ProductDetail]: ProductDetail,
+    
    
   },
   {
-    initialRouteName: ScreenName.Signin,
+    initialRouteName: ScreenName.Register,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Alert, Image, TouchableOpacity, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -8,6 +8,10 @@ import { Header, Input, Btn} from '../layout'
 import { ScreenName } from 'config'
 
 class ChangePassword extends React.Component {
+    state = {
+        password: '',
+        rePassword: '',
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -17,14 +21,44 @@ class ChangePassword extends React.Component {
                     <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                         <View></View>
                         <View>
-                            <Input placeholder="Mật khẩu mới" />
-                            <Input placeholder="Nhập lại mật khẩu mới" />
+                            <Input 
+                                placeholder="Mật khẩu mới" 
+                                onChangeText={password => this.setState({password})}
+                                secureTextEntry={true} />
+                            <Input 
+                                placeholder="Nhập lại mật khẩu mới" 
+                                onChangeText={rePassword => this.setState({rePassword})}
+                                secureTextEntry={true} />
                         </View>
-                        <Btn name="Hoàn tất" />
+                        <Btn name="Hoàn tất" onPress={this._onSuccess()} />
                     </View>
                 </View>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _alert(msg){
+        Alert.alert(
+            'Thông báo',
+            msg,
+            [
+              {
+                text: 'ok',style: 'cancel',
+              },
+              
+            ],
+            {cancelable: false},
+        );
+    }
+
+    _onSuccess = () => () => {
+        if(this.state.password.trim().length < 6){
+            this._alert('Mật khẩu từ 6 ký tự')
+        }else if(this.state.password != this.state.rePassword){
+            this._alert('Mật khẩu nhập lại không đúng')
+        }else{
+            // call api
+        }
     }
 }
 export default connect()(ChangePassword)

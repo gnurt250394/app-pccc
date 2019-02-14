@@ -117,10 +117,10 @@ class Signin extends React.Component {
                     
 
                     <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
-                        <Text style={{fontWeight: '300', fontSize: 18, color: '#A9A9A9'}}>Bạn chưa có tài khoản?</Text>
+                        <Text style={{fontWeight: '300', fontSize: 18, color: '#5B5B5B'}}>Bạn chưa có tài khoản?</Text>
                         <TouchableOpacity 
                              onPress={() => this.props.navigation.navigate(ScreenName.NextStep)}>
-                            <Text style={{fontWeight: 'bold', fontSize: 18, color: '#FB3C30', marginLeft: 10}}>Đăng ký</Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 18, color: '#101010', marginLeft: 10}}>Đăng ký</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
