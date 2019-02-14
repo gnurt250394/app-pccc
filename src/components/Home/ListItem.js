@@ -21,7 +21,7 @@ export default class ListItem extends React.Component {
                 <TouchableOpacity onPress={this.toggleLike(index)}>
                     <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, {alignSelf: 'flex-end', marginRight: 5,}]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigate(ScreenName.Product)}>
+                <TouchableOpacity onPress={() => this.props.navigate(ScreenName.ProductDetail)}>
                     <Image source={images.binhCuuHoa} style={style.image}/>
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>

@@ -3,14 +3,13 @@ import { StyleSheet } from 'react-native'
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: 'bold',
-        // marginTop: 10,
         color: 'white',
         marginBottom: "15%",
     },
     btnLogin: {
-        backgroundColor: "#FB3C30",
+        backgroundColor: "#F55555",
         width: "80%",
         alignSelf: "center",
         marginTop: 25,
@@ -53,7 +52,7 @@ export default styles = StyleSheet.create({
     },
     forgot: {
         textAlign: 'center',
-        color: '#FB1A1A',
+        color: '#5B5B5B',
         fontSize: 18,
         textDecorationLine: 'underline'
     },
@@ -90,6 +89,19 @@ export default styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         marginBottom: 10
+    },
+    badge: {
+        backgroundColor: '#FC6463', 
+        borderRadius: 18, 
+        width: 25, 
+        height: 18, 
+        textAlign: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        color: '#fff',
+        marginLeft: -20,
+        marginTop: 10,
+        fontSize: 11
     }
 
 })

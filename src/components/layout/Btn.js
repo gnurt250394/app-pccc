@@ -10,7 +10,7 @@ export default class Btn extends React.Component {
                 onPress={this.props.onPress || null}
                 style={[styles.btnLogin, this.props.customStyle || {}]}>
 
-                <Text style={styles.textLogin}>{toUpperCase(this.props.name)}</Text>
+                <Text style={[styles.textLogin, this.props.textStyle || {}]}>{toUpperCase(this.props.name)}</Text>
             </TouchableOpacity>
         )
     }
