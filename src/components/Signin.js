@@ -3,9 +3,9 @@ import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, StatusBar
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { ScreenName, toUpperCase } from 'config'
+import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail } from 'config'
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
-import { Btn } from './layout'
+import { Btn, BaseInput } from './layout'
 
 class Signin extends React.Component {
     state = {
@@ -31,8 +31,14 @@ class Signin extends React.Component {
           );
     }
 
-    _signin = ()  => {
-        this.props.navigation.navigate(ScreenName.HomeScreen)
+    _signin = () => ()  => {
+        if(!validateEmail(this.state.username) && !validatePhone(this.state.username) ){
+            popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại")
+        }else if(this.state.password.trim() == ""){
+            popupOk("Mật khẩu không được để trống")
+        }else {
+            this.props.navigation.navigate(ScreenName.HomeScreen)
+        }
     }
 
     render(){
@@ -45,83 +51,50 @@ class Signin extends React.Component {
                     <Image 
                         style={[styles.logo, {marginTop: 30}]}
                         source={images.logo} />
-                    <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Fire Protection')}</Text>
+                    <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
 
-                    <View style={styles.inputBox}>
-                        <Image 
-                            style={[styles.icon]}
-                            source={images.user} />
-                        <TextInput 
-                            placeholder="Tài khoản"
-                            placeholderTextColor="#DADADA"
-                            onChangeText={username => this.setState({username})}
-                            style={styles.loginInput} />
-                    </View>
+                    <BaseInput 
+                        styleIcon={{width: 15}}
+                        icon={images.phoneDark}
+                        onChangeText={username => this.setState({username})}
+                        // keyboardType='numeric'
+                        placeholder="Email/Số điện thoại" />
 
-                    <View style={styles.inputBox}>
-                        <Image 
-                            style={[styles.icon]}
-                            source={images.key} />
-                        <TextInput 
-                            placeholder="Mật khẩu"
-                            placeholderTextColor="#DADADA"
-                            keyboardType="default"
-                            secureTextEntry={true}
-                            onChangeText={password => this.setState({password})}
-                            style={styles.loginInput} />
-                    </View>
+                    <BaseInput 
+                        icon={images.keyDark}
+                        onChangeText={val => this.setState({password: val})}
+                        secureTextEntry={true}
+                        placeholder="Mật khẩu"  />
                     
                     <Btn
-                        onPress={this._signin} 
+                        onPress={this._signin()} 
+                        customStyle={{marginBottom: 10}}
                         name="Đăng nhập" />
+                    <Btn
+                        onPress={() => this.props.navigation.navigate(ScreenName.Register)}
+                        customStyle={{marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: '#F55555',}}
+                        textStyle={{color: '#F55555'}}
+                        name="Đăng ký" />
 
                     
                     <Text 
                         onPress={() => this.props.navigation.navigate(ScreenName.ForgotPassword)}
                         style={styles.forgot}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
-                        <View style={{flex: 1, height: 1, backgroundColor: '#DADADA', }}></View>
-                        <Text style={{color: '#DADADA', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
-                        <View style={{flex: 1, height: 1, backgroundColor: '#DADADA'}}></View>
+                        <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
+                        <Text style={{color: '#999999', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
+                        <View style={{flex: 1, height: 1, backgroundColor: '#999999'}}></View>
                         
                     </View>
-                    <TouchableOpacity 
-                        onPress={this.onLoginFB}
-                        style={[styles.btnLogin, { backgroundColor: '#3A5A97', marginTop: 10, alignContent: 'center'}]}>
-                        {/* <Image 
-                            style={{width: 20, height: 20, backgroundColor: '#fff'}}
-                            source={images.fb} /> */}
-                        <Text style={[styles.textLogin]}>{toUpperCase("Đăng nhập với facebook")}</Text>
-                    </TouchableOpacity>
-                    {/* <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 40}}>
-                        <LoginButton
-                            style={{padding: 20, alignSelf: 'center', width: '80%'}}
-                            onLoginFinished={
-                                (error, result) => {
-                                    console.log('result: ', result);
-                                if (error) {
-                                    console.log("login has error: " + result.error);
-                                } else if (result.isCancelled) {
-                                    console.log("login is cancelled.");
-                                } else {
-                                    AccessToken.getCurrentAccessToken().then(
-                                    (data) => {
-                                        console.log(data.accessToken.toString())
-                                    }
-                                    )
-                                }
-                                }
-                            }
-                            onLogoutFinished={() => console.log("logout.")}/>
-                    </View> */}
                     
 
-                    <View style={{flexDirection: 'row', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
-                        <Text style={{fontWeight: '300', fontSize: 18, color: '#5B5B5B'}}>Bạn chưa có tài khoản?</Text>
-                        <TouchableOpacity 
-                             onPress={() => this.props.navigation.navigate(ScreenName.NextStep)}>
-                            <Text style={{fontWeight: 'bold', fontSize: 18, color: '#101010', marginLeft: 10}}>Đăng ký</Text>
-                        </TouchableOpacity>
+                    <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
+                        <Image 
+                            style={[styles.logo, {}]}
+                            source={images.iconFb} />
+                        <Image 
+                            style={[styles.logo,]}
+                            source={images.iconGoogle} />
                     </View>
                 </View>
                 

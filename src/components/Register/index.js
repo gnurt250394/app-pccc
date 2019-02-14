@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { BaseInput, Btn} from '../layout'
-import { ScreenName, toUpperCase, validateEmail } from 'config'
+import { ScreenName, toUpperCase, validateEmail, popupOk } from 'config'
 class Register extends React.Component {
     state = {
         name: "",
@@ -63,31 +63,18 @@ class Register extends React.Component {
             </TouchableWithoutFeedback>
         )
     }
-    _alert(msg){
-        Alert.alert(
-            'Thông báo',
-            msg,
-            [
-              {
-                text: 'ok',style: 'cancel',
-              },
-              
-            ],
-            {cancelable: false},
-        );
-    }
+    
     _onSuccess = () => () => {
-        console.log(11);
         if(this.state.name.trim() == ''){
-            this._alert('Họ và tên không được để trống')
+            popupOk('Họ và tên không được để trống')
         }else if(this.state.phone.trim().length != 10){
-            this._alert('Số điện thoại không đúng')
+            popupOk('Số điện thoại không đúng')
         }else if(!validateEmail(this.state.email)){
-            this._alert('Email không đúng')
+            popupOk('Email không đúng')
         }else if(this.state.password.trim().length < 6){
-            this._alert('Mật khẩu phải từ 6 ký tự')
+            popupOk('Mật khẩu phải từ 6 ký tự')
         }else if(this.state.password != this.state.rePassword){
-            this._alert('Mật khẩu nhập lại không đúng')
+            popupOk('Mật khẩu nhập lại không đúng')
         }else {
             // call api
         }

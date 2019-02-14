@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { Header, Input, Btn} from '../layout'
-import { ScreenName } from 'config'
+import { ScreenName, popupOk } from 'config'
 
 class ChangePassword extends React.Component {
     state = {
@@ -37,25 +37,11 @@ class ChangePassword extends React.Component {
         )
     }
 
-    _alert(msg){
-        Alert.alert(
-            'Thông báo',
-            msg,
-            [
-              {
-                text: 'ok',style: 'cancel',
-              },
-              
-            ],
-            {cancelable: false},
-        );
-    }
-
     _onSuccess = () => () => {
         if(this.state.password.trim().length < 6){
-            this._alert('Mật khẩu từ 6 ký tự')
+            popupOk('Mật khẩu từ 6 ký tự')
         }else if(this.state.password != this.state.rePassword){
-            this._alert('Mật khẩu nhập lại không đúng')
+            popupOk('Mật khẩu nhập lại không đúng')
         }else{
             // call api
         }

@@ -45,4 +45,6 @@ module.exports = {
     emailDark: require('./emailDark.png'),
     keyDark: require('./keyDark.png'),
     phoneDark: require('./phoneDark.png'),
+    iconGoogle: require('./iconGoogle.png'),
+    iconFb: require('./iconFb.png'),
 }

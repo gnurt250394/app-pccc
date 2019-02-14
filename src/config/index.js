@@ -1,3 +1,4 @@
+import {  Alert } from 'react-native'
 export const UrlName = {
     base: 'localhost:8081',
     signup: 'signup'
@@ -32,7 +33,26 @@ export const removeItem = (arr, i) => arr.slice(0, i).concat(arr.slice(i + 1, ar
 export const totalByValue = (data, field) => data.length == 0 ? 0 : data.map(item => item[field]).reduce((prev, next) => prev + next);
 export const calTotalPrice = data => data.length == 0 ? 0 : data.map(item => item['price']*item['total']).reduce((prev, next) => prev + next);
 
-export const validateEmail = (email) => {
+export const validateEmail = email => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+export const validatePhone = phone => {
+    var re =  /^[0-9\+]{9,11}$/;
+    return re.test(phone);
+}
+
+export const popupOk = msg =>{
+    Alert.alert(
+        'Thông báo',
+        msg,
+        [
+          {
+            text: 'ok',style: 'cancel',
+          },
+          
+        ],
+        {cancelable: false},
+    );
 }

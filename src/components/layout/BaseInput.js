@@ -5,7 +5,7 @@ import images from "public/images"
 export default class BaseInput extends React.Component {
     render(){
         return (
-            <View style={{flexDirection: "row", borderBottomWidth: 1, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 10, paddingBottom: 2,}}>
+            <View style={{flexDirection: "row", borderBottomWidth: 1, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 2,}}>
                 <Image 
                     style={[styles.icon, this.props.styleIcon || {}]} 
                     source={this.props.icon} />

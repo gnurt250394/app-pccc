@@ -3,9 +3,8 @@ import { StyleSheet } from 'react-native'
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: 'bold',
-        // marginTop: 10,
         color: 'white',
         marginBottom: "15%",
     },
