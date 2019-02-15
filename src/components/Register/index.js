@@ -65,8 +65,8 @@ class Register extends React.Component {
     }
     
     _onSuccess = () => () => {
-        if(this.state.name.trim() == ''){
-            popupOk('Họ và tên không được để trống')
+        if(this.state.name.trim().length < 2){
+            popupOk('Họ và tên phải từ 2 ký tự')
         }else if(this.state.phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
         }else if(this.state.password.trim().length < 6){
