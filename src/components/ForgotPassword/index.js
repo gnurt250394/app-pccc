@@ -4,10 +4,13 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Header, Input, Btn} from '../layout'
-import { ScreenName, toUpperCase } from 'config'
+import { Header, BaseInput, Btn, } from '../layout'
+import { ScreenName, validateEmail, validatePhone, popupOk } from 'config'
 
 class ForgotPassword extends React.Component {
+    state = {
+        username: ''
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -19,13 +22,26 @@ class ForgotPassword extends React.Component {
                         <Text style={{textAlign: "center", fontSize: 18}}>Nhập Số điện thoại hoặc Email của bạn đã sử dụng để tạo tài khoản</Text>
                     </View>
 
-                    <Input placeholder="Số điện thoại/Email" />
+                    <BaseInput 
+                        styleIcon={{width: 15}}
+                        icon={images.phoneDark}
+                        onChangeText={username => this.setState({username})}
+                        // keyboardType='numeric'
+                        placeholder="Email/Số điện thoại" />
                     
-                    <Btn name="Gửi" />
+                    <Btn name="Gửi" onPress={this._onSuccess()} />
                 </View>
             </View>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _onSuccess = () => ()  => {
+        if(!validateEmail(this.state.username) && !validatePhone(this.state.username) ){
+            popupOk("Bạn phải nhập đúng Email hoặc Số điện thoại")
+        }else {
+           // call api
+        }
     }
 }
 export default connect()(ForgotPassword)

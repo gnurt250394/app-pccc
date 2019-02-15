@@ -15,6 +15,7 @@ const list = [{image:'https://i.imgur.com/FxBPgGV.jpg',id:1},
 {image:'https://c1.staticflickr.com/2/1847/44150042641_985d8586b0_b.jpg',id:2},
 {image:'https://s3.anhdep24.net/images/2018/04/13/83584059240aa42353c_afebb6b58f984022a134a3fd49e11fac.jpg',id:3},
 {image:'http://cms.sao360.vn/Uploads/tranquyen/06-03-2018/06032018-055046-043-1.jpg',id:4}]
+
 class HomeScreen extends React.Component {
     mapImage=()=>{
         return(
@@ -26,9 +27,7 @@ class HomeScreen extends React.Component {
                 )
             })
         )
-     
-           
-        
+      
     }
     render(){
         return (
@@ -43,11 +42,19 @@ class HomeScreen extends React.Component {
                                 source={images.menu} />
                         </TouchableOpacity>
                         
-                        <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
-                            <Image 
-                                style={[styles.icon, {margin: 10}]}
-                                source={images.filter} />
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <Image 
+                                    style={[styles.icon, {margin: 10}]}
+                                    source={images.SearchRed} />
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                                <Image 
+                                    style={[styles.icon, {margin: 10}]}
+                                    source={images.filter} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <Swiper autoplay={true}
                     showsButtons={false}

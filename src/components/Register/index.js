@@ -69,8 +69,6 @@ class Register extends React.Component {
             popupOk('Họ và tên không được để trống')
         }else if(this.state.phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
-        }else if(!validateEmail(this.state.email)){
-            popupOk('Email không đúng')
         }else if(this.state.password.trim().length < 6){
             popupOk('Mật khẩu phải từ 6 ký tự')
         }else if(this.state.password != this.state.rePassword){

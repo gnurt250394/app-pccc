@@ -6,7 +6,7 @@ export default styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
-        marginBottom: "15%",
+        marginBottom: "8%",
     },
     btnLogin: {
         backgroundColor: "#F55555",

@@ -12,34 +12,6 @@ class Signin extends React.Component {
         username: '',
         password: '',
     }
-    
-    onLoginFB = () => {
-        LoginManager.logInWithReadPermissions(["public_profile"]).then(
-            function(result) {
-              if (result.isCancelled) {
-                console.log("Login cancelled");
-              } else {
-                console.log(
-                  "Login success with permissions: " +
-                    result.grantedPermissions.toString()
-                );
-              }
-            },
-            function(error) {
-              console.log("Login fail with error: " + error);
-            }
-          );
-    }
-
-    _signin = () => ()  => {
-        if(!validateEmail(this.state.username) && !validatePhone(this.state.username) ){
-            popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại")
-        }else if(this.state.password.trim() == ""){
-            popupOk("Mật khẩu không được để trống")
-        }else {
-            this.props.navigation.navigate(ScreenName.HomeScreen)
-        }
-    }
 
     render(){
         AsyncStorage.getItem('test').then(console.log)
@@ -49,7 +21,7 @@ class Signin extends React.Component {
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View>
                     <Image 
-                        style={[styles.logo, {marginTop: "8%"}]}
+                        style={[styles.logo, {}]}
                         source={images.logo} />
                     <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
 
@@ -79,7 +51,7 @@ class Signin extends React.Component {
                     
                     <Text 
                         onPress={() => this.props.navigation.navigate(ScreenName.ForgotPassword)}
-                        style={styles.forgot}>Quên mật khẩu</Text>
+                        style={[styles.forgot, {width: '50%', alignSelf: 'center'}]}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
                         <Text style={{color: '#999999', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
@@ -89,18 +61,51 @@ class Signin extends React.Component {
                     
 
                     <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
-                        <Image 
-                            style={[styles.logo, {}]}
-                            source={images.iconFb} />
-                        <Image 
-                            style={[styles.logo,]}
-                            source={images.iconGoogle} />
+                        <TouchableOpacity onPress={() => this._onLoginSocial()}>
+                            <Image 
+                                style={[styles.logo, {}]}
+                                source={images.iconFb} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => this._onLoginSocial()}>
+                            <Image 
+                                style={[styles.logo, {}]}
+                                source={images.iconGoogle} />
+                        </TouchableOpacity>
                     </View>
                 </View>
                 
             </ScrollView>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _onLoginSocial = () => () => {
+        LoginManager.logInWithReadPermissions(["public_profile"]).then(
+            function(result) {
+              if (result.isCancelled) {
+                console.log("Login cancelled");
+              } else {
+                console.log(
+                  "Login success with permissions: " +
+                    result.grantedPermissions.toString()
+                );
+              }
+            },
+            function(error) {
+              console.log("Login fail with error: " + error);
+            }
+          );
+    }
+
+    _signin = () => ()  => {
+        if(!validateEmail(this.state.username) && !validatePhone(this.state.username) ){
+            popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại")
+        }else if(this.state.password.trim() == ""){
+            popupOk("Mật khẩu không được để trống")
+        }else {
+            this.props.navigation.navigate(ScreenName.HomeScreen)
+        }
     }
 }
 export default connect()(Signin)

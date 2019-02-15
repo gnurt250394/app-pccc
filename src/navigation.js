@@ -16,7 +16,7 @@ import EditProfile from 'components/Profile/EditProfile'
 import Profile from 'components/Profile'
 import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
-import More from 'components/More'
+import News from 'components/News'
 import Search from 'components/Search'
 import Drawer from "./components/ScreenDrawer/Drawer";
 import ProductDetail from 'components/Product'
@@ -29,8 +29,8 @@ const TabMain = createBottomTabNavigator(
         title: 'Trang chủ',
       }),
     },
-    [ScreenName.More]: { 
-      screen: More,
+    [ScreenName.News]: { 
+      screen: News,
       navigationOptions: () => ({
         title: 'Tin tức',
       }),
@@ -66,7 +66,7 @@ const TabMain = createBottomTabNavigator(
           case ScreenName.HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
             break;
-          case ScreenName.More:
+          case ScreenName.News:
             image = focused ? images.tabNewsRed : images.tabNews;
             break;
           case ScreenName.Search:

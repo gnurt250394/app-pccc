@@ -11,7 +11,7 @@ export default class BaseInput extends React.Component {
                     source={this.props.icon} />
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
-                    placeholderTextColor={this.props.placeholderTextColor || "#E0E0E0"}
+                    placeholderTextColor={this.props.placeholderTextColor || "#CCCCCC"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.props.onChangeText}

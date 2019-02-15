@@ -34,7 +34,7 @@ module.exports = {
     ProfileDark: require('./Profile.png'),
     SearchRed: require('./SearchRed.png'),
     gas: require('./gas.jpg'),
-    binhCuuHoa: require('./binhCuuHoa.jpg'),
+    binhCuuHoa: require('./binhCuuHoa.png'),
     heartYellow: require('./heartYellow.png'),
     heartRed: require('./heartRed.png'),
     viewMore: require('./viewMore.png'),
@@ -61,4 +61,8 @@ module.exports = {
     tabBuyRed: require('./tabBuyRed.png'),
     tabNewsRed: require('./tabNewsRed.png'),
     tabSellRed: require('./tabSellRed.png'),
+    pChangePass: require('./pChangePass.png'),
+    pNews: require('./pNews.png'),
+    pProduct: require('./pProduct.png'),
+    pService: require('./pService.png'),
 }

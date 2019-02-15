@@ -19,7 +19,7 @@ export const ScreenName = {
     Profile: "Profile",
     Confirm: "Confirm",
     HomeScreen: "HomeScreen",
-    More: "More",
+    News: "News",
     Cart: "Cart",
     Search: "Search",
     ProductDetail: "ProductDetail",

@@ -6,7 +6,7 @@ import styles from "public/css"
 import { signup } from 'config/api'
 import { Btn } from '../layout'
 import { ScreenName } from 'config'
-
+import NavItem from './NavItem'
 class Profile extends React.Component {
     edit = () => {
         this.props.navigation.navigate(ScreenName.EditProfile)
@@ -31,19 +31,35 @@ class Profile extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                    <View style={{backgroundColor: '#FB3C30', paddingBottom: 30, paddingTop: 30}}>
+                    <StatusBar backgroundColor="#F55555" barStyle="light-content" />
+                    <View style={{backgroundColor: '#F55555', paddingBottom: 10, paddingTop: 10}}>
                         <Image 
-                            style={{width: 80, height: 80, alignSelf: 'center' }}
+                            style={{width: 80, resizeMode: 'contain', alignSelf: 'center' }}
                             source={images.userLight} />
                         <Text style={style.title}>Nguyễn Văn Nam</Text>
                     </View>
-                    <View style={{ marginTop: 30}}>
+                    <View style={{ marginTop: 20}}>
 
-                        {this.renderItem('Thông tin cá nhân', ScreenName.ViewProfile, images.iconUser)}
-                        {this.renderItem('Mua hàng', ScreenName.ViewProfile, images.iconShopping)}
-                        {this.renderItem('Bán hàng', ScreenName.ViewProfile, images.iconSell)}
-                        {this.renderItem('Thay đổi mật khẩu', ScreenName.ChangePassword, images.iconKey)}
+                        <NavItem 
+                            title='Thông tin cá nhân' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
+                            icon={images.iconUser} />
+                        <NavItem 
+                            title='Mua gói dịch vụ' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            icon={images.pService} />
+                        <NavItem 
+                            title='Tin tức đánh dấu' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            icon={images.pNews} />
+                        <NavItem 
+                            title='Sản phẩm đánh dấu' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            icon={images.pProduct} />
+                        <NavItem 
+                            title='Thay đổi mật khẩu' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            icon={images.pChangePass} />
                     </View>
                 </ScrollView>
                 <Btn name='Đăng xuất' onPress={() => this.props.navigation.navigate(ScreenName.Signin)} />
@@ -57,5 +73,5 @@ const style = StyleSheet.create({
     icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
+    title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 }
 })
