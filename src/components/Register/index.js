@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { BaseInput, Btn} from '../layout'
-import { ScreenName, toUpperCase, validateEmail, popupOk } from 'config'
+import { ScreenName, toUpperCase, validateEmail, popupOk,  } from 'config'
 class Register extends React.Component {
     state = {
         name: "",
@@ -69,6 +69,8 @@ class Register extends React.Component {
             popupOk('Họ và tên phải từ 2 ký tự')
         }else if(this.state.phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
+        }else if(this.state.email.trim() != "" && !validateEmail(this.state.email)){
+            popupOk('Email không đúng')
         }else if(this.state.password.trim().length < 6){
             popupOk('Mật khẩu phải từ 6 ký tự')
         }else if(this.state.password != this.state.rePassword){

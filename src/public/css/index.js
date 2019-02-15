@@ -52,7 +52,7 @@ export default styles = StyleSheet.create({
     },
     forgot: {
         textAlign: 'center',
-        color: '#5B5B5B',
+        color: '#333333',
         fontSize: 18,
         textDecorationLine: 'underline'
     },

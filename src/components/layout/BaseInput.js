@@ -23,7 +23,7 @@ export default class BaseInput extends React.Component {
 
 const style = StyleSheet.create({
     input: {
-        color: '#999999',
+        color: '#333333',
         padding: 2,
         paddingLeft: 8,
         fontSize: 16,

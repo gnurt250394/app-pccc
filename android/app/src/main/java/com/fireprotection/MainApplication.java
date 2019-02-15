@@ -19,7 +19,12 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
+// facebook account kit
 import io.underscope.react.fbak.RNAccountKitPackage;
+
+// firebase
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -41,9 +46,19 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new FastImageViewPackage(),
+
+          // firebase
+          new RNFirebasePackage(),
+          new RNFirebaseAuthPackage(),
+
+          // fast image
+          new FastImageViewPackage(),
+
+          // facebook sdk
           new FBSDKPackage(getCallbackManager()),
           new RNGestureHandlerPackage(),
+
+          // facebook account kit
           new RNAccountKitPackage()
       );
     }
