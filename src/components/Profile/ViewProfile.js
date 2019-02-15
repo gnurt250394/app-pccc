@@ -5,7 +5,16 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { ScreenName } from 'config'
-
+class ListItem extends React.Component {
+    render() {
+      return <View style={{ marginBottom: 10, flexDirection: 'row'}}>
+                <Image 
+                    style={style.icon}
+                    source={this.props.icon} />
+                <Text style={style.label}>{this.props.name}</Text>
+            </View>
+    };
+}
 class ViewProfile extends React.Component {
     edit = () => {
         this.props.navigation.navigate(ScreenName.EditProfile)
@@ -14,8 +23,8 @@ class ViewProfile extends React.Component {
     render(){
         return (
             <View >
-                <StatusBar backgroundColor="#FB3C30" barStyle="light-content" />
-                <View style={{backgroundColor: '#FB3C30', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
+                <View style={{backgroundColor: '#F55555', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.goBack()}>
                         <Image 
                             style={{width: 10, resizeMode: 'contain' }}
@@ -27,37 +36,19 @@ class ViewProfile extends React.Component {
                             source={images.edit} />
                     </TouchableOpacity>
                 </View>
-                <View style={{backgroundColor: '#FB3C30', paddingBottom: 30}}>
+                <View style={{backgroundColor: '#F55555', paddingBottom: 25}}>
                     <Image 
-                        style={{width: 80, height: 80, alignSelf: 'center' }}
+                        style={{resizeMode: 'contain', height: 80, alignSelf: 'center' }}
                         source={images.userLight} />
                     <Text style={style.title}>Nguyễn Văn Nam</Text>
                 </View>
                 <View style={{ marginTop: 30}}>
-                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconPhone} />
-                        <Text style={style.label}>0978789177</Text>
-                    </View>
-                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconEmail} />
-                        <Text style={style.label}>hoanglv@vinsofts.net</Text>
-                    </View>
-                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconCompany} />
-                        <Text style={style.label}>Cong ty vinsofts</Text>
-                    </View>
-                    <View style={{ marginBottom: 10, flexDirection: 'row'}}>
-                        <Image 
-                            style={style.icon}
-                            source={images.iconThue} />
-                        <Text style={style.label}>GP500-MST</Text>
-                    </View>
+                    <ListItem icon={images.pPhone} name="0978789177" />
+                    <ListItem icon={images.pEmail} name="hoanglv@vinsofts.net" />
+                    <ListItem icon={images.pGender} name="Nam" />
+                    <ListItem icon={images.pLocation} name="So 8 Phan Van Truong" />
+                    <ListItem icon={images.pCompany} name="Cong ty vinsofts" />
+                    <ListItem icon={images.pThue} name="GP500-MST" />
                 </View>
             </View>
         )
@@ -66,7 +57,7 @@ class ViewProfile extends React.Component {
 export default connect()(ViewProfile)
 
 const style = StyleSheet.create({
-    icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
-    label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 10},
-    title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
+    icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
+    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10},
+    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", paddingTop: 15 }
 })

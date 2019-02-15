@@ -64,7 +64,7 @@ export default styles = StyleSheet.create({
         marginBottom: 10,
         color: '#333333',
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'white',
         width: "80%",
         borderBottomWidth: 1,
