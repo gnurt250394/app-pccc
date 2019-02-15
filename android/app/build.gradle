@@ -174,6 +174,7 @@ dependencies {
 
     // Firebase
     implementation project(':react-native-firebase')
+    implementation project(':react-native-google-signin')
 
     // Firebase dependencies
     implementation "com.google.android.gms:play-services-base:16.0.1"

@@ -25,6 +25,7 @@ import io.underscope.react.fbak.RNAccountKitPackage;
 // firebase
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -46,10 +47,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-
+            
           // firebase
           new RNFirebasePackage(),
           new RNFirebaseAuthPackage(),
+          new RNGoogleSigninPackage(),
 
           // fast image
           new FastImageViewPackage(),
