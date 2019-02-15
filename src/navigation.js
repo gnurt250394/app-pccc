@@ -18,34 +18,62 @@ import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
 import More from 'components/More'
 import Search from 'components/Search'
+import Drawer from "./components/ScreenDrawer/Drawer";
 import ProductDetail from 'components/Product'
 
 const TabMain = createBottomTabNavigator(
   {
-    [ScreenName.HomeScreen]: HomeScreen,
-    [ScreenName.More]: More,
-    [ScreenName.Search]: Search,
-    [ScreenName.Cart]: Cart,
-    [ScreenName.Profile]: Profile
+    [ScreenName.HomeScreen]: { 
+      screen: HomeScreen,
+      navigationOptions: () => ({
+        title: 'Trang chủ',
+      }),
+    },
+    [ScreenName.More]: { 
+      screen: More,
+      navigationOptions: () => ({
+        title: 'Tin tức',
+      }),
+    },
+    [ScreenName.Search]: { 
+      screen: Search,
+      navigationOptions: () => ({
+        title: 'Đăng mua',
+      }),
+    },
+    [ScreenName.Cart]: { 
+      screen: Cart,
+      navigationOptions: () => ({
+        title: 'Đăng bán',
+      }),
+    },
+    [ScreenName.Profile]: { 
+      screen: Profile,
+      navigationOptions: () => ({
+        title: 'Cá nhân',
+      }),
+    }
   },
   
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        console.log('tintColor: ', tintColor);
+        tintColor = focused ? "#F55555" : "#555555";
         const { routeName } = navigation.state;
         var image;
         switch (routeName){
           case ScreenName.HomeScreen:
-            image = focused ? images.HomeRed : images.HomeDark;
+            image = focused ? images.tabHomeRed : images.tabHome;
             break;
           case ScreenName.More:
-            image = focused ? images.MoreRed : images.MoreDark;
+            image = focused ? images.tabNewsRed : images.tabNews;
             break;
           case ScreenName.Search:
-            image = focused ? images.SearchRed : images.search;
+            image = focused ? images.tabSellRed : images.tabSell;
             break;
           case ScreenName.Cart:
-            image = focused ? images.cartRed : images.cart;
+            image = focused ? images.tabBuyRed : images.tabBuy;
             break;
           case ScreenName.Profile:
             image = focused ? images.ProfileRed : images.ProfileDark;
@@ -54,16 +82,22 @@ const TabMain = createBottomTabNavigator(
         
         return <Image  style={styles.icon} source={image} />
       },
-      tabBarLabel: () => {
-        showLabel: false
-      },
+      // tabBarLabel: () => {
+      //   showLabel: false
+      // },
+      tabBarOptions: {
+        activeTintColor: '#F55555',
+        
+      }
     }),
   }
 );
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs:TabMain
- },);
+ },{
+   contentComponent:(props)=><Drawer {...props}/>
+ });
  
 const App = createStackNavigator(
   {
@@ -85,7 +119,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.Signin,
+    initialRouteName: ScreenName.HomeScreen,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

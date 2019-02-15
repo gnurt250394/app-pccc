@@ -6,10 +6,30 @@ import styles from "public/css"
 import { signup } from 'config/api'
 import { Footer, ViewMore } from '../layout'
 import { ScreenName } from 'config'
+import FastImage  from 'react-native-fast-image'
+import Swiper from 'react-native-swiper'
 import ListItem from './ListItem'
-let width = Dimensions.get('window').width
+let {width,height} = Dimensions.get('window')
 // this.props.navigation.openDrawer();
+const list = [{image:'https://i.imgur.com/FxBPgGV.jpg',id:1},
+{image:'https://c1.staticflickr.com/2/1847/44150042641_985d8586b0_b.jpg',id:2},
+{image:'https://s3.anhdep24.net/images/2018/04/13/83584059240aa42353c_afebb6b58f984022a134a3fd49e11fac.jpg',id:3},
+{image:'http://cms.sao360.vn/Uploads/tranquyen/06-03-2018/06032018-055046-043-1.jpg',id:4}]
 class HomeScreen extends React.Component {
+    mapImage=()=>{
+        return(
+            list.map((data)=>{
+                return(
+                    <FastImage key={data.id} source={{uri:data.image}}
+                        style={{height:'100%',width:'100%'}}
+                    />
+                )
+            })
+        )
+     
+           
+        
+    }
     render(){
         return (
             <View style={{}}>
@@ -29,9 +49,12 @@ class HomeScreen extends React.Component {
                                 source={images.filter} />
                         </TouchableOpacity>
                     </View>
-                    <Image 
-                        style={{width: width, height: 150,marginBottom: 10 }}
-                        source={images.slide} />
+                    <Swiper autoplay={true}
+                    showsButtons={false}
+                    height={height/3}>
+                   {this.mapImage()}
+                    </Swiper>
+                   
                     <View style={[styles.row, style.heading]}>
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sản phẩm nổi bật</Text>
                         <ViewMore />
