@@ -58,8 +58,8 @@ const TabMain = createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        console.log('tintColor: ', tintColor);
-        tintColor = focused ? "#F55555" : "#555555";
+        // console.log('tintColor: ', tintColor);
+        // tintColor = focused ? "#F55555" : "#555555";
         const { routeName } = navigation.state;
         var image;
         switch (routeName){

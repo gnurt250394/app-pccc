@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
                                 style={[styles.icon, {margin: 10}]}
                                 source={images.menu} />
                         </TouchableOpacity>
-
+                        
                         <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
                             <Image 
                                 style={[styles.icon, {margin: 10}]}

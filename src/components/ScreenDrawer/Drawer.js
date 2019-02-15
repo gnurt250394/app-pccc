@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Dimensions,Image,TouchableOpacity,ScrollView } from 'react-native';
-import {TextBold,TextItali} from '../layout/CustomText';
-
+import {TextBold,NavItem} from '../layout';
+import images from "public/images"
+import { ScreenName } from 'config';
 export default class Drawer extends Component {
   constructor(props) {
     super(props);
@@ -11,34 +12,46 @@ export default class Drawer extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-       <View style={styles.containerHeader}>
-           <Image source={{uri:'https://i.imgur.com/FxBPgGV.jpg'}}
-               style={styles.image}
-           />
-           <TextBold style={styles.txt}
-               value={"Khách"}
-           />
-       </View>
-       <TouchableOpacity style={styles.button}>
-           <TextBold style={styles.txt}
-               value={"Cửa hàng"}
-           />
-       </TouchableOpacity>
-       <TouchableOpacity style={styles.button}>
-           <TextBold style={styles.txt}
-               value={"Danh mục"}
-           />
-       </TouchableOpacity>
-       
-       <TouchableOpacity style={styles.button}>
-           <TextBold style={styles.txt}
-               value={"Liên hệ"}
-           />
-       </TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.containerHeader}>
+                    <Image 
+                        source={{uri:'https://i.imgur.com/FxBPgGV.jpg'}}
+                        style={styles.image} />
+                    <TextBold style={styles.txt}
+                        value={"Khách"} />
+                    <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
+                           <Text style={{color: '#fff', fontSize: 16}}>Đăng nhập/</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
+                            <Text style={{color: '#fff', fontSize: 16}}>Đăng ký</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
+            </View>
+        
+            <NavItem 
+                onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
+                title='Cửa hàng' 
+                icon={images.mShop} />
+            <NavItem 
+                title='Danh mục' 
+                icon={images.mCategory} 
+                showMore={true}/>
+            <NavItem 
+                title='Liên hệ' 
+                icon={images.mContact} />
+            <NavItem 
+                onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
+                title='Đăng xuất' 
+                icon={images.mSignout} />
 
-      </View>
+        </View>
     );
+  }
+
+  _renderItem = () => {
+
   }
 }
 
@@ -54,18 +67,25 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     txt:{
-    color:'white',
-    fontSize:16,
-    marginLeft: 10,
-    fontWeight:'500'
+        color:'white',
+        fontSize:16,
+        textAlign: 'center',
+        fontWeight:'400',
+        paddingTop: 15
     },
     containerHeader:{
-    flexDirection:'row',
-    alignItems:'center',
-    height:140
-},
-button:{
-    justifyContent:'center',
-    height:60
-}
+        flexDirection:'column',
+        alignItems:'center',
+        // height:140,
+        paddingTop: 20,
+        paddingBottom: 10,
+        marginRight: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#fff',
+        marginBottom: 40,
+    },
+    button:{
+        justifyContent:'center',
+        height:60
+    }
 })
