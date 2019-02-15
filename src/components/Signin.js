@@ -25,7 +25,7 @@ class Signin extends React.Component {
                     <Image 
                         style={[styles.logo, {}]}
                         source={images.logo} />
-                    <Text style={[styles.slogan, { color: '#DA0006'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
+                    <Text style={[styles.slogan, { color: '#F55555'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
 
                     <BaseInput 
                         styleIcon={{width: 15}}
@@ -42,7 +42,7 @@ class Signin extends React.Component {
                     
                     <Btn
                         onPress={this._signin()} 
-                        customStyle={{marginBottom: 10}}
+                        customStyle={{marginBottom: 8}}
                         name="Đăng nhập" />
                     <Btn
                         onPress={() => this.props.navigation.navigate(ScreenName.Register)}
@@ -56,7 +56,7 @@ class Signin extends React.Component {
                         style={[styles.forgot, {width: '50%', alignSelf: 'center'}]}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
-                        <Text style={{color: '#999999', fontSize: 18, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
+                        <Text style={{color: '#999999', fontSize: 14, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
                         <View style={{flex: 1, height: 1, backgroundColor: '#999999'}}></View>
                         
                     </View>
@@ -65,13 +65,13 @@ class Signin extends React.Component {
                     <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
                         <TouchableOpacity onPress={this._onFacebookLogin()}>
                             <Image 
-                                style={[styles.logo, {}]}
+                                style={[styles.logo, {height: 60,marginTop: 15}]}
                                 source={images.iconFb} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={this._onGoogleLogin()}>
                             <Image 
-                                style={[styles.logo, {}]}
+                                style={[styles.logo, {height: 60,marginTop: 15}]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>

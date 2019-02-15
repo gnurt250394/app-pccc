@@ -5,13 +5,13 @@ import images from "public/images"
 export default class BaseInput extends React.Component {
     render(){
         return (
-            <View style={{flexDirection: "row", borderBottomWidth: 1, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 2,}}>
+            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 2,}}>
                 <Image 
-                    style={[styles.icon, this.props.styleIcon || {}]} 
+                    style={[styles.icon, this.props.styleIcon || {}, {width: 12}]} 
                     source={this.props.icon} />
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
-                    placeholderTextColor={this.props.placeholderTextColor || "#CCCCCC"}
+                    placeholderTextColor={this.props.placeholderTextColor || "#95989A"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.props.onChangeText}
@@ -24,9 +24,9 @@ export default class BaseInput extends React.Component {
 const style = StyleSheet.create({
     input: {
         color: '#333333',
-        padding: 2,
+        padding: 0,
         paddingLeft: 8,
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'white',
         flex: 1,
     },

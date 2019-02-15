@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Dimensions,Image,TouchableOpacity,ScrollView } from 'react-native';
+import { View, Text,StyleSheet,StatusBar,Image,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import {TextBold,NavItem} from '../layout';
 import images from "public/images"
 import { ScreenName } from 'config';
@@ -12,19 +12,22 @@ export default class Drawer extends Component {
 
   render() {
     return (
+        <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>this.props.navigation.closeDrawer()}>
+        
         <View style={styles.container}>
+            {/* <StatusBar backgroundColor="#FFAF26" barStyle="light-content" /> */}
             <View style={styles.containerHeader}>
                     <Image 
-                        source={{uri:'https://i.imgur.com/FxBPgGV.jpg'}}
+                        source={images.userLight}
                         style={styles.image} />
                     <TextBold style={styles.txt}
                         value={"Khách"} />
                     <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
-                           <Text style={{color: '#fff', fontSize: 16}}>Đăng nhập/</Text>
+                           <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng nhập/</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
-                            <Text style={{color: '#fff', fontSize: 16}}>Đăng ký</Text>
+                            <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng ký</Text>
                         </TouchableOpacity>
                     </View>
                     
@@ -42,11 +45,15 @@ export default class Drawer extends Component {
                 title='Liên hệ' 
                 icon={images.mContact} />
             <NavItem 
+                title='Giới thiệu' 
+                icon={images.mIntro} />
+            <NavItem 
                 onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
                 title='Đăng xuất' 
                 icon={images.mSignout} />
 
         </View>
+        </TouchableWithoutFeedback>
     );
   }
 
@@ -80,7 +87,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 10,
         marginRight: 8,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.6,
         borderBottomColor: '#fff',
         marginBottom: 40,
     },

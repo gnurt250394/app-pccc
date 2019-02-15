@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native'
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: 'white',
-        marginBottom: "8%",
+        marginBottom: "9%",
     },
     btnLogin: {
         backgroundColor: "#F55555",
@@ -14,7 +14,7 @@ export default styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: 25,
         marginBottom: 25,
-        borderRadius: 10,
+        borderRadius: 8,
         padding: 12,
     },
     btnSignup: {
@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
     textLogin: {
         alignSelf: 'center',
         fontWeight: "500",
-        fontSize: 16,
+        fontSize: 14,
         color: 'white',
     },
     textSignup: {
@@ -38,9 +38,11 @@ export default styles = StyleSheet.create({
        
     },
     logo: {
-        width: 80,
+        height: 75,
         alignSelf: 'center',
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        marginTop: 40,
+        marginBottom: 18,
     },
     icon: {
         width: 18,
@@ -53,14 +55,14 @@ export default styles = StyleSheet.create({
     forgot: {
         textAlign: 'center',
         color: '#333333',
-        fontSize: 18,
+        fontSize: 14,
         textDecorationLine: 'underline'
     },
     input: {
         alignSelf: 'center',
         borderRadius: 10,
         marginBottom: 10,
-        color: '#393939',
+        color: '#333333',
         paddingLeft: 10,
         fontSize: 16,
         backgroundColor: 'white',

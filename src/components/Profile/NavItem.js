@@ -10,7 +10,7 @@ export default class NavItem extends React.Component {
                     <Image 
                         style={[style.icon, {marginRight: 5}]}
                         source={this.props.icon} />
-                    <View style={{  flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomColor: "#707070", borderBottomWidth: 1,}}>
+                    <View style={{  flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomColor: "#707070", borderBottomWidth: 0.5,}}>
                         <Text style={style.txt}>{this.props.title}</Text>
                         <Image 
                             style={[style.icon, {width: 10, marginRight: 10}]}
@@ -20,14 +20,14 @@ export default class NavItem extends React.Component {
         }
 }
 const style = StyleSheet.create({
-    icon: {width: 30, resizeMode: 'contain', },
+    icon: {width: 25, resizeMode: 'contain', },
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
     title: {color: '#fff', fontSize: 20, alignSelf: 'center',  paddingTop: 15 },
     txt:{
         flex: 1,
-        color:'#555555',
-        fontSize:16,
+        color:'#333333',
+        fontSize: 14,
         paddingBottom: 10,
-        paddingTop: 15,
+        paddingTop: 8,
     },
 })

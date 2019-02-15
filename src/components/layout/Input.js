@@ -7,7 +7,7 @@ export default class Input extends React.Component {
         return (
             <TextInput 
                 placeholder={this.props.placeholder || "Enter something"}
-                placeholderTextColor={this.props.placeholderTextColor || "#E0E0E0"}
+                placeholderTextColor={this.props.placeholderTextColor || "#95989A"}
                 keyboardType={this.props.keyboardType || "default" }
                 secureTextEntry={this.props.secureTextEntry }
                 onChangeText={this.props.onChangeText}

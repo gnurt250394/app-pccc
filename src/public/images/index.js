@@ -33,7 +33,6 @@ module.exports = {
     ProfileRed: require('./ProfileRed.png'),
     ProfileDark: require('./Profile.png'),
     SearchRed: require('./SearchRed.png'),
-    gas: require('./gas.jpg'),
     binhCuuHoa: require('./binhCuuHoa.png'),
     heartYellow: require('./heartYellow.png'),
     heartRed: require('./heartRed.png'),
@@ -65,4 +64,5 @@ module.exports = {
     pNews: require('./pNews.png'),
     pProduct: require('./pProduct.png'),
     pService: require('./pService.png'),
+    pUser: require('./pUser.png'),
 }

@@ -43,7 +43,7 @@ class Profile extends React.Component {
                         <NavItem 
                             title='Thông tin cá nhân' 
                             onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
-                            icon={images.iconUser} />
+                            icon={images.pUser} />
                         <NavItem 
                             title='Mua gói dịch vụ' 
                             onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
@@ -73,5 +73,5 @@ const style = StyleSheet.create({
     icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    title: {color: '#fff', fontSize: 20, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 }
+    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 }
 })
