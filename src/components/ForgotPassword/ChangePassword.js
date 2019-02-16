@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Header, Input, Btn} from '../layout'
+import { Header, BaseInput, Btn} from '../layout'
 import { ScreenName, popupOk } from 'config'
 
 class ChangePassword extends React.Component {
@@ -21,14 +21,16 @@ class ChangePassword extends React.Component {
                     <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                         <View></View>
                         <View>
-                            <Input 
-                                placeholder="Mật khẩu mới" 
-                                onChangeText={password => this.setState({password})}
-                                secureTextEntry={true} />
-                            <Input 
-                                placeholder="Nhập lại mật khẩu mới" 
-                                onChangeText={rePassword => this.setState({rePassword})}
-                                secureTextEntry={true} />
+                            <BaseInput 
+                                icon={images.keyDark}
+                                onChangeText={val => this.setState({password: val})}
+                                secureTextEntry={true}
+                                placeholder="Mật khẩu mới"  />
+                            <BaseInput 
+                                icon={images.keyDark}
+                                onChangeText={val => this.setState({rePassword: val})}
+                                secureTextEntry={true}
+                                placeholder="Nhập lại mật khẩu mới"  />
                         </View>
                         <Btn name="Hoàn tất" onPress={this._onSuccess()} />
                     </View>

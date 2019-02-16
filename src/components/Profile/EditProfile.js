@@ -60,7 +60,7 @@ class EditProfile extends React.Component {
         phone: '',
         gender: true,
         address: '',
-        thue: '',
+        tax_code: '',
     }
     render(){
         return (
@@ -102,7 +102,7 @@ class EditProfile extends React.Component {
                         onChangeText={company => this.setState({company})}
                         placeholder="Tên công ty"/>
                     <InputItem icon={images.pThue} 
-                        onChangeText={thue => this.setState({thue})}
+                        onChangeText={tax_code => this.setState({tax_code})}
                         placeholder="Mã số thuế"/>
                 </View>
             </ScrollView>
@@ -111,6 +111,7 @@ class EditProfile extends React.Component {
     }
 
     _onSuccess = () => () => {
+
         this.props.navigation.goBack()
     }
 }

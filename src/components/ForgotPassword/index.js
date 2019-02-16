@@ -6,6 +6,8 @@ import styles from "public/css"
 import { signup } from 'config/api'
 import { Header, BaseInput, Btn, } from '../layout'
 import { ScreenName, validateEmail, validatePhone, popupOk } from 'config'
+import RNAccountKit from 'react-native-facebook-account-kit'
+
 
 class ForgotPassword extends React.Component {
     state = {
@@ -37,10 +39,24 @@ class ForgotPassword extends React.Component {
     }
 
     _onSuccess = () => ()  => {
-        if(!validateEmail(this.state.phone) && !validatePhone(this.state.phone) ){
+        console.log(123, this.state.phone);
+        if(!validatePhone(this.state.phone) ){
             popupOk("Số điện thoại không đúng")
         }else {
            // call api
+           RNAccountKit.configure({
+                responseType: 'code',
+                // titleType: 'login',
+                initialAuthState: '',
+                initialPhoneCountryPrefix: '+84' + this.state.phone.replace(/^0+/, ""), 
+                defaultCountry: 'VN',
+            })
+           RNAccountKit.loginWithPhone()
+            .then((token) => {
+                if(token && token.code){
+                    
+                }
+            })
         }
     }
 }

@@ -8,6 +8,7 @@ import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from './layout'
 import firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
+import RNAccountKit from 'react-native-facebook-account-kit'
 
 class Signin extends React.Component {
     state = {
@@ -52,7 +53,7 @@ class Signin extends React.Component {
 
                     
                     <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ForgotPassword)}
+                        onPress={this._onForgotPassword()}
                         style={[styles.forgot, {width: '50%', alignSelf: 'center'}]}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
@@ -157,6 +158,22 @@ class Signin extends React.Component {
         }else {
             this.props.navigation.navigate(ScreenName.HomeScreen)
         }
+    }
+
+    _onForgotPassword = () => () => {
+        RNAccountKit.configure({
+            responseType: 'code',
+            // titleType: 'login',
+            initialAuthState: '',
+            initialPhoneCountryPrefix: '+84', 
+            defaultCountry: 'VN',
+        })
+       RNAccountKit.loginWithPhone()
+        .then((token) => {
+            if(token && token.code){
+                this.props.navigation.navigate(ScreenName.ChangePassword)
+            }
+        })
     }
 }
 export default connect()(Signin)
