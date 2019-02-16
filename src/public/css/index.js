@@ -3,10 +3,11 @@ import { StyleSheet } from 'react-native'
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: 'bold',
         color: 'white',
-        marginBottom: "9%",
+        marginBottom: 50,
+        marginTop: -10
     },
     btnLogin: {
         backgroundColor: "#F55555",
@@ -41,7 +42,7 @@ export default styles = StyleSheet.create({
         height: 75,
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop: 40,
+        marginTop: 70,
         marginBottom: 18,
     },
     icon: {

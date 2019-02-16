@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { BaseInput, Btn} from 'layout'
-import { ScreenName, toUpperCase, validateEmail, popupOk,  } from 'config'
+import { ScreenName, toUpperCase, validateEmail, popupOk, validateName } from 'config'
 class Register extends React.Component {
     state = {
         name: "",
@@ -27,10 +27,11 @@ class Register extends React.Component {
                         onChangeText={val => this.setState({name: val})}
                         placeholder="Họ và tên" />
                     <BaseInput 
-                        styleIcon={{width: 15}}
+                        styleIcon={{width: 11}}
                         icon={images.phoneDark}
                         onChangeText={val => this.setState({phone: val})}
                         keyboardType='numeric'
+                        maxLength={10}
                         placeholder="Số điện thoại" />
                     <BaseInput 
                         icon={images.emailDark}
@@ -67,6 +68,8 @@ class Register extends React.Component {
     _onSuccess = () => () => {
         if(this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
+        } else if(!validateName(this.state.name)){
+            popupOk('Họ và tên không được dùng ký tự đặc biệt')
         }else if(this.state.phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
         }else if(this.state.email.trim() != "" && !validateEmail(this.state.email)){

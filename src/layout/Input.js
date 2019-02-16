@@ -11,6 +11,8 @@ export default class Input extends React.Component {
                 keyboardType={this.props.keyboardType || "default" }
                 secureTextEntry={this.props.secureTextEntry }
                 onChangeText={this.props.onChangeText}
+                editable={this.props.editable}
+                value={this.props.value}
                 style={this.props.style || [styles.input, this.props.customStyle || {}]} />
         )
     }

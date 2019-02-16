@@ -16,44 +16,48 @@ class HomeScreen extends React.Component {
                 <ScrollView>
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
 
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                        <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.openDrawer()} >
                             <Image 
-                                style={[styles.icon, {margin: 10, width: 18}]}
+                                style={[styles.icon, { height: 18}]}
                                 source={images.menu} />
                         </TouchableOpacity>
                         
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
+                            <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <Image 
-                                    style={[styles.icon, {margin: 10, width: 15}]}
+                                    style={[styles.icon, { width: 15}]}
                                     source={images.SearchRed} />
                             </TouchableOpacity>
                             
-                            <TouchableOpacity onPress={() =>  this.props.navigation.openDrawer()} >
+                            <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() =>  this.props.navigation.openDrawer()} >
                                 <Image 
-                                    style={[styles.icon, {margin: 10, width: 15}]}
+                                    style={[styles.icon, { width: 15}]}
                                     source={images.filter} />
                             </TouchableOpacity>
                         </View>
                     </View>
                     <Slide />
                    
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: '500', color: '#333333', fontSize: 18}}>Sản phẩm nổi bật</Text>
+                    <View style={style.heading}>
+                        <Text style={style.headingLabel}>Sản phẩm nổi bật</Text>
                         <ViewMore />
                     </View>
                     <ListItem data={data} navigate={this.props.navigation.navigate} />
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: '500', color: '#333333'}}>Sản phẩm mới nhất</Text>
+                    <View style={style.hr}></View>
+
+                    <View style={style.heading}>
+                        <Text style={style.headingLabel}>Sản phẩm mới nhất</Text>
                         <ViewMore />
                     </View>
                     <ListItem data={data} navigate={this.props.navigation.navigate} />
-                    <View style={[styles.row, style.heading]}>
-                        <Text style={{fontSize: 20, fontWeight: '500', color: '#333333'}}>Sản phẩm bán chạy</Text>
+                    <View style={style.hr}></View>
+
+                    <View style={style.heading}>
+                        <Text style={style.headingLabel}>Sản phẩm bán chạy</Text>
                         <ViewMore />
                     </View>
-                    <ListItem data={data} navigate={this.props.navigation.navigate} />
+                    <ListItem data={data} navigate={this.props.navigation.navigate} style={{marginBottom: 8}} />
                 </ScrollView>
             </TouchableWithoutFeedback>
         )
@@ -62,7 +66,9 @@ class HomeScreen extends React.Component {
 export default connect()(HomeScreen)
 
 const style = StyleSheet.create({
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'}
+    heading: {flexDirection: 'row', justifyContent: 'space-between', padding: 8, alignItems:'center', },
+    hr: {width: '100%', height: 3, backgroundColor: '#ddd', marginTop: 8, marginBottom: 3},
+    headingLabel: {fontSize: 20, fontWeight: '500', color: '#333333', fontSize: 18}
 })
 
 let data = [

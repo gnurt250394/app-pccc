@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -8,6 +8,16 @@ import { Btn } from 'layout'
 import { ScreenName } from 'config'
 import NavItem from './NavItem'
 class Profile extends React.Component {
+    constructor(props){
+        super(props);
+
+    }
+
+    async componentDidMount() {
+        let test = await AsyncStorage.getItem('test')
+        console.log('test: ', test);
+    }
+
     edit = () => {
         this.props.navigation.navigate(ScreenName.EditProfile)
     }
@@ -27,6 +37,7 @@ class Profile extends React.Component {
             </View>
         </TouchableOpacity>
     }
+    
     render(){
         return (
             <View style={{flex: 1}}>

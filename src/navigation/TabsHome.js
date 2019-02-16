@@ -66,7 +66,7 @@ export default createBottomTabNavigator(
             break;
         }
         
-        return <Image  style={styles.icon} source={image} />
+        return <Image  style={[styles.icon, {width: 22}]} source={image} />
       },
       // tabBarLabel: () => {
       //   showLabel: false

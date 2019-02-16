@@ -29,7 +29,7 @@ class Signin extends React.Component {
                     <Text style={[styles.slogan, { color: '#F55555'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
 
                     <BaseInput 
-                        styleIcon={{width: 15}}
+                        styleIcon={{width: 11}}
                         icon={images.phoneDark}
                         onChangeText={username => this.setState({username})}
                         // keyboardType='numeric'
@@ -66,13 +66,13 @@ class Signin extends React.Component {
                     <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
                         <TouchableOpacity onPress={this._onFacebookLogin()}>
                             <Image 
-                                style={[styles.logo, {height: 60,marginTop: 15}]}
+                                style={[styles.logo, {height: 55,marginTop: 15}]}
                                 source={images.iconFb} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={this._onGoogleLogin()}>
                             <Image 
-                                style={[styles.logo, {height: 60,marginTop: 15}]}
+                                style={[styles.logo, {height: 55,marginTop: 15}]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>

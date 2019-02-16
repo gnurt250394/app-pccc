@@ -35,6 +35,7 @@ export default class ListItem extends React.Component {
                 horizontal={true}
                 data={this.state.data}
                 renderItem={this.renderItem}
+                style={this.props.style || {}}
                 keyExtractor={(item, index) => index.toString()}
             />
         )
