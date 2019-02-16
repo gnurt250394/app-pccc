@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "react-navigation";
-import {Image} from 'react-native'
+import {Image, View, Text} from 'react-native'
 import React from 'react'
 import images from "public/images"
 import { ScreenName } from "config"
@@ -9,10 +9,10 @@ import ProductDetail from 'components/Product'
 
 export default createBottomTabNavigator(
   {
-    [ScreenName.HomeScreen]: { 
+    [ScreenName.ProductDetail]: { 
       screen: ProductDetail,
       navigationOptions: () => ({
-        title: 'home',
+        title: 'Chi tiết sản phẩm',
       }),
     },
     [ScreenName.HomeScreen]: { 
@@ -33,22 +33,31 @@ export default createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        var image;
+        var image, label;
         switch (routeName){
           case ScreenName.HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
+            label = "Nhắn tin";
             break;
           case ScreenName.News:
             image = focused ? images.tabNewsRed : images.tabNews;
+            label = "Liên hệ";
             break;
           
         }
-        
-        return <Image  style={styles.icon} source={image} />
+        if(routeName == ScreenName.ProductDetail){
+          return null
+        }else{
+
+          return <View style={{flexDirection: 'row', backgroundColor: '#F55555'}}>
+                  <Image  style={styles.icon} source={image} />
+                  <Text style={{padding: 10}}>{label}</Text>
+                </View>
+        }
       },
-      // tabBarLabel: () => {
-      //   showLabel: false
-      // },
+      tabBarLabel: () => {
+        showLabel: false
+      },
       tabBarOptions: {
         activeTintColor: '#F55555',
         

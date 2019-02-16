@@ -12,7 +12,7 @@ import Profile from 'components/Profile'
 import EditProfile from 'components/Profile/EditProfile'
 import Cart from 'components/Cart'
 import Drawer from "./Drawer";
-
+import ProductDetail from 'components/Product'
 import TabsHome from './TabsHome'
 import TabsProduct from './TabsProduct'
 
@@ -36,7 +36,7 @@ const App = createStackNavigator(
     [ScreenName.Confirm]: Confirm,
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: Cart,
-    [ScreenName.ProductDetail]: TabsProduct,
+    [ScreenName.ProductDetail]: ProductDetail,
     
    
   },
