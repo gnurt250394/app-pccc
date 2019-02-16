@@ -8,13 +8,46 @@ import {  Input} from '../layout'
 import { ScreenName } from 'config'
 class InputItem extends React.Component {
     render() {
-      return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
+        return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
                 <Image 
                     style={style.icon}
                     source={this.props.icon} />
                 <Input 
                     onChangeText={this.props.onChangeText}
+                    keyboardType={this.props.keyboardType}
                     placeholder={this.props.placeholder}/>
+            </View>
+    };
+}
+class Gender extends React.Component {
+    state = {
+        gender: this.props.gender
+    }
+    componentWillReceiveProps(props){
+        this.setState({gender: props.gender})
+    }
+    render() {
+        return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
+                <Image 
+                    style={style.icon}
+                    source={images.pGender} />
+                <TouchableOpacity onPress={this.props.onSelectMale}>
+                    <View style={{ marginBottom: 5, flexDirection: 'row', alignItems: 'center'}}>
+                        
+                        <Image 
+                            style={style.icon}
+                            source={this.state.gender ? images.selected : images.unselect} />
+                        <Text style={{fontSize: 14, color: '#555555', paddingLeft: 10}}>Nam</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onSelectFemale}>
+                    <View style={{ marginBottom: 5, flexDirection: 'row', alignItems: 'center'}}>
+                        <Image 
+                            style={style.icon}
+                            source={this.state.gender ? images.unselect : images.selected} />
+                        <Text style={{fontSize: 14, color: '#555555', paddingLeft: 10}}>Nữ</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
     };
 }
@@ -25,7 +58,7 @@ class EditProfile extends React.Component {
         company: '',
         email: '',
         phone: '',
-        gender: '',
+        gender: true,
         address: '',
         thue: '',
     }
@@ -52,13 +85,16 @@ class EditProfile extends React.Component {
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
                         onChangeText={phone => this.setState({phone})}
+                        keyboardType='numeric'
                         placeholder="Số điện thoại"/>
                     <InputItem icon={images.pEmail} 
+                        keyboardType='email-address'
                         onChangeText={email => this.setState({email})}
                         placeholder="Email của bạn"/>
-                    <InputItem icon={images.pGender} 
-                        onChangeText={gender => this.setState({gender})}
-                        placeholder="Gioi tinh"/>
+                    <Gender 
+                        onSelectMale={() => this.setState({gender: true})}
+                        onSelectFemale={() => this.setState({gender: false})}
+                        gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
                         onChangeText={address => this.setState({address})}
                         placeholder="Địa chỉ"/>

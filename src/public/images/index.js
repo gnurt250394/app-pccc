@@ -61,4 +61,6 @@ module.exports = {
     pLocation: require('./pLocation.png'),
     pPhone: require('./pPhone.png'),
     pThue: require('./pThue.png'),
+    selected: require('./selected.png'),
+    unselect: require('./unselect.png'),
 }
