@@ -1,27 +1,15 @@
-import { createStackNavigator, createAppContainer, createBottomTabNavigator, createDrawerNavigator } from "react-navigation";
-import {Image, StyleSheet } from 'react-native'
+import { createBottomTabNavigator } from "react-navigation";
+import {Image} from 'react-native'
 import React from 'react'
 import images from "public/images"
 import { ScreenName } from "config"
-import Auth from 'components/Auth'
-import Register from 'components/Register'
-import Complete from 'components/Register/Complete'
-import Confirm from 'components/Register/Confirm'
-import Signin from 'components/Signin'
-import ForgotPassword from 'components/ForgotPassword'
-import Otp from 'components/ForgotPassword/Otp'
-import ChangePassword from 'components/ForgotPassword/ChangePassword'
-import ViewProfile from 'components/Profile/ViewProfile'
-import EditProfile from 'components/Profile/EditProfile'
 import Profile from 'components/Profile'
 import HomeScreen from 'components/Home'
 import Cart from 'components/Cart'
 import News from 'components/News'
 import Search from 'components/Search'
-import Drawer from "./components/ScreenDrawer/Drawer";
-import ProductDetail from 'components/Product'
 
-const TabMain = createBottomTabNavigator(
+export default createBottomTabNavigator(
   {
     [ScreenName.HomeScreen]: { 
       screen: HomeScreen,
@@ -58,8 +46,6 @@ const TabMain = createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        // console.log('tintColor: ', tintColor);
-        // tintColor = focused ? "#F55555" : "#555555";
         const { routeName } = navigation.state;
         var image;
         switch (routeName){
@@ -92,46 +78,3 @@ const TabMain = createBottomTabNavigator(
     }),
   }
 );
-
-const MyDrawerNavigator = createDrawerNavigator({
-  Tabs:TabMain
- },{
-   contentComponent:(props)=><Drawer {...props}/>
- });
- 
-const App = createStackNavigator(
-  {
-    [ScreenName.Auth]: Auth,
-    [ScreenName.Register]: Register,
-    [ScreenName.Signin]: Signin,
-    [ScreenName.ForgotPassword]: ForgotPassword,
-    [ScreenName.Otp]: Otp,
-    [ScreenName.ChangePassword]: ChangePassword,
-    [ScreenName.Complete]: Complete,
-    [ScreenName.ViewProfile]: ViewProfile,
-    [ScreenName.EditProfile]: EditProfile,
-    [ScreenName.Profile]: TabMain,
-    [ScreenName.Confirm]: Confirm,
-    [ScreenName.HomeScreen]: MyDrawerNavigator,
-    [ScreenName.Cart]: Cart,
-    [ScreenName.ProductDetail]: ProductDetail,
-    
-   
-  },
-  {
-    initialRouteName: ScreenName.HomeScreen,
-    headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
-    }
-  }
-);
-
-export default createAppContainer(App);
-
-const styles = StyleSheet.create({
-  icon: {
-    width: 18,
-    resizeMode: 'contain'
-  },
-})

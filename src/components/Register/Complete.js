@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Header, Input, Btn} from '../layout'
+import { Header, Input, Btn} from 'layout'
 import { ScreenName, toUpperCase } from 'config'
 
 class Complete extends React.Component {

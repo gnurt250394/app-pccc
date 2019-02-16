@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { BaseInput, Btn} from '../layout'
+import { BaseInput, Btn} from 'layout'
 import { ScreenName, toUpperCase, validateEmail, popupOk,  } from 'config'
 class Register extends React.Component {
     state = {

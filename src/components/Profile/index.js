@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Btn } from '../layout'
+import { Btn } from 'layout'
 import { ScreenName } from 'config'
 import NavItem from './NavItem'
 class Profile extends React.Component {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Btn, ViewMore } from '../layout'
+import { Btn } from 'layout'
 import { ScreenName, toPrice, toUpperCase, removeItem, calTotalPrice } from 'config'
 import { FlatList } from 'react-native-gesture-handler';
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { ViewMore } from '../layout'
+import { Slide, ViewMore } from 'layout'
 import { ScreenName, toPrice , toUpperCase} from 'config'
 import ListItem from './ListItem'
 let width = Dimensions.get('window').width
@@ -23,22 +23,22 @@ class ProductDetail extends React.Component {
             <View style={{flex: 1}}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <ScrollView>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
                             <Image 
                                 style={[styles.icon, {margin: 10, width: 10}]}
                                 source={images.back} />
                         </TouchableOpacity>
-
+                        <Text style={{fontSize: 20, color: '#333333', flex: 1, textAlign: 'center', fontWeight: 'bold',}}>Chi tiết sản phẩm</Text>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
-                            <View style={{flexDirection: 'row'}}>
+                            {/* <View style={{flexDirection: 'row'}}>
                                 <TouchableOpacity onPress={() =>  null} >
                                     <Image 
                                         style={[styles.icon, {margin: 10,}]}
                                         source={images.cartRed} />
                                 </TouchableOpacity>
                                 <Text style={styles.badge}>20</Text>
-                            </View>
+                            </View> */}
                             
 
                             <TouchableOpacity onPress={() =>  null} >
@@ -48,10 +48,7 @@ class ProductDetail extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <Image 
-                        style={{width: width, height: 150 }}
-                        source={images.slide} />
-
+                    <Slide />
                     <Text style={{color:'#1B1B1B', fontSize: 16, fontWeight: 'bold', paddingLeft: 10,paddingTop: 10}}>{this.state.name}</Text>
                     <View style={{justifyContent: 'space-around', flexDirection: 'row',  alignItems: 'center',  padding: 10, margin: 0}}>
                         <Text style={{color:'#FC6463', fontSize: 14,  flex: 1}}>{toPrice(this.state.price)}</Text>
@@ -100,25 +97,32 @@ class ProductDetail extends React.Component {
                 </ScrollView>
 
                 <View style={style.footer}>
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
-                        style={[style.btn]}>
-                        <Image 
-                            style={[styles.icon, {alignSelf: 'center'}]}
-                            source={images.cartRed} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
-                        style={style.btn}>
-                        <Image 
-                            style={[styles.icon, {alignSelf: 'center'}]}
-                            source={images.cartRed} />
-                    </TouchableOpacity>
-                    <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
-                        style={{backgroundColor: '#FB3C30', width: '50%',color: '#fff', fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', padding: 10 }}>{toUpperCase('Mua ngay')}</Text>
-                
+                    <View style={{}}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            style={style.btn}>
+                            <Image 
+                                style={[styles.icon, {alignSelf: 'center'}]}
+                                source={images.messenger} />
+                        </TouchableOpacity>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            style={{backgroundColor: '#FB3C30', width: '50%',color: '#fff', fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', padding: 10 }}>{toUpperCase('Mua ngay')}</Text>
+                    
+                    </View>
+                    <View style={{}}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            style={style.btn}>
+                            <Image 
+                                style={[styles.icon, {alignSelf: 'center'}]}
+                                source={images.phoneLight} />
+                        </TouchableOpacity>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            style={{backgroundColor: '#FB3C30', width: '50%',color: '#fff', fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', padding: 10 }}>{toUpperCase('Mua ngay')}</Text>
+                    
+                    </View>
                 </View>
             </View>
         )

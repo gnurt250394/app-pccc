@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Input, Btn, Header} from '../layout'
+import { Input, Btn, Header} from 'layout'
 import RNAccountKit from 'react-native-facebook-account-kit'
 
 class Confirm extends React.Component {

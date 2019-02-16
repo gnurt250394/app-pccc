@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,StatusBar,Image,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
-import {TextBold,NavItem} from '../layout';
+import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
+import {TextBold, DrawerItem} from 'layout';
 import images from "public/images"
 import { ScreenName } from 'config';
 export default class Drawer extends Component {
@@ -33,21 +33,21 @@ export default class Drawer extends Component {
                     
             </View>
         
-            <NavItem 
+            <DrawerItem 
                 onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
                 title='Cửa hàng' 
                 icon={images.mShop} />
-            <NavItem 
+            <DrawerItem 
                 title='Danh mục' 
                 icon={images.mCategory} 
                 showMore={true}/>
-            <NavItem 
+            <DrawerItem 
                 title='Liên hệ' 
                 icon={images.mContact} />
-            <NavItem 
+            <DrawerItem 
                 title='Giới thiệu' 
                 icon={images.mIntro} />
-            <NavItem 
+            <DrawerItem 
                 onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
                 title='Đăng xuất' 
                 icon={images.mSignout} />

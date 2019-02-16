@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import {  Input} from '../layout'
+import {  Input} from 'layout'
 import { ScreenName } from 'config'
 class InputItem extends React.Component {
     render() {

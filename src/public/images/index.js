@@ -63,4 +63,6 @@ module.exports = {
     pThue: require('./pThue.png'),
     selected: require('./selected.png'),
     unselect: require('./unselect.png'),
+    phoneLight: require('./phoneLight.png'),
+    messenger: require('./messenger.png'),
 }

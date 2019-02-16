@@ -5,12 +5,10 @@ export const UrlName = {
 }
 
 export const ScreenName = {
-    Auth: "Auth", 
     Signup: "Signup", 
     Signin: "Signin", 
     Register: "Register", 
     ForgotPassword: "ForgotPassword", 
-    Otp: "Otp",
     ChangePassword: "ChangePassword",
     Register: "Register",
     Complete: "Complete",

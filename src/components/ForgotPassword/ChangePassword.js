@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Header, BaseInput, Btn} from '../layout'
+import { Header, BaseInput, Btn} from 'layout'
 import { ScreenName, popupOk } from 'config'
 
 class ChangePassword extends React.Component {
     state = {
         password: '',
+        oldPassword: '',
         rePassword: '',
     }
     render(){
@@ -21,6 +22,11 @@ class ChangePassword extends React.Component {
                     <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                         <View></View>
                         <View>
+                            <BaseInput 
+                                icon={images.keyDark}
+                                onChangeText={val => this.setState({oldPassword: val})}
+                                secureTextEntry={true}
+                                placeholder="Mật khẩu hiện tại"  />
                             <BaseInput 
                                 icon={images.keyDark}
                                 onChangeText={val => this.setState({password: val})}
@@ -40,8 +46,10 @@ class ChangePassword extends React.Component {
     }
 
     _onSuccess = () => () => {
-        if(this.state.password.trim().length < 6){
-            popupOk('Mật khẩu từ 6 ký tự')
+        if(this.state.oldPassword.trim().length == 0 ){
+            popupOk('Mật khẩu hiện tại không đúng')
+        }else if(this.state.password.trim().length < 6){
+            popupOk('Mật khẩu mới phải từ 6 ký tự')
         }else if(this.state.password != this.state.rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
         }else{

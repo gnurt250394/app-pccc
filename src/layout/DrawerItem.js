@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity,Image, View, Text  } from 'react-native'
 import styles from "public/css" 
 import images from "public/images"
-export default class NavItem extends React.Component {
+export default class DrawerItem extends React.Component {
     render(){
         return <TouchableOpacity 
                     onPress={this.props.onPress || null}

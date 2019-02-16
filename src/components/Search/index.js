@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
-import { Footer, ViewMore } from '../layout'
+import { Footer, ViewMore } from 'layout'
 import { ScreenName } from 'config'
 
 class More extends React.Component {

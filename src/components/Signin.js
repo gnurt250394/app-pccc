@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail } from 'config'
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
-import { Btn, BaseInput } from './layout'
+import { Btn, BaseInput } from 'layout'
 import firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import RNAccountKit from 'react-native-facebook-account-kit'
@@ -171,7 +171,7 @@ class Signin extends React.Component {
        RNAccountKit.loginWithPhone()
         .then((token) => {
             if(token && token.code){
-                this.props.navigation.navigate(ScreenName.ChangePassword)
+                this.props.navigation.navigate(ScreenName.ForgotPassword)
             }
         })
     }
