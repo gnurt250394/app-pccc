@@ -2,7 +2,16 @@ import React from 'react'
 import { TextInput, View, Image, StyleSheet } from 'react-native'
 import styles from "public/css" 
 import images from "public/images"
-export default class BaseInput extends React.Component {
+
+export default class BaseInput extends React.PureComponent {
+
+    static defaultProps = {
+        value: ''
+    }
+
+    state = {
+        value: this.props.value
+    }
     render(){
         return (
             <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 2,}}>
@@ -14,14 +23,20 @@ export default class BaseInput extends React.Component {
                     placeholderTextColor={this.props.placeholderTextColor || "#95989A"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
-                    onChangeText={this.props.onChangeText}
+                    onChangeText={this.onChangeText}
                     editable={this.props.editable}
-                    value={this.props.value}
+                    value={this.state.value}
                     maxLength={this.props.maxLength}
                     style={this.props.style || [style.input, this.props.customStyle || {}]} />
             </View>
         )
     }
+
+    onChangeText = text => {
+        this.setState({value: text})
+    }
+
+    getValue = () => this.state.value
 }
 
 const style = StyleSheet.create({

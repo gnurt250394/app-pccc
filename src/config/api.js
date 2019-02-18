@@ -1,21 +1,20 @@
 import axios from 'axios'
 import { UrlName } from '.'
 import constant from './constant';
+let instance = axios.create({
+    baseURL:constant.BASEURL,
+    timeout: constant.SERVER_TIMEOUT,
+    // headers:{
+    //     'Content-Type': 'multipart/form-data'
+    // }
+});
 
-export const signup = async (token, body) => {
-    console.log('body: ', body);
-    return axios({
-        method: 'post',
-        url: `${UrlName.base}${UrlName.signup}`,
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        data: body
-    }).then(res => {
-        return res.data
-    }).catch(err => {
-        return false
-    })
+export const signup = body => {
+    return instance.post(constant.USER, body)
+}
+
+export const login = body => {
+    return instance.post(constant.LOGIN, body)
 }
 export const getWithToken= async (url)=>{
     let instance = axios.create({

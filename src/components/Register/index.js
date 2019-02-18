@@ -5,7 +5,8 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { BaseInput, Btn} from 'layout'
-import { ScreenName, toUpperCase, validateEmail, popupOk, validateName } from 'config'
+import { ScreenName, toUpperCase, validateEmail, popupOk, validateName, StatusCode } from 'config'
+import  { accountKit } from 'config/accountKit'
 class Register extends React.Component {
     state = {
         name: "",
@@ -65,7 +66,7 @@ class Register extends React.Component {
         )
     }
     
-    _onSuccess = () => () => {
+    _onSuccess = () => async () => {
         if(this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
@@ -79,7 +80,34 @@ class Register extends React.Component {
         }else if(this.state.password != this.state.rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
         }else {
-            // call api
+           
+            // // call api
+           let RNAccountKit = accountKit(this.state.phone);
+            RNAccountKit.loginWithPhone()
+            .then((token) => {
+                if(token && token.code){
+                        signup({
+                            name: this.state.name,
+                            phone: this.state.phone,
+                            email: this.state.email,
+                            password: this.state.password.replace(/\+84/, "0"),
+                        }).then(res => {
+                        if(res.data.code == StatusCode.Success){
+                            this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token})
+                            this.props.navigation.navigate(ScreenName.HomeScreen)
+                        }else{
+                            popupOk(res.data.message)
+                        }
+                        
+                    }).catch(err => {
+                        console.log('err: ', err.message);
+                        popupOk("Đăng ký thất bại")
+                    })
+                    this.props.navigation.navigate(ScreenName.ForgotPassword)
+                }else {
+                    popupOk('Đăng ký thất bại')
+                }
+            })
         }
     }
 }

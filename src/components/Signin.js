@@ -3,12 +3,15 @@ import { View, Text, Image, TouchableOpacity, ScrollView, AsyncStorage, StatusBa
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail } from 'config'
+import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail, StatusCode } from 'config'
+import { login } from 'config/api'
+
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'layout'
 import firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
-import RNAccountKit from 'react-native-facebook-account-kit'
+import  { accountKit } from 'config/accountKit'
+
 
 class Signin extends React.Component {
     state = {
@@ -31,13 +34,12 @@ class Signin extends React.Component {
                     <BaseInput 
                         styleIcon={{width: 11}}
                         icon={images.phoneDark}
-                        onChangeText={username => this.setState({username})}
-                        // keyboardType='numeric'
+                        ref={val => this.username = val}
                         placeholder="Email/Số điện thoại" />
 
                     <BaseInput 
                         icon={images.keyDark}
-                        onChangeText={val => this.setState({password: val})}
+                        ref={val => this.password = val}
                         secureTextEntry={true}
                         placeholder="Mật khẩu"  />
                     
@@ -150,31 +152,43 @@ class Signin extends React.Component {
         }
     }
 
-    _signin = () => ()  => {
-        if(!validateEmail(this.state.username) && !validatePhone(this.state.username) ){
+    _signin = () => async ()  => {
+        let username = this.username.getValue();
+        let password = this.password.getValue();
+        
+        if(!validateEmail(username) && !validatePhone(username) ){
             popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại")
-        }else if(this.state.password.trim() == ""){
+        }else if(password.trim() == ""){
             popupOk("Mật khẩu không được để trống")
         }else {
-            this.props.navigation.navigate(ScreenName.HomeScreen)
+            login({
+                username: username,
+                password: password
+            }).then(res => {
+                if(res.data.code == StatusCode.Success){
+                    this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token})
+                    this.props.navigation.navigate(ScreenName.HomeScreen)
+                }else{
+                    popupOk(res.data.message)
+                }
+            }).catch(err => {
+                console.log('err: ', err.message);
+                popupOk("Đăng nhập thất bại")
+            })
+            
         }
     }
 
     _onForgotPassword = () => () => {
-        RNAccountKit.configure({
-            responseType: 'code',
-            // titleType: 'login',
-            initialAuthState: '',
-            initialPhoneCountryPrefix: '+84', 
-            defaultCountry: 'VN',
-        })
-       RNAccountKit.loginWithPhone()
-        .then((token) => {
-            if(token && token.code){
-                this.props.navigation.navigate(ScreenName.ForgotPassword)
-            }
-        })
+        let RNAccountKit = accountKit()
+        RNAccountKit.loginWithPhone()
+            .then((token) => {
+                if(token && token.code){
+                    this.props.navigation.navigate(ScreenName.ForgotPassword)
+                }
+            })
     }
 }
+
 export default connect()(Signin)
 

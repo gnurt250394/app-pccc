@@ -1,10 +1,11 @@
-const { createStore } = require('redux')
-const reducer = (state = { test: "ok" }, action) => {
+export default function users(state = {}, action) {
+    console.log('action: ', action);
     switch(action.type){
         case 'LOGIN':
             state = {
                 ...state,
-                user: action.user
+                data: action.data,
+                token: action.token
             }
             break
         default :
@@ -12,9 +13,5 @@ const reducer = (state = { test: "ok" }, action) => {
             state = { ...state }
             break
     }
-    state
+    return state
 }
-const store = createStore(reducer)
-
-export default store;
-

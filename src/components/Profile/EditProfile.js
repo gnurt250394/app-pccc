@@ -5,7 +5,7 @@ import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import {  Input} from 'layout'
-import { ScreenName } from 'config'
+import { ScreenName, validateName, popupOk, validateEmail } from 'config'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -26,10 +26,6 @@ class Gender extends React.Component {
         gender: this.props.gender
     }
 
-    componentWillReceiveProps(props){
-        this.setState({gender: props.gender})
-    }
-
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
                 <Image 
@@ -39,7 +35,7 @@ class Gender extends React.Component {
                     <View style={style.row}>
                         
                         <Image 
-                            style={style.icon}
+                            style={[style.icon, {width: 19}]}
                             source={this.state.gender ? images.selected : images.unselect} />
                         <Text style={style.gender}>Nam</Text>
                     </View>
@@ -47,13 +43,17 @@ class Gender extends React.Component {
                 <TouchableOpacity onPress={this.props.onSelectFemale}>
                     <View style={style.row}>
                         <Image 
-                            style={style.icon}
+                            style={[style.icon, {width: 19}]}
                             source={this.state.gender ? images.unselect : images.selected} />
                         <Text style={style.gender}>Nữ</Text>
                     </View>
                 </TouchableOpacity>
             </View>
     };
+
+    componentWillReceiveProps(props){
+        this.setState({gender: props.gender})
+    }
 }
 
 class EditProfile extends React.Component {
@@ -122,8 +122,16 @@ class EditProfile extends React.Component {
     }
 
     _onSuccess = () => () => {
-        console.log(this.state);
-        this.props.navigation.goBack()
+        if(this.state.name.trim().length < 2){
+            popupOk('Họ và tên phải từ 2 ký tự')
+        } else if(!validateName(this.state.name)){
+            popupOk('Họ và tên không được dùng ký tự đặc biệt')
+        }else if(this.state.email.trim() != "" && !validateEmail(this.state.email)){
+            popupOk('Email không đúng')
+        } else {
+            // call api -> go back
+            this.props.navigation.goBack()
+        }
     }
 }
 export default connect()(EditProfile)

@@ -4,6 +4,10 @@ export const UrlName = {
     signup: 'signup'
 }
 
+export const StatusCode = {
+    Success: 200,
+}
+
 export const ScreenName = {
     Signup: "Signup", 
     Signin: "Signin", 
