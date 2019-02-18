@@ -48,7 +48,7 @@ class Drawer extends Component {
                             style={styles.image} />
                         <TextBold style={styles.txt}
                             value={this.props.user && this.props.user.name ? this.props.user.name : "Khách" } />
-                        {   this.props.user 
+                        {   this.props.user && this.props.user.name 
                             ? <Text style={{padding: 10, textAlign: 'center', color: '#fff', fontSize: 14, fontWeight:'300'}}>(Thành viên thường)</Text>
                             : <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
@@ -90,9 +90,12 @@ class Drawer extends Component {
                 <DrawerItem 
                     title='Giới thiệu' 
                     icon={images.mIntro} />
-                {   this.props.user 
+                {   this.props.user && this.props.user.name 
                     ?  <DrawerItem 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
+                        onPress={() => {
+                            this.props.dispatch({type: 'LOGOUT'})
+                            this.props.navigation.navigate(ScreenName.Signin)}
+                        }
                         title='Đăng xuất' 
                         icon={images.mSignout} /> : null}
 
