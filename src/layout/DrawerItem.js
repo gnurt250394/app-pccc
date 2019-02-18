@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity,Image, View, Text  } from 'react-native'
 import styles from "public/css" 
 import images from "public/images"
+import { toUpperCase } from 'config'
 export default class DrawerItem extends React.Component {
     render(){
         return <TouchableOpacity 
@@ -11,7 +12,7 @@ export default class DrawerItem extends React.Component {
                         style={[style.icon, {marginRight: 5}]}
                         source={this.props.icon} />
                     <View style={{  flex: 1, flexDirection: 'row', alignItems: 'center',}}>
-                        <Text style={style.txt}>{this.props.title}</Text>
+                        <Text style={style.txt}>{toUpperCase(this.props.title)}</Text>
                         {this.props.showMore ? <Image  style={[style.icon, {width: 15, marginRight: 10}]} source={images.mAdd}  /> : null}
                     </View>
                 </TouchableOpacity>

@@ -37,6 +37,7 @@ module.exports = {
     iconGoogle: require('./iconGoogle.png'),
     iconFb: require('./iconFb.png'),
     mAdd: require('./mAdd.png'),
+    mSub: require('./mSub.png'),
     mCategory: require('./mCategory.png'),
     mContact: require('./mContact.png'),
     mIntro: require('./mIntro.png'),

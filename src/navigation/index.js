@@ -38,7 +38,7 @@ const App = createStackNavigator(
     [ScreenName.EditProfile]: EditProfile,
     [ScreenName.Profile]: Profile,
     [ScreenName.Confirm]: Confirm,
-    [ScreenName.HomeScreen]: MyDrawerNavigator,
+    [ScreenName.HomeScreen]: Drawer,
     [ScreenName.Cart]: Cart,
     [ScreenName.ProductDetail]: ProductDetail,
     
