@@ -65,4 +65,8 @@ module.exports = {
     unselect: require('./unselect.png'),
     phoneLight: require('./phoneLight.png'),
     messenger: require('./messenger.png'),
+    splash: require('./Splash.png'),
+    splashSearch: require('./SplashSearch.png'),
+    splashBuy: require('./SplashBuy.png'),
+    splashInfo: require('./splashInfo.png')
 }
