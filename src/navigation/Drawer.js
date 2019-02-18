@@ -3,12 +3,8 @@ import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback }
 import {TextBold, DrawerItem} from 'layout';
 import images from "public/images"
 import { ScreenName } from 'config';
-export default class Drawer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+import { connect } from 'react-redux'
+class Drawer extends Component {
 
   render() {
     return (
@@ -21,15 +17,17 @@ export default class Drawer extends Component {
                         source={images.userLight}
                         style={styles.image} />
                     <TextBold style={styles.txt}
-                        value={"Khách"} />
-                    <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
-                           <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng nhập/</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
-                            <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng ký</Text>
-                        </TouchableOpacity>
-                    </View>
+                        value={this.props.token ? this.props.user.name : "Khách" } />
+                    {   this.props.token 
+                        ? <Text style={{padding: 10, textAlign: 'center', color: '#fff', fontSize: 14, fontWeight:'300'}}>(Thành viên thường)</Text>
+                        : <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
+                            <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng nhập/</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
+                                <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng ký</Text>
+                            </TouchableOpacity>
+                        </View>}
                     
             </View>
         
@@ -47,20 +45,28 @@ export default class Drawer extends Component {
             <DrawerItem 
                 title='Giới thiệu' 
                 icon={images.mIntro} />
-            <DrawerItem 
-                onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
-                title='Đăng xuất' 
-                icon={images.mSignout} />
+            {   this.props.token 
+                ?  <DrawerItem 
+                    onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
+                    title='Đăng xuất' 
+                    icon={images.mSignout} /> : null}
 
         </View>
         </TouchableWithoutFeedback>
     );
   }
 
-  _renderItem = () => {
-
-  }
 }
+
+const mapStateToProps = (state) =>{
+    console.log('state: ', state);
+    return {
+        user: state.users.data,
+        token: state.users.token,
+    }
+}
+
+export default connect(mapStateToProps)(Drawer)
 
 const styles = StyleSheet.create({
     container:{
