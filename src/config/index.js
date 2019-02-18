@@ -8,6 +8,13 @@ export const StatusCode = {
     Success: 200,
 }
 
+export const CodeToMessage = {
+    404: "Sai tài khoản hoặc mật khẩu",
+    427: "Số điện thoại đã được sử dụng",
+    439: "Số điện thoại đã được sử dụng",
+    500: "Server Error",
+}
+
 export const ScreenName = {
     Signup: "Signup", 
     Signin: "Signin", 
@@ -62,6 +69,6 @@ export const popupOk = msg =>{
 }
 
 export const validateName = str => {
-    var re =  /^[ A-Za-z0-9]+$/;
+    var re =  /^[ A-Za-z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/;
     return re.test(str);
 }
