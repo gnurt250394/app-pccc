@@ -63,7 +63,7 @@ export default styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 10,
         marginBottom: 10,
-        color: '#333333',
+        color: '#555555',
         paddingLeft: 10,
         fontSize: 14,
         backgroundColor: 'white',
