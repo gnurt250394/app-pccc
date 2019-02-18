@@ -21,6 +21,8 @@ export const ScreenName = {
     Cart: "Cart",
     Search: "Search",
     ProductDetail: "ProductDetail",
+    SplashScreen:"SplashScreen",
+    ScreenHello:"ScreenHello"
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

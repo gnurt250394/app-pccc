@@ -33,6 +33,7 @@ export default class ListItem extends React.Component {
         return (
             <FlatList
                 horizontal={true}
+                showsHorizontalScrollIndicator={false}
                 data={this.state.data}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => index.toString()}

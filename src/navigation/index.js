@@ -15,6 +15,8 @@ import Drawer from "./Drawer";
 
 import TabsHome from './TabsHome'
 import TabsProduct from './TabsProduct'
+import SplashScreen from "../components/SplashScreen/SplashScreen";
+import ScreenHello from "../components/SplashScreen/ScreenHello";
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -25,6 +27,8 @@ const MyDrawerNavigator = createDrawerNavigator({
  
 const App = createStackNavigator(
   {
+    [ScreenName.SplashScreen]:SplashScreen,
+    [ScreenName.ScreenHello]:ScreenHello,
     [ScreenName.Register]: Register,
     [ScreenName.Signin]: Signin,
     [ScreenName.ForgotPassword]: ForgotPassword,
