@@ -55,7 +55,7 @@ class Signin extends React.Component {
 
                     
                     <Text 
-                        onPress={this._onForgotPassword()}
+                        onPress={this._onForgotPassword}
                         style={[styles.forgot, {width: '50%', alignSelf: 'center'}]}>Quên mật khẩu</Text>
                     <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
                         <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
@@ -66,13 +66,13 @@ class Signin extends React.Component {
                     
 
                     <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
-                        <TouchableOpacity onPress={this._onFacebookLogin()}>
+                        <TouchableOpacity onPress={this._onFacebookLogin}>
                             <Image 
                                 style={[styles.logo, {height: 55,marginTop: 15}]}
                                 source={images.iconFb} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={this._onGoogleLogin()}>
+                        <TouchableOpacity onPress={this._onGoogleLogin}>
                             <Image 
                                 style={[styles.logo, {height: 55,marginTop: 15}]}
                                 source={images.iconGoogle} />
@@ -85,28 +85,10 @@ class Signin extends React.Component {
         )
     }
 
-    _onLoginSocial = () => () => {
-        LoginManager.logInWithReadPermissions(["public_profile"]).then(
-            function(result) {
-              if (result.isCancelled) {
-                console.log("Login cancelled");
-              } else {
-                console.log(
-                  "Login success with permissions: " +
-                    result.grantedPermissions.toString()
-                );
-              }
-            },
-            function(error) {
-              console.log("Login fail with error: " + error);
-            }
-          );
-    }
 
-    _onFacebookLogin = () => async () => {
+    _onFacebookLogin = async () => {
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-      
           if (result.isCancelled) {
             // handle this however suites the flow of your app
             throw new Error('User cancelled request'); 
@@ -128,13 +110,13 @@ class Signin extends React.Component {
           // login with credential
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
       
-          console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
+          console.log(JSON.stringify(firebaseUserCredential.user.toJSON()))
         } catch (e) {
-          console.error(e);
+            console.log('e: ', e);
         }
     }
 
-    _onGoogleLogin = () => async () => {
+    _onGoogleLogin =  async () => {
         try {
             // add any configuration settings here:
             await GoogleSignin.configure();
@@ -146,7 +128,7 @@ class Signin extends React.Component {
             // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
         
-            console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+            console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
           } catch (e) {
             console.error(e);
         }
@@ -179,7 +161,7 @@ class Signin extends React.Component {
         }
     }
 
-    _onForgotPassword = () => () => {
+    _onForgotPassword = () => {
         let RNAccountKit = accountKit()
         RNAccountKit.loginWithPhone()
             .then((token) => {

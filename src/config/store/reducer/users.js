@@ -8,6 +8,13 @@ export default function users(state = {}, action) {
                 token: action.token
             }
             break
+        case 'LOGOUT':
+            state = {
+                ...state,
+                data: null,
+                token: null
+            }
+            break
         default :
             // something here
             state = { ...state }

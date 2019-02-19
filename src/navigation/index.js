@@ -9,6 +9,7 @@ import ForgotPassword from 'components/ForgotPassword'
 import ChangePassword from 'components/ForgotPassword/ChangePassword'
 import ViewProfile from 'components/Profile/ViewProfile'
 import Profile from 'components/Profile'
+import CheckAuth from 'components/Profile/CheckAuth'
 import EditProfile from 'components/Profile/EditProfile'
 import Cart from 'components/Cart'
 import Drawer from "./Drawer";
@@ -43,8 +44,7 @@ const App = createStackNavigator(
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: Cart,
     [ScreenName.ProductDetail]: ProductDetail,
-    [ScreenName.Contacts]: Contacts,
-    [ScreenName.Introduce]: Introduce,
+    [ScreenName.CheckAuth]: CheckAuth,
     
    
   },
