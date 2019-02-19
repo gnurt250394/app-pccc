@@ -1,25 +1,26 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import styles from "public/css" 
-import { signup } from 'config/api'
 import { ScreenName } from 'config'
 class ListItem extends React.Component {
     render() {
-      return <View style={{ marginBottom: 10, flexDirection: 'row'}}>
+      return this.props.name ? <View style={{ marginBottom: 10, flexDirection: 'row'}}>
                 <Image 
                     style={style.icon}
                     source={this.props.icon} />
                 <Text style={style.label}>{this.props.name}</Text>
-            </View>
+            </View> : null
     };
 }
 class ViewProfile extends React.Component {
-    edit = () => {
-        this.props.navigation.navigate(ScreenName.EditProfile)
+    constructor(props){
+        super(props);
+        this.state = {
+            user: this.props.user ? this.props.user : {}
+        }
     }
-
+  
     render(){
         return (
             <View >
@@ -30,7 +31,7 @@ class ViewProfile extends React.Component {
                             style={{width: 10, resizeMode: 'contain' }}
                             source={images.backLight} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10}} onPress={this.edit}>
+                    <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.navigate(ScreenName.EditProfile)}>
                         <Image 
                             style={{width: 20, resizeMode: 'contain' }}
                             source={images.edit} />
@@ -40,21 +41,28 @@ class ViewProfile extends React.Component {
                     <Image 
                         style={{resizeMode: 'contain', height: 80, alignSelf: 'center' }}
                         source={images.userLight} />
-                    <Text style={style.title}>Nguyễn Văn Nam</Text>
+                    <Text style={style.title}>{this.props.user ? this.props.user.name : ""}</Text>
                 </View>
                 <View style={{ marginTop: 30}}>
-                    <ListItem icon={images.pPhone} name="0978789177" />
-                    <ListItem icon={images.pEmail} name="hoanglv@vinsofts.net" />
-                    <ListItem icon={images.pGender} name="Nam" />
-                    <ListItem icon={images.pLocation} name="So 8 Phan Van Truong" />
-                    <ListItem icon={images.pCompany} name="Cong ty vinsofts" />
-                    <ListItem icon={images.pThue} name="GP500-MST" />
+                    <ListItem icon={images.pPhone} name={this.state.user.phone} />
+                    <ListItem icon={images.pEmail} name={this.state.user.email} />
+                    <ListItem icon={images.pGender} name={this.state.user.gender} />
+                    <ListItem icon={images.pLocation} name={this.state.user.address} />
+                    <ListItem icon={images.pCompany} name={this.state.user.company} />
+                    <ListItem icon={images.pThue} name={this.state.user.tax_code} />
                 </View>
             </View>
         )
     }
 }
-export default connect()(ViewProfile)
+const mapStateToProps = (state) =>{
+    return {
+        user: state.users && state.users.data ? state.users.data : null,
+        token: state.users && state.users.token ? state.users.token : null,
+    }
+}
+
+export default connect(mapStateToProps)(ViewProfile)
 
 const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
