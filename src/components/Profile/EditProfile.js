@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import styles from "public/css" 
 import { signup } from 'config/api'
 import {  Input} from 'layout'
 import { ScreenName, validateName, popupOk, validateEmail } from 'config'
@@ -57,15 +56,22 @@ class Gender extends React.Component {
 }
 
 class EditProfile extends React.Component {
-    state = {
-        name: '',
-        company: '',
-        email: '',
-        phone: '0978789177',
-        gender: true,
-        address: '',
-        tax_code: '',
+
+    constructor(props){
+        super(props);
+        let user = this.props.user || {}
+        this.state = {
+            name: user.name ? user.name : "",
+            company: user.company ? user.company : "",
+            email: user.email ? user.email : "",
+            phone: user.phone ? user.phone.toString() : "",
+            address: user.address ? user.address : "",
+            tax_code: user.tax_code ? user.tax_code : "",
+            gender: user.gender != null ? user.gender : false,
+           
+        }
     }
+
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
@@ -91,7 +97,6 @@ class EditProfile extends React.Component {
                     <InputItem icon={images.pPhone} 
                         onChangeText={phone => this.setState({phone})}
                         value={this.state.phone}
-                        keyboardType='numeric'
                         editable={false}
                         placeholder="Số điện thoại"/>
                     <InputItem icon={images.pEmail} 
@@ -134,7 +139,14 @@ class EditProfile extends React.Component {
         }
     }
 }
-export default connect()(EditProfile)
+const mapStateToProps = (state) =>{
+    return {
+        user: state.users && state.users.data ? state.users.data : null,
+        token: state.users && state.users.token ? state.users.token : null,
+    }
+}
+
+export default connect(mapStateToProps)(EditProfile)
 
 const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 5,},

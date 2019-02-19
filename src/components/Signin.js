@@ -98,7 +98,7 @@ class Signin extends React.Component {
       
           // get the access token
           const data = await AccessToken.getCurrentAccessToken();
-      
+          
           if (!data) {
             // handle this however suites the flow of your app
             throw new Error('Something went wrong obtaining the users access token');
@@ -106,6 +106,7 @@ class Signin extends React.Component {
       
           // create a new firebase credential with the token
           const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+          console.log('data.accessToken: ', data.accessToken);
       
           // login with credential
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);

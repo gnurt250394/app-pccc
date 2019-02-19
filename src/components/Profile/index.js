@@ -3,7 +3,8 @@ import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView 
 import { connect } from 'react-redux'
 import images from "public/images"
 import { Btn } from 'layout'
-import { ScreenName, toUpperCase } from 'config'
+import { ScreenName } from 'config'
+import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
 
 class Profile extends React.Component {
@@ -14,7 +15,11 @@ class Profile extends React.Component {
 
     componentDidMount() {
         if(!this.props.user){
-            this.props.navigation.navigate(ScreenName.CheckAuth)
+            const resetAction = StackActions.reset({
+                index:0,
+                actions: [NavigationActions.navigate({routeName: ScreenName.CheckAuth})]
+            })
+            this.props.navigation.dispatch(resetAction)
         }
     }
 
@@ -47,7 +52,7 @@ class Profile extends React.Component {
                         <Image 
                             style={{width: 80, resizeMode: 'contain', alignSelf: 'center' }}
                             source={images.userLight} />
-                        <Text style={style.title}>Nguyễn Văn Nam</Text>
+                        <Text style={style.title}>{this.props.user ? this.props.user.name : ""}</Text>
                     </View>
                     <View style={{ marginTop: 20}}>
 
