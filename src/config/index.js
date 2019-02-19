@@ -26,7 +26,9 @@ export const ScreenName = {
     Search: "Search",
     ProductDetail: "ProductDetail",
     SplashScreen:"SplashScreen",
-    ScreenHello:"ScreenHello"
+    ScreenHello:"ScreenHello",
+    Contacts:"Contacts",
+    Introduce:"Introduce"
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

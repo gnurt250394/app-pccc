@@ -3,6 +3,7 @@ import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback }
 import {TextBold, DrawerItem} from 'layout';
 import images from "public/images"
 import { ScreenName } from 'config';
+import navigation from '../navigation/NavigationService'
 import { connect } from 'react-redux'
 class Drawer extends Component {
 
@@ -41,13 +42,15 @@ class Drawer extends Component {
                 showMore={true}/>
             <DrawerItem 
                 title='Liên hệ' 
+                onPress={()=> navigation.navigate(ScreenName.Contacts)}
                 icon={images.mContact} />
             <DrawerItem 
-                title='Giới thiệu' 
+                title='Giới thiệu'
+                onPress={()=>{navigation.navigate(ScreenName.Introduce)}} 
                 icon={images.mIntro} />
             {   this.props.token 
                 ?  <DrawerItem 
-                    onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
+                    onPress={() => navigation.reset(ScreenName.Signin)}
                     title='Đăng xuất' 
                     icon={images.mSignout} /> : null}
 

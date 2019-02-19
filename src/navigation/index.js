@@ -17,6 +17,8 @@ import TabsHome from './TabsHome'
 import TabsProduct from './TabsProduct'
 import SplashScreen from "../components/SplashScreen/SplashScreen";
 import ScreenHello from "../components/SplashScreen/ScreenHello";
+import Contacts from "../components/Product/contact";
+import Introduce from "../components/Introduce/Introduce";
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -41,11 +43,13 @@ const App = createStackNavigator(
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.Cart]: Cart,
     [ScreenName.ProductDetail]: ProductDetail,
+    [ScreenName.Contacts]: Contacts,
+    [ScreenName.Introduce]: Introduce,
     
    
   },
   {
-    initialRouteName: ScreenName.HomeScreen,
+    initialRouteName: ScreenName.SplashScreen,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

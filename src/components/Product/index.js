@@ -98,13 +98,13 @@ class ProductDetail extends React.Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            onPress={() => this.props.navigation.navigate(ScreenName.Contacts)}
                             style={[style.tabBtn, { backgroundColor: '#F55555'}]}>
                         <Image 
                             style={[styles.icon, {alignSelf: 'center', width: 12}]}
                             source={images.phoneLight} />
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
+                            // onPress={() => this.props.navigation.navigate(ScreenName.Contacts)}
                             style={[style.tabLabel, {color: '#fff'}]}>{toUpperCase('Liên hệ')}</Text>
                     </TouchableOpacity>
                 </View>
