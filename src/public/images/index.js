@@ -69,5 +69,10 @@ module.exports = {
     splash: require('./Splash.png'),
     splashSearch: require('./SplashSearch.png'),
     splashBuy: require('./SplashBuy.png'),
-    splashInfo: require('./splashInfo.png')
+    splashInfo: require('./splashInfo.png'),
+    contactEarth: require('./contactEarth.png'),
+    contactLocation: require('./contactLocation.png'),
+    contactLocation1: require('./contactLocation1.png'),
+    contactPhone: require('./contactPhone.png'),
+    contactSMS: require('./contactSMS.png')
 }
