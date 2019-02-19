@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import {TextBold} from 'layout';
 import images from "public/images"
+import navigation from '../navigation/NavigationService'
 import { ScreenName, toUpperCase } from 'config';
 import { connect } from 'react-redux'
 class DrawerItem extends React.Component {
@@ -86,9 +87,11 @@ class Drawer extends Component {
                 </View> : null}
                 <DrawerItem 
                     title='Liên hệ' 
+                    onPress={()=>navigation.navigate(ScreenName.Contacts)}
                     icon={images.mContact} />
                 <DrawerItem 
                     title='Giới thiệu' 
+                    onPress={()=> navigation.navigate(ScreenName.Introduce)}
                     icon={images.mIntro} />
                 {   this.props.user && this.props.user.name 
                     ?  <DrawerItem 
