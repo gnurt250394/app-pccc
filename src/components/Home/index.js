@@ -3,10 +3,10 @@ import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView,
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { signup } from 'config/api'
 import { Slide, ViewMore } from 'layout'
 import { ScreenName } from 'config'
 import ListItem from './ListItem'
+import { DrawerActions } from 'react-navigation-drawer';
 
 class HomeScreen extends React.Component {
    
@@ -17,7 +17,7 @@ class HomeScreen extends React.Component {
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.openDrawer()} >
+                        <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.dispatch(DrawerActions.toggleDrawer())} >
                             <Image 
                                 style={[styles.icon, { height: 18}]}
                                 source={images.menu} />

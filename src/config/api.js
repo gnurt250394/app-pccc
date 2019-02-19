@@ -3,10 +3,7 @@ import { UrlName } from '.'
 import constant from './constant';
 let instance = axios.create({
     baseURL:constant.BASEURL,
-    timeout: constant.SERVER_TIMEOUT,
-    // headers:{
-    //     'Content-Type': 'multipart/form-data'
-    // }
+    timeout: constant.SERVER_TIMEOUT
 });
 
 export const signup = body => {
@@ -16,6 +13,12 @@ export const signup = body => {
 export const login = body => {
     return instance.post(constant.LOGIN, body)
 }
+
+export const updateUser = (token, body) => {
+    instance.defaults.headers.common['Authorization'] = token;
+    return instance.put(constant.USER, body)
+}
+
 export const getWithToken= async (url)=>{
     let instance = axios.create({
         baseURL: constant.BASEURL,

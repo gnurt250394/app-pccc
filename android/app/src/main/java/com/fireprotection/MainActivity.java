@@ -1,9 +1,9 @@
 package com.fireprotection;
+import android.content.Intent;
+
 // import com.facebook.react.ReactActivityDelegate;
 // import com.facebook.react.ReactRootView;
 // import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-
-import android.content.Intent;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;

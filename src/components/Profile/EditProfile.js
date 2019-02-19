@@ -2,9 +2,9 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import { signup } from 'config/api'
+import { updateUser } from 'config/api'
 import {  Input} from 'layout'
-import { ScreenName, validateName, popupOk, validateEmail } from 'config'
+import { validateName, popupOk, validateEmail, StatusCode } from 'config'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -60,6 +60,7 @@ class EditProfile extends React.Component {
     constructor(props){
         super(props);
         let user = this.props.user || {}
+        this.user = {...user} // check old email
         this.state = {
             name: user.name ? user.name : "",
             company: user.company ? user.company : "",
@@ -95,7 +96,6 @@ class EditProfile extends React.Component {
                         onChangeText={name => this.setState({name})}
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
-                        onChangeText={phone => this.setState({phone})}
                         value={this.state.phone}
                         editable={false}
                         placeholder="Số điện thoại"/>
@@ -135,7 +135,27 @@ class EditProfile extends React.Component {
             popupOk('Email không đúng')
         } else {
             // call api -> go back
-            this.props.navigation.goBack()
+            updateUser(this.props.token, {
+                name: this.state.name,
+                email: this.state.email,
+                gender: this.state.gender,
+                company: this.state.company,
+                address: this.state.address,
+                tax_code: this.state.tax_code,
+            }).then(res => {
+                console.log('res: ', res);
+                if(res.data.code == StatusCode.Success){
+                    this.props.dispatch({type: 'LOGIN', data: res.data.data})
+                    // this.props.navigation.navigate(ScreenName.HomeScreen)
+                    this.props.navigation.goBack()
+                }else{
+                    popupOk(res.data.message)
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Cập nhật thông tin không thành công')
+            })
+            
         }
     }
 }
