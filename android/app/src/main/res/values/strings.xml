@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Siêu thị phòng cháy</string>
     
-    <!-- <string name="facebook_app_id">396920257778607</string> -->
+    <string name="facebook_app_id">396920257778607</string>
+    <string name="fb_login_protocol_scheme">fb396920257778607</string>
     <string name="fb_app_id">396920257778607</string>
     <string name="ak_client_token">594981e1db166c635af4ae9d3e6d6fed</string>
 </resources>

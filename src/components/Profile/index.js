@@ -1,21 +1,21 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import styles from "public/css" 
-import { signup } from 'config/api'
 import { Btn } from 'layout'
-import { ScreenName } from 'config'
+import { ScreenName, toUpperCase } from 'config'
 import NavItem from './NavItem'
+
 class Profile extends React.Component {
     constructor(props){
         super(props);
-
+        
     }
 
-    async componentDidMount() {
-        let test = await AsyncStorage.getItem('test')
-        console.log('test: ', test);
+    componentDidMount() {
+        if(!this.props.user){
+            this.props.navigation.navigate(ScreenName.CheckAuth)
+        }
     }
 
     edit = () => {
@@ -37,7 +37,7 @@ class Profile extends React.Component {
             </View>
         </TouchableOpacity>
     }
-    
+
     render(){
         return (
             <View style={{flex: 1}}>
@@ -73,16 +73,29 @@ class Profile extends React.Component {
                             icon={images.pChangePass} />
                     </View>
                 </ScrollView>
-                <Btn name='Đăng xuất' onPress={() => this.props.navigation.navigate(ScreenName.Signin)} />
+                <Btn name='Đăng xuất' 
+                    onPress={() => {
+                        this.props.dispatch({type: 'LOGOUT'})
+                        this.props.navigation.navigate(ScreenName.Signin)}
+                    } />
             </View>
         )
     }
+
+    
 }
-export default connect()(Profile)
+
+const mapStateToProps = (state) =>{
+    return {
+        user: state.users && state.users.data ? state.users.data : null,
+        token: state.users && state.users.token ? state.users.token : null,
+    }
+}
+export default connect(mapStateToProps)(Profile)
 
 const style = StyleSheet.create({
     icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 }
+    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 },
 })
