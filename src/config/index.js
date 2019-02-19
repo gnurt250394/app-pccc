@@ -35,6 +35,8 @@ export const ScreenName = {
     SplashScreen:"SplashScreen",
     ScreenHello:"ScreenHello",
     CheckAuth:"CheckAuth",
+    Contacts:"Contacts",
+    Introduce:"Introduce"
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

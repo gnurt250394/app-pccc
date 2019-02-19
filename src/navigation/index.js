@@ -45,7 +45,8 @@ const App = createStackNavigator(
     [ScreenName.Cart]: Cart,
     [ScreenName.ProductDetail]: ProductDetail,
     [ScreenName.CheckAuth]: CheckAuth,
-    
+    [ScreenName.Introduce]:Introduce,
+    [ScreenName.Contacts]:Contacts,
    
   },
   {
