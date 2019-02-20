@@ -5,6 +5,7 @@ import images from "public/images"
 import { updateUser } from 'config/api'
 import {  Input} from 'layout'
 import { validateName, popupOk, validateEmail, StatusCode, Gender } from 'config'
+import { chooseImage } from 'config/uploadImage'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -84,11 +85,11 @@ class EditProfile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{backgroundColor: '#F55555', paddingBottom: 30}}>
-                    <Image 
-                        style={{width: 80, height: 80, alignSelf: 'center' }}
-                        source={images.userLight} />
-                    
-                    
+                    <TouchableOpacity onPress={this._onUploadImage}>
+                        <Image 
+                            style={{width: 80, height: 80, alignSelf: 'center' }}
+                            source={images.userLight} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ marginTop: 30}}>
                     <InputItem icon={images.pUser} 
@@ -124,6 +125,17 @@ class EditProfile extends React.Component {
             </ScrollView>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _onUploadImage = () => {
+        console.log(123);
+        chooseImage().then(url => {
+            console.log('url: ', url);
+
+        }).catch(err => {
+            console.log('err: ', err);
+
+        })
     }
 
     _onSuccess = () => () => {

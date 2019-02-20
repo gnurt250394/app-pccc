@@ -1,31 +1,28 @@
 import ImagePicker from 'react-native-image-picker';
-export const chooseImage =  (callback)=> {
-    // alert('aaa')
-    var options = {
-        title: 'Select Avatar',
-        // customButtons: [
-        //     { name: 'fb', title: 'Choose Photo from Facebook' },
-        // ],
+export const chooseImage =  () => {
+    let options = {
+        title: 'Lựa chọn ảnh',
+        takePhotoButtonTitle: "Chụp ảnh",
+        chooseFromLibraryButtonTitle: "Từ thư viện",
         storageOptions: {
             skipBackup: true,
             path: 'images'
         }
     };
-    ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
-        
-        if (response.didCancel) {
-            // callback(null)
-            console.log('User cancelled image picker');
-        } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-        } else {
-            var urlUpload = response.uri;
-        
-          
-            callback(urlUpload)
-        }
-    });
+    return new Promise((resovel, reject) => {
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                response(null)
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                response(null)
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                response(null)
+            } else {
+                resovel(response.uri)
+            }
+        });
+    })
 }

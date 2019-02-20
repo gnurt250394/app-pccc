@@ -23,6 +23,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+// camera
+import com.imagepicker.ImagePickerPackage;
+
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 
 public class MainApplication extends Application implements ReactApplication {
@@ -42,6 +45,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+
+          // camera
+          new ImagePickerPackage(),
 
           // firebase
           new RNFirebasePackage(),
