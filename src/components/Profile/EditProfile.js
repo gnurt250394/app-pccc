@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import { signup } from 'config/api'
+import { updateUser } from 'config/api'
 import {  Input} from 'layout'
-import { ScreenName, validateName, popupOk, validateEmail } from 'config'
+import { validateName, popupOk, validateEmail, StatusCode, Gender } from 'config'
+import { chooseImage } from 'config/uploadImage'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -20,7 +21,7 @@ class InputItem extends React.Component {
             </View>
     };
 }
-class Gender extends React.Component {
+class GenderItem extends React.Component {
     state = {
         gender: this.props.gender
     }
@@ -35,7 +36,7 @@ class Gender extends React.Component {
                         
                         <Image 
                             style={[style.icon, {width: 19}]}
-                            source={this.state.gender ? images.selected : images.unselect} />
+                            source={this.state.gender ==  Gender.male ? images.selected : images.unselect} />
                         <Text style={style.gender}>Nam</Text>
                     </View>
                 </TouchableOpacity>
@@ -43,7 +44,7 @@ class Gender extends React.Component {
                     <View style={style.row}>
                         <Image 
                             style={[style.icon, {width: 19}]}
-                            source={this.state.gender ? images.unselect : images.selected} />
+                            source={this.state.gender ==  Gender.male ? images.unselect : images.selected} />
                         <Text style={style.gender}>Nữ</Text>
                     </View>
                 </TouchableOpacity>
@@ -60,6 +61,7 @@ class EditProfile extends React.Component {
     constructor(props){
         super(props);
         let user = this.props.user || {}
+        this.user = {...user} // check old email
         this.state = {
             name: user.name ? user.name : "",
             company: user.company ? user.company : "",
@@ -67,7 +69,7 @@ class EditProfile extends React.Component {
             phone: user.phone ? user.phone.toString() : "",
             address: user.address ? user.address : "",
             tax_code: user.tax_code ? user.tax_code : "",
-            gender: user.gender != null ? user.gender : false,
+            gender: user.gender != null ? user.gender : Gender.male,
            
         }
     }
@@ -83,11 +85,11 @@ class EditProfile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{backgroundColor: '#F55555', paddingBottom: 30}}>
-                    <Image 
-                        style={{width: 80, height: 80, alignSelf: 'center' }}
-                        source={images.userLight} />
-                    
-                    
+                    <TouchableOpacity onPress={this._onUploadImage}>
+                        <Image 
+                            style={{width: 80, height: 80, alignSelf: 'center' }}
+                            source={images.userLight} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ marginTop: 30}}>
                     <InputItem icon={images.pUser} 
@@ -95,7 +97,6 @@ class EditProfile extends React.Component {
                         onChangeText={name => this.setState({name})}
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
-                        onChangeText={phone => this.setState({phone})}
                         value={this.state.phone}
                         editable={false}
                         placeholder="Số điện thoại"/>
@@ -104,9 +105,9 @@ class EditProfile extends React.Component {
                         value={this.state.email}
                         onChangeText={email => this.setState({email})}
                         placeholder="Email của bạn"/>
-                    <Gender 
-                        onSelectMale={() => this.setState({gender: true})}
-                        onSelectFemale={() => this.setState({gender: false})}
+                    <GenderItem 
+                        onSelectMale={() => this.setState({gender: Gender.male})}
+                        onSelectFemale={() => this.setState({gender: Gender.female})}
                         gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
                         value={this.state.address}
@@ -126,6 +127,17 @@ class EditProfile extends React.Component {
         )
     }
 
+    _onUploadImage = () => {
+        console.log(123);
+        chooseImage().then(url => {
+            console.log('url: ', url);
+
+        }).catch(err => {
+            console.log('err: ', err);
+
+        })
+    }
+
     _onSuccess = () => () => {
         if(this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
@@ -135,7 +147,26 @@ class EditProfile extends React.Component {
             popupOk('Email không đúng')
         } else {
             // call api -> go back
-            this.props.navigation.goBack()
+            let data = {
+                name: this.state.name,
+                gender: this.state.gender,
+                company: this.state.company,
+                address: this.state.address,
+                tax_code: this.state.tax_code,
+            }
+            if(this.state.email != this.user.email) data.email = this.state.email;
+            updateUser(this.props.token, data).then(res => {
+                if(res.data.code == StatusCode.Success){
+                    this.props.dispatch({type: 'UPDATE_USER', data: res.data.data})
+                    this.props.navigation.goBack()
+                }else{
+                    popupOk(res.data.message)
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Cập nhật thông tin không thành công')
+            })
+            
         }
     }
 }

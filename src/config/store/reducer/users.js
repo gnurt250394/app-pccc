@@ -1,5 +1,5 @@
 export default function users(state = {}, action) {
-    console.log('action: ', action);
+    console.log('action user: ', action);
     switch(action.type){
         case 'LOGIN':
             state = {
@@ -13,6 +13,12 @@ export default function users(state = {}, action) {
                 ...state,
                 data: null,
                 token: null
+            }
+            break
+        case 'UPDATE_USER':
+            state = {
+                ...state,
+                data: action.data
             }
             break
         default :

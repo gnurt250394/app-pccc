@@ -8,6 +8,16 @@ export const StatusCode = {
     Success: 200,
 }
 
+export const Gender = {
+    male: 0,
+    female: 1,
+}
+
+export const ShowGender = gender => {
+    if(gender == null) return gender
+    else return gender == Gender.male ? "Nam" : "nữ"
+}
+
 export const CodeToMessage = {
     404: "Sai tài khoản hoặc mật khẩu",
     427: "Số điện thoại đã được sử dụng",
