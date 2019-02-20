@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "public/images"
 import { updateUser } from 'config/api'
 import {  Input} from 'layout'
-import { validateName, popupOk, validateEmail, StatusCode } from 'config'
+import { validateName, popupOk, validateEmail, StatusCode, Gender } from 'config'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -20,7 +20,7 @@ class InputItem extends React.Component {
             </View>
     };
 }
-class Gender extends React.Component {
+class GenderItem extends React.Component {
     state = {
         gender: this.props.gender
     }
@@ -35,7 +35,7 @@ class Gender extends React.Component {
                         
                         <Image 
                             style={[style.icon, {width: 19}]}
-                            source={this.state.gender ? images.selected : images.unselect} />
+                            source={this.state.gender ==  Gender.male ? images.selected : images.unselect} />
                         <Text style={style.gender}>Nam</Text>
                     </View>
                 </TouchableOpacity>
@@ -43,7 +43,7 @@ class Gender extends React.Component {
                     <View style={style.row}>
                         <Image 
                             style={[style.icon, {width: 19}]}
-                            source={this.state.gender ? images.unselect : images.selected} />
+                            source={this.state.gender ==  Gender.male ? images.unselect : images.selected} />
                         <Text style={style.gender}>Nữ</Text>
                     </View>
                 </TouchableOpacity>
@@ -68,7 +68,7 @@ class EditProfile extends React.Component {
             phone: user.phone ? user.phone.toString() : "",
             address: user.address ? user.address : "",
             tax_code: user.tax_code ? user.tax_code : "",
-            gender: user.gender != null ? user.gender : false,
+            gender: user.gender != null ? user.gender : Gender.male,
            
         }
     }
@@ -104,9 +104,9 @@ class EditProfile extends React.Component {
                         value={this.state.email}
                         onChangeText={email => this.setState({email})}
                         placeholder="Email của bạn"/>
-                    <Gender 
-                        onSelectMale={() => this.setState({gender: true})}
-                        onSelectFemale={() => this.setState({gender: false})}
+                    <GenderItem 
+                        onSelectMale={() => this.setState({gender: Gender.male})}
+                        onSelectFemale={() => this.setState({gender: Gender.female})}
                         gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
                         value={this.state.address}
@@ -135,18 +135,17 @@ class EditProfile extends React.Component {
             popupOk('Email không đúng')
         } else {
             // call api -> go back
-            updateUser(this.props.token, {
+            let data = {
                 name: this.state.name,
-                email: this.state.email,
                 gender: this.state.gender,
                 company: this.state.company,
                 address: this.state.address,
                 tax_code: this.state.tax_code,
-            }).then(res => {
-                console.log('res: ', res);
+            }
+            if(this.state.email != this.user.email) data.email = this.state.email;
+            updateUser(this.props.token, data).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    this.props.dispatch({type: 'LOGIN', data: res.data.data})
-                    // this.props.navigation.navigate(ScreenName.HomeScreen)
+                    this.props.dispatch({type: 'UPDATE_USER', data: res.data.data})
                     this.props.navigation.goBack()
                 }else{
                     popupOk(res.data.message)

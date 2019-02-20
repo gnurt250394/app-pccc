@@ -15,7 +15,7 @@ export const login = body => {
 }
 
 export const updateUser = (token, body) => {
-    instance.defaults.headers.common['Authorization'] = token;
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.put(constant.USER, body)
 }
 

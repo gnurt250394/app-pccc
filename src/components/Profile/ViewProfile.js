@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
-import { ScreenName } from 'config'
+import { ScreenName, ShowGender } from 'config'
 class ListItem extends React.Component {
     render() {
       return this.props.name ? <View style={{ marginBottom: 10, flexDirection: 'row'}}>
@@ -19,6 +19,10 @@ class ViewProfile extends React.Component {
         this.state = {
             user: this.props.user ? this.props.user : {}
         }
+    }
+
+    componentWillReceiveProps(props){
+        if(props.user) this.setState({user: props.user})
     }
   
     render(){
@@ -46,7 +50,7 @@ class ViewProfile extends React.Component {
                 <View style={{ marginTop: 30}}>
                     <ListItem icon={images.pPhone} name={this.state.user.phone} />
                     <ListItem icon={images.pEmail} name={this.state.user.email} />
-                    <ListItem icon={images.pGender} name={this.state.user.gender} />
+                    <ListItem icon={images.pGender} name={ShowGender(this.state.user.gender)} />
                     <ListItem icon={images.pLocation} name={this.state.user.address} />
                     <ListItem icon={images.pCompany} name={this.state.user.company} />
                     <ListItem icon={images.pThue} name={this.state.user.tax_code} />
