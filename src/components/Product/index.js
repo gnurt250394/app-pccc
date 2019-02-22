@@ -24,13 +24,13 @@ class ProductDetail extends React.Component {
     render(){
         return (
             <View style={{flex: 1}}>
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
                 <ScrollView>
-                    <View style={style.row}>
+                    <View style={[style.row, {backgroundColor: "#F55555"}]}>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
                             <Image 
                                 style={[styles.icon, {margin: 10, width: 10}]}
-                                source={images.back} />
+                                source={images.backLight} />
                         </TouchableOpacity>
                         <Text style={style.headText}>Chi tiết sản phẩm</Text>
                         <TouchableOpacity onPress={() =>  null} >
@@ -78,9 +78,11 @@ class ProductDetail extends React.Component {
                     
                     <View style={[styles.row, style.heading]}>
                         <Text style={style.moreLabel}>Sản phẩm tương tự</Text>
-                        <ViewMore title='Xem tất cả'/>
+                        <ViewMore 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm tương tự"})}
+                            title='Xem tất cả'/>
                     </View>
-                    <ListItem data={data} />
+                    <ListItem data={data} navigation={this.props.navigation} />
                 </ScrollView>
 
                 <View style={style.tabs}>
@@ -116,8 +118,8 @@ const style = StyleSheet.create({
     icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    headText: {fontSize: 20, color: '#333333', flex: 1, textAlign: 'center', fontWeight: 'bold',},
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center', paddingBottom: 0},
+    headText: {fontSize: 20, color: '#fff', flex: 1, textAlign: 'center', fontWeight: 'bold',},
+    heading: {justifyContent: 'space-between', padding: 8, alignContent:'center', paddingBottom: 0},
     tabs: {flexDirection: "row", borderTopWidth: 1, borderTopColor: '#F55555',},
     tabBtn: {flex: 1,  justifyContent: 'center', alignItems: 'center', flexDirection: 'row'},
     tabLabel: { color: '#F55555', fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', paddingLeft: 8, fontSize: 12, padding: 0},
