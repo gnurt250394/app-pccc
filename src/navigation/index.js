@@ -14,8 +14,8 @@ import EditProfile from 'components/Profile/EditProfile'
 import Cart from 'components/Cart'
 import Drawer from "./Drawer";
 import ProductDetail from 'components/Product'
+import ViewAllProduct from 'components/Product/ViewAll'
 import TabsHome from './TabsHome'
-import TabsProduct from './TabsProduct'
 import SplashScreen from "../components/SplashScreen/SplashScreen";
 import ScreenHello from "../components/SplashScreen/ScreenHello";
 import Contacts from "../components/Product/contact";
@@ -45,8 +45,9 @@ const App = createStackNavigator(
     [ScreenName.Cart]: Cart,
     [ScreenName.ProductDetail]: ProductDetail,
     [ScreenName.CheckAuth]: CheckAuth,
-    [ScreenName.Introduce]:Introduce,
-    [ScreenName.Contacts]:Contacts,
+    [ScreenName.Introduce]: Introduce,
+    [ScreenName.Contacts]: Contacts,
+    [ScreenName.ViewAllProduct]: ViewAllProduct,
    
   },
   {

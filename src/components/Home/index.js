@@ -1,63 +1,124 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { Slide, ViewMore } from 'layout'
 import { ScreenName } from 'config'
-import ListItem from './ListItem'
 import { DrawerActions } from 'react-navigation-drawer';
-
+let {width, height} = Dimensions.get('window')
 class HomeScreen extends React.Component {
    
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>this.props.navigation.closeDrawer()}>
+            <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.closeDrawer()}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                    <StatusBar backgroundColor="#F55555" barStyle="light-content" />
 
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.dispatch(DrawerActions.toggleDrawer())} >
+                    <View style={style.head}>
+                        <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.dispatch(DrawerActions.toggleDrawer())} >
                             <Image 
-                                style={[styles.icon, { height: 18}]}
+                                style={[styles.icon, style.w20]}
                                 source={images.menu} />
                         </TouchableOpacity>
                         
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
-                            <TouchableOpacity style={{padding: 5}} onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                        <View 
+                            style={style.boxSearch}>
+                            <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <Image 
-                                    style={[styles.icon, { width: 15}]}
-                                    source={images.SearchRed} />
+                                    style={[styles.icon, style.w15]}
+                                    source={images.iconSearch} />
                             </TouchableOpacity>
+                            <TextInput 
+                                style={style.flex}
+                                placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                                placeholder="Tìm kiếm" />
                             
-                            <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() =>  this.props.navigation.openDrawer()} >
-                                <Image 
-                                    style={[styles.icon, { width: 15}]}
-                                    source={images.filter} />
+                        </View >
+                    </View>
+                    <View style={style.flex}>
+                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box6}
+                                    source={images.projectInfo}>
+                                    <Text style={style.title}>Thông tin dự án</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box4}
+                                    source={images.product}>
+                                    <Text style={style.title}>Sản phẩm</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box6}
+                                    source={images.thongtindauthau}>
+                                    <Text style={style.title}>Thông tin đấu thầu</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box4}
+                                    source={images.thanhly}>
+                                    <Text style={style.title}>Thanh lý hàng hóa</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box3}
+                                    source={images.dangmua}>
+                                    <Text style={style.title}>Đăng mua</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box3}
+                                    source={images.thongtintheodoi}>
+                                    <Text style={style.title}>Thông tin theo dõi</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={[style.box3, {marginRight: 0}]}
+                                    source={images.myShop}>
+                                    <Text style={style.title}>Shop của tôi</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box3}
+                                    source={images.tailieu}>
+                                    <Text style={style.title}>Tài liệu</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={style.box3}
+                                    source={images.catalog}>
+                                    <Text style={style.title}>Catalog</Text> 
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
+                                <ImageBackground 
+                                    style={[style.box3, {marginRight: 0}]}
+                                    source={images.video}>
+                                    <Text style={style.title}>Video</Text> 
+                                </ImageBackground>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <Slide />
                    
-                    <View style={style.heading}>
-                        <Text style={style.headingLabel}>Sản phẩm nổi bật</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} navigate={this.props.navigation.navigate} />
-                    <View style={style.hr}></View>
-
-                    <View style={style.heading}>
-                        <Text style={style.headingLabel}>Sản phẩm mới nhất</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} navigate={this.props.navigation.navigate} />
-                    <View style={style.hr}></View>
-
-                    <View style={style.heading}>
-                        <Text style={style.headingLabel}>Sản phẩm bán chạy</Text>
-                        <ViewMore />
-                    </View>
-                    <ListItem data={data} navigate={this.props.navigation.navigate} style={{marginBottom: 8}} />
+                    
                 </ScrollView>
             </TouchableWithoutFeedback>
         )
@@ -66,34 +127,14 @@ class HomeScreen extends React.Component {
 export default connect()(HomeScreen)
 
 const style = StyleSheet.create({
-    heading: {flexDirection: 'row', justifyContent: 'space-between', padding: 8, alignItems:'center', },
-    hr: {width: '100%', height: 3, backgroundColor: '#ddd', marginTop: 8, marginBottom: 3},
-    headingLabel: {fontSize: 20, fontWeight: '500', color: '#333333', fontSize: 18}
+    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F55555'},
+    w15: { width: 15},
+    w20: { width: 20},
+    p8: {padding: 8},
+    flex: {flex: 1},
+    title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 18},
+    box6: {width: width * (0.55), height: 125, marginRight: 2},
+    box4: {width: width * (0.45), height: 125},
+    box3: {width: width/3, height: 125, marginRight: 2}
 })
-
-let data = [
-    {
-        id: 1,
-        name: 'Bình chữa cháy 1',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 2,
-        name: 'Bình chữa cháy 2',
-        price: "liên hệ",
-        like: true
-    },
-    {
-        id: 3,
-        name: 'Bình chữa cháy 3',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 4,
-        name: 'Bình chữa cháy 4',
-        price: 220000,
-        like: false
-    },
-]

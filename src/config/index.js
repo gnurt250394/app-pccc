@@ -13,6 +13,11 @@ export const Gender = {
     female: 1,
 }
 
+export const LoginType  = {
+    facebook: 1,
+    google: 2,
+}
+
 export const ShowGender = gender => {
     if(gender == null) return gender
     else return gender == Gender.male ? "Nam" : "nữ"
@@ -38,7 +43,7 @@ export const ScreenName = {
     Profile: "Profile",
     Confirm: "Confirm",
     HomeScreen: "HomeScreen",
-    News: "News",
+    Messenger: "Messenger",
     Cart: "Cart",
     Search: "Search",
     ProductDetail: "ProductDetail",
@@ -46,7 +51,9 @@ export const ScreenName = {
     ScreenHello:"ScreenHello",
     CheckAuth:"CheckAuth",
     Contacts:"Contacts",
-    Introduce:"Introduce"
+    Introduce:"Introduce",
+    Notify:"Notify",
+    ViewAllProduct:"ViewAllProduct",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

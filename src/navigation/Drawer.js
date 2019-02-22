@@ -73,17 +73,17 @@ class Drawer extends Component {
                     showMore={this.state.showMore}/>
                 { !this.state.showMore ? <View style={{marginLeft: 30, marginTop: -20}}>
                     <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Item 1')}</Text>
+                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo chay UNIPOS"})}
+                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Báo chay UNIPOS')}</Text>
                     <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Item 2')}</Text>
+                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm nổi bật"})}
+                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Sản phẩm nổi bật')}</Text>
                     <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Item 3')}</Text>
+                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm bán chạy"})}
+                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Sản phẩm bán chạy')}</Text>
                     <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Item 4')}</Text>
+                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo cháy HOCHIKI"})}
+                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Báo cháy HOCHIKI')}</Text>
                 </View> : null}
                 <DrawerItem 
                     title='Liên hệ' 
