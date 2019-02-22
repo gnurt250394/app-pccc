@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, Dimensions, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity,  StyleSheet, ScrollView, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
 import { signup } from 'config/api'
 import { ScreenName, toPrice , toUpperCase} from 'config'
+import {BaseHeader} from 'layout';
 class ViewAllProduct extends React.Component {
     constructor(props){
         super(props);
@@ -15,31 +16,9 @@ class ViewAllProduct extends React.Component {
     render(){
         return (
             <View style={{flex: 1}}>
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <ScrollView>
-                    <StatusBar backgroundColor="#F55555" barStyle="light-content" />
+                    <BaseHeader goBack={() => this.props.navigation.goBack()} />
 
-                    <View style={style.head}>
-                        <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.goBack()} >
-                            <Image 
-                                style={[styles.icon,  style.w10]}
-                                source={images.backLight} />
-                        </TouchableOpacity>
-                        
-                        <View  style={style.row}>
-                            <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
-                                <Image 
-                                    style={[styles.icon, style.w15]}
-                                    source={images.iconSearch} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
-                                <Image 
-                                    style={[styles.icon, style.w15]}
-                                    source={images.filterL} />
-                            </TouchableOpacity>
-                           
-                        </View >
-                    </View>
                     <Text style={style.title}>{this.props.navigation.state.params.title || "Sản phẩm nổi bật"}</Text>
                    
                     <FlatList

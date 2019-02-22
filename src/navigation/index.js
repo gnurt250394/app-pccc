@@ -20,6 +20,7 @@ import SplashScreen from "../components/SplashScreen/SplashScreen";
 import ScreenHello from "../components/SplashScreen/ScreenHello";
 import Contacts from "../components/Product/contact";
 import Introduce from "../components/Introduce/Introduce";
+import Shop from "../components/Shop";
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -48,6 +49,7 @@ const App = createStackNavigator(
     [ScreenName.Introduce]: Introduce,
     [ScreenName.Contacts]: Contacts,
     [ScreenName.ViewAllProduct]: ViewAllProduct,
+    [ScreenName.Shop]: Shop,
    
   },
   {

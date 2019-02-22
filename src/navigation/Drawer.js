@@ -62,7 +62,7 @@ class Drawer extends Component {
                     </View>
                 
                     <DrawerItem 
-                        onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
+                        onPress={() => this.props.navigation.navigate(ScreenName.Shop)}
                         title='Cửa hàng' 
                         icon={images.mShop} />
                     <DrawerItem 
