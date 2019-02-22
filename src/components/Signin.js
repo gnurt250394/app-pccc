@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
@@ -17,18 +17,26 @@ class Signin extends React.Component {
     state = {
         username: '',
         password: '',
+        loading: false
     }
 
     render(){
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={() => Keyboard.dismiss()}>
+            
             <ScrollView style={style.content}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                {   this.state.loading ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> : null
+                }
+                
                 <View>
                     <Image 
                         style={[styles.logo]}
                         source={images.logo} />
-                    <Text style={[styles.slogan, style.color]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
+                    <Text style={[styles.slogan, style.color]}>{toUpperCase('Chợ xây dựng')}</Text>
 
                     <BaseInput 
                         styleIcon={style.w11}
@@ -86,6 +94,7 @@ class Signin extends React.Component {
 
 
     _onFacebookLogin = async () => {
+        
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
           if (result.isCancelled) {
@@ -112,13 +121,17 @@ class Signin extends React.Component {
             token: data.accessToken,
             login_type: LoginType.facebook
           } 
+          this.setState({loading: true})
           loginSocial(body).then(res => {
               this._onSwitchToHomePage(res);
+              this.setState({loading: false})
           }).catch(err => {
+              this.setState({loading: false})
               popupOk("Đăng nhập thất bại");
           })
         } catch (e) {
             console.log('e: ', e);
+            this.setState({loading: false})
         }
     }
 
@@ -134,18 +147,22 @@ class Signin extends React.Component {
             // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
             let provider = firebaseUserCredential.user.toJSON();
+            this.setState({loading: true})
             loginSocial({
                 name: provider.displayName,
                 email: provider.email,
                 login_type: LoginType.google
             }).then(res => {
                 this._onSwitchToHomePage(res);
+                this.setState({loading: false})
             }).catch(err => {
                 popupOk("Đăng nhập thất bại");
+                this.setState({loading: false})
             })
             
-          } catch (e) {
+        } catch (e) {
             console.error(e);
+            this.setState({loading: false})
         }
     }
 
@@ -158,18 +175,22 @@ class Signin extends React.Component {
         }else if(password.trim() == ""){
             popupOk("Mật khẩu không được để trống");
         }else {
+            this.setState({loading: true})
             login({
                 username: username,
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
                     this._onSwitchToHomePage(res);
+                    this.setState({loading: false})
                 }else{
                     popupOk(res.data.message);
+                    this.setState({loading: false})
                 }
             }).catch(err => {
                 console.log('err: ', err.message);
                 popupOk("Đăng nhập thất bại");
+                this.setState({loading: false})
             })
             
         }

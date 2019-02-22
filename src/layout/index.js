@@ -6,6 +6,7 @@ import Footer from './Footer'
 import ViewMore from './ViewMore'
 import DrawerItem from './DrawerItem'
 import Slide from './Slide'
+import BaseHeader from './BaseHeader'
 import {TextBold,TextItali} from './CustomText';
 
-module.exports = { Btn, Header, Input, ViewMore, Footer, BaseInput, DrawerItem, TextBold, TextItali, Slide }
+module.exports = { Btn, Header, Input, ViewMore, Footer, BaseInput, DrawerItem, TextBold, TextItali, Slide, BaseHeader }

@@ -40,5 +40,5 @@ const style = StyleSheet.create({
     bodyModal: {width: '80%', alignSelf: 'center', backgroundColor: 'white',  flexDirection: 'column', borderRadius: 8,},
     headModal: {textAlign: 'center', padding: 10, color: '#333333',  fontWeight: 'bold', fontSize: 18},
     footerModal: {flexDirection: 'row', borderWidth: 1, borderColor: '#F55555', borderBottomLeftRadius: 8, borderBottomRightRadius: 8,},
-    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: '#F55555', color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 8, borderBottomRightRadius: 8}
+    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: '#F55555', color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8}
 })

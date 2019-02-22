@@ -54,6 +54,7 @@ export const ScreenName = {
     Introduce:"Introduce",
     Notify:"Notify",
     ViewAllProduct:"ViewAllProduct",
+    Shop:"Shop",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

@@ -133,7 +133,7 @@ const style = StyleSheet.create({
     w20: { width: 20},
     p8: {padding: 8},
     flex: {flex: 1},
-    title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 18},
+    title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16},
     box6: {width: width * (0.55), height: 125, marginRight: 2},
     box4: {width: width * (0.45), height: 125},
     box3: {width: width/3, height: 125, marginRight: 2}
