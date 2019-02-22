@@ -105,6 +105,11 @@ export default styles = StyleSheet.create({
         marginLeft: -20,
         marginTop: 10,
         fontSize: 11
+    },
+    loading: {
+        position: "absolute",
+        top: '48%',
+        left: '48%'
     }
 
 })

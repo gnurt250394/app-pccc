@@ -39,70 +39,70 @@ class Drawer extends Component {
     }
     render() {
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>this.props.navigation.closeDrawer()}>
-            
-            <View style={styles.container}>
-                {/* <StatusBar backgroundColor="#FFAF26" barStyle="light-content" /> */}
-                <View style={styles.containerHeader}>
-                        <Image 
-                            source={images.userLight}
-                            style={styles.image} />
-                        <TextBold style={styles.txt}
-                            value={this.props.user && this.props.user.name ? this.props.user.name : "Khách" } />
-                        {   this.props.user && this.props.user.name 
-                            ? <Text style={{padding: 10, textAlign: 'center', color: '#fff', fontSize: 14, fontWeight:'300'}}>(Thành viên thường)</Text>
-                            : <View style={{flexDirection: 'row', justifyContent: 'center', padding: 10}}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
-                                <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng nhập/</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
-                                    <Text style={{color: '#fff', fontSize: 14, fontWeight:'300'}}>Đăng ký</Text>
-                                </TouchableOpacity>
-                            </View>}
-                        
-                </View>
-            
-                <DrawerItem 
-                    onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
-                    title='Cửa hàng' 
-                    icon={images.mShop} />
-                <DrawerItem 
-                    title='Danh mục' 
-                    icon={images.mCategory} 
-                    handleShowMore={() => {this.setState({showMore: !this.state.showMore});}}
-                    showMore={this.state.showMore}/>
-                { !this.state.showMore ? <View style={{marginLeft: 30, marginTop: -20}}>
-                    <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo chay UNIPOS"})}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Báo chay UNIPOS')}</Text>
-                    <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm nổi bật"})}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Sản phẩm nổi bật')}</Text>
-                    <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm bán chạy"})}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Sản phẩm bán chạy')}</Text>
-                    <Text 
-                        onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo cháy HOCHIKI"})}
-                        style={{color: '#fff', fontSize: 14, fontWeight:'300', padding: 5}}>{toUpperCase('Báo cháy HOCHIKI')}</Text>
-                </View> : null}
-                <DrawerItem 
-                    title='Liên hệ' 
-                    onPress={()=>navigation.navigate(ScreenName.Contacts)}
-                    icon={images.mContact} />
-                <DrawerItem 
-                    title='Giới thiệu' 
-                    onPress={()=> navigation.navigate(ScreenName.Introduce)}
-                    icon={images.mIntro} />
-                {   this.props.user && this.props.user.name 
-                    ?  <DrawerItem 
-                        onPress={() => {
-                            this.props.dispatch({type: 'LOGOUT'})
-                            this.props.navigation.navigate(ScreenName.Signin)}
-                        }
-                        title='Đăng xuất' 
-                        icon={images.mSignout} /> : null}
+            <TouchableWithoutFeedback style= { styles.flex} onPress={() =>this.props.navigation.closeDrawer()}>
+                <View style={styles.container}>
+                    <View style={styles.containerHeader}>
+                            <Image 
+                                source={images.userLight}
+                                style={styles.image} />
+                            <TextBold style={styles.txt}
+                                value={this.props.user && this.props.user.name ? this.props.user.name : "Khách" } />
+                            <Text style={styles.name}>{this.props.user && this.props.user.name ? this.props.user.name : "Khách" }</Text>
+                            {   this.props.user && this.props.user.name 
+                                ? <Text style={styles.member}>(Thành viên thường)</Text>
+                                : <View style={styles.boxLogin}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
+                                    <Text style={styles.login}>Đăng nhập/</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
+                                        <Text style={styles.login}>Đăng ký</Text>
+                                    </TouchableOpacity>
+                                </View>}
+                            
+                    </View>
+                
+                    <DrawerItem 
+                        onPress={() => this.props.navigation.navigate(ScreenName.HomeScreen)}
+                        title='Cửa hàng' 
+                        icon={images.mShop} />
+                    <DrawerItem 
+                        title='Danh mục' 
+                        icon={images.mCategory} 
+                        onPress={() => this.setState({showMore: !this.state.showMore})}
+                        handleShowMore={() => this.setState({showMore: !this.state.showMore})}
+                        showMore={this.state.showMore}/>
+                    { !this.state.showMore ? <View style={styles.subMenu}>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo chay UNIPOS"})}
+                            style={styles.subItem}>{toUpperCase('Báo chay UNIPOS')}</Text>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm nổi bật"})}
+                            style={styles.subItem}>{toUpperCase('Sản phẩm nổi bật')}</Text>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm bán chạy"})}
+                            style={styles.subItem}>{toUpperCase('Sản phẩm bán chạy')}</Text>
+                        <Text 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo cháy HOCHIKI"})}
+                            style={styles.subItem}>{toUpperCase('Báo cháy HOCHIKI')}</Text>
+                    </View> : null}
+                    <DrawerItem 
+                        title='Liên hệ' 
+                        onPress={()=>navigation.navigate(ScreenName.Contacts)}
+                        icon={images.mContact} />
+                    <DrawerItem 
+                        title='Giới thiệu' 
+                        onPress={()=> navigation.navigate(ScreenName.Introduce)}
+                        icon={images.mIntro} />
+                    {   this.props.user && this.props.user.name 
+                        ?  <DrawerItem 
+                            onPress={() => {
+                                this.props.dispatch({type: 'LOGOUT'})
+                                this.props.navigation.navigate(ScreenName.Signin)}
+                            }
+                            title='Đăng xuất' 
+                            icon={images.mSignout} /> : null}
 
-            </View>
+                </View>
             </TouchableWithoutFeedback>
         );
     }
@@ -154,4 +154,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontWeight:'300'
     },
+    subItem: {color: '#fff', fontSize: 14, fontWeight:'300', padding: 5},
+    login: {color: '#fff', fontSize: 14, fontWeight:'300'},
+    member: {padding: 10, textAlign: 'center', color: '#fff', fontSize: 14, fontWeight:'300'},
+    name: {textAlign: 'center', color: '#fff', fontSize: 16, fontWeight:'300', paddingTop: 10},
+    subMenu: {marginLeft: 30, marginTop: -20},
+    boxLogin: {flexDirection: 'row', justifyContent: 'center', padding: 10},
+    flex: { flex:1}
 })
