@@ -7,7 +7,9 @@ import { ScreenName } from 'config'
 import { DrawerActions } from 'react-navigation-drawer';
 let {width, height} = Dimensions.get('window')
 class HomeScreen extends React.Component {
-   
+    state = {
+        keyword: ''
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.closeDrawer()}>
@@ -29,7 +31,11 @@ class HomeScreen extends React.Component {
                                     source={images.iconSearch} />
                             </TouchableOpacity>
                             <TextInput 
-                                style={style.flex}
+                                style={[style.flex, {color: "rgba(255, 255, 255, 0.6)"}]}
+                                value={this.state.keyword}
+                                returnKeyLabel="Tìm kiếm"
+                                onSubmitEditing={this._onSearch}
+                                onChangeText={keyword => this.setState({keyword})}
                                 placeholderTextColor="rgba(255, 255, 255, 0.6)"
                                 placeholder="Tìm kiếm" />
                             
@@ -75,7 +81,7 @@ class HomeScreen extends React.Component {
                                 <ImageBackground 
                                     style={style.box4}
                                     source={images.thanhly}>
-                                    <Text style={style.title}>Thanh lý hàng hóa</Text> 
+                                    <Text style={[style.title, {width: '80%'}]}>Thanh lý hàng hóa</Text> 
                                     <View style={style.badge}>
                                         <Text style={style.notify}>362</Text>
                                     </View>
@@ -148,6 +154,10 @@ class HomeScreen extends React.Component {
             </TouchableWithoutFeedback>
         )
     }
+
+    _onSearch = () => {
+        console.log(11, this.state.keyword);
+    }
 }
 export default connect()(HomeScreen)
 
@@ -159,8 +169,8 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16},
-    box6: {width: width * (0.55), height: 125, marginRight: 2},
-    box4: {width: width * (0.45), height: 125},
+    box6: {width: (width * (2/3) + 2), height: 125, marginRight: 2},
+    box4: {width: width * (1/3), height: 125},
     box3: {width: width/3, height: 125, marginRight: 2},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
