@@ -14,6 +14,10 @@ export const login = body => {
     return instance.post(constant.LOGIN, body)
 }
 
+export const loginSocial = body => {
+    return instance.post(constant.LOGIN_SOCIAL, body)
+}
+
 export const updateUser = (token, body) => {
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.put(constant.USER, body)

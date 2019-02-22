@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, AsyncStorage, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "public/images"
 import styles from "public/css" 
-import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail, StatusCode } from 'config'
-import { login } from 'config/api'
+import { ScreenName, toUpperCase, popupOk, validatePhone, validateEmail, StatusCode, LoginType } from 'config'
+import { login, loginSocial } from 'config/api'
 
 import { LoginButton, AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'layout'
@@ -20,19 +20,18 @@ class Signin extends React.Component {
     }
 
     render(){
-        AsyncStorage.getItem('test').then(console.log)
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
-            <ScrollView style={{flex: 1, flexDirection: 'column'}}>
+            <TouchableWithoutFeedback style= { style.flex } onPress={() => Keyboard.dismiss()}>
+            <ScrollView style={style.content}>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View>
                     <Image 
-                        style={[styles.logo, {}]}
+                        style={[styles.logo]}
                         source={images.logo} />
-                    <Text style={[styles.slogan, { color: '#F55555'}]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
+                    <Text style={[styles.slogan, style.color]}>{toUpperCase('Siêu thị phòng cháy')}</Text>
 
                     <BaseInput 
-                        styleIcon={{width: 11}}
+                        styleIcon={style.w11}
                         icon={images.phoneDark}
                         ref={val => this.username = val}
                         placeholder="Email/Số điện thoại" />
@@ -45,36 +44,36 @@ class Signin extends React.Component {
                     
                     <Btn
                         onPress={this._signin()} 
-                        customStyle={{marginBottom: 8}}
+                        customStyle={style.mb8}
                         name="Đăng nhập" />
                     <Btn
                         onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                        customStyle={{marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: '#F55555',}}
-                        textStyle={{color: '#F55555'}}
+                        customStyle={style.register}
+                        textStyle={style.color}
                         name="Đăng ký" />
 
                     
                     <Text 
                         onPress={this._onForgotPassword}
-                        style={[styles.forgot, {width: '50%', alignSelf: 'center'}]}>Quên mật khẩu</Text>
-                    <View style={{width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'}}>
-                        <View style={{flex: 1, height: 1, backgroundColor: '#999999', }}></View>
-                        <Text style={{color: '#999999', fontSize: 14, paddingLeft: 10, paddingRight: 10}}> Hoặc </Text>
-                        <View style={{flex: 1, height: 1, backgroundColor: '#999999'}}></View>
+                        style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
+                    <View style={style.boxOr}>
+                        <View style={style.line}></View>
+                        <Text style={style.or}> Hoặc </Text>
+                        <View style={style.line}></View>
                         
                     </View>
                     
 
-                    <View style={{flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'}}>
+                    <View style={style.social}>
                         <TouchableOpacity onPress={this._onFacebookLogin}>
                             <Image 
-                                style={[styles.logo, {height: 55,marginTop: 15}]}
+                                style={[styles.logo, style.iconSocial]}
                                 source={images.iconFb} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={this._onGoogleLogin}>
                             <Image 
-                                style={[styles.logo, {height: 55,marginTop: 15}]}
+                                style={[styles.logo, style.iconSocial]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>
@@ -94,8 +93,6 @@ class Signin extends React.Component {
             throw new Error('User cancelled request'); 
           }
       
-          console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
-      
           // get the access token
           const data = await AccessToken.getCurrentAccessToken();
           
@@ -106,12 +103,20 @@ class Signin extends React.Component {
       
           // create a new firebase credential with the token
           const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-          console.log('data.accessToken: ', data.accessToken);
       
           // login with credential
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-      
-          console.log(JSON.stringify(firebaseUserCredential.user.toJSON()))
+          let provider = firebaseUserCredential.user.toJSON();
+          let body = {
+            name: provider.displayName,
+            token: data.accessToken,
+            login_type: LoginType.facebook
+          } 
+          loginSocial(body).then(res => {
+              this._onSwitchToHomePage(res);
+          }).catch(err => {
+              popupOk("Đăng nhập thất bại");
+          })
         } catch (e) {
             console.log('e: ', e);
         }
@@ -128,8 +133,17 @@ class Signin extends React.Component {
             const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
             // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-        
-            console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
+            let provider = firebaseUserCredential.user.toJSON();
+            loginSocial({
+                name: provider.displayName,
+                email: provider.email,
+                login_type: LoginType.google
+            }).then(res => {
+                this._onSwitchToHomePage(res);
+            }).catch(err => {
+                popupOk("Đăng nhập thất bại");
+            })
+            
           } catch (e) {
             console.error(e);
         }
@@ -140,23 +154,22 @@ class Signin extends React.Component {
         let password = this.password.getValue();
         
         if(!validateEmail(username) && !validatePhone(username) ){
-            popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại")
+            popupOk("Tên đăng nhập phải là Email hoặc Số điện thoại");
         }else if(password.trim() == ""){
-            popupOk("Mật khẩu không được để trống")
+            popupOk("Mật khẩu không được để trống");
         }else {
             login({
                 username: username,
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token})
-                    this.props.navigation.navigate(ScreenName.HomeScreen)
+                    this._onSwitchToHomePage(res);
                 }else{
-                    popupOk(res.data.message)
+                    popupOk(res.data.message);
                 }
             }).catch(err => {
                 console.log('err: ', err.message);
-                popupOk("Đăng nhập thất bại")
+                popupOk("Đăng nhập thất bại");
             })
             
         }
@@ -167,11 +180,31 @@ class Signin extends React.Component {
         RNAccountKit.loginWithPhone()
             .then((token) => {
                 if(token && token.code){
-                    this.props.navigation.navigate(ScreenName.ForgotPassword)
+                    this.props.navigation.navigate(ScreenName.ForgotPassword);
                 }
             })
+    }
+
+    _onSwitchToHomePage = res => {
+        this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token});
+        this.props.navigation.navigate(ScreenName.HomeScreen);
     }
 }
 
 export default connect()(Signin)
+
+const style = StyleSheet.create({
+    or: {color: '#999999', fontSize: 14, paddingLeft: 10, paddingRight: 10},
+    line: {flex: 1, height: 1, backgroundColor: '#999999'},
+    boxOr: {width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
+    forgot: {width: '50%', alignSelf: 'center'},
+    social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'},
+    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: '#F55555',},
+    color: {color: '#F55555'},
+    content: {flex: 1, flexDirection: 'column'},
+    iconSocial: {height: 55,marginTop: 15},
+    flex: { flex:1},
+    w11: {width: 11},
+    mb8: {marginBottom: 8}
+})
 

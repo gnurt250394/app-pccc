@@ -13,6 +13,11 @@ export const Gender = {
     female: 1,
 }
 
+export const LoginType  = {
+    facebook: 1,
+    google: 2,
+}
+
 export const ShowGender = gender => {
     if(gender == null) return gender
     else return gender == Gender.male ? "Nam" : "nữ"
