@@ -43,7 +43,7 @@ export const ScreenName = {
     Profile: "Profile",
     Confirm: "Confirm",
     HomeScreen: "HomeScreen",
-    News: "News",
+    Messenger: "Messenger",
     Cart: "Cart",
     Search: "Search",
     ProductDetail: "ProductDetail",
@@ -51,7 +51,9 @@ export const ScreenName = {
     ScreenHello:"ScreenHello",
     CheckAuth:"CheckAuth",
     Contacts:"Contacts",
-    Introduce:"Introduce"
+    Introduce:"Introduce",
+    Notify:"Notify",
+    ViewAllProduct:"ViewAllProduct",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

@@ -5,9 +5,8 @@ import images from "public/images"
 import { ScreenName } from "config"
 import Profile from 'components/Profile'
 import HomeScreen from 'components/Home'
-import Cart from 'components/Cart'
-import News from 'components/News'
-import Search from 'components/Search'
+import Messenger from 'components/Messenger'
+import Notify from 'components/Notify'
 
 export default createBottomTabNavigator(
   {
@@ -17,22 +16,16 @@ export default createBottomTabNavigator(
         title: 'Trang chủ',
       }),
     },
-    [ScreenName.News]: { 
-      screen: News,
+    [ScreenName.Messenger]: { 
+      screen: Messenger,
       navigationOptions: () => ({
-        title: 'Tin tức',
+        title: 'Tin nhắn',
       }),
     },
-    [ScreenName.Search]: { 
-      screen: Search,
+    [ScreenName.Notify]: { 
+      screen: Notify,
       navigationOptions: () => ({
-        title: 'Đăng mua',
-      }),
-    },
-    [ScreenName.Cart]: { 
-      screen: Cart,
-      navigationOptions: () => ({
-        title: 'Đăng bán',
+        title: 'Thông báo',
       }),
     },
     [ScreenName.Profile]: { 
@@ -52,14 +45,11 @@ export default createBottomTabNavigator(
           case ScreenName.HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
             break;
-          case ScreenName.News:
-            image = focused ? images.tabNewsRed : images.tabNews;
+          case ScreenName.Messenger:
+            image = focused ? images.msgRed : images.msgDark;
             break;
-          case ScreenName.Search:
-            image = focused ? images.tabSellRed : images.tabSell;
-            break;
-          case ScreenName.Cart:
-            image = focused ? images.tabBuyRed : images.tabBuy;
+          case ScreenName.Notify:
+            image = focused ? images.notify : images.notifyDark;
             break;
           case ScreenName.Profile:
             image = focused ? images.ProfileRed : images.ProfileDark;
@@ -68,12 +58,8 @@ export default createBottomTabNavigator(
         
         return <Image  style={[styles.icon, {width: 22}]} source={image} />
       },
-      // tabBarLabel: () => {
-      //   showLabel: false
-      // },
       tabBarOptions: {
         activeTintColor: '#F55555',
-        
       }
     }),
   }

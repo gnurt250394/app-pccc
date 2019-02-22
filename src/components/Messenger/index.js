@@ -7,19 +7,19 @@ import { signup } from 'config/api'
 import { Footer, ViewMore } from 'layout'
 import { ScreenName } from 'config'
 
-class News extends React.Component {
+class Messenger extends React.Component {
     render(){
         return (
             <View style={{}}>
                 <ScrollView>
                     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                    <Text>Tin tức</Text>
+                    <Text>Nhắn tin</Text>
                 </ScrollView>
             </View>
         )
     }
 }
-export default connect()(News)
+export default connect()(Messenger)
 
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'}
