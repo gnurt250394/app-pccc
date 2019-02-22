@@ -36,12 +36,19 @@ class HomeScreen extends React.Component {
                         </View >
                     </View>
                     <View style={style.flex}>
-                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                        <View style={{flexDirection: 'row', marginBottom: 2, marginTop: 2,}}>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <ImageBackground 
                                     style={style.box6}
                                     source={images.projectInfo}>
                                     <Text style={style.title}>Thông tin dự án</Text> 
+                                    
+                                    <View style={style.badge}>
+                                        {/* <Image
+                                            style={style.badgeImage}
+                                            source={images.badge} /> */}
+                                            <Text style={style.notify}>10</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
@@ -59,6 +66,9 @@ class HomeScreen extends React.Component {
                                     style={style.box6}
                                     source={images.thongtindauthau}>
                                     <Text style={style.title}>Thông tin đấu thầu</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>15</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
@@ -66,6 +76,9 @@ class HomeScreen extends React.Component {
                                     style={style.box4}
                                     source={images.thanhly}>
                                     <Text style={style.title}>Thanh lý hàng hóa</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>362</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
@@ -83,6 +96,9 @@ class HomeScreen extends React.Component {
                                     style={style.box3}
                                     source={images.thongtintheodoi}>
                                     <Text style={style.title}>Thông tin theo dõi</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>7</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
@@ -99,6 +115,9 @@ class HomeScreen extends React.Component {
                                     style={style.box3}
                                     source={images.tailieu}>
                                     <Text style={style.title}>Tài liệu</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>7</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
@@ -106,6 +125,9 @@ class HomeScreen extends React.Component {
                                     style={style.box3}
                                     source={images.catalog}>
                                     <Text style={style.title}>Catalog</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>7</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
@@ -113,6 +135,9 @@ class HomeScreen extends React.Component {
                                     style={[style.box3, {marginRight: 0}]}
                                     source={images.video}>
                                     <Text style={style.title}>Video</Text> 
+                                    <View style={style.badge}>
+                                        <Text style={style.notify}>7</Text>
+                                    </View>
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
@@ -136,5 +161,8 @@ const style = StyleSheet.create({
     title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16},
     box6: {width: width * (0.55), height: 125, marginRight: 2},
     box4: {width: width * (0.45), height: 125},
-    box3: {width: width/3, height: 125, marginRight: 2}
+    box3: {width: width/3, height: 125, marginRight: 2},
+    badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
+    badgeImage: {height: 35, resizeMode: 'contain',},
+    notify: { color: "#F55555", fontSize: 12, padding: 5, textAlign: 'center'},
 })

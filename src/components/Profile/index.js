@@ -61,15 +61,15 @@ class Profile extends React.Component {
                             onPress={() => this.props.navigation.navigate(ScreenName.ViewProfile)}
                             icon={images.pUser} />
                         <NavItem 
+                            title='Shop của tôi' 
+                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
+                            icon={images.pShop} />
+                        <NavItem 
                             title='Mua gói dịch vụ' 
                             onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
                             icon={images.pService} />
                         <NavItem 
-                            title='Tin tức đánh dấu' 
-                            onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
-                            icon={images.pNews} />
-                        <NavItem 
-                            title='Sản phẩm đánh dấu' 
+                            title='Sản phẩm yêu cầu báo giá' 
                             onPress={() => this.props.navigation.navigate(ScreenName.ChangePassword)}
                             icon={images.pProduct} />
                         <NavItem 

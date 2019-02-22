@@ -16,7 +16,9 @@ class ProductDetail extends React.Component {
             created_at: '5 gio truoc',
             price: 150000,
             description: `Khi phát hiện có hỏa hoạn xảy ra, ngay lập tức hãy di chuyển bình cứu hỏa đến gần đám cháy trong phạm vi chữa cháy của bình:
-            Chuyển bình tới gần địa điểm cháy. Lắc xóc vài lần, giật chốt hãm kẹp trì, chọn đầu hướng gió hướng...`
+            Chuyển bình tới gần địa điểm cháy. Lắc xóc vài lần, giật chốt hãm kẹp trì, chọn đầu hướng gió hướng...`,
+            quantity: 1000,
+            sell: 500
         }
     }
     render(){
@@ -43,13 +45,9 @@ class ProductDetail extends React.Component {
                         <Text style={{color:'#FC6463', fontSize: 14,  flex: 1}}>{toPrice(this.state.price)}</Text>
 
                         <View style={style.row}>
-                            <TouchableOpacity onPress={() =>  null} >
-                                <Image 
-                                    style={[styles.icon, {marginRight: 10, height: 18}]}
-                                    source={images.calender} />
-                            </TouchableOpacity>
 
-                            <Text style={{color:'#999999', fontSize: 12}}>{this.state.created_at}</Text>
+                            <Text style={{color:'#999999', fontSize: 12}}>Số lượng: {this.state.quantity}</Text>
+                            <Text style={{color:'#999999', fontSize: 12, paddingLeft: 10}}>Đã bán: {this.state.sell}</Text>
                         </View>
                     </View>
 
@@ -90,7 +88,7 @@ class ProductDetail extends React.Component {
                             onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
                             style={style.tabBtn}>
                         <Image 
-                            style={[styles.icon, {alignSelf: 'center', width: 25}]}
+                            style={[styles.icon, {alignSelf: 'center', height: 40, width: 20,}]}
                             source={images.messenger} />
                         <Text 
                             onPress={() => this.props.navigation.navigate(ScreenName.Profile)}
@@ -101,11 +99,11 @@ class ProductDetail extends React.Component {
                             onPress={() => this.props.navigation.navigate(ScreenName.Contacts)}
                             style={[style.tabBtn, { backgroundColor: '#F55555'}]}>
                         <Image 
-                            style={[styles.icon, {alignSelf: 'center', width: 12}]}
+                            style={[styles.icon, {alignSelf: 'center', height: 18}]}
                             source={images.phoneLight} />
                         <Text 
                             // onPress={() => this.props.navigation.navigate(ScreenName.Contacts)}
-                            style={[style.tabLabel, {color: '#fff'}]}>{toUpperCase('Liên hệ')}</Text>
+                            style={[style.tabLabel, {color: '#fff'}]}>{toUpperCase('Gọi điện')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

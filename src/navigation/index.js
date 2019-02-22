@@ -53,7 +53,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.SplashScreen,
+    initialRouteName: ScreenName.ProductDetail,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

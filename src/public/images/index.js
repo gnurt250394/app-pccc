@@ -63,6 +63,7 @@ module.exports = {
     pLocation: require('./pLocation.png'),
     pPhone: require('./pPhone.png'),
     pThue: require('./pThue.png'),
+    pShop: require('./pShop.png'),
     selected: require('./selected.png'),
     unselect: require('./unselect.png'),
     phoneLight: require('./phoneLight.png'),
@@ -92,4 +93,5 @@ module.exports = {
     msgDark: require('./msgDark.png'),
     notify: require('./notify.png'),
     notifyDark: require('./notifyDark.png'),
+    badge: require('./badge.png'),
 }
