@@ -15,12 +15,23 @@ class Register extends React.Component {
         password: "",
         rePassword: "",
     }
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+      }
     
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+    // end set status bar
+
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={styles.content}>
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <Text style={{color: '#F55555', fontWeight: 'bold', fontSize: 22, marginBottom: '15%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
                 <View style={{height: "60%"}}>
                     <BaseInput 

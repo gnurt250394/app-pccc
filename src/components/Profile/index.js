@@ -13,16 +13,6 @@ class Profile extends React.Component {
         
     }
 
-    componentDidMount() {
-        if(!this.props.user){
-            const resetAction = StackActions.reset({
-                index:0,
-                actions: [NavigationActions.navigate({routeName: ScreenName.CheckAuth})]
-            })
-            this.props.navigation.dispatch(resetAction)
-        }
-    }
-
     edit = () => {
         this.props.navigation.navigate(ScreenName.EditProfile)
     }
@@ -43,11 +33,31 @@ class Profile extends React.Component {
         </TouchableOpacity>
     }
 
+    // set status bar
+    componentDidMount() {
+        if(!this.props.user){
+            const resetAction = StackActions.reset({
+                index:0,
+                actions: [NavigationActions.navigate({routeName: ScreenName.CheckAuth})]
+            })
+            this.props.navigation.dispatch(resetAction)
+        }
+
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
+        });
+        
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render(){
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#F55555" barStyle="light-content" />
                     <View style={{backgroundColor: '#F55555', paddingBottom: 10, paddingTop: 10}}>
                         <Image 
                             style={{width: 80, resizeMode: 'contain', alignSelf: 'center' }}

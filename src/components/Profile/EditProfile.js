@@ -74,11 +74,24 @@ class EditProfile extends React.Component {
         }
     }
 
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
+    // end set status bar
+
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <ScrollView >
-                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
                 <View style={{backgroundColor: '#F55555'}}>
                     <TouchableOpacity onPress={this._onSuccess()}>
                         <Text style={style.textDone}>Xong</Text>

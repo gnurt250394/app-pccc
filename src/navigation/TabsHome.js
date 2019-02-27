@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "react-navigation";
-import {Image} from 'react-native'
+import {Image, StatusBar} from 'react-native'
 import React from 'react'
 import images from "public/images"
 import { ScreenName } from "config"

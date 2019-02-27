@@ -6,15 +6,29 @@ import styles from "public/css"
 import { ScreenName } from 'config'
 import { DrawerActions } from 'react-navigation-drawer';
 let {width, height} = Dimensions.get('window')
+console.log('height: ', height);
+
 class HomeScreen extends React.Component {
     state = {
         keyword: ''
     }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render(){
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.closeDrawer()}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#F55555" barStyle="light-content" />
 
                     <View style={style.head}>
                         <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.dispatch(DrawerActions.toggleDrawer())} >
@@ -33,7 +47,7 @@ class HomeScreen extends React.Component {
                             <TextInput 
                                 style={[style.flex, {color: "rgba(255, 255, 255, 0.6)"}]}
                                 value={this.state.keyword}
-                                returnKeyLabel="Tìm kiếm"
+                                returnKeyLabel="Tìm"
                                 onSubmitEditing={this._onSearch}
                                 onChangeText={keyword => this.setState({keyword})}
                                 placeholderTextColor="rgba(255, 255, 255, 0.6)"
@@ -42,7 +56,7 @@ class HomeScreen extends React.Component {
                         </View >
                     </View>
                     <View style={style.flex}>
-                        <View style={{flexDirection: 'row', marginBottom: 2, marginTop: 2,}}>
+                        <View style={{flexDirection: 'row', marginBottom: 1, marginTop: 1,}}>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <ImageBackground 
                                     style={style.box6}
@@ -66,7 +80,7 @@ class HomeScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <ImageBackground 
                                     style={style.box6}
@@ -81,7 +95,7 @@ class HomeScreen extends React.Component {
                                 <ImageBackground 
                                     style={style.box4}
                                     source={images.thanhly}>
-                                    <Text style={[style.title, {width: '80%'}]}>Thanh lý hàng hóa</Text> 
+                                    <Text style={[style.title]}>Thanh lý hàng hóa</Text> 
                                     <View style={style.badge}>
                                         <Text style={style.notify}>362</Text>
                                     </View>
@@ -89,7 +103,7 @@ class HomeScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 2,}}>
+                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(ScreenName.Search)} >
                                 <ImageBackground 
                                     style={style.box3}
@@ -168,10 +182,10 @@ const style = StyleSheet.create({
     w20: { width: 20},
     p8: {padding: 8},
     flex: {flex: 1},
-    title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16},
-    box6: {width: (width * (2/3) + 2), height: 125, marginRight: 2},
-    box4: {width: width * (1/3), height: 125},
-    box3: {width: width/3, height: 125, marginRight: 2},
+    title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16,  width: '80%'},
+    box6: {width: (width * (2/3) + 2), height: (height - 136)/4, marginRight: 1},
+    box4: {width: width * (1/3), height: (height - 136)/4},
+    box3: {width: width/3, height: (height - 136)/4, marginRight: 1},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: "#F55555", fontSize: 12, padding: 5, textAlign: 'center'},

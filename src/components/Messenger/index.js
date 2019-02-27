@@ -12,11 +12,22 @@ class Messenger extends React.Component {
         return (
             <View style={{}}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                     <Text>Nhắn tin</Text>
                 </ScrollView>
             </View>
         )
+    }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
     }
 }
 export default connect()(Messenger)

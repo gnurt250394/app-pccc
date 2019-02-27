@@ -98,7 +98,6 @@ class Cart extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                     <Text style={style.heading}>Giỏ hàng</Text>
                     {this.showData()}
                 <View style={style.totalBox}>
@@ -111,6 +110,18 @@ class Cart extends React.Component {
                 <Btn name={toUpperCase("Thanh toán")} />
             </View>
         )
+    }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
     }
 }
 export default connect()(Cart)

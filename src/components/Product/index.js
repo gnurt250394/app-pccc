@@ -21,10 +21,21 @@ class ProductDetail extends React.Component {
             sell: 500
         }
     }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
     render(){
         return (
             <View style={{flex: 1}}>
-                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
                 <ScrollView>
                     <View style={[style.row, {backgroundColor: "#F55555"}]}>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()} >

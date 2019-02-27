@@ -24,11 +24,23 @@ class ViewProfile extends React.Component {
     componentWillReceiveProps(props){
         if(props.user) this.setState({user: props.user})
     }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+    // end set status bar
   
     render(){
         return (
             <View >
-                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
                 <View style={{backgroundColor: '#F55555', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.goBack()}>
                         <Image 

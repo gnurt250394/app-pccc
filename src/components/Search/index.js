@@ -8,11 +8,23 @@ import { Footer, ViewMore } from 'layout'
 import { ScreenName } from 'config'
 
 class More extends React.Component {
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+    // end set status bar
+
     render(){
         return (
             <View style={{}}>
                 <ScrollView>
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                     <Text>Search</Text>
                 </ScrollView>
             </View>

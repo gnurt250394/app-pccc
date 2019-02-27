@@ -9,9 +9,8 @@ export default class MyApp extends React.Component {
     render(){
         return(
             <Provider store={store}>
-                <App ref={navigationref=>{
-                    NavigationService.setTopLevelNavigator(navigationref)
-                }}/>
+                <App ref={navigationref=>NavigationService.setTopLevelNavigator(navigationref)}> 
+                </App>
             </Provider>
         )
     }

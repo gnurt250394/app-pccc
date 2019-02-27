@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, StatusBar, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
 import { ScreenName, toUpperCase } from 'config'
 
@@ -11,22 +11,35 @@ class CheckAuth extends React.Component {
         };
     }
 
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#999999');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render() {
         return (
-            <View style={style.modal}>
-                <StatusBar backgroundColor="#999999" barStyle="dark-content" />
-                <View style={style.bodyModal}>
-                    <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
-                    <View style={style.footerModal}>
-                        <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
-                            style={[style.btnModal, {borderBottomRightRadius: 0}]}>{toUpperCase("Đăng nhập")}</Text>
-                        <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.Register)}
-                            style={[style.btnModal, {color: '#F55555', backgroundColor: 'white', borderBottomLeftRadius: 0}]}>{toUpperCase("Đăng ký")}</Text>
+            <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.navigate(ScreenName.HomeScreen)}>
+                <View style={style.modal}>
+                    <View style={style.bodyModal}>
+                        <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
+                        <View style={style.footerModal}>
+                            <Text 
+                                onPress={() => this.props.navigation.navigate(ScreenName.Signin)}
+                                style={[style.btnModal, {borderBottomRightRadius: 0}]}>{toUpperCase("Đăng nhập")}</Text>
+                            <Text 
+                                onPress={() => this.props.navigation.navigate(ScreenName.Register)}
+                                style={[style.btnModal, {color: '#F55555', backgroundColor: 'white', borderBottomLeftRadius: 0}]}>{toUpperCase("Đăng ký")}</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         )
     }
 
@@ -40,5 +53,12 @@ const style = StyleSheet.create({
     bodyModal: {width: '80%', alignSelf: 'center', backgroundColor: 'white',  flexDirection: 'column', borderRadius: 8,},
     headModal: {textAlign: 'center', padding: 10, color: '#333333',  fontWeight: 'bold', fontSize: 18},
     footerModal: {flexDirection: 'row', borderWidth: 1, borderColor: '#F55555', borderBottomLeftRadius: 8, borderBottomRightRadius: 8,},
-    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: '#F55555', color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8}
+    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: '#F55555', color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8},
+    close: {
+        color: '#333333',
+        textAlign: 'center',
+        marginTop: 40,
+        fontSize: 16,
+        fontWeight: 'bold'
+    }
 })

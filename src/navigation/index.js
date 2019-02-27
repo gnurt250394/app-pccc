@@ -1,4 +1,5 @@
 import { createStackNavigator, createAppContainer, createDrawerNavigator } from "react-navigation";
+import { StatusBar } from 'react-native'
 import React from 'react'
 import { ScreenName } from "config"
 import Register from 'components/Register'
@@ -57,6 +58,20 @@ const App = createStackNavigator(
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
+    },
+    defaultNavigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      // switch(routeName){
+      //   case ScreenName.HomeScreen:
+      //   case ScreenName.Profile:
+      //     StatusBar.setBarStyle('light-content');
+      //     StatusBar.setBackgroundColor('#F55555');
+      //     break;
+      //   default:
+      //     StatusBar.setBarStyle('dark-content');
+      //     StatusBar.setBackgroundColor('#fff');
+      //     break
+      // }
     }
   }
 );

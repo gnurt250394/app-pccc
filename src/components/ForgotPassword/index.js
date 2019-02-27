@@ -12,11 +12,22 @@ class ChangePassword extends React.Component {
         password: '',
         rePassword: '',
     }
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+      }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
                 <View >
-                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                     <Header title="Đổi mật khẩu mới" onPress={() => this.props.navigation.goBack()}/>
                     <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                         <View></View>
