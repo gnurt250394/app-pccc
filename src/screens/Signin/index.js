@@ -106,7 +106,7 @@ class Signin extends React.Component {
 
 
     _onFacebookLogin = async () => {
-        
+        console.log();
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
           if (result.isCancelled) {
