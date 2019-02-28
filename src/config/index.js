@@ -1,8 +1,4 @@
 import {  Alert } from 'react-native'
-export const UrlName = {
-    base: 'localhost:8081',
-    signup: 'signup'
-}
 
 export const StatusCode = {
     Success: 200,
@@ -28,33 +24,6 @@ export const CodeToMessage = {
     427: "Số điện thoại đã được sử dụng",
     439: "Số điện thoại đã được sử dụng",
     500: "Server Error",
-}
-
-export const ScreenName = {
-    Signup: "Signup", 
-    Signin: "Signin", 
-    Register: "Register", 
-    ForgotPassword: "ForgotPassword", 
-    ChangePassword: "ChangePassword",
-    Register: "Register",
-    Complete: "Complete",
-    ViewProfile: "ViewProfile",
-    EditProfile: "EditProfile",
-    Profile: "Profile",
-    Confirm: "Confirm",
-    HomeScreen: "HomeScreen",
-    Messenger: "Messenger",
-    Cart: "Cart",
-    Search: "Search",
-    ProductDetail: "ProductDetail",
-    SplashScreen:"SplashScreen",
-    ScreenHello:"ScreenHello",
-    CheckAuth:"CheckAuth",
-    Contacts:"Contacts",
-    Introduce:"Introduce",
-    Notify:"Notify",
-    ViewAllProduct:"ViewAllProduct",
-    Shop:"Shop",
 }
 
 export const toUpperCase = (str) => str.toUpperCase()

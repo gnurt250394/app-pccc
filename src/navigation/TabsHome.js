@@ -1,34 +1,34 @@
 import { createBottomTabNavigator } from "react-navigation";
 import {Image, StatusBar} from 'react-native'
 import React from 'react'
-import images from "public/images"
-import { ScreenName } from "config"
-import Profile from 'components/Profile'
-import HomeScreen from 'components/Home'
-import Messenger from 'components/Messenger'
-import Notify from 'components/Notify'
+import images from "assets/images"
+import { HomeScreen, MessengerScreen, ProfileScreen, NotifyScreen } from "config/screenNames"
+import Profile from 'screens/Profile'
+import Home from 'screens/Home'
+import Messenger from 'screens/Messenger'
+import Notify from 'screens/Notify'
 
 export default createBottomTabNavigator(
   {
-    [ScreenName.HomeScreen]: { 
-      screen: HomeScreen,
+    [HomeScreen]: { 
+      screen: Home,
       navigationOptions: () => ({
         title: 'Trang chủ',
       }),
     },
-    [ScreenName.Messenger]: { 
+    [MessengerScreen]: { 
       screen: Messenger,
       navigationOptions: () => ({
         title: 'Tin nhắn',
       }),
     },
-    [ScreenName.Notify]: { 
+    [NotifyScreen]: { 
       screen: Notify,
       navigationOptions: () => ({
         title: 'Thông báo',
       }),
     },
-    [ScreenName.Profile]: { 
+    [ProfileScreen]: { 
       screen: Profile,
       navigationOptions: () => ({
         title: 'Cá nhân',
@@ -42,17 +42,17 @@ export default createBottomTabNavigator(
         const { routeName } = navigation.state;
         var image,  w = 17;
         switch (routeName){
-          case ScreenName.HomeScreen:
+          case HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
             break;
-          case ScreenName.Messenger:
+          case MessengerScreen:
             image = focused ? images.tabMsgRed : images.tabMsgDark;
             w = 22;
             break;
-          case ScreenName.Notify:
+          case NotifyScreen:
             image = focused ? images.notify : images.notifyDark;
             break;
-          case ScreenName.Profile:
+          case ProfileScreen:
             image = focused ? images.tabUserRed : images.tabUserDark;
             break;
           default:

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
-import {TextBold} from 'layout';
-import images from "public/images"
-import navigation from '../navigation/NavigationService'
-import { ScreenName, toUpperCase } from 'config';
+import {TextBold} from 'components';
+import images from "assets/images"
+import navigation from './NavigationService'
+import { toUpperCase } from 'config';
 import { connect } from 'react-redux'
+import  * as ScreenName from 'config/screenNames'
 class DrawerItem extends React.Component {
     state = {
         showMore: this.props.showMore || undefined
@@ -51,10 +52,10 @@ class Drawer extends Component {
                             {   this.props.user && this.props.user.name 
                                 ? <Text style={styles.member}>(Thành viên thường)</Text>
                                 : <View style={styles.boxLogin}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Signin)}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.SigninScreen)}>
                                     <Text style={styles.login}>Đăng nhập/</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.Register)}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenName.RegisterScreen)}>
                                         <Text style={styles.login}>Đăng ký</Text>
                                     </TouchableOpacity>
                                 </View>}
@@ -62,7 +63,7 @@ class Drawer extends Component {
                     </View>
                 
                     <DrawerItem 
-                        onPress={() => this.props.navigation.navigate(ScreenName.Shop)}
+                        onPress={() => this.props.navigation.navigate(ScreenName.ShopScreen)}
                         title='Cửa hàng' 
                         icon={images.mShop} />
                     <DrawerItem 
@@ -73,31 +74,31 @@ class Drawer extends Component {
                         showMore={this.state.showMore}/>
                     { !this.state.showMore ? <View style={styles.subMenu}>
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo chay UNIPOS"})}
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProductScreen, {title: "Báo chay UNIPOS"})}
                             style={styles.subItem}>{toUpperCase('Báo chay UNIPOS')}</Text>
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm nổi bật"})}
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProductScreen, {title: "Sản phẩm nổi bật"})}
                             style={styles.subItem}>{toUpperCase('Sản phẩm nổi bật')}</Text>
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Sản phẩm bán chạy"})}
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProductScreen, {title: "Sản phẩm bán chạy"})}
                             style={styles.subItem}>{toUpperCase('Sản phẩm bán chạy')}</Text>
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProduct, {title: "Báo cháy HOCHIKI"})}
+                            onPress={() => this.props.navigation.navigate(ScreenName.ViewAllProductScreen, {title: "Báo cháy HOCHIKI"})}
                             style={styles.subItem}>{toUpperCase('Báo cháy HOCHIKI')}</Text>
                     </View> : null}
                     <DrawerItem 
                         title='Liên hệ' 
-                        onPress={()=>navigation.navigate(ScreenName.Contacts)}
+                        onPress={()=>navigation.navigate(ScreenName.ContactsScreen)}
                         icon={images.mContact} />
                     <DrawerItem 
                         title='Giới thiệu' 
-                        onPress={()=> navigation.navigate(ScreenName.Introduce)}
+                        onPress={()=> navigation.navigate(ScreenName.IntroduceScreen)}
                         icon={images.mIntro} />
                     {   this.props.user && this.props.user.name 
                         ?  <DrawerItem 
                             onPress={() => {
                                 this.props.dispatch({type: 'LOGOUT'})
-                                this.props.navigation.navigate(ScreenName.Signin)}
+                                this.props.navigation.navigate(ScreenName.SigninScreen)}
                             }
                             title='Đăng xuất' 
                             icon={images.mSignout} /> : null}

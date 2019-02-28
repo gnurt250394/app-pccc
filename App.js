@@ -3,7 +3,7 @@
 import React from 'react'
 import App from './src/navigation';
 import { Provider } from 'react-redux'
-import store from 'config/store'
+import store from './src/redux'
 import NavigationService from './src/navigation/NavigationService';
 export default class MyApp extends React.Component {
     render(){
