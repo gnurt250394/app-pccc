@@ -7,7 +7,8 @@
       "components": ["src/components/*"],
       "config": ["src/config/*"],
       "assets": ["src/assets/*"],
-      "screens": ["src/screens/*"]
+      "screens": ["src/screens/*"],
+      "actions": ["src/redux/actions/*"],
     }
   }
 }

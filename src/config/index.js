@@ -9,14 +9,14 @@ export const Gender = {
     female: 1,
 }
 
-export const LoginType  = {
-    facebook: 1,
-    google: 2,
-}
-
 export const ShowGender = gender => {
     if(gender == null) return gender
     else return gender == Gender.male ? "Nam" : "nữ"
+}
+
+export const LoginType  = {
+    facebook: 1,
+    google: 2,
 }
 
 export const CodeToMessage = {
@@ -26,8 +26,8 @@ export const CodeToMessage = {
     500: "Server Error",
 }
 
-export const toUpperCase = (str) => str.toUpperCase()
-export const toPrice = (str) => {
+export const toUpperCase = str => str.toUpperCase()
+export const toPrice = str => {
     return  str ? str.toLocaleString("vi", {style: "currency", currency: "VND", minimumFractionDigits: 0}) : 0
 }
 export const removeItem = (arr, i) => arr.slice(0, i).concat(arr.slice(i + 1, arr.length))
@@ -49,10 +49,7 @@ export const popupOk = msg =>{
         'Thông báo',
         msg,
         [
-          {
-            text: 'ok',style: 'cancel',
-          },
-          
+          { text: 'ok',style: 'cancel' }
         ],
         {cancelable: false},
     );

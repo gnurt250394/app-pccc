@@ -6,6 +6,7 @@ import { updateUser } from 'config/apis/users'
 import {  Input} from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender } from 'config'
 import { chooseImage } from 'config/uploadImage'
+import { actionTypes } from 'actions'
 class InputItem extends React.Component {
     render() {
         return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
@@ -170,7 +171,7 @@ class EditProfile extends React.Component {
             if(this.state.email != this.user.email) data.email = this.state.email;
             updateUser(this.props.token, data).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    this.props.dispatch({type: 'UPDATE_USER', data: res.data.data})
+                    this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     this.props.navigation.goBack()
                 }else{
                     popupOk(res.data.message)

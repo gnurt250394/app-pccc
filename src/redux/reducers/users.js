@@ -1,21 +1,22 @@
+import { actionTypes } from  '../actions'
+
 export default function users(state = {}, action) {
-    console.log('action user: ', action);
     switch(action.type){
-        case 'LOGIN':
+        case actionTypes.USER_LOGIN:
             state = {
                 ...state,
                 data: action.data,
                 token: action.token
             }
             break
-        case 'LOGOUT':
+        case actionTypes.USER_LOGOUT:
             state = {
                 ...state,
                 data: null,
                 token: null
             }
             break
-        case 'UPDATE_USER':
+        case actionTypes.USER_UPDATE:
             state = {
                 ...state,
                 data: action.data

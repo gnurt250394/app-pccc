@@ -6,7 +6,7 @@ import { Btn } from 'components'
 import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
-
+import { actionTypes } from 'actions'
 class Profile extends React.Component {
     constructor(props){
         super(props);
@@ -90,7 +90,7 @@ class Profile extends React.Component {
                 </ScrollView>
                 <Btn name='Đăng xuất' 
                     onPress={() => {
-                        this.props.dispatch({type: 'LOGOUT'})
+                        this.props.dispatch({type: actionTypes.USER_LOGOUT})
                         this.props.navigation.navigate(SigninScreen)}
                     } />
             </View>

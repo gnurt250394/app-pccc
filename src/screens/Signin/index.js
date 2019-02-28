@@ -11,7 +11,7 @@ import firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import  { accountKit } from 'config/accountKit'
 import  { RegisterScreen, ForgotPasswordScreen, HomeScreen } from 'config/screenNames'
-
+import  { actionTypes } from 'actions'
 
 class Signin extends React.Component {
     state = {
@@ -219,7 +219,7 @@ class Signin extends React.Component {
     }
 
     _onSwitchToHomePage = res => {
-        this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token});
+        this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token});
         this.props.navigation.navigate(HomeScreen);
     }
 }

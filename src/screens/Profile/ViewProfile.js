@@ -48,7 +48,7 @@ class ViewProfile extends React.Component {
                             style={{width: 10, resizeMode: 'contain' }}
                             source={images.backLight} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.navigate(ScreenNameEditProfileScreen)}>
+                    <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.navigate(EditProfileScreen)}>
                         <Image 
                             style={{width: 20, resizeMode: 'contain' }}
                             source={images.edit} />

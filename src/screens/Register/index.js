@@ -8,6 +8,7 @@ import { BaseInput, Btn} from 'components'
 import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage } from 'config'
 import  { accountKit } from 'config/accountKit'
 import  { SigninScreen, HomeScreen } from 'config/screenNames'
+import { actionTypes } from 'actions'
 class Register extends React.Component {
     state = {
         name: "",
@@ -113,7 +114,7 @@ class Register extends React.Component {
                         }).then(res => {
                             console.log('res: ', res);
                         if(res.data.code == StatusCode.Success){
-                            this.props.dispatch({type: 'LOGIN', data: res.data.data, token: res.data.token})
+                            this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
                             this.props.navigation.navigate(HomeScreen)
                         }else{
                             popupOk(CodeToMessage[res.data.code])
