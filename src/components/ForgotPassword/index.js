@@ -15,8 +15,8 @@ class ChangePassword extends React.Component {
     // set status bar
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor('#F55555');
         });
       }
     
@@ -28,18 +28,18 @@ class ChangePassword extends React.Component {
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
                 <View >
-                    <Header title="Đổi mật khẩu mới" onPress={() => this.props.navigation.goBack()}/>
+                    <Header title="Đổi mật khẩu" onPress={() => this.props.navigation.goBack()}/>
                     <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
                         <View></View>
                         <View>
                             <BaseInput 
                                 icon={images.keyDark}
-                                onChangeText={val => this.setState({password: val})}
+                                ref={val => this.password = val}
                                 secureTextEntry={true}
                                 placeholder="Mật khẩu mới"  />
                             <BaseInput 
                                 icon={images.keyDark}
-                                onChangeText={val => this.setState({rePassword: val})}
+                                ref={val => this.rePassword = val}
                                 secureTextEntry={true}
                                 placeholder="Nhập lại mật khẩu mới"  />
                         </View>
@@ -51,9 +51,11 @@ class ChangePassword extends React.Component {
     }
 
     _onSuccess = () => () => {
-        if(this.state.password.trim().length < 6){
+        let password = this.password ? this.password.getValue() : "";
+        let rePassword = this.rePassword ? this.rePassword.getValue() : "";
+        if(password.trim().length < 6){
             popupOk('Mật khẩu từ 6 ký tự')
-        }else if(this.state.password != this.state.rePassword){
+        }else if(password != rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
         }else{
             // call api

@@ -6,7 +6,6 @@ import styles from "public/css"
 import { ScreenName } from 'config'
 import { DrawerActions } from 'react-navigation-drawer';
 let {width, height} = Dimensions.get('window')
-console.log('height: ', height);
 
 class HomeScreen extends React.Component {
     state = {

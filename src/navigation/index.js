@@ -54,7 +54,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.SplashScreen,
+    initialRouteName: ScreenName.HomeScreen,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

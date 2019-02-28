@@ -40,23 +40,27 @@ export default createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        var image;
+        var image,  w = 17;
         switch (routeName){
           case ScreenName.HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
             break;
           case ScreenName.Messenger:
-            image = focused ? images.msgRed : images.msgDark;
+            image = focused ? images.tabMsgRed : images.tabMsgDark;
+            w = 22;
             break;
           case ScreenName.Notify:
             image = focused ? images.notify : images.notifyDark;
             break;
           case ScreenName.Profile:
-            image = focused ? images.ProfileRed : images.ProfileDark;
+            image = focused ? images.tabUserRed : images.tabUserDark;
+            break;
+          default:
+            w = 17;
             break;
         }
+        return <Image  style={[styles.icon, {width: w}]} source={image} />
         
-        return <Image  style={[styles.icon, {width: 22}]} source={image} />
       },
       tabBarOptions: {
         activeTintColor: '#F55555',

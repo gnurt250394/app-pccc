@@ -14,7 +14,7 @@ export default class BaseInput extends React.PureComponent {
     }
     render(){
         return (
-            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 2,}}>
+            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 20, paddingBottom: 0,}}>
                 <Image 
                     style={[styles.icon,{width: 12}, this.props.styleIcon || {}, ]} 
                     source={this.props.icon} />
