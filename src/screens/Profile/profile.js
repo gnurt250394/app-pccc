@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
 import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
-import { color, toUpperCase } from 'config'
+import { color } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
-class Profile extends React.Component {
+class MyProfile extends React.Component {
     constructor(props){
         super(props);
         
@@ -18,6 +18,21 @@ class Profile extends React.Component {
         this.props.navigation.navigate(EditProfileScreen)
     }
 
+    renderItem = (title, screen, icon) => {
+        return <TouchableOpacity 
+            onPress={() => this.props.navigation.navigate(screen)}
+            style={{ marginBottom: 15, flexDirection: 'row'}}>
+            <Image 
+                style={style.icon}
+                source={icon} />
+            <View style={{borderBottomWidth: 1.5, borderColor: '#ddd', paddingBottom: 10, flex: 1, flexDirection: 'row'}}>
+                <Text style={style.label}>{title}</Text>
+                <Image 
+                    style={style.iconNext}
+                    source={images.next} />
+            </View>
+        </TouchableOpacity>
+    }
 
     // set status bar
     componentDidMount() {
@@ -43,28 +58,19 @@ class Profile extends React.Component {
     render(){
         return (
             <View style={{flex: 1}}>
-                <ScrollView >
-                    <View style={style.head}>
-
-                        <Text style={style.title}> Cá nhân </Text>
+                <ScrollView>
+                    <View style={{backgroundColor: color, paddingBottom: 10, paddingTop: 10}}>
+                        <Image 
+                            style={{width: 80, resizeMode: 'contain', alignSelf: 'center' }}
+                            source={images.userLight} />
+                        <Text style={style.title}>{this.props.user ? this.props.user.name : ""}</Text>
                     </View>
-
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ViewProfileScreen)}
-                        style={style.boxUser}>
-                        <Image 
-                            style={style.avatar}
-                            source={images.userBlue} />
-                        <View style={style.user}>
-                            <Text style={style.name}>{this.props.user ? this.props.user.name : "Nguyen Van A"}</Text>
-                            <Text style={style.email}>{this.props.user ? this.props.user.email : "email@example.com"}</Text>
-                        </View>
-                        <Image 
-                            style={style.icon}
-                            source={images.next} />
-                    </TouchableOpacity>
                     <View style={{ marginTop: 20}}>
 
+                        <NavItem 
+                            title='Thông tin cá nhân' 
+                            onPress={() => this.props.navigation.navigate(ViewProfileScreen)}
+                            icon={images.pUser} />
                         <NavItem 
                             title='Shop của tôi' 
                             onPress={() => this.props.navigation.navigate(ChangePasswordScreen)}
@@ -83,13 +89,11 @@ class Profile extends React.Component {
                             icon={images.pChangePass} />
                     </View>
                 </ScrollView>
-
-                <Text 
+                <Btn name='Đăng xuất' 
                     onPress={() => {
                         this.props.dispatch({type: actionTypes.USER_LOGOUT})
                         this.props.navigation.navigate(SigninScreen)}
-                    }
-                    style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
+                    } />
             </View>
         )
     }
@@ -103,18 +107,11 @@ const mapStateToProps = (state) =>{
         token: state.users && state.users.token ? state.users.token : null,
     }
 }
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps)(MyProfile)
 
 const style = StyleSheet.create({
-    icon: {width: 10, resizeMode: 'contain', },
+    icon: {width: 30, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", padding: 10,  },
-    btnLogout: {color: '#F55555', fontSize: 16, width: '60%', alignSelf: 'center', textAlign:'center', fontWeight: 'bold', padding: 10, marginBottom: 50},
-    head: {backgroundColor: color},
-    name: {fontSize: 16, color: '#333333', fontWeight: 'bold', paddingBottom: 6},
-    email: {fontSize: 14, color: '#999999', },
-    user: { flex: 1, flexDirection: 'column', padding: 18},
-    avatar: {width: 70, height: 70, alignSelf: 'center' },
-    boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',}
+    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", paddingTop: 10 },
 })

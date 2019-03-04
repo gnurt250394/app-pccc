@@ -8,6 +8,7 @@ import Signin from 'screens/Signin'
 import ForgotPassword from 'screens/ForgotPassword'
 import ChangePassword from 'screens/ForgotPassword/ChangePassword'
 import ViewProfile from 'screens/Profile/ViewProfile'
+import MyProfile from 'screens/Profile/profile'
 import Profile from 'screens/Profile'
 import CheckAuth from 'screens/Profile/CheckAuth'
 import EditProfile from 'screens/Profile/EditProfile'
@@ -50,6 +51,7 @@ const App = createStackNavigator(
     [ScreenName.ContactsScreen]: Contacts,
     [ScreenName.ViewAllProductScreen]: ViewAllProduct,
     [ScreenName.ShopScreen]: Shop,
+    [ScreenName.MyProfile]: MyProfile,
    
   },
   {
