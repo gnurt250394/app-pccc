@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import { updateUser } from 'config/apis/users'
 import {  Input} from 'components'
-import { validateName, popupOk, validateEmail, StatusCode, Gender } from 'config'
+import { validateName, popupOk, validateEmail, StatusCode, Gender, color } from 'config'
 import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
 class InputItem extends React.Component {
@@ -79,7 +79,7 @@ class EditProfile extends React.Component {
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
       }
     
@@ -93,12 +93,12 @@ class EditProfile extends React.Component {
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <ScrollView >
-                <View style={{backgroundColor: '#F55555'}}>
+                <View style={{backgroundColor: color}}>
                     <TouchableOpacity onPress={this._onSuccess()}>
                         <Text style={style.textDone}>Xong</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{backgroundColor: '#F55555', paddingBottom: 30}}>
+                <View style={{backgroundColor: color, paddingBottom: 30}}>
                     <TouchableOpacity onPress={this._onUploadImage}>
                         <Image 
                             style={{width: 80, height: 80, alignSelf: 'center' }}

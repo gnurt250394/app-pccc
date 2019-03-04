@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,ScrollView,Image,StyleSheet,TouchableOpacity,StatusBar,Dimensions,TextInput } from 'react-native';
 import images from "assets/images"
+import { color } from 'config'
 
 const {width,height}=Dimensions.get('window')
 const RenderRow =(props)=> <View style={styles.rowItem}>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         alignContent: 'flex-end',
-        backgroundColor:'#F55555',
+        backgroundColor:color,
         height:40,
         width:70,
         borderRadius:10,

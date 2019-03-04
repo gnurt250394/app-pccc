@@ -4,6 +4,8 @@ import {StackActions,NavigationActions} from 'react-navigation'
 import Swiper from 'react-native-swiper'
 import images from "assets/images"
 import { HomeScreen, SigninScreen, RegisterScreen } from 'config/screenNames';
+import { color } from 'config'
+import { Btn, BaseInput } from 'components'
 
 const {width,height} =Dimensions.get('window')
 export default class ScreenHello extends Component {
@@ -69,23 +71,28 @@ export default class ScreenHello extends Component {
         </View>
       </Swiper>
         <View style={styles.container}>
-        <TouchableOpacity style={[styles.btn,{backgroundColor:'#F55555',marginBottom:20}]}
-        onPress={this.nextHome}>
-               <Text style={{color:'#FFFFFF',fontSize:14,fontWeight:'500'}}>BẮT ĐẦU NGAY</Text>
-           </TouchableOpacity>
+
+           <Btn
+              onPress={this.nextHome} 
+              customStyle={styles.mb8}
+              name="Bắt đầu ngay" />
+
            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',marginBottom:20}}>
-           <View style={styles.OR}/>
-           <Text style={{marginHorizontal:10}}>Hoặc</Text>
-           <View style={styles.OR}/>
+              <View style={styles.OR}/>
+              <Text style={{marginHorizontal:10, color: '#999999'}}>Hoặc</Text>
+              <View style={styles.OR}/>
            </View>
-           <TouchableOpacity style={[styles.btn,{marginBottom:5}]}
-           onPress={this.onLogin}>
-               <Text style={styles.txtButton}>ĐĂNG NHẬP</Text>
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.btn}
-           onPress={this.onSignUp}>
-               <Text style={styles.txtButton}>ĐĂNG KÝ</Text>
-           </TouchableOpacity>
+           <Btn
+              onPress={this.onLogin} 
+              customStyle={styles.register}
+              textStyle={styles.color}
+              name="Đăng nhập" />
+           <Btn
+              onPress={this.onSignUp} 
+              customStyle={styles.register}
+              textStyle={styles.color}
+              name="Đăng ký" />
+           
         </View>
       </View>
       </ScrollView>
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
     },
     txt:{
         fontSize:22,
-        color:'#F55555',
+        color:color,
         textAlign:'center',
         marginTop: 10,
     },
@@ -114,12 +121,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height:40,
         width:width-50,
-        borderColor:'#F55555',
+        borderColor:color,
         borderWidth:1,
         borderRadius: 5,
     },
     txtButton:{
-        color:'#F55555',
+        color:color,
         fontSize:14,
         fontWeight: '500',
     },
@@ -129,7 +136,11 @@ const styles = StyleSheet.create({
     },
     OR:{
         height:1,
-        backgroundColor:'gray',
+        backgroundColor:'#999999',
         width:width/5
-    }
+    },
+    mb8: {marginBottom: 20, marginTop: 0},
+    mt5: {marginBottom: 5},
+    register: {marginTop: 0,marginBottom: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
+    color: {color: color},
 })

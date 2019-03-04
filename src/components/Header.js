@@ -2,11 +2,12 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native'
 import images from "assets/images"
 import styles from "assets/styles" 
+import { color } from 'config'
 
 export default class Header extends React.Component {
     render(){
         return (
-            <View style={[styles.row, {justifyContent: 'space-between',paddingTop: 10, backgroundColor:"#F55555", paddingBottom: 2,}]} >
+            <View style={[styles.row, {justifyContent: 'space-between',paddingTop: 10, backgroundColor: color, paddingBottom: 2,}]} >
                 <TouchableOpacity onPress={this.props.onPress || null} style={{padding: 12, paddingLeft: 0, paddingTop: 0, alignItems: 'center'}}>
                     <Image 
                         style={{height: 16, resizeMode: 'contain', }}

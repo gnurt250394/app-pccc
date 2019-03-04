@@ -9,6 +9,8 @@ export const Gender = {
     female: 1,
 }
 
+export const color = "#2166A2"
+
 export const ShowGender = gender => {
     if(gender == null) return gender
     else return gender == Gender.male ? "Nam" : "nữ"

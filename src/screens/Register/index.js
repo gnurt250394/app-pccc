@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles" 
 import { signup } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
-import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage } from 'config'
+import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color } from 'config'
 import  { accountKit } from 'config/accountKit'
 import  { SigninScreen, HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
@@ -34,7 +34,7 @@ class Register extends React.Component {
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={styles.content}>
-                <Text style={{color: '#F55555', fontWeight: 'bold', fontSize: 22, marginBottom: '15%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
+                <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
                 <View style={{height: "60%"}}>
                     <BaseInput 
                         icon={images.userDark}
@@ -64,7 +64,7 @@ class Register extends React.Component {
                         placeholder="Nhập lại mật khẩu" />
                     
                     <Btn 
-                        customStyle={{marginTop:  50,}}
+                        customStyle={{marginTop:  40, marginBottom: 50}}
                         onPress={this._onSuccess()}
                         name="Bước tiếp theo" />
 

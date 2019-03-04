@@ -3,11 +3,13 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar } from 'reac
 import images from "assets/images"
 import styles from "assets/styles" 
 import { SearchScreen } from "config/screenNames"
+import { color } from 'config'
+
 export default class BaseHeader extends React.Component {
     render(){
         return (
             <View style={style.head}>
-                <StatusBar backgroundColor="#F55555" barStyle="light-content" />
+                <StatusBar backgroundColor={color} barStyle="light-content" />
                 <TouchableOpacity style={style.p8} onPress={this.props.goBack} >
                     <Image 
                         style={[styles.icon,  style.w10]}
@@ -33,7 +35,7 @@ export default class BaseHeader extends React.Component {
 }
 
 const style = StyleSheet.create({
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F55555'},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color},
     w10: { width: 10},
     w15: { width: 15},
     p8: {padding: 8},

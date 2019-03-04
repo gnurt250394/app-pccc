@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Slide, ViewMore } from 'components'
-import { toPrice , toUpperCase} from 'config'
+import { toPrice , toUpperCase, color} from 'config'
 import { ViewAllProductScreen, ProfileScreen, ContactsScreen } from 'config/screenNames'
 import ListItem from './ListItem'
 let width = Dimensions.get('window').width
@@ -27,7 +27,7 @@ class ProductDetail extends React.Component {
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
       }
     
@@ -38,7 +38,7 @@ class ProductDetail extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <View style={[style.row, {backgroundColor: "#F55555"}]}>
+                    <View style={[style.row, {backgroundColor: color}]}>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
                             <Image 
                                 style={[styles.icon, {margin: 10, width: 10}]}
@@ -111,7 +111,7 @@ class ProductDetail extends React.Component {
 
                     <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate(ContactsScreen)}
-                            style={[style.tabBtn, { backgroundColor: '#F55555'}]}>
+                            style={[style.tabBtn, { backgroundColor: color}]}>
                         <Image 
                             style={[styles.icon, {alignSelf: 'center', height: 18}]}
                             source={images.phoneLight} />
@@ -132,9 +132,9 @@ const style = StyleSheet.create({
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
     headText: {fontSize: 20, color: '#fff', flex: 1, textAlign: 'center', fontWeight: 'bold',},
     heading: {justifyContent: 'space-between', padding: 8, alignContent:'center', paddingBottom: 0},
-    tabs: {flexDirection: "row", borderTopWidth: 1, borderTopColor: '#F55555',},
+    tabs: {flexDirection: "row", borderTopWidth: 1, borderTopColor: color,},
     tabBtn: {flex: 1,  justifyContent: 'center', alignItems: 'center', flexDirection: 'row'},
-    tabLabel: { color: '#F55555', fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', paddingLeft: 8, fontSize: 12, padding: 0},
+    tabLabel: { color: color, fontWeight: 'bold',alignSelf: 'center',  textAlign:'center', paddingLeft: 8, fontSize: 12, padding: 0},
     detail: {borderWidth: 1, borderColor: '#ddd', borderRadius: 10, padding: 8, marginLeft: 10, marginRight: 10},
     dLabel: {color:'#555555', fontSize: 14},
     dValue: {color:'#333333', fontSize: 14, fontWeight: 'bold'},

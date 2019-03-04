@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import {  ShowGender } from 'config'
+import {  ShowGender, color } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
 class ListItem extends React.Component {
     render() {
@@ -30,7 +30,7 @@ class ViewProfile extends React.Component {
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
       }
     
@@ -42,7 +42,7 @@ class ViewProfile extends React.Component {
     render(){
         return (
             <View >
-                <View style={{backgroundColor: '#F55555', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={{backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <TouchableOpacity style={{padding: 10}} onPress={() => this.props.navigation.goBack()}>
                         <Image 
                             style={{width: 10, resizeMode: 'contain' }}
@@ -54,7 +54,7 @@ class ViewProfile extends React.Component {
                             source={images.edit} />
                     </TouchableOpacity>
                 </View>
-                <View style={{backgroundColor: '#F55555', paddingBottom: 25}}>
+                <View style={{backgroundColor: color, paddingBottom: 25}}>
                     <Image 
                         style={{resizeMode: 'contain', height: 80, alignSelf: 'center' }}
                         source={images.userLight} />

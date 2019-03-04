@@ -6,6 +6,8 @@ import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { ProductDetailScreen} from 'config/screenNames'
 import {BaseHeader} from 'components';
+import { color } from 'config'
+
 
 class ViewAllProduct extends React.Component {
     constructor(props){
@@ -53,7 +55,7 @@ class ViewAllProduct extends React.Component {
 export default connect()(ViewAllProduct)
 
 const style = StyleSheet.create({
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F55555'},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color},
     w10: { width: 10},
     w15: { width: 15},
     w20: { width: 20},

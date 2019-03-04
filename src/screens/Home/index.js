@@ -5,6 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { SearchScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
+import { color } from 'config'
 let {width, height} = Dimensions.get('window')
 
 class Home extends React.Component {
@@ -16,7 +17,7 @@ class Home extends React.Component {
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
       }
     
@@ -176,7 +177,7 @@ export default connect()(Home)
 
 const style = StyleSheet.create({
     boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F55555'},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color},
     w15: { width: 15},
     w20: { width: 20},
     p8: {padding: 8},
@@ -187,5 +188,5 @@ const style = StyleSheet.create({
     box3: {width: width/3, height: (height - 136)/4, marginRight: 1},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
-    notify: { color: "#F55555", fontSize: 12, padding: 5, textAlign: 'center'},
+    notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
 })

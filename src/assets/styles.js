@@ -1,21 +1,21 @@
 import { StyleSheet } from 'react-native'
-
+import { color } from 'config'
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
         fontSize: 19,
         fontWeight: 'bold',
-        color: 'white',
+        color: color,
         marginBottom: 50,
         marginTop: -10
     },
     btnLogin: {
-        backgroundColor: "#F55555",
+        backgroundColor: color,
         width: "80%",
         alignSelf: "center",
         marginTop: 25,
         marginBottom: 25,
-        borderRadius: 8,
+        borderRadius: 5,
         padding: 12,
     },
     btnSignup: {
@@ -39,10 +39,10 @@ export default styles = StyleSheet.create({
        
     },
     logo: {
-        height: 75,
+        height: 110,
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop: 70,
+        marginTop: 50,
         marginBottom: 18,
     },
     icon: {
@@ -55,8 +55,9 @@ export default styles = StyleSheet.create({
     },
     forgot: {
         textAlign: 'center',
-        color: '#333333',
+        color: color,
         fontSize: 14,
+        fontWeight: 'bold',
         textDecorationLine: 'underline'
     },
     input: {

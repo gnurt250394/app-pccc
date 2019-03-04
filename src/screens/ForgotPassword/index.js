@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
-import { ScreenName, popupOk } from 'config'
+import { ScreenName, popupOk, color } from 'config'
 
 class ChangePassword extends React.Component {
     state = {
@@ -16,7 +16,7 @@ class ChangePassword extends React.Component {
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
       }
     

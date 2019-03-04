@@ -3,7 +3,7 @@ import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback }
 import {TextBold} from 'components';
 import images from "assets/images"
 import navigation from './NavigationService'
-import { toUpperCase } from 'config';
+import { toUpperCase, color } from 'config';
 import { connect } from 'react-redux'
 import  * as ScreenName from 'config/screenNames'
 import { actionTypes } from 'actions'
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         paddingLeft: 10,
-        backgroundColor: '#FFAF26',
+        backgroundColor: color,
     },
     image:{
         height:60,

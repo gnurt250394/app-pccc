@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, } from 'react-native'
 import images from "assets/images"
 import styles from "assets/styles"
-import { toPrice } from 'config'
+import { toPrice, color } from 'config'
 import { ProductDetailScreen } from 'config'
 
 export default class ListItem extends React.Component {
@@ -49,5 +49,5 @@ const style = StyleSheet.create({
     box: { flex: 1, borderWidth: 1, borderColor: '#ddd', marginLeft: 10, borderRadius: 10, marginBottom: 0,},
     image: {height: 50, width: 50, margin: 10, alignSelf: 'center'},
     name: { fontSize: 13, padding: 10, textAlign: 'left', color: '#555555'},
-    price: { fontSize: 13, padding: 10, textAlign: 'left', color: '#F55555', paddingTop: 0,},
+    price: { fontSize: 13, padding: 10, textAlign: 'left', color: color, paddingTop: 0,},
 })

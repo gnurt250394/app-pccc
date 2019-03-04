@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
 import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
+import { color } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
@@ -45,7 +46,7 @@ class Profile extends React.Component {
 
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor('#F55555');
+          StatusBar.setBackgroundColor(color);
         });
         
       }
@@ -58,7 +59,7 @@ class Profile extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <View style={{backgroundColor: '#F55555', paddingBottom: 10, paddingTop: 10}}>
+                    <View style={{backgroundColor: color, paddingBottom: 10, paddingTop: 10}}>
                         <Image 
                             style={{width: 80, resizeMode: 'contain', alignSelf: 'center' }}
                             source={images.userLight} />

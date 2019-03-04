@@ -13,13 +13,14 @@ export default class BaseInput extends React.PureComponent {
     }
     render(){
         return (
-            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#999999', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 20, paddingBottom: 0,}}>
+            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#C3E5FE', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 20, paddingBottom: 0,}}>
                 <Image 
                     style={[styles.icon,{width: 12}, this.props.styleIcon || {}, ]} 
                     source={this.props.icon} />
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
-                    placeholderTextColor={this.props.placeholderTextColor || "#95989A"}
+                    placeholderTextColor={this.props.placeholderTextColor || "#8FBEDF"}
+                    // placeholderTextColor={this.props.placeholderTextColor || "rgba(33, 102, 162, 0.5)"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.onChangeText}

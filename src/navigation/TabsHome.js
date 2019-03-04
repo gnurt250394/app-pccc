@@ -7,6 +7,7 @@ import Profile from 'screens/Profile'
 import Home from 'screens/Home'
 import Messenger from 'screens/Messenger'
 import Notify from 'screens/Notify'
+import { color } from 'config'
 
 export default createBottomTabNavigator(
   {
@@ -63,7 +64,7 @@ export default createBottomTabNavigator(
         
       },
       tabBarOptions: {
-        activeTintColor: '#F55555',
+        activeTintColor: color,
       }
     }),
   }

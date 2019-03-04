@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Sta
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { toUpperCase, popupOk, validatePhone, validateEmail, StatusCode, LoginType } from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType } from 'config'
 import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
@@ -46,9 +46,9 @@ class Signin extends React.Component {
                 
                 <View>
                     <Image 
-                        style={[styles.logo]}
+                        style={[styles.logo, {marginBottom: 50}]}
                         source={images.logo} />
-                    <Text style={[styles.slogan, style.color]}>{toUpperCase('Siêu thị vật liệu xây dựng')}</Text>
+                    {/* <Text style={[styles.slogan, style.color]}>{toUpperCase('Siêu thị vật liệu xây dựng')}</Text> */}
 
                     <BaseInput 
                         styleIcon={style.w11}
@@ -230,10 +230,10 @@ const style = StyleSheet.create({
     or: {color: '#999999', fontSize: 14, paddingLeft: 10, paddingRight: 10},
     line: {flex: 1, height: 1, backgroundColor: '#999999'},
     boxOr: {width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
-    forgot: {width: '50%', alignSelf: 'center'},
+    forgot: {width: '50%', alignSelf: 'center', color: color, fontWeight: 'bold',},
     social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'},
-    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: '#F55555',},
-    color: {color: '#F55555'},
+    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
+    color: {color: color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {height: 55,marginTop: 15},
     flex: { flex:1},
