@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInput, View, Image, StyleSheet } from 'react-native'
 import styles from "assets/styles" 
-
+import { color } from 'config'
 export default class BaseInput extends React.PureComponent {
 
     static defaultProps = {
@@ -42,7 +42,7 @@ export default class BaseInput extends React.PureComponent {
 
 const style = StyleSheet.create({
     input: {
-        color: '#333333',
+        color: color,
         padding: 0,
         paddingLeft: 8,
         fontSize: 14,

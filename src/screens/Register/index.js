@@ -37,7 +37,7 @@ class Register extends React.Component {
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <View style={styles.content}>
                 <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
-                <View style={{height: "60%"}}>
+                <View style={{height: "70%"}}>
                     <BaseInput 
                         icon={images.userDark}
                         ref={val => this.name = val}

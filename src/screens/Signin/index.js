@@ -157,6 +157,13 @@ class Signin extends React.Component {
             const data = await GoogleSignin.signIn();
         
             // create a new firebase credential with the token
+            // let provider = new firebase.auth.GoogleAuthProvider();
+            // provider.setCustomParameters({
+            //     prompt: 'select_account'
+            // });
+            // firebase.auth.GoogleAuthProvider().setCustomParameters({
+            //     prompt: 'select_account'
+            // });
             const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
             // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
