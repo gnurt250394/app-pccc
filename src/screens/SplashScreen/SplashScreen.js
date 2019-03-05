@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,ImageBackground,StatusBar } from 'react-native';
 import images from "assets/images"
 import { HelloScreen } from 'config/screenNames';
-
+import { color } from 'config'
 export default class SplashScreen extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class SplashScreen extends Component {
         <ImageBackground 
             style={styles.container}
             source={images.splash} resizeMode="stretch">
-            <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
+            <StatusBar backgroundColor={color} barStyle="light-content" />
         </ImageBackground>
       
     );

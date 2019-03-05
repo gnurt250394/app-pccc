@@ -7,7 +7,7 @@ import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, Co
 import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
-import firebase from 'react-native-firebase'
+import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import  { accountKit } from 'config/accountKit'
 import  { RegisterScreen, ForgotPasswordScreen, HomeScreen } from 'config/screenNames'
@@ -128,6 +128,7 @@ class Signin extends React.Component {
           // login with credential
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
           let provider = firebaseUserCredential.user.toJSON();
+          console.log('provider: fb', provider);
           let body = {
             name: provider.displayName,
             token: data.accessToken,
@@ -135,6 +136,7 @@ class Signin extends React.Component {
           } 
           this.setState({loading: true})
           loginSocial(body).then(res => {
+              console.log('res: fb', res);
               this._onSwitchToHomePage(res);
               this.setState({loading: false})
           }).catch(err => {
@@ -159,12 +161,14 @@ class Signin extends React.Component {
             // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
             let provider = firebaseUserCredential.user.toJSON();
+            console.log('provider: gg', provider);
             this.setState({loading: true})
             loginSocial({
                 name: provider.displayName,
                 email: provider.email,
                 login_type: LoginType.google
             }).then(res => {
+                console.log('res: gg', res);
                 this._onSwitchToHomePage(res);
                 this.setState({loading: false})
             }).catch(err => {
@@ -192,6 +196,7 @@ class Signin extends React.Component {
                 username: username,
                 password: password
             }).then(res => {
+                console.log('res: ', res);
                 if(res.data.code == StatusCode.Success){
                     this._onSwitchToHomePage(res);
                     this.setState({loading: false})
