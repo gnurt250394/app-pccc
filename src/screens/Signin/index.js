@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Sta
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType } from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage} from 'config'
 import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
@@ -196,7 +196,7 @@ class Signin extends React.Component {
                     this._onSwitchToHomePage(res);
                     this.setState({loading: false})
                 }else{
-                    popupOk(res.data.message);
+                    popupOk(CodeToMessage[res.data.code])
                     this.setState({loading: false})
                 }
             }).catch(err => {

@@ -34,7 +34,7 @@ class Profile extends React.Component {
           StatusBar.setBackgroundColor(color);
         });
         
-      }
+    }
     
     componentWillUnmount() {
         this._navListener.remove();
@@ -63,7 +63,7 @@ class Profile extends React.Component {
                             style={style.icon}
                             source={images.next} />
                     </TouchableOpacity>
-                    <View style={{ marginTop: 20}}>
+                    <View style={style.mt20}>
 
                         <NavItem 
                             title='Shop của tôi' 
@@ -116,5 +116,6 @@ const style = StyleSheet.create({
     email: {fontSize: 14, color: '#999999', },
     user: { flex: 1, flexDirection: 'column', padding: 18},
     avatar: {width: 70, height: 70, alignSelf: 'center' },
-    boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',}
+    boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
+    mt20: { marginTop: 20}
 })

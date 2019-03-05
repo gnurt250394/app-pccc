@@ -4,23 +4,23 @@ import images from "assets/images"
 import { HelloScreen } from 'config/screenNames';
 
 export default class SplashScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+    constructor(props) {
+        super(props);
+            this.state = {
+        };
+    }
     componentDidMount(){
         setTimeout(()=>{
                 this.props.navigation.navigate(HelloScreen)
-        },1000)
+        }, 3 * 1000)
     }
   render() {
     return (
-             <ImageBackground style={styles.container}
-      source={images.splash} resizeMode="stretch">
-             <StatusBar backgroundColor="#FCCF31" barStyle="light-content" />
-      
-      </ImageBackground>
+        <ImageBackground 
+            style={styles.container}
+            source={images.splash} resizeMode="stretch">
+            <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
+        </ImageBackground>
       
     );
   }

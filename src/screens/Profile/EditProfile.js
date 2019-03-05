@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import { updateUser } from 'config/apis/users'
 import {  Input} from 'components'
-import { validateName, popupOk, validateEmail, StatusCode, Gender, color } from 'config'
+import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
 class InputItem extends React.Component {
@@ -62,6 +62,7 @@ class EditProfile extends React.Component {
     constructor(props){
         super(props);
         let user = this.props.user || {}
+        console.log('user: ', user);
         this.user = {...user} // check old email
         this.state = {
             name: user.name ? user.name : "",
@@ -93,19 +94,26 @@ class EditProfile extends React.Component {
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
             <ScrollView >
-                <View style={{backgroundColor: color}}>
+                <View style={style.header}>
+                    <TouchableOpacity style={style.p10} onPress={() => this.props.navigation.goBack()}>
+                        <Image 
+                            style={style.iconBack}
+                            source={images.backLight} />
+                    </TouchableOpacity>
+
                     <TouchableOpacity onPress={this._onSuccess()}>
                         <Text style={style.textDone}>Xong</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{backgroundColor: color, paddingBottom: 30}}>
+                <View style={style.boxUser}>
                     <TouchableOpacity onPress={this._onUploadImage}>
                         <Image 
-                            style={{width: 80, height: 80, alignSelf: 'center' }}
-                            source={images.userLight} />
+                            style={style.avatar}
+                            source={images.userBlue} />
                     </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 30}}>
+
+                <View style={style.mt30}>
                     <InputItem icon={images.pUser} 
                         value={this.state.name}
                         onChangeText={name => this.setState({name})}
@@ -168,13 +176,14 @@ class EditProfile extends React.Component {
                 address: this.state.address,
                 tax_code: this.state.tax_code,
             }
+            console.log(11, data);
             if(this.state.email != this.user.email) data.email = this.state.email;
             updateUser(this.props.token, data).then(res => {
                 if(res.data.code == StatusCode.Success){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     this.props.navigation.goBack()
                 }else{
-                    popupOk(res.data.message)
+                    popupOk(CodeToMessage[res.data.code])
                 }
             }).catch(err => {
                 console.log('err: ', err);
@@ -195,7 +204,14 @@ export default connect(mapStateToProps)(EditProfile)
 
 const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 5,},
+    iconBack: {width: 10, resizeMode: 'contain' },
     textDone: {textAlign: 'right', color: '#fff', fontSize: 18, padding: 10},
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
-    gender: {fontSize: 14, color: '#555555', paddingLeft: 10}
+    header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
+    gender: {fontSize: 14, color: '#555555', paddingLeft: 10},
+    header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
+    avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
+    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
+    p10: {padding: 10},
+    mt30: { marginTop: 30}
 })
