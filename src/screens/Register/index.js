@@ -43,7 +43,7 @@ class Register extends React.Component {
                         ref={val => this.name = val}
                         placeholder="Họ và tên" />
                     <BaseInput 
-                        styleIcon={{width: 11}}
+                        styleIcon={{height: 15}}
                         icon={images.phoneDark}
                         ref={val => this.phone = val}
                         onBlur={this._checkPhone}

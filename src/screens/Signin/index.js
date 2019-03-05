@@ -93,7 +93,7 @@ class Signin extends React.Component {
 
                         <TouchableOpacity onPress={this._onGoogleLogin}>
                             <Image 
-                                style={[styles.logo, style.iconSocial]}
+                                style={[styles.logo, [style.iconSocial, {width: 53}]]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>
@@ -232,17 +232,22 @@ class Signin extends React.Component {
 export default connect()(Signin)
 
 const style = StyleSheet.create({
-    or: {color: '#999999', fontSize: 14, paddingLeft: 10, paddingRight: 10},
-    line: {flex: 1, height: 1, backgroundColor: '#999999'},
-    boxOr: {width: '80%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
+    or: {color: '#80C9F0', fontSize: 14, paddingLeft: 10, paddingRight: 10},
+    line: {flex: 1, height: 1, backgroundColor: '#80C9F0'},
+    boxOr: {width: '60%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
     forgot: {width: '50%', alignSelf: 'center', color: color, fontWeight: 'bold',},
-    social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '60%'},
+    social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '45%'},
     register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
     color: {color: color},
     content: {flex: 1, flexDirection: 'column'},
-    iconSocial: {height: 55,marginTop: 15},
+    iconSocial: {width: 55,marginTop: -15},
     flex: { flex:1},
-    w11: {width: 11},
-    mb8: {marginBottom: 8}
+    w11: { height: 15},
+    mb8: {marginBottom: 8},
+    OR:{
+        height:1,
+        backgroundColor:'#80C9F0',
+        width: '20%'
+    },
 })
 

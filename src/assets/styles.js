@@ -15,7 +15,7 @@ export default styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: 25,
         marginBottom: 25,
-        borderRadius: 5,
+        borderRadius: 3,
         padding: 12,
     },
     btnSignup: {
