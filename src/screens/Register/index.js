@@ -3,7 +3,7 @@ import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyb
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles" 
-import { signup } from 'config/apis/users'
+import { signup, checkPhoneOrEmail } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
 import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color } from 'config'
 import  { accountKit } from 'config/accountKit'
@@ -11,11 +11,13 @@ import  { SigninScreen, HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
 class Register extends React.Component {
     state = {
-        name: "",
-        phone: "",
-        email: "",
-        password: "",
-        rePassword: "",
+        // name: "",
+        // phone: "",
+        // email: "",
+        // password: "",
+        // rePassword: "",
+        allowPhone: false,
+        allowEmail: true,
     }
     // set status bar
     componentDidMount() {
@@ -44,14 +46,17 @@ class Register extends React.Component {
                         styleIcon={{width: 11}}
                         icon={images.phoneDark}
                         ref={val => this.phone = val}
+                        onBlur={this._checkPhone}
                         keyboardType='numeric'
                         maxLength={10}
                         placeholder="Số điện thoại" />
                     <BaseInput 
                         icon={images.emailDark}
                         ref={val => this.email = val}
+                        onBlur={this._checkEmail}
                         keyboardType='email-address'
                         placeholder="Email" />
+
                     <BaseInput 
                         icon={images.keyDark}
                         ref={val => this.password = val}
@@ -79,6 +84,50 @@ class Register extends React.Component {
         )
     }
 
+    _checkEmail = () => {
+        let email = this.email.getValue();
+        if(email == "") return;
+        try {
+            checkPhoneOrEmail({email: email}).then(res => {
+                if(res.data.code != StatusCode.Success){
+                    this.setState({allowEmail: false})
+                    popupOk(CodeToMessage[res.data.code])
+                }else{
+                    this.setState({allowEmail: true})
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                this.setState({allowEmail: false})
+            })
+        } catch (error) {
+            console.log('error: ', error);
+            this.setState({allowEmail: false})
+        }
+       
+    }
+
+    _checkPhone = () => {
+        let phone = this.phone.getValue();
+        try {
+            checkPhoneOrEmail({phone: phone}).then(res => {
+                console.log('res: ', res);
+                if(res.data.code != StatusCode.Success){
+                    this.setState({allowPhone: false})
+                    popupOk(CodeToMessage[res.data.code])
+                }else{
+                    this.setState({allowPhone: true})
+                }
+    
+            }).catch(err => {
+                console.log('err: ', err);
+                this.setState({allowPhone: false})
+            })
+        } catch (error) {
+            console.log('error: ', error);
+            this.setState({allowPhone: false})
+            
+        }
+    }
     
     
     _onSuccess = () => async () => {
@@ -102,32 +151,38 @@ class Register extends React.Component {
         }else {
            
             // // call api
-           let RNAccountKit = accountKit(phone);
-            RNAccountKit.loginWithPhone()
-            .then((token) => {
-                if(token && token.code){
-                        signup({
-                            name: name,
-                            phone: phone,
-                            email: email,
-                            password: password.replace(/\+84/, "0"),
-                        }).then(res => {
-                            console.log('res: ', res);
-                        if(res.data.code == StatusCode.Success){
-                            this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                            this.props.navigation.navigate(HomeScreen)
-                        }else{
-                            popupOk(CodeToMessage[res.data.code])
-                        }
-                        
-                    }).catch(err => {
-                        console.log('err: ', err.message);
-                        popupOk("Đăng ký thất bại")
-                    })
-                }else {
-                    popupOk('Đăng ký thất bại')
-                }
-            })
+            if(this.state.allowPhone && this.state.allowEmail){
+                let RNAccountKit = accountKit(phone);
+                RNAccountKit.loginWithPhone()
+                .then((token) => {
+                    if(token && token.code){
+                            signup({
+                                name: name,
+                                phone: phone,
+                                email: email,
+                                password: password.replace(/\+84/, "0"),
+                            }).then(res => {
+                            if(res.data.code == StatusCode.Success){
+                                this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
+                                this.props.navigation.navigate(HomeScreen)
+                            }else{
+                                popupOk(CodeToMessage[res.data.code])
+                            }
+                            
+                        }).catch(err => {
+                            popupOk("Đăng ký thất bại")
+                        })
+                    }else {
+                        popupOk('Đăng ký thất bại')
+                    }
+                })
+            }else if(!this.state.allowPhone){
+                popupOk('Số điện thoại đã được sử dụng')
+            }else if(!this.state.allowEmail){
+                popupOk('Email đã được sử dụng')
+            }else{
+                popupOk('Email & Số điện thoại đã được sử dụng')
+            }
         }
     }
 }

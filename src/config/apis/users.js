@@ -21,3 +21,7 @@ export const updateUser = (token, body) => {
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.put(constant.USER, body)
 }
+
+export const checkPhoneOrEmail = body => {
+    return instance.post(constant.CHECK_PHONE_EMAIL, body)
+}

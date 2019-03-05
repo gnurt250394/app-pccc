@@ -4,6 +4,8 @@ const constant ={
     USER: 'user',
     LOGIN: 'login',
     LOGIN_SOCIAL: 'login-social',
+    CHECK_PHONE_EMAIL: 'check-phone-email',
+
 }
 
 export default constant;

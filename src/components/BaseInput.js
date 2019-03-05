@@ -25,6 +25,7 @@ export default class BaseInput extends React.PureComponent {
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.onChangeText}
                     editable={this.props.editable}
+                    onBlur={this.props.onBlur}
                     value={this.state.value}
                     maxLength={this.props.maxLength}
                     style={this.props.style || [style.input, this.props.customStyle || {}]} />
