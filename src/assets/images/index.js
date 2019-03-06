@@ -100,4 +100,8 @@ module.exports = {
     badge: require('./badge.png'),
     userBlue: require('./userBlue.png'),
     tttd: require('./tttd.png'),
+    ttda: require('./ttda.png'),
+    spBg: require('./spBg.png'),
+    spLogo: require('./spLogo.png'),
+    spSlogan: require('./spSlogan.png'),
 }

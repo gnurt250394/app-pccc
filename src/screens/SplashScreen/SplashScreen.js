@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar } from 'react-native';
+import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar, Image } from 'react-native';
 import images from "assets/images"
 import { HelloScreen } from 'config/screenNames';
-import { color } from 'config'
 export default class SplashScreen extends Component {
     constructor(props) {
         super(props);
@@ -16,11 +15,13 @@ export default class SplashScreen extends Component {
     }
   render() {
     return (
-        <TouchableWithoutFeedback style= { styles.container} onPress={() =>this.props.navigation.navigate(HelloScreen)}>
+        <TouchableWithoutFeedback style= {styles.flex} onPress={() =>this.props.navigation.navigate(HelloScreen)}>
             <ImageBackground 
                 style={styles.container}
-                source={images.splash} resizeMode="stretch">
+                source={images.spBg} resizeMode="stretch">
                 <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
+                <Image source={images.spLogo} style={styles.logo} />
+                <Image source={images.spSlogan} style={styles.slogan} />
             </ImageBackground>
         </TouchableWithoutFeedback>
     );
@@ -28,7 +29,8 @@ export default class SplashScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-    }
+    container:{  flex:1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' },
+    logo: {height: 110, resizeMode: 'contain', alignSelf: 'center', marginTop: -100,},
+    slogan: {width: 130, resizeMode: 'contain', alignSelf: 'center',},
+    flex:  {flex: 1}
 })

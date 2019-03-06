@@ -45,6 +45,7 @@ export default createBottomTabNavigator(
         switch (routeName){
           case HomeScreen:
             image = focused ? images.tabHomeRed : images.tabHome;
+            w = 22;
             break;
           case MessengerScreen:
             image = focused ? images.tabMsgRed : images.tabMsgDark;
@@ -54,7 +55,7 @@ export default createBottomTabNavigator(
             image = focused ? images.notify : images.notifyDark;
             break;
           case ProfileScreen:
-            image = focused ? images.tabUserRed : images.tabUserDark;
+            image = focused ? images.tabUserRed : images.userDark;
             break;
           default:
             w = 17;

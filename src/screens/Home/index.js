@@ -72,7 +72,7 @@ class Home extends React.Component {
                             <TouchableOpacity style={style.box6} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <Image 
                                      style={style.box6}
-                                    source={images.tttd} />
+                                    source={images.ttda} />
                                 <Text style={style.textB6}>Thông tin dự án</Text> 
                                 <View style={style.boxBadge}>
                                     <Image 
@@ -100,21 +100,21 @@ class Home extends React.Component {
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.product}>
-                                    <Text style={style.title}>Sản phẩm</Text> 
+                                    <Text style={style.textB4}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.thongtintheodoi}>
-                                    <Text style={style.title}>Thanh lý hàng hóa</Text> 
+                                    <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <ImageBackground 
                                     style={[style.box3, {marginRight: 0}]}
                                     source={images.dangmua}>
-                                    <Text style={style.title}>Đăng mua</Text> 
+                                    <Text style={style.textB4}>Đăng mua</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
@@ -188,13 +188,21 @@ const style = StyleSheet.create({
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
-    txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color},
-    txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color},
-    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16,},
-    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '80%'},
+    txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color },
+    txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color },
+    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, 
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10
+    },
+    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '80%',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10
+    },
     boxBadge: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     boxBadge4: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     boxBadge3: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
-    textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30}
+    textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color}
 })
