@@ -10,7 +10,7 @@ import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import  { accountKit } from 'config/accountKit'
-import  { RegisterScreen, ForgotPasswordScreen, HomeScreen } from 'config/screenNames'
+import  { RegisterScreen, ForgotPasswordScreen, HomeScreen, UpdateProfile } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 
 class Signin extends React.Component {
@@ -48,7 +48,6 @@ class Signin extends React.Component {
                     <Image 
                         style={[styles.logo, {marginBottom: 50}]}
                         source={images.logo} />
-                    {/* <Text style={[styles.slogan, style.color]}>{toUpperCase('Siêu thị vật liệu xây dựng')}</Text> */}
 
                     <BaseInput 
                         styleIcon={style.w11}
@@ -106,38 +105,24 @@ class Signin extends React.Component {
 
 
     _onFacebookLogin = async () => {
-        console.log();
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-          if (result.isCancelled) {
-            // handle this however suites the flow of your app
-            throw new Error('User cancelled request'); 
-          }
-      
-          // get the access token
+          if (result.isCancelled)  throw new Error('User cancelled request'); 
           const data = await AccessToken.getCurrentAccessToken();
-          
-          if (!data) {
-            // handle this however suites the flow of your app
-            throw new Error('Something went wrong obtaining the users access token');
-          }
-      
-          // create a new firebase credential with the token
+          if (!data) throw new Error('Something went wrong obtaining the users access token'); 
           const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-      
-          // login with credential
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
           let provider = firebaseUserCredential.user.toJSON();
-          console.log('provider: fb', provider);
           let body = {
             name: provider.displayName,
             token: data.accessToken,
             login_type: LoginType.facebook
           } 
+          console.log(12, body);
           this.setState({loading: true})
           loginSocial(body).then(res => {
               console.log('res: fb', res);
-              this._onSwitchToHomePage(res);
+              this._onSwitchToHomePage(res, LoginType.facebook);
               this.setState({loading: false})
           }).catch(err => {
               this.setState({loading: false})
@@ -151,21 +136,9 @@ class Signin extends React.Component {
 
     _onGoogleLogin =  async () => {
         try {
-            // add any configuration settings here:
             await GoogleSignin.configure();
-        
             const data = await GoogleSignin.signIn();
-        
-            // create a new firebase credential with the token
-            // let provider = new firebase.auth.GoogleAuthProvider();
-            // provider.setCustomParameters({
-            //     prompt: 'select_account'
-            // });
-            // firebase.auth.GoogleAuthProvider().setCustomParameters({
-            //     prompt: 'select_account'
-            // });
             const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
-            // login with credential
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
             let provider = firebaseUserCredential.user.toJSON();
             console.log('provider: gg', provider);
@@ -176,7 +149,7 @@ class Signin extends React.Component {
                 login_type: LoginType.google
             }).then(res => {
                 console.log('res: gg', res);
-                this._onSwitchToHomePage(res);
+                this._onSwitchToHomePage(res, LoginType.facebook);
                 this.setState({loading: false})
             }).catch(err => {
                 popupOk("Đăng nhập thất bại");
@@ -230,10 +203,21 @@ class Signin extends React.Component {
             })
     }
 
-    _onSwitchToHomePage = res => {
-        this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token});
-        this.props.navigation.navigate(HomeScreen);
+    _onSwitchToHomePage = (res, type) => {
+        let data = res.data,
+            user = data.data;
+        console.log('data: ', data);
+        this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
+
+        // check update profile
+        if(!user.phone || user.phone == "" || !user.email || user.email == ""){
+            this.props.navigation.navigate(UpdateProfile, {user: user, type: type, token: data.token});
+        }else{
+            this.props.navigation.navigate(HomeScreen);
+        }
+        
     }
+
 }
 
 export default connect()(Signin)

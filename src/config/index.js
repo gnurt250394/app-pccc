@@ -24,6 +24,7 @@ export const LoginType  = {
 export const CodeToMessage = {
     404: "Sai tài khoản hoặc mật khẩu",
     439: "Số điện thoại đã được sử dụng",
+    445: "Invalid token",
     446: "Email đã được sử dụng",
     447: "Lỗi hình ảnh",
     500: "Server Error",

@@ -5,6 +5,7 @@ import Register from 'screens/Register'
 import Complete from 'screens/Register/Complete'
 import Confirm from 'screens/Register/Confirm'
 import Signin from 'screens/Signin'
+import UpdateProfile from 'screens/Signin/UpdateProfile'
 import ForgotPassword from 'screens/ForgotPassword'
 import ChangePassword from 'screens/ForgotPassword/ChangePassword'
 import ViewProfile from 'screens/Profile/ViewProfile'
@@ -52,6 +53,7 @@ const App = createStackNavigator(
     [ScreenName.ViewAllProductScreen]: ViewAllProduct,
     [ScreenName.ShopScreen]: Shop,
     [ScreenName.MyProfile]: MyProfile,
+    [ScreenName.UpdateProfile]: UpdateProfile,
    
   },
   {

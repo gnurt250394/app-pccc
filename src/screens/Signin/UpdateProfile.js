@@ -1,18 +1,26 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet, Alert } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, StatusBar, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import styles from "assets/styles" 
-import { signup, checkPhoneOrEmail } from 'config/apis/users'
+import { checkPhoneOrEmail, updateUser } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
-import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color } from 'config'
+import { toUpperCase, validateEmail, popupOk, LoginType, StatusCode, CodeToMessage, color } from 'config'
 import  { accountKit } from 'config/accountKit'
-import  { SigninScreen, HomeScreen } from 'config/screenNames'
+import  { HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
-class Register extends React.Component {
-    state = {
-        allowPhone: false,
-        allowEmail: true,
+class UpdateProfile extends React.Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            allowPhone: false,
+            allowEmail: true,
+        }
+        this.user = this.props.navigation.getParam('user')
+        this.type = this.props.navigation.getParam('type')
+        this.token = this.props.navigation.getParam('token')
+        console.log(' this.user: ',  this.user);
+
     }
     // set status bar
     componentDidMount() {
@@ -30,49 +38,34 @@ class Register extends React.Component {
     render(){
         return (
             <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
-            <View style={styles.content}>
-                <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
-                <View style={{height: "70%"}}>
-                    <BaseInput 
-                        icon={images.userDark}
-                        ref={val => this.name = val}
-                        placeholder="Họ và tên" />
+            <View style={{justifyContent: 'space-between', marginTop: 80}}>
+                <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: 80, textAlign: 'center'}}>{toUpperCase('Cập nhật thông tin')}</Text>
+                <View style={{height: '65%'}}>
                     <BaseInput 
                         styleIcon={{height: 15}}
+                        value={this.user.phone}
                         icon={images.phoneDark}
                         ref={val => this.phone = val}
                         onBlur={this._checkPhone}
                         keyboardType='numeric'
                         maxLength={10}
                         placeholder="Số điện thoại" />
-                    <BaseInput 
+                    {this.type == LoginType.facebook ? <BaseInput 
                         icon={images.emailDark}
+                        value={this.user.email}
                         ref={val => this.email = val}
                         onBlur={this._checkEmail}
                         keyboardType='email-address'
-                        placeholder="Email" />
+                        placeholder="Email" /> : null}
 
-                    <BaseInput 
-                        icon={images.keyDark}
-                        ref={val => this.password = val}
-                        secureTextEntry={true}
-                        placeholder="Mật khẩu"  />
-                    <BaseInput 
-                        icon={images.keyDark}
-                        ref={val => this.rePassword = val}
-                        secureTextEntry={true}
-                        placeholder="Nhập lại mật khẩu" />
-                    
                     <Btn 
-                        customStyle={{marginTop:  40, marginBottom: 50}}
+                        customStyle={{marginTop:  100,}}
                         onPress={this._onSuccess()}
                         name="Bước tiếp theo" />
-
-                    <TouchableOpacity 
-                             onPress={() => this.props.navigation.navigate(SigninScreen)}>
-                           <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
-                    </TouchableOpacity>
                 </View>
+               
+                
+                
                 
             </View>
             </TouchableWithoutFeedback>
@@ -126,37 +119,27 @@ class Register extends React.Component {
     
     
     _onSuccess = () => async () => {
-        let name = this.name.getValue(),
-            phone = this.phone.getValue(),
-            email = this.email.getValue(),
-            password = this.password.getValue(),
-            rePassword = this.rePassword.getValue();
-        if(name.trim().length < 2){
-            popupOk('Họ và tên phải từ 2 ký tự')
-        } else if(!validateName(name)){
-            popupOk('Họ và tên không được dùng ký tự đặc biệt')
-        }else if(phone.trim().length != 10){
+        let phone = this.phone.getValue(),
+            email = this.email.getValue();
+        if(phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
         }else if(email.trim() != "" && !validateEmail(email)){
             popupOk('Email không đúng')
-        }else if(password.trim().length < 6){
-            popupOk('Mật khẩu phải từ 6 ký tự')
-        }else if(password != rePassword){
-            popupOk('Mật khẩu nhập lại không đúng')
         }else {
            
             // // call api
             if(this.state.allowPhone && this.state.allowEmail){
                 let RNAccountKit = accountKit(phone);
-                RNAccountKit.loginWithPhone()
-                .then((token) => {
+                RNAccountKit.loginWithPhone().then((token) => {
                     if(token && token.code){
-                            signup({
-                                name: name,
-                                phone: phone,
-                                email: email,
-                                password: password.replace(/\+84/, "0"),
-                            }).then(res => {
+                        let data = {
+                            phone: phone
+                        }
+                        if (LoginType.facebook) data.email = email;
+                        console.log('data: ', data);
+
+                        updateUser(this.token, data).then(res => {
+                            console.log('res: ', res);
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
                                 this.props.navigation.navigate(HomeScreen)
@@ -165,10 +148,10 @@ class Register extends React.Component {
                             }
                             
                         }).catch(err => {
-                            popupOk("Đăng ký thất bại")
+                            popupOk("Cập nhật thông tin thất bại")
                         })
                     }else {
-                        popupOk('Đăng ký thất bại')
+                        popupOk('Cập nhật thông tin thất bại')
                     }
                 })
             }else if(!this.state.allowPhone){
@@ -181,4 +164,5 @@ class Register extends React.Component {
         }
     }
 }
-export default connect()(Register)
+
+export default connect()(UpdateProfile)
