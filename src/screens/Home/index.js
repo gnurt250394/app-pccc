@@ -29,14 +29,7 @@ class Home extends React.Component {
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.closeDrawer()}>
                 <ScrollView>
-
                     <View style={style.head}>
-                        <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.dispatch(DrawerActions.toggleDrawer())} >
-                            <Image 
-                                style={[styles.icon, style.w20]}
-                                source={images.menu} />
-                        </TouchableOpacity>
-                        
                         <View 
                             style={style.boxSearch}>
                             <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
@@ -55,51 +48,50 @@ class Home extends React.Component {
                             
                         </View >
                     </View>
+
                     <View style={style.flex}>
                         <View style={{flexDirection: 'row', marginBottom: 1, marginTop: 1,}}>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box6}
-                                    source={images.projectInfo}>
-                                    <Text style={style.title}>Thông tin dự án</Text> 
-                                    
-                                    <View style={style.badge}>
-                                        {/* <Image
-                                            style={style.badgeImage}
-                                            source={images.badge} /> */}
-                                            <Text style={style.notify}>10</Text>
-                                    </View>
-                                </ImageBackground>
+                                <Image 
+                                     style={style.box6}
+                                    source={images.tttd} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box4}
-                                    source={images.product}>
-                                    <Text style={style.title}>Sản phẩm</Text> 
-                                </ImageBackground>
+                                <Image 
+                                     style={style.box4}
+                                    source={images.myShop} />
                             </TouchableOpacity>
                         </View>
 
+                        <View style={{flexDirection: 'row', marginBottom: 1, marginTop: 1,}}>
+                            <Text style={style.txt6}>Thông tin theo dõi</Text>
+                            <Text style={style.txt4}>Shop của tôi</Text>
+                        </View>
+
                         <View style={{flexDirection: 'row', marginBottom: 1,}}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box6}
-                                    source={images.thongtindauthau}>
-                                    <Text style={style.title}>Thông tin đấu thầu</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>15</Text>
-                                    </View>
-                                </ImageBackground>
+                            <TouchableOpacity style={style.box6} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                                <Image 
+                                     style={style.box6}
+                                    source={images.tttd} />
+                                <Text style={style.textB6}>Thông tin dự án</Text> 
+                                <View style={style.boxBadge}>
+                                    <Image 
+                                        style={style.iconBadge}
+                                        source={images.badge} />
+                                    <Text style={style.textBadge}>317</Text>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box4}
-                                    source={images.thanhly}>
-                                    <Text style={[style.title]}>Thanh lý hàng hóa</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>362</Text>
-                                    </View>
-                                </ImageBackground>
+                            <TouchableOpacity style={style.box4} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                                <Image 
+                                     style={style.box4}
+                                    source={images.thanhly} />
+                                <Text style={style.textB4}>Thông tin đấu thầu</Text> 
+                                <View style={style.boxBadge}>
+                                    <Image 
+                                        style={style.iconBadge}
+                                        source={images.badge} />
+                                    <Text style={style.textBadge}>333</Text>
+                                </View>
                             </TouchableOpacity>
                         </View>
 
@@ -107,60 +99,67 @@ class Home extends React.Component {
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
-                                    source={images.dangmua}>
-                                    <Text style={style.title}>Đăng mua</Text> 
+                                    source={images.product}>
+                                    <Text style={style.title}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.thongtintheodoi}>
-                                    <Text style={style.title}>Thông tin theo dõi</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>7</Text>
-                                    </View>
+                                    <Text style={style.title}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
                                 <ImageBackground 
                                     style={[style.box3, {marginRight: 0}]}
-                                    source={images.myShop}>
-                                    <Text style={style.title}>Shop của tôi</Text> 
+                                    source={images.dangmua}>
+                                    <Text style={style.title}>Đăng mua</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box3}
-                                    source={images.tailieu}>
-                                    <Text style={style.title}>Tài liệu</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>7</Text>
-                                    </View>
-                                </ImageBackground>
+                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
+                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                                <Image 
+                                     style={style.box3}
+                                    source={images.video} />
+                                <Text style={style.textB6}>Video</Text> 
+                                <View style={style.boxBadge}>
+                                    <Image 
+                                        style={style.iconBadge}
+                                        source={images.badge} />
+                                    <Text style={style.textBadge}>2</Text>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={style.box3}
-                                    source={images.catalog}>
-                                    <Text style={style.title}>Catalog</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>7</Text>
-                                    </View>
-                                </ImageBackground>
+
+                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                                <Image 
+                                     style={style.box3}
+                                    source={images.catalog} />
+                                <Text style={style.textB6}>Catalog</Text> 
+                                <View style={style.boxBadge}>
+                                    <Image 
+                                        style={style.iconBadge}
+                                        source={images.badge} />
+                                    <Text style={style.textBadge}>2</Text>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
-                                <ImageBackground 
-                                    style={[style.box3, {marginRight: 0}]}
-                                    source={images.video}>
-                                    <Text style={style.title}>Video</Text> 
-                                    <View style={style.badge}>
-                                        <Text style={style.notify}>7</Text>
-                                    </View>
-                                </ImageBackground>
+
+                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                                <Image 
+                                     style={style.box3}
+                                    source={images.tailieu} />
+                                <Text style={style.textB6}>Tài liệu</Text> 
+                                <View style={style.boxBadge}>
+                                    <Image 
+                                        style={style.iconBadge}
+                                        source={images.badge} />
+                                    <Text style={style.textBadge}>2</Text>
+                                </View>
                             </TouchableOpacity>
+                            
                         </View>
+
                     </View>
                    
                     
@@ -177,16 +176,25 @@ export default connect()(Home)
 
 const style = StyleSheet.create({
     boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
     w15: { width: 15},
     w20: { width: 20},
     p8: {padding: 8},
     flex: {flex: 1},
     title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16,  width: '80%'},
-    box6: {width: (width * (2/3) + 2), height: (height - 136)/4, marginRight: 1},
-    box4: {width: width * (1/3), height: (height - 136)/4},
-    box3: {width: width/3, height: (height - 136)/4, marginRight: 1},
+    box6: {width: (width * (2/3) + 2), height: (height - 180)/4, marginRight: 1, position: 'relative'},
+    box4: {width: width * (1/3), height: (height - 180)/4,  position: 'relative'},
+    box3: {width: width/3 + 1.5, height: (height - 180)/4, marginRight: 0,  position: 'relative'},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
+    txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color},
+    txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color},
+    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16,},
+    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '80%'},
+    boxBadge: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
+    boxBadge4: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
+    boxBadge3: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
+    iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
+    textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30}
 })

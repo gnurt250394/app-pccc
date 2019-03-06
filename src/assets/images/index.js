@@ -99,4 +99,5 @@ module.exports = {
     notifyDark: require('./notifyDark.png'),
     badge: require('./badge.png'),
     userBlue: require('./userBlue.png'),
+    tttd: require('./tttd.png'),
 }
