@@ -23,6 +23,7 @@ import ScreenHello from "../screens/SplashScreen/ScreenHello";
 import Contacts from "../screens/Product/contact";
 import Introduce from "../screens/Introduce/Introduce";
 import Shop from "../screens/Shop";
+import Search from "../screens/Search";
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -53,7 +54,8 @@ const App = createStackNavigator(
     [ScreenName.ViewAllProductScreen]: ViewAllProduct,
     [ScreenName.ShopScreen]: Shop,
     [ScreenName.MyProfile]: MyProfile,
-    [ScreenName.UpdateProfile]: UpdateProfile,
+    [ScreenName.UpdateProfileScreen]: UpdateProfile,
+    [ScreenName.SearchScreen]: Search,
    
   },
   {

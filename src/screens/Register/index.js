@@ -84,7 +84,7 @@ class Register extends React.Component {
         if(email == "") return;
         try {
             checkPhoneOrEmail({email: email}).then(res => {
-                if(res.data.code != StatusCode.Success){
+                if(res.data.code != StatusCode.Success  || res.data == ""){
                     this.setState({allowEmail: false})
                     popupOk(CodeToMessage[res.data.code])
                 }else{
@@ -103,10 +103,11 @@ class Register extends React.Component {
 
     _checkPhone = () => {
         let phone = this.phone.getValue();
+        if(phone == "") return;
         try {
             checkPhoneOrEmail({phone: phone}).then(res => {
                 console.log('res: ', res);
-                if(res.data.code != StatusCode.Success){
+                if(res.data.code != StatusCode.Success || res.data == ""){
                     this.setState({allowPhone: false})
                     popupOk(CodeToMessage[res.data.code])
                 }else{

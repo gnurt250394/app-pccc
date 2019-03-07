@@ -63,10 +63,6 @@ class UpdateProfile extends React.Component {
                         onPress={this._onSuccess()}
                         name="Bước tiếp theo" />
                 </View>
-               
-                
-                
-                
             </View>
             </TouchableWithoutFeedback>
         )
@@ -96,10 +92,11 @@ class UpdateProfile extends React.Component {
 
     _checkPhone = () => {
         let phone = this.phone.getValue();
+        if(phone == "") return;
         try {
             checkPhoneOrEmail({phone: phone}).then(res => {
                 console.log('res: ', res);
-                if(res.data.code != StatusCode.Success){
+                if(res.data.code != StatusCode.Success  || res.data == ""){
                     this.setState({allowPhone: false})
                     popupOk(CodeToMessage[res.data.code])
                 }else{

@@ -10,7 +10,7 @@ import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import  { accountKit } from 'config/accountKit'
-import  { RegisterScreen, ForgotPasswordScreen, HomeScreen, UpdateProfile } from 'config/screenNames'
+import  { RegisterScreen, ForgotPasswordScreen, HomeScreen, UpdateProfileScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 
 class Signin extends React.Component {
@@ -211,7 +211,7 @@ class Signin extends React.Component {
 
         // check update profile
         if(!user.phone || user.phone == "" || !user.email || user.email == ""){
-            this.props.navigation.navigate(UpdateProfile, {user: user, type: type, token: data.token});
+            this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
         }else{
             this.props.navigation.navigate(HomeScreen);
         }

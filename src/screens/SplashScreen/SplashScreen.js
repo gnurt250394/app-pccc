@@ -11,21 +11,21 @@ export default class SplashScreen extends Component {
     componentDidMount(){
         setTimeout(()=>{
                 this.props.navigation.navigate(HelloScreen)
-        }, 2 * 1000)
+        }, 3 * 1000)
     }
-  render() {
-    return (
-        <TouchableWithoutFeedback style= {styles.flex} onPress={() =>this.props.navigation.navigate(HelloScreen)}>
-            <ImageBackground 
-                style={styles.container}
-                source={images.spBg} resizeMode="stretch">
-                <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
-                <Image source={images.spLogo} style={styles.logo} />
-                <Image source={images.spSlogan} style={styles.slogan} />
-            </ImageBackground>
-        </TouchableWithoutFeedback>
-    );
-  }
+    render() {
+        return (
+            <TouchableWithoutFeedback style= {styles.flex} onPress={() =>this.props.navigation.navigate(HelloScreen)}>
+                <ImageBackground 
+                    style={styles.container}
+                    source={images.spBg} resizeMode="stretch">
+                    <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
+                    <Image source={images.spLogo} style={styles.logo} />
+                    <Image source={images.spSlogan} style={styles.slogan} />
+                </ImageBackground>
+            </TouchableWithoutFeedback>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
