@@ -35,7 +35,7 @@ class Signin extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= { style.flex } onPress={() => Keyboard.dismiss()}>
+            <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
             
             <ScrollView style={style.content}>
                 {   this.state.loading ? 
@@ -46,7 +46,7 @@ class Signin extends React.Component {
                 
                 <View>
                     <Image 
-                        style={[styles.logo, {marginBottom: 50}]}
+                        style={[styles.logo, style.mb50]}
                         source={images.logo} />
 
                     <BaseInput 
@@ -66,7 +66,7 @@ class Signin extends React.Component {
                         customStyle={style.mb8}
                         name="Đăng nhập" />
                     <Btn
-                        onPress={() => this.props.navigation.navigate(RegisterScreen)}
+                        onPress={this._navTo(RegisterScreen)}
                         customStyle={style.register}
                         textStyle={style.color}
                         name="Đăng ký" />
@@ -92,7 +92,7 @@ class Signin extends React.Component {
 
                         <TouchableOpacity onPress={this._onGoogleLogin}>
                             <Image 
-                                style={[styles.logo, [style.iconSocial, {width: 53}]]}
+                                style={[styles.logo, [style.iconSocial, style.w53]]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>
@@ -101,6 +101,14 @@ class Signin extends React.Component {
             </ScrollView>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
     }
 
 
@@ -234,11 +242,9 @@ const style = StyleSheet.create({
     iconSocial: {width: 55,marginTop: -15},
     flex: { flex:1},
     w11: { height: 15},
+    w53: { height: 53},
     mb8: {marginBottom: 8},
-    OR:{
-        height:1,
-        backgroundColor:'#80C9F0',
-        width: '20%'
-    },
+    mb50: {marginBottom: 50},
+    OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
 })
 

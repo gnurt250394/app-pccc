@@ -20,7 +20,7 @@ class ViewAllProduct extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView>
-                    <BaseHeader goBack={() => this.props.navigation.goBack()} />
+                    <BaseHeader goBack={this._goBack} />
 
                     <Text style={style.title}>{this.props.navigation.state.params.title || "Sản phẩm nổi bật"}</Text>
                    
@@ -43,13 +43,29 @@ class ViewAllProduct extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this.toggleLike(index)}>
-                    <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, {alignSelf: 'flex-end', marginRight: 5,}]}/>
+                    <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, style.iconHeart]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate(ProductDetailScreen)}>
+                <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
                     <Image source={images.binhCuuHoa} style={style.image}/>
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
             </View>
+    }
+
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = (screen, params = {} ) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
     }
 }
 export default connect()(ViewAllProduct)
@@ -68,6 +84,7 @@ const style = StyleSheet.create({
     image: {width: "90%", height: 90, alignSelf: 'center'},
     name: { fontSize: 15, padding: 10, textAlign: 'left',color: '#707070'},
     price: { fontSize: 15, padding: 10, textAlign: 'left', color: '#FB3C30', paddingTop: 0,},
+    iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
 })
 
 let data = [

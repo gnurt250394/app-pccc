@@ -36,51 +36,51 @@ class ProductDetail extends React.Component {
     }
     render(){
         return (
-            <View style={{flex: 1}}>
+            <View style={style.flex}>
                 <ScrollView>
                     <View style={[style.row, {backgroundColor: color}]}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
+                        <TouchableOpacity onPress={this._goBack} >
                             <Image 
-                                style={[styles.icon, {margin: 10, width: 10}]}
+                                style={[styles.icon, style.iconBack]}
                                 source={images.backLight} />
                         </TouchableOpacity>
                         <Text style={style.headText}>Chi tiết sản phẩm</Text>
                         <TouchableOpacity onPress={() =>  null} >
                                 <Image 
-                                    style={[styles.icon, {margin: 10, height: 18}]}
+                                    style={[styles.icon, style.iconShare]}
                                     source={images.share} />
                         </TouchableOpacity>
                     </View>
                     <Slide />
                     <Text style={style.name}>{this.state.name}</Text>
                     <View style={style.calender}>
-                        <Text style={{color:'#FC6463', fontSize: 14,  flex: 1}}>{toPrice(this.state.price)}</Text>
+                        <Text style={style.price}>{toPrice(this.state.price)}</Text>
 
                         <View style={style.row}>
 
-                            <Text style={{color:'#999999', fontSize: 12}}>Số lượng: {this.state.quantity}</Text>
-                            <Text style={{color:'#999999', fontSize: 12, paddingLeft: 10}}>Đã bán: {this.state.sell}</Text>
+                            <Text style={style.quantity}>Số lượng: {this.state.quantity}</Text>
+                            <Text style={style.sell}>Đã bán: {this.state.sell}</Text>
                         </View>
                     </View>
 
                     <View style={style.detail}>
-                        <View style={{flexDirection: 'row', paddingBottom: 8,}}>
+                        <View style={style.box}>
                             <Text style={style.dLabel}>Thương hiệu: </Text>
                             <Text style={style.dValue}>{this.state.created_at}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 8,}}>
+                        <View style={style.box}>
                             <Text style={style.dLabel}>Năm sản xuất: </Text>
                             <Text style={style.dValue}>{this.state.created_at}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 8,}}>
+                        <View style={style.box}>
                             <Text style={style.dLabel}>Tình trạng: </Text>
                             <Text style={style.dValue}>{this.state.created_at}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 8,}}>
+                        <View style={style.box}>
                             <Text style={style.dLabel}>Xuất sứ: </Text>
                             <Text style={style.dValue}>{this.state.created_at}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', paddingBottom: 8,}}>
+                        <View style={style.box}>
                             <Text style={style.dLabel}>Tiêu chuẩn: </Text>
                             <Text style={style.dValue}>{this.state.created_at}</Text>
                         </View>
@@ -91,7 +91,7 @@ class ProductDetail extends React.Component {
                     <View style={[styles.row, style.heading]}>
                         <Text style={style.moreLabel}>Sản phẩm tương tự</Text>
                         <ViewMore 
-                            onPress={() => this.props.navigation.navigate(ViewAllProductScreen, {title: "Sản phẩm tương tự"})}
+                            onPress={this._navTo(ViewAllProductScreen, {title: "Sản phẩm tương tự"})}
                             title='Xem tất cả'/>
                     </View>
                     <ListItem data={data} navigation={this.props.navigation} />
@@ -99,30 +99,39 @@ class ProductDetail extends React.Component {
 
                 <View style={style.tabs}>
                     <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate(ProfileScreen)}
+                            onPress={this._navTo(ProfileScreen)}
                             style={style.tabBtn}>
                         <Image 
-                            style={[styles.icon, {alignSelf: 'center', height: 40, width: 20,}]}
+                            style={[styles.icon, style.iconMsg]}
                             source={images.messenger} />
                         <Text 
-                            onPress={() => this.props.navigation.navigate(ProfileScreen)}
+                            onPress={this._navTo(ProfileScreen)}
                             style={style.tabLabel}>{toUpperCase('Mua ngay')}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate(ContactsScreen)}
-                            style={[style.tabBtn, { backgroundColor: color}]}>
+                            onPress={this._navTo(ContactsScreen)}
+                            style={[style.tabBtn, style.bg]}>
                         <Image 
-                            style={[styles.icon, {alignSelf: 'center', height: 18}]}
+                            style={[styles.icon, style.iconPhone]}
                             source={images.phoneLight} />
                         <Text 
-                            // onPress={() => this.props.navigation.navigate(ContactsScreen)}
-                            style={[style.tabLabel, {color: '#fff'}]}>{toUpperCase('Gọi điện')}</Text>
+                            // onPress={this._navTo(ContactsScreen)}
+                            style={[style.tabLabel, style.white]}>{toUpperCase('Gọi điện')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         )
     }
+
+    _navTo = (screen, params = {} ) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
 }
 export default connect()(ProductDetail)
 
@@ -143,7 +152,18 @@ const style = StyleSheet.create({
     calender: {justifyContent: 'space-around', flexDirection: 'row',  alignItems: 'center',  padding: 10, margin: 0},
     descLabel: {color:'#333333', fontSize: 16, fontWeight: 'bold', paddingLeft: 10,paddingTop: 10},
     descValue: {color:'#555555', fontSize: 14, padding: 8,},
-    moreLabel: {fontSize: 16, fontWeight: 'bold', color:'#333333'}
+    moreLabel: {fontSize: 16, fontWeight: 'bold', color:'#333333'},
+    flex: {flex: 1},
+    iconBack: {margin: 10, width: 10},
+    iconShare: {margin: 10, height: 18},
+    iconPhone: {alignSelf: 'center', height: 18},
+    price: {color:'#FC6463', fontSize: 14,  flex: 1},
+    quantity: {color:'#999999', fontSize: 12},
+    sell: {color:'#999999', fontSize: 12, paddingLeft: 10},
+    box: {flexDirection: 'row', paddingBottom: 8,},
+    bg: { backgroundColor: color},
+    iconMsg: {alignSelf: 'center', height: 40, width: 20,},
+    white: {color: '#fff'}
 })
 
 let data = [

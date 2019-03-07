@@ -18,9 +18,9 @@ export default class ListItem extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this.toggleLike(index)}>
-                    <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, {alignSelf: 'flex-end', marginRight: 5,}]}/>
+                    <Image source={ item.like ? images.heartRed : images.heartYellow} style={[styles.icon, style.iconHeart]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate(ProductDetailScreen)}>
+                <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
                     <Image source={images.binhCuuHoa} style={style.image}/>
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
@@ -37,6 +37,11 @@ export default class ListItem extends React.Component {
             />
         )
     }
+
+    _navTo = (screen, params = {} ) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
 }
 
 const style = StyleSheet.create({
@@ -45,5 +50,6 @@ const style = StyleSheet.create({
     image: {width: 120, height: 120, margin: 10,},
     name: { fontSize: 15, padding: 10, textAlign: 'left',color: '#707070'},
     price: { fontSize: 15, padding: 10, textAlign: 'left', color: '#FB3C30', paddingTop: 0,},
+    iconHeart: {alignSelf: 'flex-end', marginRight: 5,}
     
 })

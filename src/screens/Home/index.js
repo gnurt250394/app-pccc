@@ -27,22 +27,22 @@ class Home extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= {style.flex} onPress={() =>this.props.navigation.closeDrawer()}>
+            <TouchableWithoutFeedback style= {style.flex}>
                 <ScrollView>
                     <View style={style.head}>
                         <View 
                             style={style.boxSearch}>
-                            <TouchableOpacity style={style.p8} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity style={style.p8} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                     style={[styles.icon, style.w15]}
                                     source={images.iconSearch} />
                             </TouchableOpacity>
                             <TextInput 
-                                style={[style.flex, {color: "rgba(255, 255, 255, 0.6)"}]}
+                                style={[style.flex, style.txtSearch]}
                                 value={this.state.keyword}
                                 returnKeyLabel="Tìm"
                                 onSubmitEditing={this._onSearch}
-                                onChangeText={keyword => this.setState({keyword})}
+                                onChangeText={this.onChangeText('keyword')}
                                 placeholderTextColor="rgba(255, 255, 255, 0.6)"
                                 placeholder="Tìm kiếm" />
                             
@@ -50,26 +50,26 @@ class Home extends React.Component {
                     </View>
 
                     <View style={style.flex}>
-                        <View style={{flexDirection: 'row', marginBottom: 1, marginTop: 1,}}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                        <View style={style.row}>
+                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box6}
                                     source={images.tttd} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box4}
                                     source={images.myShop} />
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 1, marginTop: 1,}}>
+                        <View style={style.row}>
                             <Text style={style.txt6}>Thông tin theo dõi</Text>
                             <Text style={style.txt4}>Shop của tôi</Text>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
-                            <TouchableOpacity style={style.box6} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                        <View style={style.row}>
+                            <TouchableOpacity style={style.box6} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box6}
                                     source={images.ttda} />
@@ -81,7 +81,7 @@ class Home extends React.Component {
                                     <Text style={style.textBadge}>317</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={style.box4} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity style={style.box4} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box4}
                                     source={images.thanhly} />
@@ -95,22 +95,22 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                        <View style={style.row}>
+                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.product}>
                                     <Text style={style.textB4}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.thongtintheodoi}>
                                     <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <ImageBackground 
                                     style={[style.box3, {marginRight: 0}]}
                                     source={images.dangmua}>
@@ -118,8 +118,8 @@ class Home extends React.Component {
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
-                        <View style={{flexDirection: 'row', marginBottom: 1,}}>
-                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                        <View style={style.row}>
+                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box3}
                                     source={images.video} />
@@ -132,7 +132,7 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box3}
                                     source={images.catalog} />
@@ -145,7 +145,7 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={() =>  this.props.navigation.navigate(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box3}
                                     source={images.tailieu} />
@@ -170,6 +170,22 @@ class Home extends React.Component {
 
     _onSearch = () => {
         console.log(11, this.state.keyword);
+    }
+
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = (screen, params = {} ) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
     }
 }
 export default connect()(Home)
@@ -204,5 +220,7 @@ const style = StyleSheet.create({
     boxBadge4: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     boxBadge3: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
-    textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color}
+    textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color},
+    txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
+    row: {flexDirection: 'row', marginBottom: 1, marginTop: 1,}
 })

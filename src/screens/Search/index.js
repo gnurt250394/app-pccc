@@ -30,6 +30,22 @@ class More extends React.Component {
             </View>
         )
     }
+
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
 }
 export default connect()(More)
 

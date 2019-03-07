@@ -43,13 +43,13 @@ class ViewProfile extends React.Component {
         return (
             <View >
                 <View style={style.header}>
-                    <TouchableOpacity style={style.p10} onPress={() => this.props.navigation.goBack()}>
+                    <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
                             style={style.iconBack}
                             source={images.backLight} />
                     </TouchableOpacity>
                     <Text style={style.title}> Thông tin cá nhân </Text>
-                    <TouchableOpacity style={style.p10} onPress={() => this.props.navigation.navigate(EditProfileScreen)}>
+                    <TouchableOpacity style={style.p10} onPress={this._navTo(EditProfileScreen)}>
                         <Image 
                             style={style.iconEdit}
                             source={images.edit} />
@@ -72,6 +72,15 @@ class ViewProfile extends React.Component {
             </View>
         )
     }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
 }
 const mapStateToProps = (state) =>{
     return {

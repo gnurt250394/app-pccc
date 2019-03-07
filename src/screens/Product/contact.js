@@ -4,14 +4,14 @@ import images from "assets/images"
 import { color } from 'config'
 
 const {width,height}=Dimensions.get('window')
+
 const RenderRow =(props)=> <View style={styles.rowItem}>
-<Image source={props.source}
-    style={styles.image}
-    resizeMode="contain"
-/>
-<View style={styles.txt}>
-<Text>{props.title}</Text>
-</View>
+        <Image source={props.source}
+            style={styles.image}
+            resizeMode="contain" />
+        <View style={styles.txt}>
+        <Text>{props.title}</Text>
+    </View>
 </View>
 
 
@@ -29,85 +29,89 @@ const RenderTextInput =(props)=>{
     )
 }
 export default class Contacts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    return (
-            <View style={{flex:1}}>
-         <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      
-       <View style={styles.row}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
+    render() {
+        return (
+            <View style={styles.flex}>
+                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+        
+                <View style={styles.row}>
+                    <TouchableOpacity onPress={this._goBack} >
+                        <Image 
+                            style={[styles.icon, styles.iconBack]}
+                            source={images.back} />
+                    </TouchableOpacity>
+                    <Text style={styles.headText}>Liên hệ</Text>
+                    {/* <TouchableOpacity onPress={() =>  null} >
                             <Image 
-                                style={[styles.icon, {margin: 10, width: 10,tintColor:'black'}]}
-                                source={images.back} />
-                        </TouchableOpacity>
-                        <Text style={styles.headText}>Liên hệ</Text>
-                        {/* <TouchableOpacity onPress={() =>  null} >
-                                <Image 
-                                    style={[styles.icon, {margin: 10, height: 18}]}
-                                    source={images.share} />
-                        </TouchableOpacity> */}
-                    </View>
-                    <ScrollView>
+                                style={[styles.icon, {margin: 10, height: 18}]}
+                                source={images.share} />
+                    </TouchableOpacity> */}
+                </View>
+                <ScrollView>
                     <View style={styles.container}>
-                    <View>
-                        <Text style={styles.txtTitle}>Thông tin về chúng tôi</Text>
-                        <RenderRow
-                            source={images.contactEarth}
-                            title={"sieuthiphongchay.vn"}
-                        />
-                        <RenderRow
-                            source={images.contactPhone}
-                            title={"0987654321/ 0123456789"}
-                        />
-                        <RenderRow
-                            source={images.contactSMS}
-                            title={"cskh@phongchaythanglong.vn"}
-                        />
-                        <RenderRow
-                            source={images.contactLocation1}
-                            title={"84 Miếu Đầm - Nam Từ Liêm - Hà Nội"}
-                        />
-                        <RenderRow
-                            source={images.contactLocation}
-                            title={"100/70 Nguyễn Hoàng, P.Mỹ Đình 2, Q.Nam Từ Liêm,Hà Nội"}
-                        />
-                    
-                       <View style={styles.viewEnd}/>
-                       <Text style={styles.txtTitle}>Tư vấn, Hỏi đáp</Text>
-                       <RenderTextInput
-                           name={"Tên của bạn"}
-                       />
-                       <RenderTextInput
-                           name={"Email"}
-                       />
-                       <RenderTextInput
-                           name={"Tiêu đề"}
-                       />
-                       <RenderTextInput
-                           name={"Nội dung"}
-                           style={{height:120}}
-                       />
-                       <View style={{justifyContent:'space-between',flexDirection:'row'}}> 
-                       <View/>
-                       <TouchableOpacity style={styles.button}>
-                           <Text style={{fontWeight:'500'}}>GỬI</Text>
-                       </TouchableOpacity>
-                       </View>
+                        <View>
+                            <Text style={styles.txtTitle}>Thông tin về chúng tôi</Text>
+                            <RenderRow
+                                source={images.contactEarth}
+                                title={"sieuthiphongchay.vn"} />
+                            <RenderRow
+                                source={images.contactPhone}
+                                title={"0987654321/ 0123456789"}  />
+                            <RenderRow
+                                source={images.contactSMS}
+                                title={"cskh@phongchaythanglong.vn"} />
+                            <RenderRow
+                                source={images.contactLocation1}
+                                title={"84 Miếu Đầm - Nam Từ Liêm - Hà Nội"} />
+                            <RenderRow
+                                source={images.contactLocation}
+                                title={"100/70 Nguyễn Hoàng, P.Mỹ Đình 2, Q.Nam Từ Liêm,Hà Nội"} />
+                        
+                            <View style={styles.viewEnd}/>
+                                <Text style={styles.txtTitle}>Tư vấn, Hỏi đáp</Text>
+                                <RenderTextInput name={"Tên của bạn"} />
+                                <RenderTextInput name={"Email"} />
+                                <RenderTextInput name={"Tiêu đề"} />
+                                <RenderTextInput
+                                    name={"Nội dung"}
+                                    style={styles.h120} />
+                                <View style={styles.box}>
+
+                                <View/>
+                                <TouchableOpacity style={styles.button}>
+                                    <Text style={styles.fw500}>GỬI</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-      </View>
-      </ScrollView>
-      </View>
-    );
-  }
+                </ScrollView>
+        </View>
+        );
+    }
+
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = (screen, params = {} ) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
 }
 
 const styles = StyleSheet.create({
+    iconBack: {margin: 10, width: 10,tintColor:'black'},
+    flex: {flex: 1},
+    h120: {height:120},
+    box: {justifyContent:'space-between',flexDirection:'row'},
+    fw500: {fontWeight:'500'},
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',

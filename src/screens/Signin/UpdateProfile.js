@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, StatusBar, Keyboard } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, StatusBar, Keyboard, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { checkPhoneOrEmail, updateUser } from 'config/apis/users'
@@ -37,12 +37,12 @@ class UpdateProfile extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
-            <View style={{justifyContent: 'space-between', marginTop: 80}}>
-                <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: 80, textAlign: 'center'}}>{toUpperCase('Cập nhật thông tin')}</Text>
-                <View style={{height: '65%'}}>
+            <TouchableWithoutFeedback style= {style.flex } onPress={this._dismiss}>
+            <View style={style.content}>
+                <Text style={style.title}>{toUpperCase('Cập nhật thông tin')}</Text>
+                <View style={style.h65p}>
                     <BaseInput 
-                        styleIcon={{height: 15}}
+                        styleIcon={style.h15}
                         value={this.user.phone}
                         icon={images.phoneDark}
                         ref={val => this.phone = val}
@@ -59,13 +59,18 @@ class UpdateProfile extends React.Component {
                         placeholder="Email" /> : null}
 
                     <Btn 
-                        customStyle={{marginTop:  100,}}
+                        customStyle={style.mt100}
                         onPress={this._onSuccess()}
                         name="Bước tiếp theo" />
                 </View>
             </View>
             </TouchableWithoutFeedback>
         )
+    }
+
+
+    _dismiss = () => {
+        Keyboard.dismiss()
     }
 
     _checkEmail = () => {
@@ -163,3 +168,12 @@ class UpdateProfile extends React.Component {
 }
 
 export default connect()(UpdateProfile)
+
+const style = StyleSheet.create({
+    h65p: {height: '65%'},
+    h15: {height: 15},
+    title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: 80, textAlign: 'center'},
+    content: {justifyContent: 'space-between', marginTop: 80},
+    flex: {flex: 1},
+    mt100: {marginTop:  100,}
+})

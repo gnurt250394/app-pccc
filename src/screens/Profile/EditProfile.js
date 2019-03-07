@@ -9,7 +9,7 @@ import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
 class InputItem extends React.Component {
     render() {
-        return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
+        return <View style={style.mb5}>
                 <Image 
                     style={style.icon}
                     source={this.props.icon} />
@@ -28,7 +28,7 @@ class GenderItem extends React.Component {
     }
 
     render() {
-        return <View style={{ marginBottom: 5, flexDirection: 'row'}}>
+        return <View style={style.mb5}>
                 <Image 
                     style={style.icon}
                     source={images.pGender} />
@@ -36,7 +36,7 @@ class GenderItem extends React.Component {
                     <View style={style.row}>
                         
                         <Image 
-                            style={[style.icon, {width: 19}]}
+                            style={[style.icon, style.w19]}
                             source={this.state.gender ==  Gender.male ? images.selected : images.unselect} />
                         <Text style={style.gender}>Nam</Text>
                     </View>
@@ -44,7 +44,7 @@ class GenderItem extends React.Component {
                 <TouchableOpacity onPress={this.props.onSelectFemale}>
                     <View style={style.row}>
                         <Image 
-                            style={[style.icon, {width: 19}]}
+                            style={[style.icon, style.w19]}
                             source={this.state.gender ==  Gender.male ? images.unselect : images.selected} />
                         <Text style={style.gender}>Nữ</Text>
                     </View>
@@ -62,7 +62,7 @@ class EditProfile extends React.Component {
     constructor(props){
         super(props);
         let user = this.props.user || {}
-        console.log('user: ', user);
+        
         this.user = {...user} // check old email
         this.state = {
             name: user.name ? user.name : "",
@@ -92,16 +92,16 @@ class EditProfile extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
+            <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <ScrollView >
                 <View style={style.header}>
-                    <TouchableOpacity style={style.p10} onPress={() => this.props.navigation.goBack()}>
+                    <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
                             style={style.iconBack}
                             source={images.backLight} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this._onSuccess()}>
+                    <TouchableOpacity onPress={this._onSuccess}>
                         <Text style={style.textDone}>Xong</Text>
                     </TouchableOpacity>
                 </View>
@@ -116,7 +116,7 @@ class EditProfile extends React.Component {
                 <View style={style.mt30}>
                     <InputItem icon={images.pUser} 
                         value={this.state.name}
-                        onChangeText={name => this.setState({name})}
+                        onChangeText={this.onChangeText('name')}
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
                         value={this.state.phone}
@@ -125,23 +125,23 @@ class EditProfile extends React.Component {
                     <InputItem icon={images.pEmail} 
                         keyboardType='email-address'
                         value={this.state.email}
-                        onChangeText={email => this.setState({email})}
+                        onChangeText={this.onChangeText('email')}
                         placeholder="Email của bạn"/>
                     <GenderItem 
-                        onSelectMale={() => this.setState({gender: Gender.male})}
-                        onSelectFemale={() => this.setState({gender: Gender.female})}
+                        onSelectMale={this._updateGender(Gender.male)}
+                        onSelectFemale={this._updateGender(Gender.female)}
                         gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
                         value={this.state.address}
-                        onChangeText={address => this.setState({address})}
+                        onChangeText={this.onChangeText('address')}
                         placeholder="Địa chỉ"/>
                     <InputItem icon={images.pCompany} 
                         value={this.state.company}
-                        onChangeText={company => this.setState({company})}
+                        onChangeText={this.onChangeText('company')}
                         placeholder="Tên công ty"/>
                     <InputItem icon={images.pThue} 
                         value={this.state.tax_code}
-                        onChangeText={tax_code => this.setState({tax_code})}
+                        onChangeText={this.onChangeText('tax_code')}
                         placeholder="Mã số thuế"/>
                 </View>
             </ScrollView>
@@ -149,8 +149,26 @@ class EditProfile extends React.Component {
         )
     }
 
+    _updateGender = gender => () => {
+        this.setState({gender: gender})
+    } 
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
+
     _onUploadImage = () => {
-        console.log(123);
         chooseImage().then(url => {
             console.log('url: ', url);
 
@@ -160,7 +178,7 @@ class EditProfile extends React.Component {
         })
     }
 
-    _onSuccess = () => () => {
+    _onSuccess = () => {
         if(this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
@@ -213,5 +231,8 @@ const style = StyleSheet.create({
     avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
     p10: {padding: 10},
-    mt30: { marginTop: 30}
+    mt30: { marginTop: 30},
+    flex:  { flex:1},
+    w19: {width: 19},
+    mb5: { marginBottom: 5, flexDirection: 'row'}
 })

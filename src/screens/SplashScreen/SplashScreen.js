@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar, Image } from 'react-native';
 import images from "assets/images"
-import { HelloScreen } from 'config/screenNames';
+import { HelloScreen, HomeScreen } from 'config/screenNames';
 export default class SplashScreen extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,7 @@ export default class SplashScreen extends Component {
     }
     render() {
         return (
-            <TouchableWithoutFeedback style= {styles.flex} onPress={() =>this.props.navigation.navigate(HelloScreen)}>
+            <TouchableWithoutFeedback style= {styles.flex} onPress={this._navTo(HomeScreen)}>
                 <ImageBackground 
                     style={styles.container}
                     source={images.spBg} resizeMode="stretch">
@@ -26,6 +26,11 @@ export default class SplashScreen extends Component {
             </TouchableWithoutFeedback>
         );
     }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
 }
 
 const styles = StyleSheet.create({

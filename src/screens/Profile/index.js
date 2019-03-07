@@ -42,15 +42,14 @@ class Profile extends React.Component {
 
     render(){
         return (
-            <View style={{flex: 1}}>
+            <View style={style.flex}>
                 <ScrollView >
                     <View style={style.head}>
-
                         <Text style={style.title}> Cá nhân </Text>
                     </View>
 
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate(ViewProfileScreen)}
+                        onPress={this._navTo(ViewProfileScreen)}
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
@@ -67,33 +66,38 @@ class Profile extends React.Component {
 
                         <NavItem 
                             title='Shop của tôi' 
-                            onPress={() => this.props.navigation.navigate(ChangePasswordScreen)}
+                            onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pShop} />
                         <NavItem 
                             title='Mua gói dịch vụ' 
-                            onPress={() => this.props.navigation.navigate(ChangePasswordScreen)}
+                            onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pService} />
                         <NavItem 
                             title='Sản phẩm yêu cầu báo giá' 
-                            onPress={() => this.props.navigation.navigate(ChangePasswordScreen)}
+                            onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pProduct} />
                         <NavItem 
                             title='Thay đổi mật khẩu' 
-                            onPress={() => this.props.navigation.navigate(ChangePasswordScreen)}
+                            onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pChangePass} />
                     </View>
                 </ScrollView>
 
                 <Text 
-                    onPress={() => {
-                        this.props.dispatch({type: actionTypes.USER_LOGOUT})
-                        this.props.navigation.navigate(SigninScreen)}
-                    }
+                    onPress={this._logout}
                     style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
             </View>
         )
     }
 
+    _logout = () => {
+        this.props.dispatch({type: actionTypes.USER_LOGOUT})
+        this.props.navigation.navigate(SigninScreen)
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
     
 }
 
@@ -117,5 +121,6 @@ const style = StyleSheet.create({
     user: { flex: 1, flexDirection: 'column', padding: 18},
     avatar: {width: 70, height: 70, alignSelf: 'center' },
     boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
-    mt20: { marginTop: 20}
+    mt20: { marginTop: 20},
+    flex: {flex: 1}
 })

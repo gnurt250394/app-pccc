@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet, Alert } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles" 
@@ -29,16 +29,16 @@ class Register extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
+            <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <View style={styles.content}>
-                <Text style={{color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'}}>{toUpperCase('Đăng ký')}</Text>
-                <View style={{height: "70%"}}>
+                <Text style={style.title}>{toUpperCase('Đăng ký')}</Text>
+                <View style={style.h70p}>
                     <BaseInput 
                         icon={images.userDark}
                         ref={val => this.name = val}
                         placeholder="Họ và tên" />
                     <BaseInput 
-                        styleIcon={{height: 15}}
+                        styleIcon={style.h15}
                         icon={images.phoneDark}
                         ref={val => this.phone = val}
                         onBlur={this._checkPhone}
@@ -64,19 +64,28 @@ class Register extends React.Component {
                         placeholder="Nhập lại mật khẩu" />
                     
                     <Btn 
-                        customStyle={{marginTop:  40, marginBottom: 50}}
+                        customStyle={style.btn}
                         onPress={this._onSuccess()}
                         name="Bước tiếp theo" />
 
                     <TouchableOpacity 
-                             onPress={() => this.props.navigation.navigate(SigninScreen)}>
-                           <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
+                        style={style.boxForgot}
+                        onPress={this._navTo(SigninScreen)}>
+                        <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
                     </TouchableOpacity>
                 </View>
                 
             </View>
             </TouchableWithoutFeedback>
         )
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
     }
 
     _checkEmail = () => {
@@ -154,9 +163,9 @@ class Register extends React.Component {
                     if(token && token.code){
                             signup({
                                 name: name,
-                                phone: phone,
+                                phone: phone.replace(/\+84/, "0"),
                                 email: email,
-                                password: password.replace(/\+84/, "0"),
+                                password: password,
                             }).then(res => {
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
@@ -183,3 +192,12 @@ class Register extends React.Component {
     }
 }
 export default connect()(Register)
+
+const style = StyleSheet.create({
+    btn: {marginTop:  40, marginBottom: 50},
+    boxForgot: {width: '50%', alignSelf: 'center',},
+    h15: {height: 15},
+    h70p: {height: '70%'},
+    title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'},
+    flex: {flex: 1}
+})
