@@ -2,7 +2,8 @@ import axios from 'axios'
 import constant from './constant';
 let instance = axios.create({
     baseURL:constant.BASEURL,
-    timeout: constant.SERVER_TIMEOUT
+    timeout: constant.SERVER_TIMEOUT,
+    headers: {'content-type': "application/json"}
 });
 
 export const signup = body => {

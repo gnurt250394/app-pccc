@@ -13,9 +13,9 @@ export default class BaseInput extends React.PureComponent {
     }
     render(){
         return (
-            <View style={{flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#C3E5FE', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 20, paddingBottom: 0,}}>
+            <View style={style.inputView}>
                 <Image 
-                    style={[styles.icon,{width: 12}, this.props.styleIcon || {}, ]} 
+                    style={[styles.icon,style.w12, this.props.styleIcon || {}, ]} 
                     source={this.props.icon} />
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
@@ -49,4 +49,6 @@ const style = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
     },
+    inputView: {flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#C3E5FE', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
+    w12: {width: 12}
 })

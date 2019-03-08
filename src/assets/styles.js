@@ -16,7 +16,7 @@ export default styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 25,
         borderRadius: 3,
-        padding: 12,
+        padding: 11,
     },
     btnSignup: {
         backgroundColor: "white",

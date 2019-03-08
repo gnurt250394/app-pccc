@@ -8,7 +8,7 @@ import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import  { accountKit } from 'config/accountKit'
 import  { RegisterScreen, ForgotPasswordScreen, HomeScreen, UpdateProfileScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
@@ -63,7 +63,7 @@ class Signin extends React.Component {
                     
                     <Btn
                         onPress={this._signin()} 
-                        customStyle={style.mb8}
+                        customStyle={[style.mb8,]}
                         name="Đăng nhập" />
                     <Btn
                         onPress={this._navTo(RegisterScreen)}
@@ -129,10 +129,15 @@ class Signin extends React.Component {
           console.log(12, body);
           this.setState({loading: true})
           loginSocial(body).then(res => {
-              console.log('res: fb', res);
-              this._onSwitchToHomePage(res, LoginType.facebook);
-              this.setState({loading: false})
+                console.log('res: fb', res);
+                this.setState({loading: false})
+                if(res.data.code == StatusCode.Success){
+                    this._onSwitchToHomePage(res, LoginType.facebook);
+                }else{
+                    popupOk(CodeToMessage[res.data.code])
+                }
           }).catch(err => {
+              console.log('err: ', err);
               this.setState({loading: false})
               popupOk("Đăng nhập thất bại");
           })
@@ -157,9 +162,14 @@ class Signin extends React.Component {
                 login_type: LoginType.google
             }).then(res => {
                 console.log('res: gg', res);
-                this._onSwitchToHomePage(res, LoginType.facebook);
                 this.setState({loading: false})
+                if(res.data.code == StatusCode.Success){
+                    this._onSwitchToHomePage(res, LoginType.google);
+                }else{
+                    popupOk(CodeToMessage[res.data.code])
+                }
             }).catch(err => {
+                console.log('err: ', err);
                 popupOk("Đăng nhập thất bại");
                 this.setState({loading: false})
             })
@@ -242,9 +252,10 @@ const style = StyleSheet.create({
     iconSocial: {width: 55,marginTop: -15},
     flex: { flex:1},
     w11: { height: 15},
-    w53: { height: 53},
+    w53: { width: 53},
     mb8: {marginBottom: 8},
-    mb50: {marginBottom: 50},
+    mt8: {marginTop: 8},
+    mb50: {marginBottom: 70},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
 })
 
