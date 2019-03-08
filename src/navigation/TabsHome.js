@@ -55,7 +55,7 @@ export default createBottomTabNavigator(
             image = focused ? images.notify : images.notifyDark;
             break;
           case ProfileScreen:
-            image = focused ? images.tabUserRed : images.userDark;
+            image = focused ? images.userDark : images.tabUserRed;
             break;
           default:
             w = 17;
