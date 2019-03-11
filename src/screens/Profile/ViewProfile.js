@@ -6,7 +6,7 @@ import {  ShowGender, color } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
 class ListItem extends React.Component {
     render() {
-      return this.props.name ? <View style={{ marginBottom: 10, flexDirection: 'row'}}>
+      return this.props.name ? <View style={{ marginBottom: 2, flexDirection: 'row'}}>
                 <Image 
                     style={style.icon}
                     source={this.props.icon} />
@@ -93,8 +93,8 @@ export default connect(mapStateToProps)(ViewProfile)
 
 const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
-    iconBack: {width: 10, resizeMode: 'contain' },
-    iconEdit: {width: 20, resizeMode: 'contain' },
+    iconBack: {height: 15, resizeMode: 'contain' },
+    iconEdit: {height: 18, resizeMode: 'contain' },
     label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10},
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},

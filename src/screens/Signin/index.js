@@ -9,8 +9,7 @@ import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import  { accountKit } from 'config/accountKit'
-import  { RegisterScreen, ForgotPasswordScreen, HomeScreen, UpdateProfileScreen } from 'config/screenNames'
+import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 
 class Signin extends React.Component {
@@ -51,6 +50,7 @@ class Signin extends React.Component {
 
                     <BaseInput 
                         styleIcon={style.w11}
+                        removeSpace={true}
                         icon={images.phoneDark}
                         ref={val => this.username = val}
                         placeholder="Email/Số điện thoại" />
@@ -73,7 +73,7 @@ class Signin extends React.Component {
 
                     
                     <Text 
-                        onPress={this._onForgotPassword}
+                        onPress={this._navTo(CheckPhoneScreen)}
                         style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
                     <View style={style.boxOr}>
                         <View style={style.line}></View>
@@ -212,16 +212,11 @@ class Signin extends React.Component {
     }
 
     _onForgotPassword = () => {
-        let RNAccountKit = accountKit()
-        RNAccountKit.loginWithPhone()
-            .then((token) => {
-                if(token && token.code){
-                    this.props.navigation.navigate(ForgotPasswordScreen);
-                }
-            })
+        
     }
 
     _onSwitchToHomePage = (res, type) => {
+        console.log('type: ', type);
         let data = res.data,
             user = data.data;
         console.log('data: ', data);

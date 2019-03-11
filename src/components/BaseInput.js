@@ -11,6 +11,10 @@ export default class BaseInput extends React.PureComponent {
     state = {
         value: this.props.value
     }
+    componentWillReceiveProps(props){
+        if(props.value != "") this.setState({value: props.value})
+    }
+
     render(){
         return (
             <View style={style.inputView}>
@@ -20,7 +24,6 @@ export default class BaseInput extends React.PureComponent {
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
                     placeholderTextColor={this.props.placeholderTextColor || "#8FBEDF"}
-                    // placeholderTextColor={this.props.placeholderTextColor || "rgba(33, 102, 162, 0.5)"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.onChangeText}
@@ -34,6 +37,7 @@ export default class BaseInput extends React.PureComponent {
     }
 
     onChangeText = text => {
+        if(this.props.removeSpace) text = text.replace(/ /g, '');
         this.setState({value: text})
     }
 

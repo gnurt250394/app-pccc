@@ -8,6 +8,7 @@ import Signin from 'screens/Signin'
 import UpdateProfile from 'screens/Signin/UpdateProfile'
 import ForgotPassword from 'screens/ForgotPassword'
 import ChangePassword from 'screens/ForgotPassword/ChangePassword'
+import CheckPhone from 'screens/ForgotPassword/CheckPhone'
 import ViewProfile from 'screens/Profile/ViewProfile'
 import MyProfile from 'screens/Profile/profile'
 import Profile from 'screens/Profile'
@@ -56,6 +57,7 @@ const App = createStackNavigator(
     [ScreenName.MyProfile]: MyProfile,
     [ScreenName.UpdateProfileScreen]: UpdateProfile,
     [ScreenName.SearchScreen]: Search,
+    [ScreenName.CheckPhoneScreen]: CheckPhone,
    
   },
   {

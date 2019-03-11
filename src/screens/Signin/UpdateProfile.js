@@ -19,7 +19,7 @@ class UpdateProfile extends React.Component {
         this.user = this.props.navigation.getParam('user')
         this.type = this.props.navigation.getParam('type')
         this.token = this.props.navigation.getParam('token')
-        console.log(' this.user: ',  this.user);
+        
 
     }
     // set status bar
@@ -74,7 +74,7 @@ class UpdateProfile extends React.Component {
     }
 
     _checkEmail = () => {
-        let email = this.email.getValue();
+        let email = this.email ? this.email.getValue() : "";
         if(email == "") return;
         try {
             checkPhoneOrEmail({email: email}).then(res => {
@@ -85,22 +85,23 @@ class UpdateProfile extends React.Component {
                     this.setState({allowEmail: true})
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 this.setState({allowEmail: false})
             })
         } catch (error) {
-            console.log('error: ', error);
+            
             this.setState({allowEmail: false})
         }
        
     }
 
     _checkPhone = () => {
-        let phone = this.phone.getValue();
+        let phone = this.phone ? this.phone.getValue() : "";
+        
         if(phone == "") return;
         try {
             checkPhoneOrEmail({phone: phone}).then(res => {
-                console.log('res: ', res);
+                
                 if(res.data.code != StatusCode.Success  || res.data == ""){
                     this.setState({allowPhone: false})
                     popupOk(CodeToMessage[res.data.code])
@@ -109,11 +110,11 @@ class UpdateProfile extends React.Component {
                 }
     
             }).catch(err => {
-                console.log('err: ', err);
+                
                 this.setState({allowPhone: false})
             })
         } catch (error) {
-            console.log('error: ', error);
+            
             this.setState({allowPhone: false})
             
         }
@@ -121,8 +122,9 @@ class UpdateProfile extends React.Component {
     
     
     _onSuccess = () => async () => {
-        let phone = this.phone.getValue(),
-            email = this.email.getValue();
+        let phone = this.phone ? this.phone.getValue() : '',
+            email = this.email ? this.email.getValue() : '';
+            
         if(phone.trim().length != 10){
             popupOk('Số điện thoại không đúng')
         }else if(email.trim() != "" && !validateEmail(email)){
@@ -137,11 +139,11 @@ class UpdateProfile extends React.Component {
                         let data = {
                             phone: phone
                         }
-                        if (LoginType.facebook) data.email = email;
-                        console.log('data: ', data);
+                        if (this.type == LoginType.facebook) data.email = email;
+                        
 
                         updateUser(this.token, data).then(res => {
-                            console.log('res: ', res);
+                            
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
                                 this.props.navigation.navigate(HomeScreen)

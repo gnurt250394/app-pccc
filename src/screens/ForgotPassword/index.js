@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, Alert, Image, TouchableOpacity, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Alert, Image, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { signup } from 'config/apis/users'
+import { updateUser } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
 import { ScreenName, popupOk, color } from 'config'
 
@@ -26,10 +26,10 @@ class ChangePassword extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
+            <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
-                    <Header title="Đổi mật khẩu" onPress={() => this.props.navigation.goBack()}/>
-                    <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
+                    <Header title="Đổi mật khẩu" onPress={this._goBack}/>
+                    <View style={style.content}>
                         <View></View>
                         <View>
                             <BaseInput 
@@ -50,6 +50,14 @@ class ChangePassword extends React.Component {
         )
     }
 
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
+
     _onSuccess = () => () => {
         let password = this.password ? this.password.getValue() : "";
         let rePassword = this.rePassword ? this.rePassword.getValue() : "";
@@ -59,7 +67,13 @@ class ChangePassword extends React.Component {
             popupOk('Mật khẩu nhập lại không đúng')
         }else{
             // call api
+            // updateUser()
         }
     }
 }
 export default connect()(ChangePassword)
+
+const style = StyleSheet.create({
+    flex: { flex:1},
+    content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}
+})

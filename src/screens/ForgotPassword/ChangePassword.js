@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Alert, Image, TouchableOpacity, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
 import { ScreenName, popupOk } from 'config'
@@ -13,44 +12,65 @@ class ChangePassword extends React.Component {
         oldPassword: '',
         rePassword: '',
     }
+    
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
+            <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
                     
-                    <Header title="Đổi mật khẩu mới" onPress={() => this.props.navigation.goBack()}/>
-                    <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
+                    <Header title="Đổi mật khẩu mới" onPress={this._goBack}/>
+                    <View style={style.content}>
                         <View></View>
                         <View>
                             <BaseInput 
                                 icon={images.keyDark}
-                                onChangeText={val => this.setState({oldPassword: val})}
+                                ref={val => this.oldPassword = val}
                                 secureTextEntry={true}
                                 placeholder="Mật khẩu hiện tại"  />
                             <BaseInput 
                                 icon={images.keyDark}
-                                onChangeText={val => this.setState({password: val})}
+                                ref={val => this.password = val}
                                 secureTextEntry={true}
                                 placeholder="Mật khẩu mới"  />
                             <BaseInput 
                                 icon={images.keyDark}
-                                onChangeText={val => this.setState({rePassword: val})}
+                                ref={val => this.rePassword = val}
                                 secureTextEntry={true}
                                 placeholder="Nhập lại mật khẩu mới"  />
                         </View>
-                        <Btn name="Hoàn tất" onPress={this._onSuccess()} />
+                        <Btn name="Hoàn tất" onPress={this._onSuccess} />
                     </View>
                 </View>
             </TouchableWithoutFeedback>
         )
     }
 
-    _onSuccess = () => () => {
-        if(this.state.oldPassword.trim().length == 0 ){
+    onChangeText = key => val => {
+        this.setState({[key]: val})
+    }
+
+    _navTo = screen => () => {
+        this.props.navigation.navigate(screen)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
+
+    _onSuccess = () => {
+        let oldPassword = this.oldPassword ? this.oldPassword.getValue() : "",
+            password = this.password ? this.password.getValue() : "",
+            rePassword = this.rePassword ? this.rePassword.getValue() : "";
+
+        if(oldPassword.trim().length == 0 ){
             popupOk('Mật khẩu hiện tại không đúng')
-        }else if(this.state.password.trim().length < 6){
+        }else if(password.trim().length < 6){
             popupOk('Mật khẩu mới phải từ 6 ký tự')
-        }else if(this.state.password != this.state.rePassword){
+        }else if(password != rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
         }else{
             // call api
@@ -58,3 +78,8 @@ class ChangePassword extends React.Component {
     }
 }
 export default connect()(ChangePassword)
+
+const style = StyleSheet.create({
+    flex: { flex:1},
+    content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}
+})

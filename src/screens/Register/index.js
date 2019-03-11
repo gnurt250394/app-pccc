@@ -13,6 +13,7 @@ class Register extends React.Component {
     state = {
         allowPhone: false,
         allowEmail: true,
+        name: ""
     }
     // set status bar
     componentDidMount() {
@@ -35,11 +36,14 @@ class Register extends React.Component {
                 <View style={style.h70p}>
                     <BaseInput 
                         icon={images.userDark}
+                        value={this.state.name}
+                        onBlur={this._removeSpage}
                         ref={val => this.name = val}
                         placeholder="Họ và tên" />
                     <BaseInput 
                         styleIcon={style.h15}
                         icon={images.phoneDark}
+                        removeSpace={true}
                         ref={val => this.phone = val}
                         onBlur={this._checkPhone}
                         keyboardType='numeric'
@@ -47,6 +51,7 @@ class Register extends React.Component {
                         placeholder="Số điện thoại" />
                     <BaseInput 
                         icon={images.emailDark}
+                        removeSpace={true}
                         ref={val => this.email = val}
                         onBlur={this._checkEmail}
                         keyboardType='email-address'
@@ -86,6 +91,12 @@ class Register extends React.Component {
 
     _dismiss = () => {
         Keyboard.dismiss()
+    }
+
+    _removeSpage = () => {
+        let name = this.name.getValue();
+            name = name.trim();
+        this.setState({name: name})
     }
 
     _checkEmail = () => {

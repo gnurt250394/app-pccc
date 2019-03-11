@@ -113,7 +113,7 @@ const style = StyleSheet.create({
     icon: {width: 10, resizeMode: 'contain', },
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},
-    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", padding: 10,  },
+    title: {color: '#fff', fontSize: 18, alignSelf: 'center', fontWeight: "bold", padding: 6,  },
     btnLogout: {color: '#F55555', fontSize: 16, width: '60%', alignSelf: 'center', textAlign:'center', fontWeight: 'bold', padding: 10, marginBottom: 50},
     head: {backgroundColor: color},
     name: {fontSize: 16, color: '#333333', fontWeight: 'bold', paddingBottom: 6},

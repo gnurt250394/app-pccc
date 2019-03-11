@@ -197,6 +197,7 @@ class EditProfile extends React.Component {
             console.log(11, data);
             if(this.state.email != this.user.email) data.email = this.state.email;
             updateUser(this.props.token, data).then(res => {
+                console.log('res: ', res);
                 if(res.data.code == StatusCode.Success){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     this.props.navigation.goBack()
@@ -222,17 +223,16 @@ export default connect(mapStateToProps)(EditProfile)
 
 const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 5,},
-    iconBack: {width: 10, resizeMode: 'contain' },
-    textDone: {textAlign: 'right', color: '#fff', fontSize: 18, padding: 10},
+    iconBack: {height: 15, resizeMode: 'contain' },
+    textDone: {textAlign: 'right', color: '#fff', fontSize: 18, padding: 8},
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     gender: {fontSize: 14, color: '#555555', paddingLeft: 10},
-    header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
     p10: {padding: 10},
     mt30: { marginTop: 30},
     flex:  { flex:1},
     w19: {width: 19},
-    mb5: { marginBottom: 5, flexDirection: 'row'}
+    mb5: { marginBottom: 0, flexDirection: 'row'}
 })
