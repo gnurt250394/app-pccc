@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
-import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar, Image } from 'react-native';
+import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar, Image,AsyncStorage } from 'react-native';
 import images from "assets/images"
 import { HelloScreen, HomeScreen } from 'config/screenNames';
+import navigation from 'navigation/NavigationService'
 export default class SplashScreen extends Component {
     constructor(props) {
         super(props);
             this.state = {
         };
     }
-    componentDidMount(){
+  
+    componentDidMount = async()=>{
+        let token = await AsyncStorage.getItem('token')
+        console.log(token,'token')
+      if(token){
+          navigation.reset(HomeScreen)
+      } else{
         setTimeout(()=>{
-                this.props.navigation.navigate(HelloScreen)
-        }, 3 * 1000)
+            this.props.navigation.navigate(HelloScreen)
+    }, 3000)
+      }
+       
     }
     render() {
         return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -11,7 +11,7 @@ import * as firebase from 'react-native-firebase'
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
-
+import navigation from 'navigation/NavigationService'
 class Signin extends React.Component {
     state = {
         username: '',
@@ -25,6 +25,9 @@ class Signin extends React.Component {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
         });
+            if(this.props.user){
+                
+            }
       }
     
     componentWillUnmount() {
@@ -126,23 +129,25 @@ class Signin extends React.Component {
             token: data.accessToken,
             login_type: LoginType.facebook
           } 
-          console.log(12, body);
+          
           this.setState({loading: true})
           loginSocial(body).then(res => {
-                console.log('res: fb', res);
+                
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
+                    console.log(res,'res')
+                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.facebook);
                 }else{
                     popupOk(CodeToMessage[res.data.code])
                 }
           }).catch(err => {
-              console.log('err: ', err);
+              
               this.setState({loading: false})
               popupOk("Đăng nhập thất bại");
           })
         } catch (e) {
-            console.log('e: ', e);
+            
             this.setState({loading: false})
         }
     }
@@ -151,31 +156,40 @@ class Signin extends React.Component {
         try {
             await GoogleSignin.configure();
             const data = await GoogleSignin.signIn();
+            
             const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+
             const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+            
             let provider = firebaseUserCredential.user.toJSON();
-            console.log('provider: gg', provider);
+            
+
+            
             this.setState({loading: true})
             loginSocial({
                 name: provider.displayName,
-                email: provider.email,
+                email: provider.providerData[0].email,
                 login_type: LoginType.google
             }).then(res => {
-                console.log('res: gg', res);
+                
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
+                    console.log('res: ', res);
+                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.google);
                 }else{
                     popupOk(CodeToMessage[res.data.code])
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
+                
                 popupOk("Đăng nhập thất bại");
                 this.setState({loading: false})
             })
             
         } catch (e) {
-            console.error(e);
+            
+            
             this.setState({loading: false})
         }
     }
@@ -194,8 +208,9 @@ class Signin extends React.Component {
                 username: username,
                 password: password
             }).then(res => {
-                console.log('res: ', res);
+                
                 if(res.data.code == StatusCode.Success){
+                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res);
                     this.setState({loading: false})
                 }else{
@@ -203,7 +218,7 @@ class Signin extends React.Component {
                     this.setState({loading: false})
                 }
             }).catch(err => {
-                console.log('err: ', err.message);
+                
                 popupOk("Đăng nhập thất bại");
                 this.setState({loading: false})
             })
@@ -216,33 +231,39 @@ class Signin extends React.Component {
     }
 
     _onSwitchToHomePage = (res, type) => {
-        console.log('type: ', type);
+        
         let data = res.data,
             user = data.data;
-        console.log('data: ', data);
+        
         this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
 
         // check update profile
         if(!user.phone || user.phone == "" || !user.email || user.email == ""){
             this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
         }else{
-            this.props.navigation.navigate(HomeScreen);
+            navigation.reset(HomeScreen);
         }
         
     }
-
+  
+   
+}
+const mapStateToProps=(state)=>{
+    return{
+        user: state.user&& state.user.data? state.user.data :null
+    }
 }
 
-export default connect()(Signin)
+export default connect(mapStateToProps)(Signin)
 
 const style = StyleSheet.create({
     or: {color: '#80C9F0', fontSize: 14, paddingLeft: 10, paddingRight: 10},
     line: {flex: 1, height: 1, backgroundColor: '#80C9F0'},
     boxOr: {width: '60%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
-    forgot: {width: '50%', alignSelf: 'center', color: color, fontWeight: 'bold',},
+    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',},
     social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '45%'},
     register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
-    color: {color: color},
+    color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {width: 55,marginTop: -15},
     flex: { flex:1},

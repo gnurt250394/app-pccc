@@ -1,18 +1,19 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView,AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
 import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
-import { color, toUpperCase } from 'config'
+import { color, toUpperCase,StatusCode } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
+import navigation from 'navigation/NavigationService';
+import { getInfoAcount } from 'config/apis/users';
 class Profile extends React.Component {
-    constructor(props){
-        super(props);
-        
-    }
+   state={
+       user:{}
+   }
 
     edit = () => {
         this.props.navigation.navigate(EditProfileScreen)
@@ -20,27 +21,27 @@ class Profile extends React.Component {
 
 
     // set status bar
-    componentDidMount() {
-        if(!this.props.user){
-            const resetAction = StackActions.reset({
-                index:0,
-                actions: [NavigationActions.navigate({routeName: CheckAuthScreen})]
-            })
-            this.props.navigation.dispatch(resetAction)
+    componentDidMount= async()=> {
+        console.log(this.props.user,'user')
+        this.getInfoAccount()
+        let token = await AsyncStorage.getItem('token')
+        if(token == null ){
+            navigation.reset(CheckAuthScreen)
         }
 
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
         
     }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     render(){
+        let {user} = this.state
         return (
             <View style={style.flex}>
                 <ScrollView >
@@ -49,14 +50,14 @@ class Profile extends React.Component {
                     </View>
 
                     <TouchableOpacity 
-                        onPress={this._navTo(ViewProfileScreen)}
+                        onPress={this._navTo(ViewProfileScreen,{name:user.name})}
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
                             source={images.userBlue} />
                         <View style={style.user}>
-                            <Text style={style.name}>{this.props.user ? this.props.user.name : "Nguyen Van A"}</Text>
-                            <Text style={style.email}>{this.props.user ? this.props.user.email : "email@example.com"}</Text>
+                            <Text style={style.name}>{user&& user.name ? user.name : "Nguyen Van A"}</Text>
+                            <Text style={style.email}>{user && user.email ? user.email : "email@example.com"}</Text>
                         </View>
                         <Image 
                             style={style.icon}
@@ -90,13 +91,22 @@ class Profile extends React.Component {
         )
     }
 
+    getInfoAccount=()=>{
+
+        getInfoAcount().then(res=>{
+            if(res.data.code == StatusCode.Success ){
+               this.setState({user:res.data.data})
+            }
+        })
+    }
     _logout = () => {
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
-        this.props.navigation.navigate(SigninScreen)
+        AsyncStorage.removeItem('token')
+        navigation.reset(SigninScreen)
     }
 
-    _navTo = screen => () => {
-        this.props.navigation.navigate(screen)
+    _navTo = (screen,params) => () => {
+      navigation.navigate(screen,params)
     }
     
 }
