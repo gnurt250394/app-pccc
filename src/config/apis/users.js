@@ -1,5 +1,6 @@
 import axios from 'axios'
 import constant from './constant';
+import {AsyncStorage} from 'react-native'
 let instance = axios.create({
     baseURL:constant.BASEURL,
     timeout: constant.SERVER_TIMEOUT,
@@ -25,4 +26,9 @@ export const updateUser = (token, body) => {
 
 export const checkPhoneOrEmail = body => {
     return instance.post(constant.CHECK_PHONE_EMAIL, body)
+}
+export const getInfoAcount = async () => {
+    let token = await AsyncStorage.getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.USER)
 }

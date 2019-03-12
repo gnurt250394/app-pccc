@@ -59,7 +59,7 @@ class ViewProfile extends React.Component {
                     <Image 
                         style={style.avatar}
                         source={images.userBlue} />
-                    <Text style={style.name}>{this.props.user ? this.props.user.name : "Nguyen Van A"}</Text>
+                    <Text style={style.name}>{this.props.navigation.state.params&& this.props.navigation.state.params.name ? this.props.navigation.state.params.name : "Nguyen Van A"}</Text>
                 </View>
                 <View style={style.mt30}>
                     <ListItem icon={images.pPhone} name={this.state.user.phone} />

@@ -8,6 +8,7 @@ import { toUpperCase, validateEmail, popupOk, LoginType, StatusCode, CodeToMessa
 import  { accountKit } from 'config/accountKit'
 import  { HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
+import navigation from 'navigation/NavigationService';
 class UpdateProfile extends React.Component {
     
     constructor(props){
@@ -103,10 +104,10 @@ class UpdateProfile extends React.Component {
             checkPhoneOrEmail({phone: phone}).then(res => {
                 
                 if(res.data.code != StatusCode.Success  || res.data == ""){
-                    this.setState({allowPhone: false})
+                    this.setState({allowPhone: true})
                     popupOk(CodeToMessage[res.data.code])
                 }else{
-                    this.setState({allowPhone: true})
+                    this.setState({allowPhone: false})
                 }
     
             }).catch(err => {
@@ -130,7 +131,7 @@ class UpdateProfile extends React.Component {
         }else if(email.trim() != "" && !validateEmail(email)){
             popupOk('Email không đúng')
         }else {
-           
+           console.log(this.state.allowPhone,'phone')
             // // call api
             if(this.state.allowPhone && this.state.allowEmail){
                 let RNAccountKit = accountKit(phone);
@@ -143,10 +144,11 @@ class UpdateProfile extends React.Component {
                         
 
                         updateUser(this.token, data).then(res => {
-                            
+                            console.log(res,'phone')
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                                this.props.navigation.navigate(HomeScreen)
+                                navigation.reset(HomeScreen)
+                                // this.props.navigation.navigate(HomeScreen)
                             }else{
                                 popupOk(CodeToMessage[res.data.code])
                             }

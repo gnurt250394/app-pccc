@@ -1,37 +1,28 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,Dimensions,ScrollView,StatusBar } from 'react-native';
+import { View, Text,Image,StyleSheet,Dimensions,ScrollView,StatusBar,AsyncStorage } from 'react-native';
 import {StackActions,NavigationActions} from 'react-navigation'
 import Swiper from 'react-native-swiper'
 import images from "assets/images"
 import { HomeScreen, SigninScreen, RegisterScreen } from 'config/screenNames';
 import { color, fonts } from 'config'
 import { Btn } from 'components'
+import navigation from 'navigation/NavigationService';
+import {connect} from 'react-redux'
 
 const {width,height} =Dimensions.get('window')
-export default class ScreenHello extends Component {
+ class ScreenHello extends Component {
 
     nextHome=()=>{
-        const resetAction = StackActions.reset({
-            index:0,
-            actions: [NavigationActions.navigate({routeName: HomeScreen})]
-        })
-        this.props.navigation.dispatch(resetAction)
+        navigation.reset(HomeScreen)
     }
 
     onLogin=()=>{
-        const resetAction = StackActions.reset({
-            index:0,
-            actions: [NavigationActions.navigate({routeName: SigninScreen})]
-        })
-        this.props.navigation.dispatch(resetAction)
+        navigation.reset(SigninScreen)
     }
 
     onSignUp=()=>{
-        const resetAction = StackActions.reset({
-            index:0,
-            actions: [NavigationActions.navigate({routeName: RegisterScreen})]
-        })
-        this.props.navigation.dispatch(resetAction)
+        navigation.reset(RegisterScreen)
+      
     }
 
     render() {
@@ -95,6 +86,8 @@ export default class ScreenHello extends Component {
             </ScrollView>
         );
     }
+   
+    
 }
 
 const styles = StyleSheet.create({
@@ -146,3 +139,10 @@ const styles = StyleSheet.create({
     register: {marginTop: 0,marginBottom: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
     color: {color: color},
 })
+const mapStateToProps =(state)=>{
+    return{
+        user: state.user&& state.user.data? state.user.data:null,
+        token: state.user && state.user.token ? state.user.token:null
+    }
+}
+export default connect(mapStateToProps)(ScreenHello)
