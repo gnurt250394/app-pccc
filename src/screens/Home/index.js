@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { SearchScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
-import { color } from 'config'
+import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
 
 class Home extends React.Component {
@@ -50,23 +50,22 @@ class Home extends React.Component {
                     </View>
 
                     <View style={style.flex}>
-                        <View style={style.row}>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                        <View style={style.top}>
+                            <TouchableOpacity style={[style.btnTop, style.mr20p]} onPress={this._navTo(SearchScreen)} >
                                 <Image 
-                                     style={style.box6}
+                                     style={style.iconTop}
                                     source={images.tttd} />
+                                    <Text style={style.textTop}>Thông tin theo dõi</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={[style.btnTop]} onPress={this._navTo(SearchScreen)} >
                                 <Image 
-                                     style={style.box4}
+                                    style={style.iconTop}
                                     source={images.myShop} />
+                                    <Text style={style.textTop}>Shop của tôi</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <View style={style.row}>
-                            <Text style={style.txt6}>Thông tin theo dõi</Text>
-                            <Text style={style.txt4}>Shop của tôi</Text>
-                        </View>
+                        <Text style={style.category}>{toUpperCase('Danh mục chức năng')}</Text>
 
                         <View style={style.row}>
                             <TouchableOpacity style={style.box6} onPress={this._navTo(SearchScreen)} >
@@ -78,19 +77,19 @@ class Home extends React.Component {
                                     <Image 
                                         style={style.iconBadge}
                                         source={images.badge} />
-                                    <Text style={style.textBadge}>317</Text>
+                                    <Text style={style.textBadge}>115</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box4} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box4}
-                                    source={images.thanhly} />
+                                    source={images.thongtindauthau} />
                                 <Text style={style.textB4}>Thông tin đấu thầu</Text> 
                                 <View style={style.boxBadge}>
                                     <Image 
                                         style={style.iconBadge}
                                         source={images.badge} />
-                                    <Text style={style.textBadge}>333</Text>
+                                    <Text style={style.textBadge}>8</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -100,21 +99,21 @@ class Home extends React.Component {
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.product}>
-                                    <Text style={style.textB4}>Sản phẩm</Text> 
+                                    <Text style={[style.textB4, style.w80p]}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <ImageBackground 
                                     style={style.box3}
-                                    source={images.thongtintheodoi}>
+                                    source={images.thanhly}>
                                     <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._navTo(SearchScreen)} >
                                 <ImageBackground 
-                                    style={[style.box3, {marginRight: 0}]}
+                                    style={[style.box3, style.mr0]}
                                     source={images.dangmua}>
-                                    <Text style={style.textB4}>Đăng mua</Text> 
+                                    <Text style={[style.textB4, style.w80p]}>Đăng mua</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
@@ -128,7 +127,7 @@ class Home extends React.Component {
                                     <Image 
                                         style={style.iconBadge}
                                         source={images.badge} />
-                                    <Text style={style.textBadge}>2</Text>
+                                    <Text style={style.textBadge}>7</Text>
                                 </View>
                             </TouchableOpacity>
 
@@ -141,7 +140,7 @@ class Home extends React.Component {
                                     <Image 
                                         style={style.iconBadge}
                                         source={images.badge} />
-                                    <Text style={style.textBadge}>2</Text>
+                                    <Text style={style.textBadge}>7</Text>
                                 </View>
                             </TouchableOpacity>
 
@@ -154,7 +153,7 @@ class Home extends React.Component {
                                     <Image 
                                         style={style.iconBadge}
                                         source={images.badge} />
-                                    <Text style={style.textBadge}>2</Text>
+                                    <Text style={style.textBadge}>7</Text>
                                 </View>
                             </TouchableOpacity>
                             
@@ -211,7 +210,7 @@ const style = StyleSheet.create({
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
     },
-    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '80%',
+    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '50%',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
@@ -222,5 +221,21 @@ const style = StyleSheet.create({
     iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
     textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color},
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    row: {flexDirection: 'row', marginBottom: 1, marginTop: 1,}
+    row: {flexDirection: 'row', marginBottom: 1, marginTop: 1,},
+    category: { fontWeight: '500', fontSize: 16, padding: 10, color},
+    top: { 
+        backgroundColor: color, 
+        justifyContent: 'center', flexDirection: 'row', 
+        borderTopColor: '#fff', borderTopWidth: 0.5, 
+        paddingTop: 8, paddingBottom: 10,
+        borderBottomLeftRadius: 25, borderBottomRightRadius: 25,
+        marginBottom: 10
+        
+    },
+    iconTop: { height: 70, resizeMode: 'contain'},
+    btnTop: { flexDirection: 'column', alignItems: 'center'},
+    mr20p: {marginRight: "20%",},
+    w80p: {width: "80%",},
+    textTop: {color: 'white', paddingTop: 8, fontSize: 14},
+    mr0: {marginRight: 0}
 })
