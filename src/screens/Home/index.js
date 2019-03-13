@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
+import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -167,8 +167,9 @@ class Home extends React.Component {
         )
     }
 
-    _onSearch = () => {
-        console.log(11, this.state.keyword);
+    _onSearch = async () => {
+        AsyncStorage.setItem('keyword', this.state.keyword)
+        this.props.navigation.navigate(SearchScreen)
     }
 
     onChangeText = key => val => {
@@ -197,9 +198,9 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16,  width: '80%'},
-    box6: {width: (width * (2/3) + 2), height: (height - 180)/4, marginRight: 1, position: 'relative'},
-    box4: {width: width * (1/3), height: (height - 180)/4,  position: 'relative'},
-    box3: {width: width/3 + 1.5, height: (height - 180)/4, marginRight: 0,  position: 'relative'},
+    box6: {width: (width * (2/3) + 2), height: (height - 123)/4, marginRight: 1, position: 'relative'},
+    box4: {width: width * (1/3), height: (height - 123)/4,  position: 'relative'},
+    box3: {width: width/3 + 1.5, height: (height - 123)/4, marginRight: 0,  position: 'relative'},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
