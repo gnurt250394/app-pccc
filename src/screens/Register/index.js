@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles" 
@@ -179,6 +179,7 @@ class Register extends React.Component {
                                 password: password,
                             }).then(res => {
                             if(res.data.code == StatusCode.Success){
+                                AsyncStorage.setItem('token',res.data.token)
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
                                 this.props.navigation.navigate(HomeScreen)
                             }else{

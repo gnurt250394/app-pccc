@@ -6,14 +6,14 @@ export default function users(state = {}, action) {
             state = {
                 ...state,
                 data: action.data,
-                token: action.token
+                token: action.token,
             }
             break
         case actionTypes.USER_LOGOUT:
             state = {
                 ...state,
                 data: null,
-                token: null
+                token: null,
             }
             break
         case actionTypes.USER_UPDATE:

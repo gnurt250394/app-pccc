@@ -7,6 +7,8 @@ import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen,
 import { color, toUpperCase,StatusCode } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
@@ -22,11 +24,13 @@ class Profile extends React.Component {
 
     // set status bar
     componentDidMount= async()=> {
-        console.log(this.props.user,'user')
-        this.getInfoAccount()
+        
+       
         let token = await AsyncStorage.getItem('token')
         if(token == null ){
             navigation.reset(CheckAuthScreen)
+        } else{
+            this.getInfoAccount()
         }
 
         // this._navListener = this.props.navigation.addListener('didFocus', () => {
@@ -56,8 +60,8 @@ class Profile extends React.Component {
                             style={style.avatar}
                             source={images.userBlue} />
                         <View style={style.user}>
-                            <Text style={style.name}>{user&& user.name ? user.name : "Nguyen Van A"}</Text>
-                            <Text style={style.email}>{user && user.email ? user.email : "email@example.com"}</Text>
+                            <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
+                            <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
                         </View>
                         <Image 
                             style={style.icon}
@@ -99,10 +103,49 @@ class Profile extends React.Component {
             }
         })
     }
-    _logout = () => {
-        this.props.dispatch({type: actionTypes.USER_LOGOUT})
+    _logout = async () => {
+       
+        
+        
+     GoogleSignin.isSignedIn().then(res=>{
+          if(res){
+              console.log(res,'gg')
+            try {
+                //  GoogleSignin.revokeAccess().then(res=>{
+                //     console.log(res,'gg')
+                // });
+                 GoogleSignin.signOut();
+                AsyncStorage.removeItem('token')
+                navigation.reset(SigninScreen)
+                this.props.dispatch({type: actionTypes.USER_LOGOUT})
+                // this.setState({ user: null }); // Remove the user from your app's state as well
+              } catch (error) {
+                console.error(error);
+              }
+              
+            
+     
+          }
+      }).catch(err=>{
+          console.log(err)
+      })
+      AccessToken.getCurrentAccessToken().then(res=>{
+           if(res){
+               console.log(res.getUserId(),'fb')
+    // // logout FB
+            LoginManager.logOut()
+            AsyncStorage.removeItem('token')
+            navigation.reset(SigninScreen)
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
+           }
+       }).catch(err=>{
+           console.log(err)
+       })
+      
+       this.props.dispatch({type: actionTypes.USER_LOGOUT})
         AsyncStorage.removeItem('token')
         navigation.reset(SigninScreen)
+
     }
 
     _navTo = (screen,params) => () => {
