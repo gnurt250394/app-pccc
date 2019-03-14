@@ -7,7 +7,6 @@ const {width} = Dimensions.get('screen')
 export default class ListItem extends React.Component {
     constructor(props){
         super(props);
-        console.log(222, this.props);
         this.state = {
             data: this.props.data,
             keyword: this.props.keyword ,

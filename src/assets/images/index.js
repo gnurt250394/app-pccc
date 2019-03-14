@@ -105,4 +105,6 @@ module.exports = {
     spLogo: require('./spLogo.png'),
     spSlogan: require('./spSlogan.png'),
     maybom: require('./maybom.png'),
+    sLocation: require('./sLocation.png'),
+    sDolla: require('./sDolla.png'),
 }
