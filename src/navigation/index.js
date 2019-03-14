@@ -25,6 +25,7 @@ import Contacts from "../screens/Product/contact";
 import Introduce from "../screens/Introduce/Introduce";
 import Shop from "../screens/Shop";
 import Search from "../screens/Search";
+import Messenger from 'screens/Messenger'
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -58,10 +59,11 @@ const App = createStackNavigator(
     [ScreenName.UpdateProfileScreen]: UpdateProfile,
     [ScreenName.SearchScreen]: Search,
     [ScreenName.CheckPhoneScreen]: CheckPhone,
+    [ScreenName.MessengerScreen]: Messenger,
    
   },
   {
-    initialRouteName: ScreenName.HomeScreen,
+    initialRouteName: ScreenName.SplashScreen,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

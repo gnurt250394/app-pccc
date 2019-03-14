@@ -64,8 +64,8 @@ class ListChat extends React.Component {
         return (
             <TouchableOpacity style={style.box}>
                 <Text style={item.status == MessageStatus.unread ? style.timeUnread : style.time}>{item.createdAt}</Text>
-                <View style={{flexDirection: 'row', position: 'relative'}}>
-                    <View>
+                <View style={style.row}>
+                    <View style={style.relative}>
                         <Image 
                             style={style.avatar}
                             source={images.logo} />
@@ -90,7 +90,7 @@ class ListChat extends React.Component {
     
 
     _onSearch = async () => {
-        // AsyncStorage.setItem('keyword', this.state.keyword)
+        console.log(1);
         this.props.navigation.navigate(MessengerScreen)
     }
 
@@ -114,6 +114,7 @@ export default connect()(ListChat)
 
 const style = StyleSheet.create({
     boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
+    txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
     w15: { width: 15},
     w20: { width: 20},
@@ -127,7 +128,9 @@ const style = StyleSheet.create({
     message: {fontSize: 12, color: '#999999' },
     messageUnread: {color: '#111111', fontSize: 12, fontWeight: 'bold'},
     dot: {width: 10, resizeMode: 'contain', position: 'absolute', right: 5, bottom: 4},
-    boxLabel: { flexDirection: 'column', paddingLeft: 10,}
+    boxLabel: { flexDirection: 'column', paddingLeft: 10,},
+    row: {flexDirection: 'row'},
+    relative: {position: 'relative'}
 })
 
 const datas = [
