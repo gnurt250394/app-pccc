@@ -104,10 +104,10 @@ class UpdateProfile extends React.Component {
             checkPhoneOrEmail({phone: phone}).then(res => {
                 
                 if(res.data.code != StatusCode.Success  || res.data == ""){
-                    this.setState({allowPhone: true})
+                    this.setState({allowPhone: false})
                     popupOk(CodeToMessage[res.data.code])
                 }else{
-                    this.setState({allowPhone: false})
+                    this.setState({allowPhone: true})
                 }
     
             }).catch(err => {
@@ -131,7 +131,8 @@ class UpdateProfile extends React.Component {
         }else if(email.trim() != "" && !validateEmail(email)){
             popupOk('Email không đúng')
         }else {
-           console.log(this.state.allowPhone,'phone')
+           
+           
             // // call api
             if(this.state.allowPhone && this.state.allowEmail){
                 let RNAccountKit = accountKit(phone);
@@ -144,15 +145,13 @@ class UpdateProfile extends React.Component {
                         
 
                         updateUser(this.token, data).then(res => {
-                            console.log(res,'phone')
+                            console.log(res,'res')
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
                                 navigation.reset(HomeScreen)
-                                // this.props.navigation.navigate(HomeScreen)
                             }else{
                                 popupOk(CodeToMessage[res.data.code])
                             }
-                            
                         }).catch(err => {
                             popupOk("Cập nhật thông tin thất bại")
                         })

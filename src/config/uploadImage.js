@@ -12,14 +12,14 @@ export const chooseImage =  () => {
     return new Promise((resovel, reject) => {
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
-                response(null)
+                
                 console.log('User cancelled image picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
-                response(null)
+                
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
-                response(null)
+                
             } else {
                 resovel(response.uri)
             }
