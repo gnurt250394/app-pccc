@@ -39,10 +39,10 @@ export default styles = StyleSheet.create({
        
     },
     logo: {
-        height: 110,
+        height: 150,
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop: 50,
+        marginTop: 30,
         marginBottom: 18,
     },
     icon: {

@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Sta
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage} from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts} from 'config'
 import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
@@ -25,9 +25,6 @@ class Signin extends React.Component {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
         });
-            if(this.props.user){
-                
-            }
       }
     
     componentWillUnmount() {
@@ -49,8 +46,8 @@ class Signin extends React.Component {
                 <View>
                     <Image 
                         style={[styles.logo, style.mb50]}
-                        source={images.logo} />
-
+                        source={images.titleLogin} />
+                    
                     <BaseInput 
                         styleIcon={style.w11}
                         removeSpace={true}
@@ -89,13 +86,13 @@ class Signin extends React.Component {
                     <View style={style.social}>
                         <TouchableOpacity onPress={this._onFacebookLogin}>
                             <Image 
-                                style={[styles.logo, style.iconSocial]}
+                                style={[ style.iconSocial]}
                                 source={images.iconFb} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={this._onGoogleLogin}>
                             <Image 
-                                style={[styles.logo, [style.iconSocial, style.w53]]}
+                                style={[[style.iconSocial, style.w53]]}
                                 source={images.iconGoogle} />
                         </TouchableOpacity>
                     </View>
@@ -118,24 +115,30 @@ class Signin extends React.Component {
     _onFacebookLogin = async () => {
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+          
           if (result.isCancelled)  throw new Error('User cancelled request'); 
           const data = await AccessToken.getCurrentAccessToken();
+          
           if (!data) throw new Error('Something went wrong obtaining the users access token'); 
           const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+          
           const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+          
           let provider = firebaseUserCredential.user.toJSON();
+          
           let body = {
             name: provider.displayName,
-            token: data.accessToken,
+            token: data.userID,
             login_type: LoginType.facebook
           } 
           
           this.setState({loading: true})
           loginSocial(body).then(res => {
+              
                 
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
-                    console.log(res,'res')
+                    
                      AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.facebook);
                 }else{
@@ -174,7 +177,7 @@ class Signin extends React.Component {
                 
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
-                    console.log('res: ', res);
+                    
                      AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.google);
                 }else{
@@ -208,7 +211,6 @@ class Signin extends React.Component {
                 username: username,
                 password: password
             }).then(res => {
-                
                 if(res.data.code == StatusCode.Success){
                      AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res);
@@ -236,7 +238,8 @@ class Signin extends React.Component {
             user = data.data;
         
         this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
-
+            
+            
         // check update profile
         if(!user.phone || user.phone == "" || !user.email || user.email == ""){
             this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
@@ -259,19 +262,42 @@ export default connect(mapStateToProps)(Signin)
 const style = StyleSheet.create({
     or: {color: '#80C9F0', fontSize: 14, paddingLeft: 10, paddingRight: 10},
     line: {flex: 1, height: 1, backgroundColor: '#80C9F0'},
-    boxOr: {width: '60%', flexDirection: 'row', alignSelf: 'center', marginTop: 20, alignItems: 'center'},
+    boxOr: {width: '60%',
+     flexDirection: 'row',
+      alignSelf: 'center',
+       marginTop: 13,
+        alignItems: 'center'},
     forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',},
-    social: {flexDirection: 'row', alignContent: 'center', alignSelf: 'center', justifyContent: 'space-between', marginTop: 0, width: '45%'},
+    social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
     register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
-    iconSocial: {width: 55,marginTop: -15},
+    iconSocial: {width: 55,
+        height:55,
+    resizeMode: 'contain',
+    marginTop: 15,
+    marginBottom: 18,},
     flex: { flex:1},
     w11: { height: 15},
     w53: { width: 53},
     mb8: {marginBottom: 8},
     mt8: {marginTop: 8},
-    mb50: {marginBottom: 70},
+    mb50: {marginBottom: 35},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
+    textTitle1:{
+        alignSelf:'center',
+        fontSize:19,
+        fontFamily: fonts.bold,
+        color:'#2166A2',
+        fontWeight:'bold'
+    },
+    textTitle2:{
+        alignSelf:'center',
+        fontSize:22,
+        marginBottom:50,
+        fontFamily: fonts.bold,
+        color:'#2166A2',
+        fontWeight:'bold'
+    }
 })
 

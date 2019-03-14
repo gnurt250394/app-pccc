@@ -5,6 +5,7 @@ const constant ={
     LOGIN: 'login',
     LOGIN_SOCIAL: 'login-social',
     CHECK_PHONE_EMAIL: 'check-phone-email',
+    UPDATE_AVATAR :'update-avatar'
 
 }
 
