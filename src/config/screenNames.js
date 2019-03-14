@@ -24,3 +24,9 @@ export const HomeScreen ="HomeScreen"
 export const MyProfile ="MyProfile"
 export const UpdateProfileScreen ="UpdateProfileScreen"
 export const CheckPhoneScreen ="CheckPhoneScreen"
+
+// search
+export const SearchProductScreen ="SearchProductScreen"
+export const SearchLiquidationScreen ="SearchLiquidationScreen"
+export const SearchProjectScreen ="SearchProjectScreen"
+export const SearchBiddingScreen ="SearchBiddingScreen"
