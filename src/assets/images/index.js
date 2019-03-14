@@ -108,4 +108,6 @@ module.exports = {
     sLocation: require('./sLocation.png'),
     sDolla: require('./sDolla.png'),
     dot: require('./dot.png'),
+    online: require('./online.png'),
+    offline: require('./offline.png'),
 }

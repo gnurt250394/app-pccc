@@ -9,6 +9,11 @@ export const Gender = {
     female: 1,
 }
 
+export const MessageStatus = {
+    unread: 0,
+    read: 1,
+}
+
 export const color = "#2166A2"
 export const fonts = {
     bold: 'MONTSERRAT-BOLD'

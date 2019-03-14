@@ -61,7 +61,7 @@ const App = createStackNavigator(
    
   },
   {
-    initialRouteName: ScreenName.SearchScreen,
+    initialRouteName: ScreenName.HomeScreen,
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

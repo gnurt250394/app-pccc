@@ -8,9 +8,9 @@ export const ViewProfileScreen = "ViewProfileScreen"
 export const EditProfileScreen = "EditProfileScreen"
 export const ProfileScreen = "ProfileScreen"
 export const ConfirmScreen = "ConfirmScreen"
-export const MessengerScreen = "MessengerScreen"
+
 export const CartScreen = "CartScreen"
-export const SearchScreen = "SearchScreen"
+
 export const ProductDetailScreen = "ProductDetailScreen"
 export const SplashScreen ="SplashScreen"
 export const HelloScreen ="HelloScreen"
@@ -26,7 +26,12 @@ export const UpdateProfileScreen ="UpdateProfileScreen"
 export const CheckPhoneScreen ="CheckPhoneScreen"
 
 // search
+export const SearchScreen = "SearchScreen"
 export const SearchProductScreen ="SearchProductScreen"
 export const SearchLiquidationScreen ="SearchLiquidationScreen"
 export const SearchProjectScreen ="SearchProjectScreen"
 export const SearchBiddingScreen ="SearchBiddingScreen"
+
+// messenger
+export const ListChatScreen ="ListChatScreen"
+export const MessengerScreen = "MessengerScreen"
