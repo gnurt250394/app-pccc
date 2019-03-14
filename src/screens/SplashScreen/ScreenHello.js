@@ -26,6 +26,7 @@ const {width,height} =Dimensions.get('window')
     }
 
     render() {
+        
         return (
             <ScrollView>
                 <StatusBar backgroundColor="#fff" barStyle="dark-content" />
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color:color,
         textAlign:'center',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         marginTop: 10,
         fontFamily: fonts.bold,
     },
@@ -132,12 +133,34 @@ const styles = StyleSheet.create({
         backgroundColor:'#80C9F0',
         width:width/5
     },
-    boxOr: {flexDirection:'row',alignItems:'center',justifyContent:'center',marginBottom:20},
-    txtOr: {marginHorizontal:10, color: '#80C9F0'},
-    mb8: {marginBottom: 20, marginTop: -20},
-    mt5: {marginBottom: 5},
-    register: {marginTop: 0,marginBottom: 8, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
-    color: {color: color},
+    boxOr: {
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        marginBottom:20
+    },
+    txtOr: {
+        marginHorizontal:10,
+        color: '#80C9F0'},
+    mb8: {
+        marginBottom: 20, 
+        marginTop: -20,
+        fontFamily:fonts.bold
+    },
+    mt5: {
+        marginBottom: 5
+    },
+    register: {
+        marginTop: 0,
+        marginBottom: 8, 
+        backgroundColor: '#fff',
+        borderWidth: 0.6, 
+        borderColor: color,
+        // fontFamily:fonts.bold
+    },
+    color: {
+        color: color
+    },
 })
 const mapStateToProps =(state)=>{
     return{

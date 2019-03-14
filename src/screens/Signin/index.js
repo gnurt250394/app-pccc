@@ -63,7 +63,7 @@ class Signin extends React.Component {
                     
                     <Btn
                         onPress={this._signin()} 
-                        customStyle={[style.mb8,]}
+                        customStyle={[style.mb8]}
                         name="Đăng nhập" />
                     <Btn
                         onPress={this._navTo(RegisterScreen)}
@@ -139,7 +139,6 @@ class Signin extends React.Component {
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
                     
-                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.facebook);
                 }else{
                     popupOk(CodeToMessage[res.data.code])
@@ -178,7 +177,6 @@ class Signin extends React.Component {
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
                     
-                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res, LoginType.google);
                 }else{
                     popupOk(CodeToMessage[res.data.code])
@@ -212,7 +210,6 @@ class Signin extends React.Component {
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
-                     AsyncStorage.setItem('token',res.data.token)
                     this._onSwitchToHomePage(res);
                     this.setState({loading: false})
                 }else{
@@ -242,9 +239,12 @@ class Signin extends React.Component {
             
         // check update profile
         if(!user.phone || user.phone == "" || !user.email || user.email == ""){
+            AsyncStorage.setItem('token',data.token)
             this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
         }else{
             navigation.reset(HomeScreen);
+        AsyncStorage.setItem('token',data.token)
+
         }
         
     }
@@ -267,9 +267,9 @@ const style = StyleSheet.create({
       alignSelf: 'center',
        marginTop: 13,
         alignItems: 'center'},
-    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',},
+    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5},
     social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
-    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 1, borderColor: color,},
+    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,fontFamily:fonts.bold},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {width: 55,

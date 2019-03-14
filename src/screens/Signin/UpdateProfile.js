@@ -137,6 +137,7 @@ class UpdateProfile extends React.Component {
             if(this.state.allowPhone && this.state.allowEmail){
                 let RNAccountKit = accountKit(phone);
                 RNAccountKit.loginWithPhone().then((token) => {
+                    console.log('token: ', token);
                     if(token && token.code){
                         let data = {
                             phone: phone
@@ -145,6 +146,7 @@ class UpdateProfile extends React.Component {
                         
 
                         updateUser(this.token, data).then(res => {
+                            console.log( data,'data')
                             console.log(res,'res')
                             if(res.data.code == StatusCode.Success){
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})

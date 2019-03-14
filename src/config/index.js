@@ -11,7 +11,10 @@ export const Gender = {
 
 export const color = "#2166A2"
 export const fonts = {
-    bold: 'MONTSERRAT-BOLD'
+    bold: 'MONTSERRAT-BOLD',
+    SemiBoldItalic:'Montserrat-SemiBoldItalic',
+    AcuminBdItPro_0:'Acumin-BdItPro_0',
+    MontserratExtraBold:'Montserrat-ExtraBold'
 }
 
 export const ShowGender = gender => {
