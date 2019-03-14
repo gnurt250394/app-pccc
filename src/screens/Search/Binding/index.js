@@ -81,6 +81,26 @@ let data = [
         projectCode: '95821463',
         createdAt: '25/01/2019'
     },
+    {
+        id: 4,
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 4,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
+    },
+    {
+        id: 5,
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 5,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
+    },
     
    
     

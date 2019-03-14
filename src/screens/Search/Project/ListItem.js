@@ -9,7 +9,7 @@ class LI extends React.Component {
 
     render(){
         return (
-            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+            <View style={style.row}>
                 <Image source={images.dot} style={style.dot}/>
                 <Text style={style.label}>{this.props.label}</Text>
             </View>
@@ -83,5 +83,6 @@ const style = StyleSheet.create({
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
-    keyword: {color, textAlign: 'left',}
+    keyword: {color, textAlign: 'left',},
+    row: {flexDirection: 'row', alignItems: 'center',}
 })

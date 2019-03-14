@@ -9,7 +9,7 @@ class LI extends React.Component {
 
     render(){
         return (
-            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+            <View style={style.row}>
                 <Image source={images.dot} style={style.dot}/>
                 <Text style={style.label}>{this.props.label}</Text>
             </View>
@@ -52,12 +52,14 @@ export default class ListItem extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <Text style={style.name}>{item.name}</Text>
-                <LI label={`Phiên bản: ${item.version}`} />
-                <LI label={`Giá trị: ${toPrice(item.price)}`} />
-                <LI label={`Giai đoạn: ${item.stage}`} />
-                <LI label={`Địa điểm: ${item.localtion}`} />
-                <LI label={`Mã dự án: ${item.projectCode}`} />
-                <LI label={`Ngày đăng tin: ${item.createdAt}`} />
+                <View style={[style.row, style.calender]}>
+                    <Image source={images.calender} style={style.iconCalender}/>
+                    <Text style={style.time}>16:00 - 25/01/2019</Text>
+                </View>
+                <LI label={`Số TBMT: ${item.version}`} />
+                <LI label={`Bên mời thầu: ${toPrice(item.price)}`} />
+                <LI label={`Thời gian mời thầu: ${item.createdAt}`} />
+                <LI label={`Thời gian đóng thầu: ${item.createdAt}`} />
             </View>
     }
     render(){
@@ -79,9 +81,12 @@ const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
     dot: {width: 6,  resizeMode: 'contain', margin: 10,},
-    name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left',color: '#707070', color: '#333333', fontWeight: 'bold',},
+    name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
+    time: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 5},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
-    iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
-    keyword: {color, textAlign: 'left',}
+    iconCalender: {width: 15,  resizeMode: 'contain', margin: 5,},
+    keyword: {color, textAlign: 'left',},
+    row: {flexDirection: 'row', alignItems: 'center',},
+    calender: {width: '45%', alignSelf: 'flex-start', borderWidth: 1, borderColor: '#ddd', alignContent: 'center', borderRadius: 5, justifyContent: 'center', marginLeft: 10,}
 })
