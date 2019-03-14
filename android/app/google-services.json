@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "1080629716842-2ndtmfu61flgnqkbml7leqdk42uirvpb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireprotection",
+            "certificate_hash": "0c280cf4ecc26203e5871ee4f7687b3b129b16fc"
+          }
+        },
+        {
           "client_id": "1080629716842-q07gsa7u1amq8mh1tqmt09b28cdvjucu.apps.googleusercontent.com",
           "client_type": 3
         }

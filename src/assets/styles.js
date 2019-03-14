@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { color } from 'config'
+import { fonts } from 'config';
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
@@ -28,9 +29,10 @@ export default styles = StyleSheet.create({
     },
     textLogin: {
         alignSelf: 'center',
-        fontWeight: "500",
+        // fontWeight: "500",
         fontSize: 14,
         color: 'white',
+        fontFamily: fonts.bold,
     },
     textSignup: {
         alignSelf: 'center',

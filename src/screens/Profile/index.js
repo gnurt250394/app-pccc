@@ -103,48 +103,49 @@ class Profile extends React.Component {
             }
         })
     }
-    _logout = async () => {
+    _logout =  () => {
        
+        LoginManager.logOut()
+        GoogleSignin.signOut();
+        AsyncStorage.removeItem('token')
+        navigation.reset(SigninScreen)
+        this.props.dispatch({type: actionTypes.USER_LOGOUT})
         
-        
-     GoogleSignin.isSignedIn().then(res=>{
-          if(res){
-              console.log(res,'gg')
-            try {
-                //  GoogleSignin.revokeAccess().then(res=>{
-                //     console.log(res,'gg')
-                // });
-                 GoogleSignin.signOut();
-                AsyncStorage.removeItem('token')
-                navigation.reset(SigninScreen)
-                this.props.dispatch({type: actionTypes.USER_LOGOUT})
-                // this.setState({ user: null }); // Remove the user from your app's state as well
-              } catch (error) {
-                console.error(error);
-              }
+    //  GoogleSignin.isSignedIn().then(res=>{
+    //       if(res){
+    //           console.log(res,'gg')
+    //         try {
+    //             //  GoogleSignin.revokeAccess().then(res=>{
+    //             //     console.log(res,'gg')
+    //             // });
+                 
+    //             AsyncStorage.removeItem('token')
+    //             navigation.reset(SigninScreen)
+    //             this.props.dispatch({type: actionTypes.USER_LOGOUT})
+    //             // this.setState({ user: null }); // Remove the user from your app's state as well
+    //           } catch (error) {
+    //             console.error(error);
+    //           }
               
             
      
-          }
-      }).catch(err=>{
-          console.log(err)
-      })
-      AccessToken.getCurrentAccessToken().then(res=>{
-           if(res){
-               console.log(res.getUserId(),'fb')
-    // // logout FB
-            LoginManager.logOut()
-            AsyncStorage.removeItem('token')
-            navigation.reset(SigninScreen)
-            this.props.dispatch({type: actionTypes.USER_LOGOUT})
-           }
-       }).catch(err=>{
-           console.log(err)
-       })
+    //       }
+    //   }).catch(err=>{
+    //       console.log(err)
+    //   })
+    //   AccessToken.getCurrentAccessToken().then(res=>{
+    //        if(res){
+    //            console.log(res.getUserId(),'fb')
+    // // // logout FB
+           
+    //        }
+    //    }).catch(err=>{
+    //        console.log(err)
+    //    })
       
-       this.props.dispatch({type: actionTypes.USER_LOGOUT})
-        AsyncStorage.removeItem('token')
-        navigation.reset(SigninScreen)
+    //    this.props.dispatch({type: actionTypes.USER_LOGOUT})
+    //     AsyncStorage.removeItem('token')
+    //     navigation.reset(SigninScreen)
 
     }
 

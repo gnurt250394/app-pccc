@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "rnpm": {
-    "assets": ["./src/assets/fonts"]
+    "assets": [
+      "./src/assets/fonts"
+    ]
   },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -13,6 +15,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "16.6.3",
     "react-native": "0.57.8",
