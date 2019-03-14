@@ -4,6 +4,19 @@ import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
 import { toPrice, color } from 'config'
 const {width} = Dimensions.get('screen')
+
+class LI extends React.Component {
+
+    render(){
+        return (
+            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                <Image source={images.dot} style={style.dot}/>
+                <Text style={style.label}>{this.props.label}</Text>
+            </View>
+        )
+    }
+}
+
 export default class ListItem extends React.Component {
     constructor(props){
         super(props);
@@ -38,20 +51,18 @@ export default class ListItem extends React.Component {
     }
     renderItem = ({item, index}) => {
         return <View style={style.box}>
-                <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
-                    <Image source={images.maybom} style={style.image}/>
-                </TouchableOpacity>
-                {this._showName(item.name)}
-                {/* <Text style={style.name}>{item.name}</Text> */}
-                <Text style={style.price}>{toPrice(item.price)}</Text>
+                <Text style={style.name}>{item.name}</Text>
+                <LI label={`Phiên bản: ${item.version}`} />
+                <LI label={`Giá trị: ${toPrice(item.price)}`} />
+                <LI label={`Giai đoạn: ${item.stage}`} />
+                <LI label={`Địa điểm: ${item.localtion}`} />
+                <LI label={`Mã dự án: ${item.projectCode}`} />
+                <LI label={`Ngày đăng tin: ${item.createdAt}`} />
             </View>
     }
-
     render(){
         return (
             <FlatList
-                horizontal={this.props.horizontal || false}
-                numColumns={this.props.numColumns || 3}
                 data={this.state.data}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => index.toString()} />
@@ -66,9 +77,9 @@ export default class ListItem extends React.Component {
 
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    box: { flex: 1, borderWidth: 1, borderColor: '#ddd', margin: 5, borderRadius: 10, maxWidth: '31%'},
-    image: {width: 90,  resizeMode: 'contain', margin: 10,},
-    name: { fontSize: 15, padding: 10, textAlign: 'left',color: '#707070'},
+    box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
+    dot: {width: 6,  resizeMode: 'contain', margin: 10,},
+    name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left',color: '#707070', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},

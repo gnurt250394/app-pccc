@@ -45,7 +45,7 @@ const tabs =  createMaterialTopTabNavigator(
   },
   
   {
-    initialRouteName: SearchLiquidationScreen,
+    initialRouteName: SearchProjectScreen,
     defaultNavigationOptions: ({ navigation }) => ({
 
       swipeEnabled: true,

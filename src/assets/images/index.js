@@ -107,4 +107,5 @@ module.exports = {
     maybom: require('./maybom.png'),
     sLocation: require('./sLocation.png'),
     sDolla: require('./sDolla.png'),
+    dot: require('./dot.png'),
 }
