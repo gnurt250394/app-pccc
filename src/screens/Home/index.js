@@ -7,6 +7,8 @@ import { SearchScreen,ShopScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
+console.log('height: ', height);
+console.log('width: ', width);
 
 class Home extends React.Component {
     state = {
@@ -28,7 +30,7 @@ class Home extends React.Component {
     render(){
         return (
             <TouchableWithoutFeedback style= {style.flex}>
-                <ScrollView>
+                <View style= {style.flex}>
                     <View style={style.head}>
                         <View 
                             style={style.boxSearch}>
@@ -49,67 +51,71 @@ class Home extends React.Component {
                         </View >
                     </View>
 
-                    <View style={style.flex}>
-                        <View style={style.top}>
-                            <TouchableOpacity style={[style.btnTop, style.mr20p]} onPress={this._navTo(SearchScreen)} >
-                                <Image 
-                                     style={style.iconTop}
-                                    source={images.tttd} />
-                                    <Text style={style.textTop}>Thông tin theo dõi</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[style.btnTop]} onPress={this._navTo(ShopScreen)} >
-                                <Image 
+                    <View style={style.top}>
+                        <TouchableOpacity style={[style.btnTop, style.mr20p]} 
+                        // onPress={this._navTo(SearchScreen)} 
+                        >
+                            <Image 
                                     style={style.iconTop}
-                                    source={images.myShop} />
-                                    <Text style={style.textTop}>Shop của tôi</Text>
-                            </TouchableOpacity>
-                        </View>
+                                source={images.tttd} />
+                                <Text style={style.textTop}>Thông tin theo dõi</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[style.btnTop]} 
+                            // onPress={this._navTo(ShopScreen)} 
+                            >
+                            <Image 
+                                style={style.iconTop}
+                                source={images.myShop} />
+                                <Text style={style.textTop}>Shop của tôi</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                        <Text style={style.category}>{toUpperCase('Danh mục chức năng')}</Text>
+                    <Text style={style.category}>{toUpperCase('Danh mục chức năng')}</Text>
 
+                    <View style={style.bot}>
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box6} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box6} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
-                                     style={style.box6}
+                                    style={style.box6}
                                     source={images.ttda} />
                                 <Text style={style.textB6}>Thông tin dự án</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>115</Text>
-                                </View>
+                                
                             </TouchableOpacity>
-                            <TouchableOpacity style={style.box4} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box4} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
-                                     style={style.box4}
+                                    style={style.box4}
                                     source={images.thongtindauthau} />
                                 <Text style={style.textB4}>Thông tin đấu thầu</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>8</Text>
-                                </View>
+                                
                             </TouchableOpacity>
                         </View>
 
                         <View style={style.row}>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.product}>
                                     <Text style={[style.textB4, style.w80p]}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.thanhly}>
                                     <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)}
+                                >
                                 <ImageBackground 
                                     style={[style.box3, style.mr0]}
                                     source={images.dangmua}>
@@ -118,51 +124,40 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} 
+                            // onPress={this._navTo(SearchScreen)} 
+                            >
                                 <Image 
-                                     style={style.box3}
+                                    style={style.box3}
                                     source={images.video} />
                                 <Text style={style.textB6}>Video</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3}
+                            //  onPress={this._navTo(SearchScreen)}
+                            >
                                 <Image 
-                                     style={style.box3}
+                                    style={style.box3}
                                     source={images.catalog} />
                                 <Text style={style.textB6}>Catalog</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
-                                     style={style.box3}
+                                    style={style.box3}
                                     source={images.tailieu} />
                                 <Text style={style.textB6}>Tài liệu</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
                             
                         </View>
-
                     </View>
-                   
-                    
-                </ScrollView>
+                
+                </View>
             </TouchableWithoutFeedback>
         )
     }
@@ -198,9 +193,19 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     title: {color: "rgba(255, 255, 255, 1)", padding: 10, fontSize: 16,  width: '80%'},
-    box6: {width: (width * (2/3) + 2), height: (height - 123)/4, marginRight: 1, position: 'relative'},
-    box4: {width: width * (1/3), height: (height - 123)/4,  position: 'relative'},
-    box3: {width: width/3 + 1.5, height: (height - 123)/4, marginRight: 0,  position: 'relative'},
+    box6: {
+        width: (width * (2/3) + 4), 
+        height: '100%',
+        marginRight: 2, position: 'relative'},
+    box4: {
+        width: width * (1/3), 
+        height: '100%', 
+        position: 'relative'},
+    box3: {
+        width: width/3 + 1.5, 
+        height: '100%',
+        marginRight: 1,  
+        position: 'relative'},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
@@ -222,7 +227,7 @@ const style = StyleSheet.create({
     iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
     textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color},
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    row: {flexDirection: 'row', marginBottom: 1, marginTop: 1,},
+    row: { flex: 1, flexDirection: 'row', marginTop: 2, width: '100%'},
     category: { fontWeight: '500', fontSize: 16, padding: 10, color},
     top: { 
         backgroundColor: color, 
@@ -233,9 +238,10 @@ const style = StyleSheet.create({
         marginBottom: 10
         
     },
-    iconTop: { height: 70, resizeMode: 'contain'},
+    bot: { flexDirection: 'column', justifyContent: 'center', flex: 1},
+    iconTop: { height: width < 400 ? 55 : 70, resizeMode: 'contain'},
     btnTop: { flexDirection: 'column', alignItems: 'center'},
-    mr20p: {marginRight: "20%",},
+    mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
     textTop: {color: 'white', paddingTop: 8, fontSize: 14},
     mr0: {marginRight: 0}
