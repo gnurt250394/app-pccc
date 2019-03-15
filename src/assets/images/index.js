@@ -108,7 +108,7 @@ module.exports = {
     titleLogin:require('./titlelogin.png'),
     dots:require('./dots.png'),
     shopLocation:require('./locationproduct.png'),
-    shopPrice:require('./priceProduct.png')
+    shopPrice:require('./priceProduct.png'),
     sLocation: require('./sLocation.png'),
     sDolla: require('./sDolla.png'),
     dot: require('./dot.png'),
