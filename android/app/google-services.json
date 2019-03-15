@@ -1,59 +1,35 @@
 {
   "project_info": {
-    "project_number": "1080629716842",
-    "firebase_url": "https://vins-fire-protection.firebaseio.com",
-    "project_id": "vins-fire-protection",
-    "storage_bucket": "vins-fire-protection.appspot.com"
+    "project_number": "820178239499",
+    "firebase_url": "https://pccc-234609.firebaseio.com",
+    "project_id": "pccc-234609",
+    "storage_bucket": "pccc-234609.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1080629716842:android:948369246b4b218e",
+        "mobilesdk_app_id": "1:820178239499:android:1ae042e907d7af75",
         "android_client_info": {
-          "package_name": "com.fireprotection"
+          "package_name": "com.pccc.test"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1080629716842-bk454tf3ieb16jp6tqtq8s03pm58to0m.apps.googleusercontent.com",
+          "client_id": "820178239499-gphjih2e535mlnlaoqhqg80oif66h9ed.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fireprotection",
-            "certificate_hash": "e876a13e45a71acf38f0299370aea671ecb1e7ba"
+            "package_name": "com.pccc.test",
+            "certificate_hash": "d50a18acfc421e94c7e97764a167d5cabce30a30"
           }
         },
         {
-          "client_id": "1080629716842-mejsm3mkj225ppgnqgpkfnog54b0njf5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fireprotection",
-            "certificate_hash": "3db44d6a8b6980e78a53f75999505b778a89be61"
-          }
-        },
-        {
-          "client_id": "1080629716842-vl3mgcsdq2gp67fmrjqsh7uu3l9rvn6k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fireprotection",
-            "certificate_hash": "42f759ca624cf22bd88bdeff9f9d02ee44890509"
-          }
-        },
-        {
-          "client_id": "1080629716842-2ndtmfu61flgnqkbml7leqdk42uirvpb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fireprotection",
-            "certificate_hash": "0c280cf4ecc26203e5871ee4f7687b3b129b16fc"
-          }
-        },
-        {
-          "client_id": "1080629716842-q07gsa7u1amq8mh1tqmt09b28cdvjucu.apps.googleusercontent.com",
+          "client_id": "820178239499-jb2vqori99fr9jua7d30tm5dadlps2g6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAu3s-l46PdSSD9it8uz7CYHT43m5lm3sM"
+          "current_key": "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY"
         }
       ],
       "services": {
@@ -64,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1080629716842-q07gsa7u1amq8mh1tqmt09b28cdvjucu.apps.googleusercontent.com",
+              "client_id": "820178239499-jb2vqori99fr9jua7d30tm5dadlps2g6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
