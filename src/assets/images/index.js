@@ -109,4 +109,9 @@ module.exports = {
     dots:require('./dots.png'),
     shopLocation:require('./locationproduct.png'),
     shopPrice:require('./priceProduct.png')
+    sLocation: require('./sLocation.png'),
+    sDolla: require('./sDolla.png'),
+    dot: require('./dot.png'),
+    online: require('./online.png'),
+    offline: require('./offline.png'),
 }

@@ -5,7 +5,8 @@ import images from "assets/images"
 import { HomeScreen, MessengerScreen, ProfileScreen, NotifyScreen } from "config/screenNames"
 import Profile from 'screens/Profile'
 import Home from 'screens/Home'
-import Messenger from 'screens/Messenger'
+
+import ListChat from 'screens/Messenger/ListChat'
 import Notify from 'screens/Notify'
 import { color } from 'config'
 
@@ -18,7 +19,7 @@ export default createBottomTabNavigator(
       }),
     },
     [MessengerScreen]: { 
-      screen: Messenger,
+      screen: ListChat,
       navigationOptions: () => ({
         title: 'Tin nhắn',
       }),

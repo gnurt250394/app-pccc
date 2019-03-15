@@ -53,32 +53,35 @@ const style = StyleSheet.create({
 let data = [
     {
         id: 1,
-        name: 'loại Máy bơm litaam 1',
-        price: 220000,
-        like: false
+        name: 'Trường học xây mới (Trường tiểu học Phan Chu Trinh quận Cầu Giấy)',
+        version: 1,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 2,
-        name: 'máy bơm litaam 2',
-        price: 220000,
-        like: true
+        name: 'Trường học xây mới (Trường tiểu học Phan Chu Trinh quận Cầu Giấy)',
+        version: 2,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 3,
-        name: 'Máy bơm litaam 3',
-        price: 220000,
-        like: false
+        name: 'Trường học xây mới (Trường tiểu học Phan Chu Trinh quận Cầu Giấy)',
+        version: 3,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
-    {
-        id: 4,
-        name: 'Máy bơm litaam 4',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 5,
-        name: 'Máy bơm litaam 5',
-        price: 250000,
-        like: false
-    },
+    
+   
+    
 ]

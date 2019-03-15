@@ -15,7 +15,6 @@ class SearchProduct extends React.Component {
         });
 
         this.keyword = await AsyncStorage.getItem('keyword')
-        console.log('this.keyword: ', this.keyword);
     }
     
     componentWillUnmount() {

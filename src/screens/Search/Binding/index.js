@@ -53,32 +53,55 @@ const style = StyleSheet.create({
 let data = [
     {
         id: 1,
-        name: 'loại Máy bơm litaam 1',
-        price: 220000,
-        like: false
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 1,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 2,
-        name: 'máy bơm litaam 2',
-        price: 220000,
-        like: true
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 2,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 3,
-        name: 'Máy bơm litaam 3',
-        price: 220000,
-        like: false
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 3,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 4,
-        name: 'Máy bơm litaam 4',
-        price: 220000,
-        like: false
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 4,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
     {
         id: 5,
-        name: 'Máy bơm litaam 5',
-        price: 250000,
-        like: false
+        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
+        version: 5,
+        price: 500000000,
+        stage: 'Thiết kế kỹ thuật',
+        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
+        projectCode: '95821463',
+        createdAt: '25/01/2019'
     },
+    
+   
+    
 ]

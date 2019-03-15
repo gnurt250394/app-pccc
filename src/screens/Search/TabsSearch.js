@@ -24,19 +24,19 @@ const tabs =  createMaterialTopTabNavigator(
       }),
     },
     [SearchLiquidationScreen]: { 
-      screen: props => <SearchLiquidation {...props} />,
+      screen: props => <SearchLiquidation indicatorStyle={indicatorStyle(props)} {...props} />,
       navigationOptions: () => ({
         title: 'Thanh lý',
       }),
     },
     [SearchProjectScreen]: { 
-      screen: props => <SearchProject {...props} />,
+      screen: props => <SearchProject indicatorStyle={indicatorStyle(props)} {...props} />,
       navigationOptions: () => ({
         title: 'Tin dự án',
       }),
     },
     [SearchBindingScreen]: { 
-      screen: props => <SearchBinding {...props} />,
+      screen: props => <SearchBinding indicatorStyle={indicatorStyle(props)} {...props} />,
       navigationOptions: () => ({
         title: 'Tin đấu thầu',
       }),
@@ -45,7 +45,9 @@ const tabs =  createMaterialTopTabNavigator(
   },
   
   {
+    initialRouteName: SearchProductScreen,
     defaultNavigationOptions: ({ navigation }) => ({
+
       swipeEnabled: true,
       tabBarPosition: 'top',
       tabBarOptions: {

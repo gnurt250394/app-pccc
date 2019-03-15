@@ -15,6 +15,7 @@ class SearchLiquidation extends React.Component {
         });
 
         this.keyword = await AsyncStorage.getItem('keyword')
+        console.log('this.keyword: thanh ly', this.keyword);
     }
     
     componentWillUnmount() {
@@ -53,31 +54,36 @@ const style = StyleSheet.create({
 let data = [
     {
         id: 1,
-        name: 'loại Máy bơm litaam 1',
+        name: 'Thanh lý máy bơm ly tâm KPR',
+        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
         price: 220000,
         like: false
     },
     {
         id: 2,
-        name: 'máy bơm litaam 2',
+        name: 'Thanh lý máy bơm ly tâm KPR',
+        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
         price: 220000,
         like: true
     },
     {
         id: 3,
-        name: 'Máy bơm litaam 3',
+        name: 'Thanh lý máy bơm ly tâm KPR',
+        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
         price: 220000,
         like: false
     },
     {
         id: 4,
-        name: 'Máy bơm litaam 4',
+        name: 'Thanh lý máy bơm ly tâm KPR',
+        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
         price: 220000,
         like: false
     },
     {
         id: 5,
-        name: 'Máy bơm litaam 5',
+        name: 'Thanh lý máy bơm ly tâm KPR',
+        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
         price: 250000,
         like: false
     },
