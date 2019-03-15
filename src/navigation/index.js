@@ -1,26 +1,31 @@
 import { createStackNavigator, createAppContainer, createDrawerNavigator } from "react-navigation";
 import React from 'react'
-import { ScreenName } from "config"
-import Register from 'components/Register'
-import Complete from 'components/Register/Complete'
-import Confirm from 'components/Register/Confirm'
-import Signin from 'components/Signin'
-import ForgotPassword from 'components/ForgotPassword'
-import ChangePassword from 'components/ForgotPassword/ChangePassword'
-import ViewProfile from 'components/Profile/ViewProfile'
-import Profile from 'components/Profile'
-import CheckAuth from 'components/Profile/CheckAuth'
-import EditProfile from 'components/Profile/EditProfile'
-import Cart from 'components/Cart'
+import * as ScreenName from "config/screenNames"
+import Register from 'screens/Register'
+import Complete from 'screens/Register/Complete'
+import Confirm from 'screens/Register/Confirm'
+import Signin from 'screens/Signin'
+import UpdateProfile from 'screens/Signin/UpdateProfile'
+import ForgotPassword from 'screens/ForgotPassword'
+import ChangePassword from 'screens/ForgotPassword/ChangePassword'
+import CheckPhone from 'screens/ForgotPassword/CheckPhone'
+import ViewProfile from 'screens/Profile/ViewProfile'
+import MyProfile from 'screens/Profile/profile'
+import Profile from 'screens/Profile'
+import CheckAuth from 'screens/Profile/CheckAuth'
+import EditProfile from 'screens/Profile/EditProfile'
+import Cart from 'screens/Cart'
 import Drawer from "./Drawer";
-import ProductDetail from 'components/Product'
-import ViewAllProduct from 'components/Product/ViewAll'
+import ProductDetail from 'screens/Product'
+import ViewAllProduct from 'screens/Product/ViewAll'
 import TabsHome from './TabsHome'
-import SplashScreen from "../components/SplashScreen/SplashScreen";
-import ScreenHello from "../components/SplashScreen/ScreenHello";
-import Contacts from "../components/Product/contact";
-import Introduce from "../components/Introduce/Introduce";
-import Shop from "../components/Shop";
+import SplashScreen from "../screens/SplashScreen/SplashScreen";
+import ScreenHello from "../screens/SplashScreen/ScreenHello";
+import Contacts from "../screens/Product/contact";
+import Introduce from "../screens/Introduce/Introduce";
+import Shop from "../screens/Shop";
+import Search from "../screens/Search";
+import Messenger from 'screens/Messenger'
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -32,24 +37,29 @@ const MyDrawerNavigator = createDrawerNavigator({
 const App = createStackNavigator(
   {
     [ScreenName.SplashScreen]:SplashScreen,
-    [ScreenName.ScreenHello]:ScreenHello,
-    [ScreenName.Register]: Register,
-    [ScreenName.Signin]: Signin,
-    [ScreenName.ForgotPassword]: ForgotPassword,
-    [ScreenName.ChangePassword]: ChangePassword,
-    [ScreenName.Complete]: Complete,
-    [ScreenName.ViewProfile]: ViewProfile,
-    [ScreenName.EditProfile]: EditProfile,
-    [ScreenName.Profile]: Profile,
-    [ScreenName.Confirm]: Confirm,
+    [ScreenName.HelloScreen]:ScreenHello,
+    [ScreenName.RegisterScreen]: Register,
+    [ScreenName.SigninScreen]: Signin,
+    [ScreenName.ForgotPasswordScreen]: ForgotPassword,
+    [ScreenName.ChangePasswordScreen]: ChangePassword,
+    [ScreenName.CompleteScreen]: Complete,
+    [ScreenName.ViewProfileScreen]: ViewProfile,
+    [ScreenName.EditProfileScreen]: EditProfile,
+    [ScreenName.ProfileScreen]: Profile,
+    [ScreenName.ConfirmScreen]: Confirm,
     [ScreenName.HomeScreen]: MyDrawerNavigator,
-    [ScreenName.Cart]: Cart,
-    [ScreenName.ProductDetail]: ProductDetail,
-    [ScreenName.CheckAuth]: CheckAuth,
-    [ScreenName.Introduce]: Introduce,
-    [ScreenName.Contacts]: Contacts,
-    [ScreenName.ViewAllProduct]: ViewAllProduct,
-    [ScreenName.Shop]: Shop,
+    [ScreenName.CartScreen]: Cart,
+    [ScreenName.ProductDetailScreen]: ProductDetail,
+    [ScreenName.CheckAuthScreen]: CheckAuth,
+    [ScreenName.IntroduceScreen]: Introduce,
+    [ScreenName.ContactsScreen]: Contacts,
+    [ScreenName.ViewAllProductScreen]: ViewAllProduct,
+    [ScreenName.ShopScreen]: Shop,
+    [ScreenName.MyProfile]: MyProfile,
+    [ScreenName.UpdateProfileScreen]: UpdateProfile,
+    [ScreenName.SearchScreen]: Search,
+    [ScreenName.CheckPhoneScreen]: CheckPhone,
+    [ScreenName.MessengerScreen]: Messenger,
    
   },
   {
