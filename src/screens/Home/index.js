@@ -73,24 +73,14 @@ class Home extends React.Component {
                                      style={style.box6}
                                     source={images.ttda} />
                                 <Text style={style.textB6}>Thông tin dự án</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>115</Text>
-                                </View>
+                                
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box4} onPress={this._navTo(SearchScreen)} >
                                 <Image 
                                      style={style.box4}
                                     source={images.thongtindauthau} />
                                 <Text style={style.textB4}>Thông tin đấu thầu</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>8</Text>
-                                </View>
+                                
                             </TouchableOpacity>
                         </View>
 
@@ -123,12 +113,7 @@ class Home extends React.Component {
                                      style={style.box3}
                                     source={images.video} />
                                 <Text style={style.textB6}>Video</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
@@ -136,12 +121,7 @@ class Home extends React.Component {
                                      style={style.box3}
                                     source={images.catalog} />
                                 <Text style={style.textB6}>Catalog</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
@@ -149,12 +129,7 @@ class Home extends React.Component {
                                      style={style.box3}
                                     source={images.tailieu} />
                                 <Text style={style.textB6}>Tài liệu</Text> 
-                                <View style={style.boxBadge}>
-                                    <Image 
-                                        style={style.iconBadge}
-                                        source={images.badge} />
-                                    <Text style={style.textBadge}>7</Text>
-                                </View>
+                                
                             </TouchableOpacity>
                             
                         </View>
