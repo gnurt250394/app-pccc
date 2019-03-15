@@ -51,13 +51,17 @@ class Home extends React.Component {
 
                     <View style={style.flex}>
                         <View style={style.top}>
-                            <TouchableOpacity style={[style.btnTop, style.mr20p]} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={[style.btnTop, style.mr20p]} 
+                            // onPress={this._navTo(SearchScreen)} 
+                            >
                                 <Image 
                                      style={style.iconTop}
                                     source={images.tttd} />
                                     <Text style={style.textTop}>Thông tin theo dõi</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[style.btnTop]} onPress={this._navTo(ShopScreen)} >
+                            <TouchableOpacity style={[style.btnTop]} 
+                                // onPress={this._navTo(ShopScreen)} 
+                                >
                                 <Image 
                                     style={style.iconTop}
                                     source={images.myShop} />
@@ -68,14 +72,18 @@ class Home extends React.Component {
                         <Text style={style.category}>{toUpperCase('Danh mục chức năng')}</Text>
 
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box6} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box6} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
                                      style={style.box6}
                                     source={images.ttda} />
                                 <Text style={style.textB6}>Thông tin dự án</Text> 
                                 
                             </TouchableOpacity>
-                            <TouchableOpacity style={style.box4} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box4} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
                                      style={style.box4}
                                     source={images.thongtindauthau} />
@@ -85,21 +93,27 @@ class Home extends React.Component {
                         </View>
 
                         <View style={style.row}>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.product}>
                                     <Text style={[style.textB4, style.w80p]}>Sản phẩm</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <ImageBackground 
                                     style={style.box3}
                                     source={images.thanhly}>
                                     <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity 
+                                // onPress={this._navTo(SearchScreen)}
+                                 >
                                 <ImageBackground 
                                     style={[style.box3, style.mr0]}
                                     source={images.dangmua}>
@@ -108,7 +122,9 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} 
+                            // onPress={this._navTo(SearchScreen)} 
+                            >
                                 <Image 
                                      style={style.box3}
                                     source={images.video} />
@@ -116,7 +132,9 @@ class Home extends React.Component {
                                 
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3}
+                            //  onPress={this._navTo(SearchScreen)}
+                              >
                                 <Image 
                                      style={style.box3}
                                     source={images.catalog} />
@@ -124,7 +142,9 @@ class Home extends React.Component {
                                 
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={style.box3} onPress={this._navTo(SearchScreen)} >
+                            <TouchableOpacity style={style.box3} 
+                                // onPress={this._navTo(SearchScreen)} 
+                                >
                                 <Image 
                                      style={style.box3}
                                     source={images.tailieu} />
