@@ -14,14 +14,21 @@ export const chooseImage =  () => {
             if (response.didCancel) {
                 
                 console.log('User cancelled image picker');
+                resovel(null)
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
+                resovel(null)
                 
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
-                
+                resovel(null)
             } else {
-                resovel(response.uri)
+                resovel({
+                    uri: response.uri,
+                    type: response.type, 
+                    name: response.fileName
+                })
+                
             }
         });
     })
