@@ -249,7 +249,8 @@ class Signin extends React.Component {
             AsyncStorage.setItem('token',data.token)
             this.props.navigation.navigate(UpdateProfileScreen, {user: user, token: data.token});
         }else{
-            navigation.reset(HomeScreen);
+            // navigation.reset(HomeScreen);
+            this.props.navigation.navigate(HomeScreen);
             AsyncStorage.setItem('token',data.token)
         }
         

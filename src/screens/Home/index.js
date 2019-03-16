@@ -233,8 +233,17 @@ const style = StyleSheet.create({
         justifyContent: 'center', flexDirection: 'row', 
         borderTopColor: '#fff', borderTopWidth: 0.5, 
         paddingTop: 8, paddingBottom: 10,
-        borderBottomLeftRadius: 25, borderBottomRightRadius: 25,
-        marginBottom: 10
+        borderBottomLeftRadius: 30, borderBottomRightRadius: 30,
+        marginBottom: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
         
     },
     bot: { flexDirection: 'column', justifyContent: 'center', flex: 1},

@@ -80,7 +80,8 @@ class CompleteUpdate extends React.Component {
                         console.log(res,'res')
                         if(res.data.code == StatusCode.Success){
                             this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                            navigation.reset(HomeScreen)
+                            // navigation.reset(HomeScreen)
+                            this.props.navigation.navigate(HomeScreen)
                         }else{
                             popupOk(CodeToMessage[res.data.code])
                         }
