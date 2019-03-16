@@ -114,4 +114,6 @@ module.exports = {
     dot: require('./dot.png'),
     online: require('./online.png'),
     offline: require('./offline.png'),
+    closeBlue: require('./closeBlue.png'),
+    uploadImage: require('./uploadImage.png'),
 }

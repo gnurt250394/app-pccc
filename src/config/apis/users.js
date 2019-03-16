@@ -32,7 +32,9 @@ export const getInfoAcount = async () => {
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.get(constant.USER)
 }
-export const updateAvatar =  () => {
-    // instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+export const updateAvatar =  (token, data) => {
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    instance.defaults.headers.common['Content-Type'] = "multipart/form-data";
+    
     return instance.post(constant.UPDATE_AVATAR)
 }

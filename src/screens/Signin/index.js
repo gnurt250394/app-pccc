@@ -9,7 +9,7 @@ import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
+import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen, ConfirmScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 class Signin extends React.Component {
@@ -42,6 +42,12 @@ class Signin extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
+                
+                <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
+                    <Image 
+                            style={styles.close}
+                            source={images.closeBlue} />
+                </TouchableOpacity>
                 
                 <View>
                     <Image 
@@ -111,10 +117,14 @@ class Signin extends React.Component {
         Keyboard.dismiss()
     }
 
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
 
     _onFacebookLogin = async () => {
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+          console.log('result: ', result);
           
           if (result.isCancelled)  throw new Error('User cancelled request'); 
           const data = await AccessToken.getCurrentAccessToken();
@@ -134,12 +144,11 @@ class Signin extends React.Component {
           
           this.setState({loading: true})
           loginSocial(body).then(res => {
-              
-                
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
                     
                     this._onSwitchToHomePage(res, LoginType.facebook);
+                    
                 }else{
                     popupOk(CodeToMessage[res.data.code])
                 }
@@ -156,37 +165,35 @@ class Signin extends React.Component {
 
     _onGoogleLogin =  async () => {
         try {
-            await GoogleSignin.configure();
+            await GoogleSignin.configure({ forceConsentPrompt: true });
             const data = await GoogleSignin.signIn();
             
-            const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+            this.setState({loading: true}, async () => {
+                const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
 
-            const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-            
-            let provider = firebaseUserCredential.user.toJSON();
-            
-
-            
-            this.setState({loading: true})
-            loginSocial({
-                name: provider.displayName,
-                email: provider.providerData[0].email,
-                login_type: LoginType.google
-            }).then(res => {
+                const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
                 
-                this.setState({loading: false})
-                if(res.data.code == StatusCode.Success){
-                    
-                    this._onSwitchToHomePage(res, LoginType.google);
-                }else{
-                    popupOk(CodeToMessage[res.data.code])
-                }
-            }).catch(err => {
+                let provider = firebaseUserCredential.user.toJSON();
                 
-                
-                popupOk("Đăng nhập thất bại");
-                this.setState({loading: false})
+                this.setState({loading: true})
+                loginSocial({
+                    name: provider.displayName,
+                    email: provider.providerData[0].email,
+                    login_type: LoginType.google
+                }).then(res => {
+                    this.setState({loading: false})
+                    if(res.data.code == StatusCode.Success){
+                        
+                        this._onSwitchToHomePage(res);
+                    }else{
+                        popupOk(CodeToMessage[res.data.code])
+                    }
+                }).catch(err => {
+                    this.setState({loading: false})
+                    popupOk("Đăng nhập thất bại");
+                })
             })
+            
             
         } catch (e) {
             
@@ -230,7 +237,7 @@ class Signin extends React.Component {
     }
 
     _onSwitchToHomePage = (res, type) => {
-        
+        console.log('res: ', res);
         let data = res.data,
             user = data.data;
         
@@ -238,13 +245,13 @@ class Signin extends React.Component {
             
             
         // check update profile
-        if(!user.phone || user.phone == "" || !user.email || user.email == ""){
+        if(!user.phone || user.phone == ""){
             AsyncStorage.setItem('token',data.token)
-            this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
+            this.props.navigation.navigate(UpdateProfileScreen, {user: user, token: data.token});
         }else{
-            navigation.reset(HomeScreen);
-        AsyncStorage.setItem('token',data.token)
-
+            // navigation.reset(HomeScreen);
+            this.props.navigation.navigate(HomeScreen);
+            AsyncStorage.setItem('token',data.token)
         }
         
     }

@@ -10,8 +10,8 @@ export default class Header extends React.Component {
         return (
             <View style={ style.content} >
             <StatusBar
-                backgroundColor={color}
-            />
+                barStyle="light-content" 
+                backgroundColor={color} />
             {this.props.check ==1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                     <Image 
                         style={style.icon}
@@ -54,5 +54,6 @@ const style = StyleSheet.create({
         padding: 12, 
         paddingLeft: 0, 
         paddingTop: 0, 
-        alignItems: 'center'}
+        alignItems: 'center'},
+   
 })

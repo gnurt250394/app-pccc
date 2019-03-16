@@ -13,15 +13,18 @@ const {width,height} =Dimensions.get('window')
  class ScreenHello extends Component {
 
     nextHome=()=>{
-        navigation.reset(HomeScreen)
+        // navigation.reset(HomeScreen)
+        this.props.navigation.navigate(HomeScreen)
     }
 
     onLogin=()=>{
-        navigation.reset(SigninScreen)
+        // navigation.reset(SigninScreen)
+        this.props.navigation.navigate(SigninScreen)
     }
 
     onSignUp=()=>{
-        navigation.reset(RegisterScreen)
+        // navigation.reset(RegisterScreen)
+        this.props.navigation.navigate(RegisterScreen)
       
     }
 

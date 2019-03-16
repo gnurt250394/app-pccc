@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { updateUser } from 'config/apis/users'
+import { updateUser, updateAvatar } from 'config/apis/users'
 import {  Input} from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
@@ -72,7 +72,7 @@ class EditProfile extends React.Component {
             address: user.address ? user.address : "",
             tax_code: user.tax_code ? user.tax_code : "",
             gender: user.gender != null ? user.gender : Gender.male,
-           
+            loading: false
         }
     }
 
@@ -95,6 +95,11 @@ class EditProfile extends React.Component {
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <ScrollView >
                 <View style={style.header}>
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
                     <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
                             style={style.iconBack}
@@ -106,10 +111,13 @@ class EditProfile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={style.boxUser}>
-                    <TouchableOpacity onPress={this._onUploadImage}>
+                    <TouchableOpacity  onPress={this._onUploadImage}>
                         <Image 
                             style={style.avatar}
                             source={images.userBlue} />
+                        <Image 
+                            style={style.upload}
+                            source={images.uploadImage} />
                     </TouchableOpacity>
                 </View>
 
@@ -169,9 +177,23 @@ class EditProfile extends React.Component {
     }
 
     _onUploadImage = () => {
-        chooseImage().then(url => {
-            console.log('url: ', url);
-
+        chooseImage().then(image => {
+            console.log('image: ', image);
+            console.log(this.props.token);
+            if(image){
+                const data = new FormData();
+                data.append('image', image);
+                this.setState({loading: true}, () => {
+                    updateAvatar(this.props.token, data).then(res => {
+                        console.log('res: ', res);
+                        this.setState({loading: false})
+                    }).catch(err => {
+                        console.log('err: ', err);
+                        this.setState({loading: false})
+                    })
+                })
+                
+            }
         }).catch(err => {
             console.log('err: ', err);
 
@@ -228,8 +250,9 @@ const style = StyleSheet.create({
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     gender: {fontSize: 14, color: '#555555', paddingLeft: 10},
-    avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
-    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
+    avatar: {resizeMode: 'contain', height: 80, alignSelf: 'center'},
+    upload: {resizeMode: 'contain', width: 100, alignSelf: 'center',position: 'absolute', bottom: -40, zIndex: 1000},
+    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', position: 'relative',},
     p10: {padding: 10},
     mt30: { marginTop: 30},
     flex:  { flex:1},

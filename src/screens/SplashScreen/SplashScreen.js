@@ -15,12 +15,14 @@ export default class SplashScreen extends Component {
         console.log(token,'token')
       if(token){
         setTimeout(()=>{
-            navigation.reset(HomeScreen)
+            // navigation.reset(HomeScreen)
+            this.props.navigation.navigate(HomeScreen)
     }, 3000)
          
       } else{
         setTimeout(()=>{
-            navigation.navigate(HelloScreen)
+            // navigation.navigate(HelloScreen)
+            this.props.navigation.navigate(HelloScreen)
     }, 3000)
       }
        

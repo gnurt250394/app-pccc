@@ -113,6 +113,15 @@ export default styles = StyleSheet.create({
         position: "absolute",
         top: '48%',
         left: '48%'
-    }
+    },
+    close: {
+        width: 20,
+        resizeMode: 'contain',
+    },
+    btnClose: {
+        alignSelf: 'flex-end',
+        padding: 20,
+    },
+    
 
 })
