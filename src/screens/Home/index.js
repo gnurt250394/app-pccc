@@ -7,8 +7,7 @@ import { SearchScreen,ShopScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
-console.log('height: ', height);
-console.log('width: ', width);
+
 
 class Home extends React.Component {
     state = {

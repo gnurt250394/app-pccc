@@ -9,7 +9,8 @@ export default class BaseInput extends React.PureComponent {
     }
 
     state = {
-        value: this.props.value
+        value: this.props.value,
+        showIcon: this.props.showIcon || true,
     }
     componentWillReceiveProps(props){
         if(props.value != "") this.setState({value: props.value})
@@ -18,9 +19,10 @@ export default class BaseInput extends React.PureComponent {
     render(){
         return (
             <View style={style.inputView}>
-                <Image 
+
+                {this.state.showIcon && <Image 
                     style={[styles.icon,style.w12, this.props.styleIcon || {}, ]} 
-                    source={this.props.icon} />
+                    source={this.props.icon} />}
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
                     placeholderTextColor={this.props.placeholderTextColor || "#8FBEDF"}
