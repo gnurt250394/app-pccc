@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,ActivityIndicator } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,ActivityIndicator, Image } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles" 
@@ -40,6 +40,12 @@ class Register extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
+                <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
+                    <Image 
+                            style={styles.close}
+                            source={images.closeBlue} />
+                </TouchableOpacity>
+
                 <Text style={style.title}>{toUpperCase('Đăng ký')}</Text>
                 <View style={style.h70p}>
                     <BaseInput 
@@ -95,6 +101,10 @@ class Register extends React.Component {
 
     _navTo = (screen, params = {}) => () => {
         this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
     }
 
     _dismiss = () => {
@@ -187,31 +197,6 @@ class Register extends React.Component {
            
             // // call api
             if(this.state.allowPhone && allowEmail){
-                // let RNAccountKit = accountKit(phone);
-                // RNAccountKit.loginWithPhone()
-                // .then((token) => {
-                //     if(token && token.code){
-                //             signup({
-                //                 name: name,
-                //                 phone: phone.replace(/\+84/, "0"),
-                //                 email: email,
-                //                 password: password,
-                //             }).then(res => {
-                //             if(res.data.code == StatusCode.Success){
-                //                 AsyncStorage.setItem('token',res.data.token)
-                //                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                //                 this.props.navigation.navigate(HomeScreen)
-                //             }else{
-                //                 popupOk(CodeToMessage[res.data.code])
-                //             }
-                            
-                //         }).catch(err => {
-                //             popupOk("Đăng ký thất bại")
-                //         })
-                //     }else {
-                //         popupOk('Đăng ký thất bại')
-                //     }
-                // })
                 let data = {
                     name: name,
                     phone: phone,
@@ -229,7 +214,8 @@ class Register extends React.Component {
                         })// save confirm result to use with the manual verification code)
                         .catch(error => {
                             console.log('error: ', error);
-
+                            this.setState({loading: false})
+                            popupOk('Không thể gửi mã xác nhận')
                         });
                 });
             }else if(!this.state.allowPhone){
@@ -250,5 +236,6 @@ const style = StyleSheet.create({
     h15: {height: 15},
     h70p: {height: '70%'},
     title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'},
-    flex: {flex: 1}
+    flex: {flex: 1},
+    btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},
 })

@@ -1,5 +1,7 @@
 export const SignupScreen = "SignupScreen" 
 export const SigninScreen = "SigninScreen" 
+export const CompleteUpdateScreen = "CompleteUpdateScreen" 
+
 export const RegisterScreen = "RegisterScreen" 
 export const ForgotPasswordScreen = "ForgotPasswordScreen" 
 export const ChangePasswordScreen = "ChangePasswordScreen"

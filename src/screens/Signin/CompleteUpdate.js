@@ -2,20 +2,24 @@ import React from 'react'
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity, AsyncStorage, Keyboard, ActivityIndicator, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import styles from "assets/styles"
-import { signup } from 'config/apis/users'
+import { updateUser } from 'config/apis/users'
 import { Header, Input, Btn} from 'components'
 import {  toUpperCase, popupOk, StatusCode, CodeToMessage } from 'config'
 import  { HomeScreen} from 'config/screenNames'
 import { actionTypes } from 'actions'
-class Complete extends React.Component {
+import navigation from 'navigation/NavigationService'
+
+class CompleteUpdate extends React.Component {
     constructor(props){
         super(props)
         this.state  = {
-            user: this.props.navigation.getParam('data'),
+            phone: this.props.navigation.getParam('phone'),
+            token: this.props.navigation.getParam('token'),
             confirmResult: this.props.navigation.getParam('confirmResult'),
             verifyCode: '',
             loading: false
         }
+        console.log(1, this.state);
     }
 
     render(){
@@ -43,7 +47,7 @@ class Complete extends React.Component {
                     </View>
                     <Btn 
                         onPress={this._onSuccess}
-                        name="Hoàn tất đăng ký" />
+                        name="Hoàn tất" />
                 </View>
             </View>
             </TouchableWithoutFeedback>
@@ -69,17 +73,21 @@ class Complete extends React.Component {
             this.setState({loading: true}, () => {
                 this.state.confirmResult.confirm(this.state.verifyCode)
                 .then(user => {
-                    let body = {...this.state.user}
-                    body.phone = body.phone.replace(/\+84/, "0")
-                    signup(body).then(res => {
-                        this.setState({loading: false})
+                    let phone = this.state.phone
+                    phone = phone.replace(/\+84/, "0")
+
+                    updateUser(this.state.token, { phone: phone}).then(res => {
+                        console.log(res,'res')
                         if(res.data.code == StatusCode.Success){
-                            AsyncStorage.setItem('token',res.data.token)
                             this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                            this.props.navigation.navigate(HomeScreen)
+                            navigation.reset(HomeScreen)
                         }else{
                             popupOk(CodeToMessage[res.data.code])
                         }
+                    }).catch(err => {
+                        console.log('err: ', err);
+                        this.setState({loading: false})
+                        popupOk("Cập nhật thông tin thất bại")
                     })
                 }).catch(err => {
                     this.setState({loading: false})
@@ -92,7 +100,7 @@ class Complete extends React.Component {
         }
     }
 }
-export default connect()(Complete)
+export default connect()(CompleteUpdate)
 
 const style = StyleSheet.create({
     content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40},
