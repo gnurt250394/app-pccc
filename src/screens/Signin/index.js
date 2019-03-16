@@ -165,9 +165,9 @@ class Signin extends React.Component {
 
     _onGoogleLogin =  async () => {
         try {
-            await GoogleSignin.configure();
+            await GoogleSignin.configure({ forceConsentPrompt: true });
             const data = await GoogleSignin.signIn();
-            console.log('data: ', data);
+            
             this.setState({loading: true}, async () => {
                 const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
 
