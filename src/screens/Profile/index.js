@@ -69,7 +69,7 @@ class Profile extends React.Component {
                     </TouchableOpacity>
                     <View style={style.mt20}>
                         <NavItem 
-                            title='Mua gói dịch vụ' 
+                            title='Gói dịch vụ' 
                             onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pService} />
                         <NavItem 
@@ -77,10 +77,6 @@ class Profile extends React.Component {
                             onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pShop} />
                         
-                        {/* <NavItem 
-                            title='Sản phẩm yêu cầu báo giá' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pProduct} /> */}
                         <NavItem 
                             title='Thay đổi mật khẩu' 
                             onPress={this._navTo(ChangePasswordScreen)}

@@ -106,10 +106,13 @@ class EditProfile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={style.boxUser}>
-                    <TouchableOpacity onPress={this._onUploadImage}>
+                    <TouchableOpacity  onPress={this._onUploadImage}>
                         <Image 
                             style={style.avatar}
                             source={images.userBlue} />
+                        <Image 
+                            style={style.upload}
+                            source={images.uploadImage} />
                     </TouchableOpacity>
                 </View>
 
@@ -228,8 +231,9 @@ const style = StyleSheet.create({
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     gender: {fontSize: 14, color: '#555555', paddingLeft: 10},
-    avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
-    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
+    avatar: {resizeMode: 'contain', height: 80, alignSelf: 'center'},
+    upload: {resizeMode: 'contain', width: 100, alignSelf: 'center',position: 'absolute', bottom: -40, zIndex: 1000},
+    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', position: 'relative',},
     p10: {padding: 10},
     mt30: { marginTop: 30},
     flex:  { flex:1},
