@@ -1,17 +1,19 @@
 import React from 'react'
-import { View, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { Header, BaseInput, Btn} from 'components'
 import {  popupOk, color, CodeToMessage, StatusCode } from 'config'
 import  { accountKit } from 'config/accountKit'
-import  { ForgotPasswordScreen } from 'config/screenNames'
+import  { CompleteUpdateScreen  } from 'config/screenNames'
 import {  checkPhoneOrEmail } from 'config/apis/users'
+import * as firebase from 'react-native-firebase'
 
 class CheckPhone extends React.Component {
     state = {
         password: '',
         rePassword: '',
+        loading: false
     }
     // set status bar
     componentDidMount() {
@@ -29,6 +31,11 @@ class CheckPhone extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
                     <Header title="Nhập số điện thoại" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
@@ -70,13 +77,21 @@ class CheckPhone extends React.Component {
                 if(res.data.code == StatusCode.Success || res.data == ""){
                     popupOk("Số điện thoại chưa đăng ký")
                 }else{
-                    let RNAccountKit = accountKit(phone)
-                    RNAccountKit.loginWithPhone()
-                        .then((token) => {
-                            if(token && token.code){
-                                this.props.navigation.navigate(ForgotPasswordScreen);
-                            }
-                        })
+                    this.setState({loading: true}, () => {
+                        phone = phone.replace(/^0+/, "+84");
+                        firebase.auth().signInWithPhoneNumber(phone)
+                            .then(confirmResult => {
+                                this.setState({loading: false})
+                                popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
+                                // this.props.navigation.navigate(CompleteUpdateScreen, {phone: phone, confirmResult: confirmResult, token: this.state.token})
+                                
+                            })// save confirm result to use with the manual verification code)
+                            .catch(error => {
+                                console.log('error: ', error);
+                                this.setState({loading: false})
+                                popupOk('Không thể gửi mã xác nhận')
+                            });
+                    });
                 }
     
             }).catch(err => {
