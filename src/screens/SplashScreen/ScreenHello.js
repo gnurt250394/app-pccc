@@ -28,11 +28,22 @@ const {width,height} =Dimensions.get('window')
       
     }
 
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+    }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render() {
         
         return (
             <ScrollView>
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View >
                     <Swiper  autoplay={true}
                         dotColor="#E5F4FC"
