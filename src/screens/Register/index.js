@@ -208,7 +208,7 @@ class Register extends React.Component {
                     firebase.auth().signInWithPhoneNumber(phone)
                         .then(confirmResult => {
                             this.setState({loading: false})
-                            popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
+                            // popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
                             this.props.navigation.navigate(CompleteScreen, {data: data, confirmResult: confirmResult})
                             
                         })// save confirm result to use with the manual verification code)

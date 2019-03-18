@@ -112,7 +112,7 @@ class UpdateProfile extends React.Component {
                     firebase.auth().signInWithPhoneNumber(phone)
                         .then(confirmResult => {
                             this.setState({loading: false})
-                            popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
+                            // popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
                             this.props.navigation.navigate(CompleteUpdateScreen, {phone: phone, confirmResult: confirmResult, token: this.state.token})
                             
                         })// save confirm result to use with the manual verification code)
