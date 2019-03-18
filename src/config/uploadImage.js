@@ -29,6 +29,8 @@ export const chooseImage =  () => {
                     name: response.fileName
                 })
                 
+            } else {
+                resovel(response)
             }
         });
     })

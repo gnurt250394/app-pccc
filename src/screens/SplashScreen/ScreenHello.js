@@ -15,8 +15,8 @@ console.log('height: ', height);
  class ScreenHello extends Component {
 
     nextHome=()=>{
-        // navigation.reset(HomeScreen)
-        this.props.navigation.navigate(HomeScreen)
+        navigation.reset(HomeScreen)
+        AsyncStorage.setItem('Remember','Remember')
     }
 
     onLogin=()=>{

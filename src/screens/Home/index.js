@@ -60,7 +60,7 @@ class Home extends React.Component {
                                 <Text style={style.textTop}>Thông tin theo dõi</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[style.btnTop]} 
-                            // onPress={this._navTo(ShopScreen)} 
+                            onPress={this._navTo(ShopScreen)} 
                             >
                             <Image 
                                 style={style.iconTop}

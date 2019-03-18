@@ -12,6 +12,7 @@ import { GoogleSignin } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
+import { saveItem } from 'config/Controller';
 import  { accountKit } from 'config/accountKit'
 
 class Signin extends React.Component {
@@ -220,7 +221,9 @@ class Signin extends React.Component {
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    this._onSwitchToHomePage(res);
+                    console.log(res)
+                    navigation.reset(HomeScreen)
+                    AsyncStorage.setItem('token',res.data.token)
                     this.setState({loading: false})
                 }else{
                     popupOk(CodeToMessage[res.data.code])

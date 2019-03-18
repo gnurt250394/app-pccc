@@ -17,18 +17,21 @@ export default class SplashScreen extends Component {
         });
 
         let token = await AsyncStorage.getItem('token')
-        if(token){
-            setTimeout(()=>{
-                // navigation.reset(HomeScreen)
-                this.props.navigation.navigate(HomeScreen)
-            }, 3000)
-            
-            } else{
-                setTimeout(()=>{
-                    // navigation.navigate(HelloScreen)
-                    this.props.navigation.navigate(HelloScreen)
-            }, 3000)
-        }
+        let Remember = await AsyncStorage.getItem('Remember')
+      if(token){
+        setTimeout(()=>{
+            navigation.reset(HomeScreen)
+    }, 2000)
+         
+      } else if(Remember){
+        setTimeout(()=>{
+        navigation.reset(HomeScreen)
+    }, 2000)
+      } else{
+        setTimeout(()=>{
+            navigation.navigate(HelloScreen)
+    }, 3000)
+      }
        
     }
 
