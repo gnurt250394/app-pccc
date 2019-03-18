@@ -12,12 +12,16 @@ export default class SplashScreen extends Component {
   
     componentDidMount = async()=>{
         let token = await AsyncStorage.getItem('token')
-        console.log(token,'token')
+        let Remember = await AsyncStorage.getItem('Remember')
       if(token){
         setTimeout(()=>{
             navigation.reset(HomeScreen)
-    }, 3000)
+    }, 2000)
          
+      } else if(Remember){
+        setTimeout(()=>{
+        navigation.reset(HomeScreen)
+    }, 2000)
       } else{
         setTimeout(()=>{
             navigation.navigate(HelloScreen)
