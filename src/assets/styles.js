@@ -115,7 +115,7 @@ export default styles = StyleSheet.create({
         left: '48%'
     },
     close: {
-        width: 20,
+        width: 15,
         resizeMode: 'contain',
     },
     btnClose: {
