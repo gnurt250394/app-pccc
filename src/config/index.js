@@ -2,6 +2,8 @@ import {  Alert } from 'react-native'
 
 export const StatusCode = {
     Success: 200,
+    Tokenvalid:445,
+    TokenExpire:440
 }
 
 export const Gender = {
@@ -39,6 +41,7 @@ export const CodeToMessage = {
     446: "Email đã được sử dụng",
     447: "Lỗi hình ảnh",
     500: "Server Error",
+    440:'Phiên đăng nhập hết hạn'
 }
 
 export const toUpperCase = str => str.toUpperCase()

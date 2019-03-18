@@ -12,6 +12,7 @@ import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
+import { saveItem } from 'config/Controller';
 class Signin extends React.Component {
     state = {
         username: '',
@@ -210,7 +211,9 @@ class Signin extends React.Component {
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    this._onSwitchToHomePage(res);
+                    console.log(res)
+                    navigation.reset(HomeScreen)
+                    AsyncStorage.setItem('token',res.data.token)
                     this.setState({loading: false})
                 }else{
                     popupOk(CodeToMessage[res.data.code])
@@ -239,7 +242,8 @@ class Signin extends React.Component {
             
         // check update profile
         if(!user.phone || user.phone == "" || !user.email || user.email == ""){
-            AsyncStorage.setItem('token',data.token)
+            // AsyncStorage.setItem('token',data.token)
+            console.log(data.token,'tokeeeeeee')
             this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
         }else{
             navigation.reset(HomeScreen);

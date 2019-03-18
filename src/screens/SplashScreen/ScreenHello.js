@@ -14,6 +14,7 @@ const {width,height} =Dimensions.get('window')
 
     nextHome=()=>{
         navigation.reset(HomeScreen)
+        AsyncStorage.setItem('Remember','Remember')
     }
 
     onLogin=()=>{

@@ -12,6 +12,7 @@ import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
+import { getItem, removeItem } from 'config/Controller';
 class Profile extends React.Component {
    state={
        user:{}
@@ -26,11 +27,14 @@ class Profile extends React.Component {
     componentDidMount= async()=> {
         
        
-        let token = await AsyncStorage.getItem('token')
+        let token =await getItem('token')
+        
         if(token == null ){
+            
             navigation.reset(CheckAuthScreen)
         } else{
-            this.getInfoAccount()
+            
+            this.getInfo()
         }
 
         // this._navListener = this.props.navigation.addListener('didFocus', () => {
@@ -58,7 +62,7 @@ class Profile extends React.Component {
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
-                            source={images.userBlue} />
+                            source={user&& user.image?{uri:user.image}:images.userBlue} />
                         <View style={style.user}>
                             <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
                             <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
@@ -95,11 +99,19 @@ class Profile extends React.Component {
         )
     }
 
-    getInfoAccount=()=>{
+    getInfo=()=>{
 
         getInfoAcount().then(res=>{
+            
+
             if(res.data.code == StatusCode.Success ){
                this.setState({user:res.data.data})
+            } else if(res.data.code== StatusCode.Tokenvalid){
+            navigation.reset(CheckAuthScreen)
+            AsyncStorage.removeItem('token')
+            } else if(res.data.code== StatusCode.TokenExpire){
+            navigation.reset(CheckAuthScreen)
+            AsyncStorage.removeItem('token')
             }
         })
     }
@@ -113,10 +125,10 @@ class Profile extends React.Component {
         
     //  GoogleSignin.isSignedIn().then(res=>{
     //       if(res){
-    //           console.log(res,'gg')
+    //           
     //         try {
     //             //  GoogleSignin.revokeAccess().then(res=>{
-    //             //     console.log(res,'gg')
+    //             //     
     //             // });
                  
     //             AsyncStorage.removeItem('token')
@@ -124,23 +136,23 @@ class Profile extends React.Component {
     //             this.props.dispatch({type: actionTypes.USER_LOGOUT})
     //             // this.setState({ user: null }); // Remove the user from your app's state as well
     //           } catch (error) {
-    //             console.error(error);
+    //             
     //           }
               
             
      
     //       }
     //   }).catch(err=>{
-    //       console.log(err)
+    //       
     //   })
     //   AccessToken.getCurrentAccessToken().then(res=>{
     //        if(res){
-    //            console.log(res.getUserId(),'fb')
+    //            
     // // // logout FB
            
     //        }
     //    }).catch(err=>{
-    //        console.log(err)
+    //        
     //    })
       
     //    this.props.dispatch({type: actionTypes.USER_LOGOUT})
@@ -171,9 +183,9 @@ const style = StyleSheet.create({
     btnLogout: {color: '#F55555', fontSize: 16, width: '60%', alignSelf: 'center', textAlign:'center', fontWeight: 'bold', padding: 10, marginBottom: 50},
     head: {backgroundColor: color},
     name: {fontSize: 16, color: '#333333', fontWeight: 'bold', paddingBottom: 6},
-    email: {fontSize: 14, color: '#999999', },
+    email: {fontSize: 12, color: '#999999', },
     user: { flex: 1, flexDirection: 'column', padding: 18},
-    avatar: {width: 70, height: 70, alignSelf: 'center' },
+    avatar: {width: 70, height: 70, alignSelf: 'center',borderRadius: 35, },
     boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     mt20: { marginTop: 20},
     flex: {flex: 1}

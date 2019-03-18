@@ -21,7 +21,7 @@ export const chooseImage =  () => {
                 console.log('User tapped custom button: ', response.customButton);
                 
             } else {
-                resovel(response.uri)
+                resovel(response)
             }
         });
     })
