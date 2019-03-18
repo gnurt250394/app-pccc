@@ -5,7 +5,7 @@ import images from "assets/images"
 import { Header, BaseInput, Btn} from 'components'
 import {  popupOk, color, CodeToMessage, StatusCode } from 'config'
 import  { accountKit } from 'config/accountKit'
-import  { CompleteUpdateScreen  } from 'config/screenNames'
+import  { ForgotPasswordScreen  } from 'config/screenNames'
 import {  checkPhoneOrEmail } from 'config/apis/users'
 import * as firebase from 'react-native-firebase'
 
@@ -77,21 +77,13 @@ class CheckPhone extends React.Component {
                 if(res.data.code == StatusCode.Success || res.data == ""){
                     popupOk("Số điện thoại chưa đăng ký")
                 }else{
-                    this.setState({loading: true}, () => {
-                        phone = phone.replace(/^0+/, "+84");
-                        firebase.auth().signInWithPhoneNumber(phone)
-                            .then(confirmResult => {
-                                this.setState({loading: false})
-                                popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
-                                // this.props.navigation.navigate(CompleteUpdateScreen, {phone: phone, confirmResult: confirmResult, token: this.state.token})
-                                
-                            })// save confirm result to use with the manual verification code)
-                            .catch(error => {
-                                console.log('error: ', error);
-                                this.setState({loading: false})
-                                popupOk('Không thể gửi mã xác nhận')
-                            });
-                    });
+                    let RNAccountKit = accountKit(phone)
+                    RNAccountKit.loginWithPhone()
+                        .then((token) => {
+                            if(token && token.code){
+                                this.props.navigation.navigate(ForgotPasswordScreen);
+                            }
+                        })
                 }
     
             }).catch(err => {
