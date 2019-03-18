@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
 import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height} from 'config'
-import { login, loginSocial } from 'config/apis/users'
+import { login, loginSocial, checkPhoneOrEmail, updateUser   } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
@@ -12,6 +12,8 @@ import { GoogleSignin } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
+import  { accountKit } from 'config/accountKit'
+
 class Signin extends React.Component {
     state = {
         username: '',
@@ -189,6 +191,7 @@ class Signin extends React.Component {
                         popupOk(CodeToMessage[res.data.code])
                     }
                 }).catch(err => {
+                    console.log('err: ', err);
                     this.setState({loading: false})
                     popupOk("Đăng nhập thất bại");
                 })
@@ -232,30 +235,28 @@ class Signin extends React.Component {
         }
     }
 
-    _onForgotPassword = () => {
-        
-    }
-
+  
     _onSwitchToHomePage = (res, type) => {
-        console.log('res: ', res);
         let data = res.data,
             user = data.data;
+            console.log('user: ', user);
         
         this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             
             
         // check update profile
-        if(!user.phone || user.phone == ""){
-            AsyncStorage.setItem('token',data.token)
-            this.props.navigation.navigate(UpdateProfileScreen, {user: user, token: data.token});
+        let phone = user.phone;
+        let userToken = data.token;
+        if(!phone || phone == ""){
+            this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
         }else{
             // navigation.reset(HomeScreen);
             this.props.navigation.navigate(HomeScreen);
-            AsyncStorage.setItem('token',data.token)
+            AsyncStorage.setItem('token',userToken)
         }
         
     }
-  
+
    
 }
 const mapStateToProps=(state)=>{

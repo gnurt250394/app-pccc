@@ -1,14 +1,15 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, StatusBar, Keyboard, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, StatusBar, Keyboard, StyleSheet, ActivityIndicator, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { checkPhoneOrEmail } from 'config/apis/users'
+import { checkPhoneOrEmail, updateUser } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
 import { toUpperCase,  popupOk, StatusCode, CodeToMessage, color } from 'config'
-import  { CompleteUpdateScreen } from 'config/screenNames'
+import  { HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import * as firebase from 'react-native-firebase'
+import  { accountKit } from 'config/accountKit'
 
 class UpdateProfile extends React.Component {
     
@@ -45,7 +46,7 @@ class UpdateProfile extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
-                <Text style={style.title}>{toUpperCase('Cập nhật thông tin')}</Text>
+                <Text style={style.title}>{toUpperCase('Cập nhật số điện thoại')}</Text>
                 <View style={style.h65p}>
                     <BaseInput 
                         styleIcon={style.h15}
@@ -108,19 +109,28 @@ class UpdateProfile extends React.Component {
             // // call api
             if(this.state.allowPhone){
                 this.setState({loading: true}, () => {
-                    phone = phone.replace(/^0+/, "+84");
-                    firebase.auth().signInWithPhoneNumber(phone)
-                        .then(confirmResult => {
-                            this.setState({loading: false})
-                            // popupOk('Một mã xác nhận đã được gửi về số điện thoại của bạn. Vui lòng kiểm tra tin nhắn.')
-                            this.props.navigation.navigate(CompleteUpdateScreen, {phone: phone, confirmResult: confirmResult, token: this.state.token})
-                            
-                        })// save confirm result to use with the manual verification code)
-                        .catch(error => {
-                            console.log('error: ', error);
-                            this.setState({loading: false})
-                            popupOk('Không thể gửi mã xác nhận')
-                        });
+                    
+                    let RNAccountKit = accountKit(phone);
+                    RNAccountKit.loginWithPhone().then((token) => {
+                    console.log('token: ', token);
+                    if(token && token.code){
+                        phone = phone.replace(/\+84/, "0")
+                        
+                        updateUser(this.state.token, {phone: phone}).then(res => {
+                            if(res.data.code == StatusCode.Success){
+                                AsyncStorage.setItem('token', this.state.token)
+                                this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: this.state.token})
+                                navigation.reset(HomeScreen)
+                            }else{
+                                popupOk(CodeToMessage[res.data.code])
+                            }
+                        }).catch(err => {
+                            popupOk("Cập nhật thông tin thất bại")
+                        })
+                    }else {
+                        popupOk('Cập nhật thông tin thất bại')
+                    }
+                })
                 });
             }else{
                 popupOk('Số điện thoại đã được sử dụng')
