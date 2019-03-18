@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles" 
 import { signup, checkPhoneOrEmail } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
-import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color } from 'config'
+import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color, defaultStyle, height, smallScreen } from 'config'
 import  { accountKit } from 'config/accountKit'
 import  { SigninScreen, HomeScreen, ConfirmScreen, CompleteScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
@@ -235,7 +235,7 @@ const style = StyleSheet.create({
     boxForgot: {width: '50%', alignSelf: 'center',},
     h15: {height: 15},
     h70p: {height: '70%'},
-    title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'},
+    title: {color: color, fontWeight: 'bold', fontSize:  height < smallScreen ? 16 : 22, marginBottom: '10%', textAlign: 'center'},
     flex: {flex: 1},
     btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},
 })

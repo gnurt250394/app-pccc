@@ -3,13 +3,13 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Sta
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts} from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height} from 'config'
 import { login, loginSocial } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen, ConfirmScreen } from 'config/screenNames'
+import { GoogleSignin } from 'react-native-google-signin';
+import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 class Signin extends React.Component {
@@ -267,23 +267,25 @@ const mapStateToProps=(state)=>{
 export default connect(mapStateToProps)(Signin)
 
 const style = StyleSheet.create({
-    or: {color: '#80C9F0', fontSize: 14, paddingLeft: 10, paddingRight: 10},
+    or: {color: '#80C9F0', fontSize: defaultStyle.fontSize, paddingLeft: 10, paddingRight: 10},
     line: {flex: 1, height: 1, backgroundColor: '#80C9F0'},
     boxOr: {width: '60%',
      flexDirection: 'row',
       alignSelf: 'center',
        marginTop: 13,
         alignItems: 'center'},
-    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5},
+    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5, fontSize: defaultStyle.fontSize},
     social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
     register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,fontFamily:fonts.bold},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
-    iconSocial: {width: 55,
-        height:55,
-    resizeMode: 'contain',
-    marginTop: 15,
-    marginBottom: 18,},
+    iconSocial: {
+        width: height < smallScreen ? 40 : 55,
+        height: height < smallScreen ? 40 : 55,
+        resizeMode: 'contain',
+        marginTop: height < smallScreen ? 8 : 15,
+        marginBottom: 18,
+    },
     flex: { flex:1},
     w11: { height: 15},
     w53: { width: 53},

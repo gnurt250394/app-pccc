@@ -10,6 +10,8 @@ import navigation from 'navigation/NavigationService';
 import {connect} from 'react-redux'
 
 const {width,height} =Dimensions.get('window')
+console.log('width: ', width);
+console.log('height: ', height);
  class ScreenHello extends Component {
 
     nextHome=()=>{

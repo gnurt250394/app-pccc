@@ -1,5 +1,6 @@
-import {  Alert } from 'react-native'
-
+import {  Alert, Dimensions } from 'react-native'
+export const  { width, height } = Dimensions.get('window')
+// fontSize: height < smallScreen ? 10 : 14,
 export const StatusCode = {
     Success: 200,
 }
@@ -14,6 +15,7 @@ export const MessageStatus = {
     read: 1,
 }
 
+export const smallScreen = 550
 export const color = "#2166A2"
 export const fonts = {
     bold: 'MONTSERRAT-BOLD',
@@ -21,6 +23,13 @@ export const fonts = {
     AcuminBdItPro_0:'Acumin-BdItPro_0',
     MontserratExtraBold:'Montserrat-ExtraBold'
 }
+
+export const defaultStyle = {
+    fontSize: height < smallScreen ? 10 : 14,
+    padding: height < smallScreen ? 6 : 11,
+    logoHeight: height < smallScreen ? 100 : 150,
+}
+
 
 export const ShowGender = gender => {
     if(gender == null) return gender
