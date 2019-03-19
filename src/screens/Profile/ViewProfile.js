@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import {  ShowGender, color } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
 import { getInfoAcount } from 'config/apis/users';
 import { Status } from 'config/Controller';
+
+const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
     render() {
       return this.props.name ? <View style={{ marginBottom: 2, flexDirection: 'row'}}>
@@ -25,15 +27,17 @@ class ViewProfile extends React.Component {
 
     getInfo= ()=>{
         getInfoAcount().then(res=>{
-            if(res.data.code==Status.Success){
+            console.log(res.data,'da')
+
+            if(res.data.code==Status.SUCCESS){
                 this.setState({
-                    user:res.data.data
+                    user:res.data.data,
                 })
             }
         })
     }
         // set status bar
-    componentDidMount =async()=> {
+    componentDidMount =()=> {
         this.getInfo()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
@@ -87,6 +91,7 @@ class ViewProfile extends React.Component {
 
     _goBack = () => {
         this.props.navigation.goBack()
+        this.props.navigation.state.params.update()
     }
 
 }
@@ -103,12 +108,18 @@ const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
-    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10},
+    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#F1F1F1',borderBottomWidth:2},
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     name: {fontSize: 16, color: '#333333', fontWeight: 'bold', padding: 6},
     avatar: { height: 70,width:70,borderRadius: 35, alignSelf: 'center' },
     p10: {padding: 10},
-    mt30: { marginTop: 30}
+    mt30: { marginTop: 30},
+    end:{
+        height:1,
+        width:width-100,
+        alignSelf:'flex-end',
+        backgroundColor:'#F1F1F1'
+    }
 })

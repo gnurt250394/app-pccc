@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView,
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
-import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
+import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, HomeScreen } from 'config/screenNames'
 import { color, toUpperCase,StatusCode } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
@@ -13,9 +13,12 @@ import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem, removeItem } from 'config/Controller';
+import CheckAuth from './CheckAuth';
+import { popupOk } from 'config';
 class Profile extends React.Component {
    state={
-       user:{}
+       user: this.props.users?this.props.users:{},
+       token:''
    }
 
     edit = () => {
@@ -23,20 +26,18 @@ class Profile extends React.Component {
     }
 
 
+componentWillMount=async()=>{
+    let token =await getItem('token')
+    this.setState({token})
+}
     // set status bar
     componentDidMount= async()=> {
         
-       
         let token =await getItem('token')
-        
-        if(token == null ){
-            
-            navigation.reset(CheckAuthScreen)
-        } else{
-            
+       
+            if(token){
             this.getInfo()
-        }
-
+            }
         // this._navListener = this.props.navigation.addListener('didFocus', () => {
         //   StatusBar.setBarStyle('light-content');
         //   StatusBar.setBackgroundColor(color);
@@ -49,8 +50,9 @@ class Profile extends React.Component {
     }
 
     render(){
-        let {user} = this.state
-        return (
+        
+        let {user,token} = this.state
+        return (token?
             <View style={style.flex}>
                 <ScrollView >
                     <View style={style.head}>
@@ -58,7 +60,7 @@ class Profile extends React.Component {
                     </View>
 
                     <TouchableOpacity 
-                        onPress={this._navTo(ViewProfileScreen,{name:user.name})}
+                        onPress={this._navTo(ViewProfileScreen,{update: this.getInfo})}
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
@@ -92,6 +94,8 @@ class Profile extends React.Component {
                     onPress={this._logout}
                     style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
             </View>
+            :
+            <CheckAuth/>
         )
     }
 
@@ -99,14 +103,16 @@ class Profile extends React.Component {
 
         getInfoAcount().then(res=>{
             
-
+            console.log(res,'data')
             if(res.data.code == StatusCode.Success ){
                this.setState({user:res.data.data})
             } else if(res.data.code== StatusCode.Tokenvalid){
-            navigation.reset(CheckAuthScreen)
+            navigation.reset(SigninScreen)
+            popupOk(CodeToMessage[res.data.code])
             AsyncStorage.removeItem('token')
             } else if(res.data.code== StatusCode.TokenExpire){
-            navigation.reset(CheckAuthScreen)
+            navigation.reset(SigninScreen)
+            popupOk(CodeToMessage[res.data.code])
             AsyncStorage.removeItem('token')
             }
         })
@@ -119,41 +125,7 @@ class Profile extends React.Component {
         navigation.reset(SigninScreen)
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
         
-    //  GoogleSignin.isSignedIn().then(res=>{
-    //       if(res){
-    //           
-    //         try {
-    //             //  GoogleSignin.revokeAccess().then(res=>{
-    //             //     
-    //             // });
-                 
-    //             AsyncStorage.removeItem('token')
-    //             navigation.reset(SigninScreen)
-    //             this.props.dispatch({type: actionTypes.USER_LOGOUT})
-    //             // this.setState({ user: null }); // Remove the user from your app's state as well
-    //           } catch (error) {
-    //             
-    //           }
-              
-            
-     
-    //       }
-    //   }).catch(err=>{
-    //       
-    //   })
-    //   AccessToken.getCurrentAccessToken().then(res=>{
-    //        if(res){
-    //            
-    // // // logout FB
-           
-    //        }
-    //    }).catch(err=>{
-    //        
-    //    })
-      
-    //    this.props.dispatch({type: actionTypes.USER_LOGOUT})
-    //     AsyncStorage.removeItem('token')
-    //     navigation.reset(SigninScreen)
+    
 
     }
 
@@ -165,7 +137,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = (state) =>{
     return {
-        user: state.users && state.users.data ? state.users.data : null,
+        users: state.users && state.users.data ? state.users.data : null,
         token: state.users && state.users.token ? state.users.token : null,
     }
 }

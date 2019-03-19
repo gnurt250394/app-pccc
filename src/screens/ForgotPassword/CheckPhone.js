@@ -36,7 +36,9 @@ class CheckPhone extends React.Component {
                             <ActivityIndicator size="large" color="#0000ff"/>
                         </View> : null
                     }
-                    <Header title="Nhập số điện thoại" onPress={this._goBack}/>
+                    <Header 
+                        ckeck={1}
+                        title="Nhập số điện thoại" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
                         <View>

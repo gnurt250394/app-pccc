@@ -9,7 +9,7 @@ import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
-import { removeItem } from 'config/Controller';
+import { removeItem, Status } from 'config/Controller';
 class InputItem extends React.Component {
     render() {
         return <View style={style.mb5}>
@@ -68,7 +68,7 @@ class EditProfile extends React.Component {
         
         this.user = {...user} // check old email
         this.state = {
-            name: user.name ? user.name : "",
+            name:  "",
             company: user.company ? user.company : "",
             email: user.email ? user.email : "",
             phone: user.phone ? user.phone.toString() : "",
@@ -81,19 +81,18 @@ class EditProfile extends React.Component {
 
     // set status bar
     componentDidMount() {
+        this.getInfoAccount()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
-        this.getInfoAccount()
       }
     
       getInfoAccount=()=>{
           getInfoAcount().then(res=>{
-              
-              if(res.data.code== StatusCode.Success){
+              if(res.data.code == Status.SUCCESS){
                 this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
-
+                console.log('object')
                   this.setState({
                     image: res.data.data.image,
                     name:res.data.data.name,
@@ -104,6 +103,14 @@ class EditProfile extends React.Component {
                     gender:res.data.data.gender,
                     tax_code:res.data.data.tax_code
                   })
+              } else if(res.data.code == Status.TOKEN_EXPIRED){
+                popupOk(CodeToMessage[res.data.code])
+                navigation.reset(SigninScreen)
+                removeItem('token')
+              } else if(res.data.code == Status.TOKEN_VALID){
+                popupOk(CodeToMessage[res.data.code])
+                navigation.reset(SigninScreen)
+                removeItem('token')
               }
           })
       }
@@ -237,10 +244,10 @@ class EditProfile extends React.Component {
                 
             }
             updateAvatar(this.state.image).then(res=>{
-                if(res.data.code== StatusCode.Success){
+                if(res.data.code== Status.SUCCESS){
                     console.log(res.data,'image')
                     
-                } else if(res.data.code== StatusCode.TokenExpire){
+                } else if(res.data.code== Status.TOKEN_EXPIRED){
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     removeItem('token')
@@ -254,15 +261,15 @@ class EditProfile extends React.Component {
             })
             updateUser(data).then(res => {
                 
-                if(res.data.code == StatusCode.Success){
+                if(res.data.code == Status.SUCCESS){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     navigation.pop()
                     this.props.navigation.state.params.refress()
-                }else if(res.data.code == StatusCode.TokenExpire){
+                }else if(res.data.code == Status.TOKEN_EXPIRED){
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     removeItem('token')
-                } else if(res.data.code== StatusCode.Tokenvalid){
+                } else if(res.data.code== Status.TOKEN_VALID){
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     removeItem('token')
@@ -279,7 +286,7 @@ class EditProfile extends React.Component {
     }
 }
 const mapStateToProps = (state) =>{
-    console.log(state)
+    console.log(state,'sta')
     return {
         user: state.users && state.users.data ? state.users.data : null,
         token: state.users && state.users.token ? state.users.token : null,

@@ -117,5 +117,6 @@ module.exports = {
     closeBlue: require('./closeBlue.png'),
     uploadImage: require('./uploadImage.png'),
     camera:require('./camera.png'),
-    checkNetWorking:require('./checknetworking.png')
+    checkNetWorking:require('./checknetworking.jpg'),
+    shopAdd:require('./shopAdd.png')
 }

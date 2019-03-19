@@ -18,12 +18,12 @@ export default class Header extends React.Component {
                         source={images.backLight} />
                 </TouchableOpacity>
                 :
-                <View/>
+                <View style={style.view}/>
 
             
             }
-               
                 <Text style={ style.title}>{this.props.title}</Text>
+                <View style={style.view}/>
             </View>
         )
     }
@@ -35,7 +35,8 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: color,
         height:47,
-        alignItems:'center'
+        alignItems:'center',
+        alignContent: 'center',
     },
     icon: {
         height: 18,
@@ -43,17 +44,23 @@ const style = StyleSheet.create({
         resizeMode: 'contain', 
     },
     title: {
+       
+        flex: 1, 
         fontSize: 18, 
         color: '#fff', 
-        flex: 1, 
         textAlign: 'center', 
         fontWeight: 'bold', 
-        paddingRight: 20, 
+        // paddingRight: 20, 
     },
     btn: {
         padding: 12, 
         paddingLeft: 0, 
         paddingTop: 0, 
-        alignItems: 'center'},
-   
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent:'center'
+    },
+    view:{
+        flex:1/10
+    }
 })

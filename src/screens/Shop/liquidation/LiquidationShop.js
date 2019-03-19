@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet ,Image, Dimensions,TouchableOpacity} from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
+import { getLiquidation } from 'config/apis/myShop';
+import { Status } from 'config/Controller';
+import navigation from 'navigation/NavigationService';
     moment.locale('vn')
-    export default class LiquidationShop extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
+export default class LiquidationShop extends Component {
+
+  state={
+      listLiqiudation:[],
+      Thresold:0.1
   }
   goDetail=()=>{
 
@@ -30,16 +33,16 @@ import moment from 'moment'
                 resizeMode="contain"
             />
             </TouchableOpacity>
-            <View>
+            <View style={styles.containerText}>
             <Text style={styles.txtName}>{item.name}</Text>
-            <Text style={styles.txtPrice}>abcb</Text>
+            <Text style={styles.txtPrice}>{item.description}</Text>
             <View style={styles.rowList}>
             <View style={styles.row}>
                 <Image source={images.shopLocation}
                     style={styles.imgLocation}
                     resizeMode="contain"
                 />
-                <Text>abc</Text>
+                <Text>{item.city_id}</Text>
                 </View>
                 <View style={styles.row}>
                 <Image 
@@ -49,7 +52,7 @@ import moment from 'moment'
                 />
                 <Text>{item.price}</Text>
                 </View>
-                <Text style={{marginLeft:10}}>{moment('01/01/2019').fromNow()}</Text>
+                <Text style={{marginLeft:10}}>{item.time}</Text>
 
             </View>
             </View>
@@ -63,20 +66,75 @@ import moment from 'moment'
     )
  }
  _keyExtractor=(item,index)=>{
-    `${item.id}`
+   return `${item.id || index}`
  }
- 
+ _renderFooter=()=>{
+    if(this.state.loadMore){
+    return(
+       <ActivityIndicator
+           size={"large"}
+           color={"#2166A2"}
+       />
+    )
+   } else{
+       return null
+   }
+}
+
+_loadMore=()=>{
+    if(!this.state.loadMore){
+       return null
+    } else{
+        this.setState((preState)=>{
+            return{
+               loadMore:true,
+               page:preState.page +1
+            }
+        },()=>{
+            this.getDetail()
+        })
+    }
+}
   render() {
     return (
       <View style={styles.container}>
        <FlatList
-            data={data}
+            data={this.state.listLiqiudation}
             renderItem={this._renderItem}
             keyExtractor={this._keyExtractor}
+            ListFooterComponent={this._renderFooter}
+            onEndReached={this._loadMore}
+            onEndReachedThreshold={this.state.Thresold}
        />
       </View>
     );
   }
+  getLiquidation=()=>{
+      getLiquidation(this.state.page).then(res=>{
+          if(res.data.code== Status.SUCCESS){
+              this.setState({
+                listLiqiudation:res.data.data,
+                loadMore:true
+              })
+          } else if(res.data.code == Status.NO_CONTENT){
+              this.setState({
+                  listLiqiudation:[],
+                  loadMore:false,
+                  Thresold:0
+              })
+          } else if(res.data.code == Status.TOKEN_EXPIRED){
+            navigation.reset(SigninScreen)
+            removeItem('token')
+        } else if(res.data.code == Status.TOKEN_VALID){
+            navigation.reset(SigninScreen)
+            removeItem('token')
+          }
+      })
+  }
+  componentDidMount = () => {
+    this.getLiquidation()
+  };
+  
 }
 
 const data = [
@@ -85,28 +143,32 @@ const data = [
         image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         name:'Bình chữa cháy ',
         description:'ssss',
-        price:'100000'
+        price:'100000',
+        location:'Hà nội'
     },
     {
         id:2,
         image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         name:'Bình chữa cháy ',
         description:'ssss',
-        price:'100000'
+        price:'100000',
+        location:'Hà nội'
     },
     {
         id:3,
         image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         name:'Bình chữa cháy ',
         description:'aaaa',
-        price:'100000'
+        price:'100000',
+        location:'Hà nội'
     },
     {
         id:4,
         image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         name:'Bình chữa cháy abc bca abc asdf à asdf we sdfa',
         description:'abc',
-        price:'100000'
+        price:'100000',
+        location:'Hà nội'
     },
     
 ]
@@ -156,7 +218,8 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     txtName:{
-        marginTop:5
+        marginTop:5,
+        fontWeight: 'bold',
     },
     rowList:{
         flexDirection:'row',
@@ -174,5 +237,10 @@ const styles = StyleSheet.create({
         width:12,
         marginTop: 4,
         marginHorizontal: 7,
+    },
+    containerText:{
+        paddingLeft:10,
+        flexWrap: 'wrap',
+        flexShrink: 6
     }
 })
