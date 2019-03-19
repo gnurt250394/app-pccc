@@ -9,7 +9,7 @@ import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
-import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
+import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
@@ -82,7 +82,7 @@ class Signin extends React.Component {
 
                     
                     <Text 
-                        onPress={this._navTo(CheckPhoneScreen)}
+                        onPress={this._onForgotPassword}
                         style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
                     <View style={style.boxOr}>
                         <View style={style.line}></View>
@@ -238,7 +238,36 @@ class Signin extends React.Component {
         }
     }
 
-  
+    _onForgotPassword = async () => {
+        this.setState({loading: true}, async () => {
+            let Actoken = await getCurrentAccount();
+            if(Actoken){
+                let phone = await accountkitInfo(Actoken)
+                this.setState({loading: false})
+
+                if(phone){
+                    // call api check phone
+                    checkPhoneOrEmail({phone: phone}).then(res => {
+                        if(res.data != "" && res.data.code == StatusCode.PhoneExists ){
+                            this.props.navigation.navigate(ForgotPasswordScreen, {token: res.data.token})
+                        }else{
+
+                           popupOk("Số điện thoại chưa được sử dụng.")
+                        }
+                    })
+                    
+                }else{
+                    popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+                }
+                
+            }else{
+                this.setState({loading: false})
+                popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+            }
+        })
+        
+    }
+
     _onSwitchToHomePage = async (res, type) => {
         let data = res.data,
             user = data.data;
@@ -255,8 +284,9 @@ class Signin extends React.Component {
             this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
         }else{
             // navigation.reset(HomeScreen);
-            this.props.navigation.navigate(HomeScreen);
             AsyncStorage.setItem('token',userToken)
+            navigation.reset(HomeScreen)
+            
         }
         
     }
@@ -286,7 +316,6 @@ class Signin extends React.Component {
                                 updateUser({phone: phone}, userToken).then(res => {
                                     if(res.data.code == StatusCode.Success){
                                         AsyncStorage.setItem('token', this.state.token)
-                                        this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: this.state.token})
                                         navigation.reset(HomeScreen)
                                     }else{
                                         popupOk(CodeToMessage[res.data.code])

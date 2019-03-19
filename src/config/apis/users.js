@@ -26,6 +26,13 @@ export const updateUser = async ( body, t) => {
     return instance.put(constant.USER, body)
 }
 
+export const forgotPassword = async ( body, token) => {
+    console.log('token: ', token);
+    console.log('body: ', body);
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.post(constant.FORGOT_PASS, body)
+}
+
 export const checkPhoneOrEmail = body => {
     return instance.post(constant.CHECK_PHONE_EMAIL, body)
 }

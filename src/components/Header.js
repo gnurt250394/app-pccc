@@ -7,12 +7,13 @@ import navigation from 'navigation/NavigationService';
 
 export default class Header extends React.Component {
     render(){
+        console.log(1, this.props.check);
         return (
             <View style={ style.content} >
             <StatusBar
                 barStyle="light-content" 
                 backgroundColor={color} />
-            {this.props.check ==1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
+            {   this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                     <Image 
                         style={style.icon}
                         source={images.backLight} />

@@ -4,7 +4,8 @@ export const  { width, height } = Dimensions.get('window')
 export const StatusCode = {
     Success: 200,
     Tokenvalid:445,
-    TokenExpire:440
+    TokenExpire:440,
+    PhoneExists: 439
 }
 
 export const Gender = {
@@ -45,12 +46,14 @@ export const LoginType  = {
 
 export const CodeToMessage = {
     404: "Sai tài khoản hoặc mật khẩu",
+    438: 'Không tìm thấy tài khoản',
     439: "Số điện thoại đã được sử dụng",
     445: "Invalid token",
     446: "Email đã được sử dụng",
     447: "Lỗi hình ảnh",
     500: "Server Error",
-    440:'Phiên đăng nhập hết hạn'
+    440:'Phiên đăng nhập hết hạn',
+    
 }
 
 export const toUpperCase = str => str.toUpperCase()

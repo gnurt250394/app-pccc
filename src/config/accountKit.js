@@ -3,7 +3,7 @@ import RNAccountKit from 'react-native-facebook-account-kit'
 
 export const  accountKit = (phone = "") => {
     RNAccountKit.configure({
-        responseType: type ? type : 'code',
+        responseType: 'code',
         // titleType: 'login',
         initialAuthState: '',
         initialPhoneCountryPrefix: phone != "" ? '+84' + phone.replace(/^0+/, "") : '+84', 

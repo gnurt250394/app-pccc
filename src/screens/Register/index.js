@@ -9,7 +9,7 @@ import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMe
 import  { accountKit } from 'config/accountKit'
 import  { SigninScreen, HomeScreen, } from 'config/screenNames'
 import { actionTypes } from 'actions'
-import * as firebase from 'react-native-firebase'
+import navigation from 'navigation/NavigationService'
 
 class Register extends React.Component {
     state = {
@@ -209,8 +209,7 @@ class Register extends React.Component {
                             }).then(res => {
                             if(res.data.code == StatusCode.Success){
                                 AsyncStorage.setItem('token',res.data.token)
-                                this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                                this.props.navigation.navigate(HomeScreen)
+                                navigation.reset(HomeScreen)
                             }else{
                                 popupOk(CodeToMessage[res.data.code])
                             }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
+import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -28,7 +28,7 @@ class Home extends React.Component {
 
     render(){
         return (
-            <TouchableWithoutFeedback style= {style.flex}>
+            <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
                 <View style= {style.flex}>
                     <View style={style.head}>
                         <View 
@@ -130,7 +130,7 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={style.row}>
+                        <View style={[style.row, style.mt0]}>
                             <TouchableOpacity style={style.box3} 
                             // onPress={this._navTo(SearchScreen)} 
                             >
@@ -206,16 +206,21 @@ const style = StyleSheet.create({
     box6: {
         width: (width * (2/3) + 4), 
         height: '100%',
+        resizeMode: 'stretch',
         marginRight: 2, position: 'relative'},
     imgbox6: {
-        width: (width * (2/3) + 4), 
+        width: '100%', 
+        alignSelf: 'center',
+        resizeMode: 'stretch',
         height: '100%'},
     box4: {
         width: width * (1/3), 
         height: '100%', 
         position: 'relative'},
     imgbox4: {
-        width: width * (1/3), 
+        width: '100%',
+        alignSelf: 'center',
+        resizeMode: 'stretch',
         height: '100%'},
     box3: {
         width: width/3 + 1.5, 
@@ -223,7 +228,9 @@ const style = StyleSheet.create({
         marginRight: 1,  
         position: 'relative'},
     imgbox3: {
-        width: width/3 + 1.5, 
+        width: '100%', 
+        alignSelf: 'center',
+        resizeMode: 'stretch',
         height: '100%'},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
@@ -235,7 +242,7 @@ const style = StyleSheet.create({
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
     },
-    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '50%',
+    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
@@ -246,7 +253,7 @@ const style = StyleSheet.create({
     iconBadge: { height: 38, resizeMode: 'contain', marginRight: -17},
     textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color},
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    row: { flex: 1, flexDirection: 'row', marginTop: 2, width: '100%'},
+    row: { flex: 1, flexDirection: 'row', width: '100%', marginTop: 1,},
     category: { fontWeight: '500', fontSize: 14, padding: 10, color},
     top: { 
         backgroundColor: color, 
@@ -272,5 +279,6 @@ const style = StyleSheet.create({
     mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
     textTop: {color: 'white', paddingTop: 8, fontSize: 14},
-    mr0: {marginRight: 0}
+    mr0: {marginRight: 0},
+    mt0: {marginTop: 0},
 })
