@@ -77,7 +77,7 @@ class Home extends React.Component {
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
                                 <Image 
-                                    style={style.box6}
+                                    style={style.imgbox6}
                                     source={images.ttda} />
                                 <Text style={style.textB6}>Thông tin dự án</Text> 
                                 
@@ -85,11 +85,16 @@ class Home extends React.Component {
                             <TouchableOpacity style={style.box4} 
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
-                                <Image 
-                                    style={style.box4}
+                                {/* <Image 
+                                    style={style.imgbox4}
                                     source={images.thongtindauthau} />
-                                <Text style={style.textB4}>Thông tin đấu thầu</Text> 
-                                
+                                <Text style={style.textB4}>Thông tin đấu thầu</Text>  */}
+                                <View  style={style.box4} >
+                                    <Image 
+                                        style={style.imgbox4}
+                                        source={images.thongtindauthau} />
+                                    <Text style={[style.textB4]}>Thông tin đấu thầu</Text> 
+                                </View>
                             </TouchableOpacity>
                         </View>
 
@@ -97,60 +102,66 @@ class Home extends React.Component {
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
-                                <ImageBackground 
-                                    style={style.box3}
-                                    source={images.product}>
+                                <View  style={style.box3} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.product} />
                                     <Text style={[style.textB4, style.w80p]}>Sản phẩm</Text> 
-                                </ImageBackground>
+                                </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
-                                <ImageBackground 
-                                    style={style.box3}
-                                    source={images.thanhly}>
+                                <View  style={style.box3} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.thanhly} />
                                     <Text style={style.textB4}>Thanh lý hàng hóa</Text> 
-                                </ImageBackground>
+                                </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)}
                                 >
-                                <ImageBackground 
-                                    style={[style.box3, style.mr0]}
-                                    source={images.dangmua}>
+                                <View  style={[style.box3, style.mr0]} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.dangmua} />
                                     <Text style={[style.textB4, style.w80p]}>Đăng mua</Text> 
-                                </ImageBackground>
+                                </View>
                             </TouchableOpacity>
                         </View>
                         <View style={style.row}>
                             <TouchableOpacity style={style.box3} 
                             // onPress={this._navTo(SearchScreen)} 
                             >
-                                <Image 
-                                    style={style.box3}
-                                    source={images.video} />
-                                <Text style={style.textB6}>Video</Text> 
-                                
+                                <View  style={style.box3} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.video} />
+                                    <Text style={style.textB4}>Video</Text> 
+                                </View>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
                             //  onPress={this._navTo(SearchScreen)}
                             >
-                                <Image 
-                                    style={style.box3}
-                                    source={images.catalog} />
-                                <Text style={style.textB6}>Catalog</Text> 
-                                
+                                <View  style={style.box3} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.catalog} />
+                                    <Text style={style.textB4}>Catalog</Text> 
+                                </View>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
-                                <Image 
-                                    style={style.box3}
-                                    source={images.tailieu} />
-                                <Text style={style.textB6}>Tài liệu</Text> 
-                                
+                                <View  style={style.box3} >
+                                    <Image 
+                                        style={style.imgbox3}
+                                        source={images.tailieu} />
+                                    <Text style={style.textB4}>Tài liệu</Text> 
+                                </View>
                             </TouchableOpacity>
                             
                         </View>
@@ -196,26 +207,35 @@ const style = StyleSheet.create({
         width: (width * (2/3) + 4), 
         height: '100%',
         marginRight: 2, position: 'relative'},
+    imgbox6: {
+        width: (width * (2/3) + 4), 
+        height: '100%'},
     box4: {
         width: width * (1/3), 
         height: '100%', 
         position: 'relative'},
+    imgbox4: {
+        width: width * (1/3), 
+        height: '100%'},
     box3: {
         width: width/3 + 1.5, 
         height: '100%',
         marginRight: 1,  
         position: 'relative'},
+    imgbox3: {
+        width: width/3 + 1.5, 
+        height: '100%'},
     badge: {backgroundColor: '#FCCF31', position: 'absolute',top: 6, right: 6, borderRadius: 50, minWidth: 30},
     badgeImage: {height: 35, resizeMode: 'contain',},
     notify: { color: color, fontSize: 12, padding: 5, textAlign: 'center'},
     txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color },
     txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color },
-    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, 
+    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, 
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
     },
-    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 16, width: '50%',
+    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '50%',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
@@ -227,7 +247,7 @@ const style = StyleSheet.create({
     textBadge: { textAlign: 'center', marginRight: -15, marginTop: -30, color: color},
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     row: { flex: 1, flexDirection: 'row', marginTop: 2, width: '100%'},
-    category: { fontWeight: '500', fontSize: 16, padding: 10, color},
+    category: { fontWeight: '500', fontSize: 14, padding: 10, color},
     top: { 
         backgroundColor: color, 
         justifyContent: 'center', flexDirection: 'row', 

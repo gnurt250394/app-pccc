@@ -67,6 +67,9 @@ export default createBottomTabNavigator(
       },
       tabBarOptions: {
         activeTintColor: color,
+        style: {
+          paddingBottom: 5,
+        },
       }
     }),
   }
