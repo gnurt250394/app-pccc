@@ -20,8 +20,8 @@ export const loginSocial = body => {
     return instance.post(constant.LOGIN_SOCIAL, body)
 }
 
-export const updateUser =async ( body) => {
-    let token =await getItem('token')
+export const updateUser = async ( body, t) => {
+    let token = t ? t : await getItem('token')
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.put(constant.USER, body)
 }
@@ -50,4 +50,16 @@ export const updateAvatar = async (image) => {
     })
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.post(constant.UPDATE_AVATAR,data)
+}
+
+
+export const accountkitInfo = token => {
+    
+    return fetch(`https://graph.accountkit.com/v1.3/me/?access_token=${token}`).then(res => res.json()).then(res => {
+        console.log('accountkit Info: ', res);
+        return "0"+res.phone.national_number
+    }).catch(err => {
+        console.log('err: ', err);
+        return false
+    })
 }

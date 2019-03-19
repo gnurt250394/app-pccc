@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
 import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height} from 'config'
-import { login, loginSocial, checkPhoneOrEmail, updateUser   } from 'config/apis/users'
+import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
@@ -13,7 +13,7 @@ import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } fr
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
-import  { accountKit } from 'config/accountKit'
+import  { accountKit, getCurrentAccount } from 'config/accountKit'
 
 class Signin extends React.Component {
     state = {
@@ -239,7 +239,7 @@ class Signin extends React.Component {
     }
 
   
-    _onSwitchToHomePage = (res, type) => {
+    _onSwitchToHomePage = async (res, type) => {
         let data = res.data,
             user = data.data;
             console.log('user: ', user);
@@ -251,13 +251,65 @@ class Signin extends React.Component {
         let phone = user.phone;
         let userToken = data.token;
         if(!phone || phone == ""){
-            this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
+            // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
+            this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
         }else{
             // navigation.reset(HomeScreen);
             this.props.navigation.navigate(HomeScreen);
             AsyncStorage.setItem('token',userToken)
         }
         
+    }
+
+    _popupUpdatePhone = (userToken) => {
+        Alert.alert(
+            'Thông báo',
+            'Vui lòng cập nhật số điện thoại',
+            [
+              {
+                text: 'Cancel', style: 'cancel',
+              },
+              {text: 'OK', onPress: async () => {
+                let Actoken = await getCurrentAccount()
+                if(Actoken){
+                    let phone = await accountkitInfo(Actoken)
+                    this.setState({loading: false})
+
+                    if(phone){
+                        // call api check phone
+                        checkPhoneOrEmail({phone: phone}).then(res => {
+                            if(res.data.code != StatusCode.Success  || res.data == ""){
+                                popupOk(CodeToMessage[res.data.code])
+                            }else{
+
+                                // call api update phone
+                                updateUser({phone: phone}, userToken).then(res => {
+                                    if(res.data.code == StatusCode.Success){
+                                        AsyncStorage.setItem('token', this.state.token)
+                                        this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: this.state.token})
+                                        navigation.reset(HomeScreen)
+                                    }else{
+                                        popupOk(CodeToMessage[res.data.code])
+                                    }
+                                }).catch(err => {
+                                    console.log('err: ', err);
+                                    popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                                })
+                            }
+                        })
+                        
+                    }else{
+                        popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                    }
+                }else{
+                    this.setState({loading: false})
+                    popupOk("Mã xác nhận không đúng.")
+                }
+                
+              }},
+            ],
+            {cancelable: false},
+          );
     }
 
    

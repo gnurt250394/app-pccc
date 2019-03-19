@@ -66,8 +66,9 @@ export const calTotalPrice = data => data.length == 0 ? 0 : data.map(item => ite
 
 export const validateEmail = str => {
     // var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,3}$/;
-    return re.test(String(str).toLowerCase());
+    let re = /^([^<>()\[\]\\.,;:\s@"]+((?:\.[a-zA-Z0-9_]+)*))@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,3}$/;
+    let check = re.test(str.toString());
+    return check
 }
 
 export const validatePhone = str => {
