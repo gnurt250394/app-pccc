@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
     textStyle: {
         fontSize: 16,
-        color: 'black',
+        color: '#2166A2',
     },
     imageStyle: {
         width: width / 2,

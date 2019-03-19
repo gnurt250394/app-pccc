@@ -9,22 +9,7 @@ import NavigationService from './src/navigation/NavigationService';
 import NoInternetScreen from 'components/CheckNetWorking';
 const {width,height} = Dimensions.get('window')
 export default class MyApp extends React.Component {
-    state={
-        isConnected: true,
-    }
-    componentDidMount = () => {
-        NetInfo.isConnected.addEventListener(
-            'connectionChange',
-            this.handleConnectivityChange
-        );
-
-    };
-    handleConnectivityChange = isConnected => {
-        if (this.state.isConnected !== isConnected) {
-            this.setState({ isConnected });
-        }
-
-    };
+   
     render(){
         return(
          

@@ -29,7 +29,9 @@ class CheckPhone extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
-                    <Header title="Nhập số điện thoại" onPress={this._goBack}/>
+                    <Header 
+                    ckeck={1}
+                    title="Nhập số điện thoại" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
                         <View>

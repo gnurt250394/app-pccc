@@ -5,8 +5,9 @@ const constant ={
     LOGIN: 'login',
     LOGIN_SOCIAL: 'login-social',
     CHECK_PHONE_EMAIL: 'check-phone-email',
-    UPDATE_AVATAR :'update-avatar'
-
+    UPDATE_AVATAR :'update-avatar',
+    SELL_PRODUCT:'sell-product',
+    LIQUIDATION:'liquidation'
 }
 
 export default constant;
