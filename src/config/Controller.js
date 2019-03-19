@@ -12,7 +12,11 @@ export const removeItem= async(token)=>{
     return e
 }
 export const Status = {
-    Success: 200,
-    Tokenvalid:445,
-    TokenExpire:440
+    SUCCESS: 200,
+    TOKEN_VALID:445,
+    TOKEN_EXPIRED:440,
+    NO_CONTENT:204
 }
+export const _formatNumber =(num)=> {
+    return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
+  }

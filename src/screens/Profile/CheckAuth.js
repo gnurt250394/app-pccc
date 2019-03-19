@@ -1,8 +1,11 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, StatusBar, StyleSheet, TouchableWithoutFeedback,TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { ScreenName, toUpperCase, color } from 'config'
 import { HomeScreen, SigninScreen, RegisterScreen } from 'config/screenNames'
+import navigation from 'navigation/NavigationService';
+import {withNavigation} from 'react-navigation'
+
 
 
 class CheckAuth extends React.Component {
@@ -15,19 +18,17 @@ class CheckAuth extends React.Component {
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#999999');
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('dark-content');
+        //   StatusBar.setBackgroundColor('#999999');
+        // });
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
-
     render() {
         return (
-            <TouchableWithoutFeedback style= {style.flex} onPress={this._navTo(HomeScreen)}>
                 <View style={style.modal}>
                     <View style={style.bodyModal}>
                         <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
@@ -40,8 +41,7 @@ class CheckAuth extends React.Component {
                                 style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}</Text>
                         </View>
                     </View>
-                </View>
-            </TouchableWithoutFeedback>
+            </View>
         )
     }
 
@@ -53,7 +53,7 @@ class CheckAuth extends React.Component {
     
 }
 
-export default connect()(CheckAuth)
+export default withNavigation(CheckAuth)
 
 const style = StyleSheet.create({
     modal: {backgroundColor: '#999999', justifyContent: 'center', flex: 1, },
@@ -63,5 +63,16 @@ const style = StyleSheet.create({
     btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8},
     close: {  color: '#333333', textAlign: 'center',  marginTop: 40, fontSize: 16,  fontWeight: 'bold' },
     register: {color: color, backgroundColor: 'white', borderBottomLeftRadius: 0},
-    login: {borderBottomRightRadius: 0}
+    login: {borderBottomRightRadius: 0},
+    cancel:{
+        position:'absolute',
+        top:1,
+        right: 7,
+        height:30,
+        width:30,
+        alignItems: 'flex-end',
+    },
+    txt:{
+        color:color
+    }
 })

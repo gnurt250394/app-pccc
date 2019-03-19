@@ -28,7 +28,9 @@ class ChangePassword extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
-                    <Header title="Đổi mật khẩu" onPress={this._goBack}/>
+                    <Header
+                    ckeck={1}
+                     title="Đổi mật khẩu" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
                         <View>
