@@ -42,3 +42,10 @@ export const MessengerScreen = "MessengerScreen"
 export const ListBiddingScreen = "ListBiddingScreen"
 export const DetailBiddingScreen = "DetailBiddingScreen"
 
+
+// Project
+export const DetailProject = "DetailProject"
+export const InfoProject = "InfoProject"
+
+
+

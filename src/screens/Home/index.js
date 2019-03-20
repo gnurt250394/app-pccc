@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBiddingScreen } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
