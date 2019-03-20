@@ -1,10 +1,10 @@
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
 import {PixelRatio} from 'react-native'
 import React from 'react'
-import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBindingScreen } from "config/screenNames"
+import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBiddingScreen } from "config/screenNames"
 import { color } from 'config'
 import SearchProduct from './Product'
-import SearchBinding from './Binding'
+import SearchBidding from './Bidding'
 import SearchLiquidation from './Liquidation'
 import SearchProject from './Project'
 // IndicatorStyle is an absolute positioned View
@@ -35,8 +35,8 @@ const tabs =  createMaterialTopTabNavigator(
         title: 'Tin dự án',
       }),
     },
-    [SearchBindingScreen]: { 
-      screen: props => <SearchBinding indicatorStyle={indicatorStyle(props)} {...props} />,
+    [SearchBiddingScreen]: { 
+      screen: props => <SearchBidding indicatorStyle={indicatorStyle(props)} {...props} />,
       navigationOptions: () => ({
         title: 'Tin đấu thầu',
       }),

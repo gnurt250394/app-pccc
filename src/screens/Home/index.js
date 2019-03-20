@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBindingScreen } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
@@ -83,7 +83,7 @@ class Home extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box4} 
-                                onPress={this._navTo(ListBindingScreen)} 
+                                onPress={this._navTo(ListBiddingScreen)} 
                                 >
                                 {/* <Image 
                                     style={style.imgbox4}
@@ -238,14 +238,22 @@ const style = StyleSheet.create({
     txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color },
     txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color },
     textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, 
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowOffset: {
+            width: -1,
+            height: 1,
+        },
+        textShadowRadius: 2,
+        elevation: 2,
     },
     textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowOffset: {
+            width: -1,
+            height: 1,
+        },
+        textShadowRadius: 2,
+        elevation: 2,
     },
     boxBadge: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
     boxBadge4: {position: 'absolute',top: 0, right: 0,alignItems: 'center', justifyContent: 'flex-end'},
@@ -278,7 +286,15 @@ const style = StyleSheet.create({
     btnTop: { flexDirection: 'column', alignItems: 'center'},
     mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
-    textTop: {color: 'white', paddingTop: 8, fontSize: 14},
+    textTop: {color: 'white', paddingTop: 8, fontSize: 14,
+        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowOffset: {
+            width: -1,
+            height: 1,
+        },
+        textShadowRadius: 2,
+        elevation: 2,
+    },
     mr0: {marginRight: 0},
     mt0: {marginTop: 0},
 })

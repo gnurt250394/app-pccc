@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
 import images from "assets/images"
-import { ProductDetailScreen } from 'config/screenNames'
-import { toPrice, color } from 'config'
-const {width} = Dimensions.get('screen')
+import { DetailBiddingScreen } from 'config/screenNames'
+import {  color, StatusCode} from 'config'
+import { listBiddings } from 'config/apis/bidding'
 
 class LI extends React.Component {
 
@@ -21,15 +21,23 @@ export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: this.props.data,
+            biddings: [],
             keyword: 'Máy bơm' ,
         }
-        
     }
-    toggleLike = (index) => () => {
-        let data = [...this.state.data];
-        data[index].like = !data[index].like
-        this.setState({data});
+
+    async componentDidMount() {
+        let biddings = await listBiddings().then(res => {
+            if(res.data.code == StatusCode.Success){
+                return res.data.data
+            }else{
+                return []
+            }
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({biddings})
     }
 
     _showName = name => {
@@ -50,22 +58,24 @@ export default class ListItem extends React.Component {
         )
     }
     renderItem = ({item, index}) => {
-        return <View style={style.box}>
+        return <TouchableOpacity 
+                    onPress={this._navTo(DetailBiddingScreen, {name: item.name})}
+                    style={style.box}>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={[style.row, style.calender]}>
                     <Image source={images.calender} style={style.iconCalender}/>
-                    <Text style={style.time}>16:00 - 25/01/2019</Text>
+                    <Text style={style.time}>{item.time}</Text>
                 </View>
                 <LI label={`Số TBMT: ${item.version}`} />
-                <LI label={`Bên mời thầu: ${toPrice(item.price)}`} />
-                <LI label={`Thời gian mời thầu: ${item.createdAt}`} />
-                <LI label={`Thời gian đóng thầu: ${item.createdAt}`} />
-            </View>
+                <LI label={`Bên mời thầu: ${item.partner}`} />
+                <LI label={`Thời gian mời thầu: ${item.time_start}`} />
+                <LI label={`Thời gian đóng thầu: ${item.time_end}`} />
+            </TouchableOpacity>
     }
     render(){
         return (
             <FlatList
-                data={this.state.data}
+                data={this.state.biddings}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => index.toString()} />
         )

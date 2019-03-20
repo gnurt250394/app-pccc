@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { signup } from 'config/apis/users'
 import {  color} from 'config'
 import ListItem from './ListItem'
-class ListBinding extends React.Component {
+class SearchBidding extends React.Component {
 
     // set status bar
     async componentDidMount() {
@@ -44,7 +44,7 @@ class ListBinding extends React.Component {
 
 
 }
-export default connect()(ListBinding)
+export default connect()(SearchBidding)
 
 const style = StyleSheet.create({
     flex: {flex: 1, marginTop: 10,},

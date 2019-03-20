@@ -38,7 +38,7 @@ export const SearchBiddingScreen ="SearchBiddingScreen"
 export const ListChatScreen ="ListChatScreen"
 export const MessengerScreen = "MessengerScreen"
 
-// binding
-export const ListBindingScreen = "ListBindingScreen"
-export const DetailBindingScreen = "DetailBindingScreen"
+// bidding
+export const ListBiddingScreen = "ListBiddingScreen"
+export const DetailBiddingScreen = "DetailBiddingScreen"
 
