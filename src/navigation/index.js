@@ -27,6 +27,8 @@ import Introduce from "../screens/Introduce/Introduce";
 import Shop from "../screens/Shop";
 import Search from "../screens/Search";
 import Messenger from 'screens/Messenger'
+import InfoProject from "screens/Project/InfoProject";
+import DetailProject from "screens/Project/DetailProject";
 
 // bidding
 import ListBidding from 'screens/Bidding/List'
