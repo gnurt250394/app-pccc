@@ -74,7 +74,7 @@ class Home extends React.Component {
                     <View style={style.bot}>
                         <View style={style.row}>
                             <TouchableOpacity style={style.box6} 
-                                // onPress={this._navTo(SearchScreen)} 
+                                onPress={this._navTo(InfoProject)} 
                                 >
                                 <Image 
                                     style={style.imgbox6}

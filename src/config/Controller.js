@@ -15,7 +15,8 @@ export const Status = {
     SUCCESS: 200,
     TOKEN_VALID:445,
     TOKEN_EXPIRED:440,
-    NO_CONTENT:204
+    NO_CONTENT:204,
+    PASS_FAIL:448
 }
 export const _formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;

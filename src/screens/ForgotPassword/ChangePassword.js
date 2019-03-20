@@ -2,9 +2,12 @@ import React from 'react'
 import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { signup } from 'config/apis/users'
+import { signup, changePassword } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
 import { ScreenName, popupOk } from 'config'
+import { Status } from 'config/Controller';
+import { CodeToMessage } from 'config';
+import navigation from 'navigation/NavigationService';
 
 class ChangePassword extends React.Component {
     state = {
@@ -75,7 +78,24 @@ class ChangePassword extends React.Component {
         }else if(password != rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
         }else{
-            // call api
+            let params ={
+                old_password: oldPassword,
+                new_password: password
+            }
+            console.log(params,'sssss')
+            changePassword(params).then(res=>{
+                console.log(res.data,'aaaa')
+                if(res.data.code == Status.SUCCESS){
+                    popupOk('Đổi mật khẩu thành công')
+                    navigation.pop()
+                } else if(res.data.code == Status.TOKEN_EXPIRED){
+                    popupOk('Phiên đăng nhập hết hạn')
+                } else if(res.data.code == Status.TOKEN_VALID){
+                    popupOk('Phiên đăng nhập hết hạn')
+                } else if(res.data.code == Status.PASS_FAIL){
+                    popupOk(CodeToMessage[res.data.code])
+                }
+            })
         }
     }
 }
