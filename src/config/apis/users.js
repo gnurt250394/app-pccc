@@ -27,8 +27,6 @@ export const updateUser = async ( body, t) => {
 }
 
 export const forgotPassword = async ( body, token) => {
-    console.log('token: ', token);
-    console.log('body: ', body);
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.post(constant.FORGOT_PASS, body)
 }

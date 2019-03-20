@@ -238,7 +238,7 @@ const style = StyleSheet.create({
     txt6: {width: (width * (2/3) + 2),  padding: 10, fontSize: 16, color: color },
     txt4: {width: width * (1/3),  padding: 10, fontSize: 16, color: color },
     textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, 
-        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowColor: "gray",
         textShadowOffset: {
             width: -1,
             height: 1,
@@ -247,7 +247,7 @@ const style = StyleSheet.create({
         elevation: 2,
     },
     textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
-        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowColor: "gray",
         textShadowOffset: {
             width: -1,
             height: 1,
@@ -287,7 +287,7 @@ const style = StyleSheet.create({
     mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
     textTop: {color: 'white', paddingTop: 8, fontSize: 14,
-        textShadowColor: "rgba(255, 255, 255, 1)",
+        textShadowColor: "gray",
         textShadowOffset: {
             width: -1,
             height: 1,
