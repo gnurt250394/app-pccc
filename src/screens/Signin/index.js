@@ -24,6 +24,9 @@ class Signin extends React.Component {
 
     // set status bar
     componentDidMount() {
+        LoginManager.logOut() // logout facebook
+        GoogleSignin.signOut() // logout google
+
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
