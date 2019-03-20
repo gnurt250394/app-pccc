@@ -66,7 +66,7 @@ export default class ListItem extends React.Component {
                     <Image source={images.calender} style={style.iconCalender}/>
                     <Text style={style.time}>{item.time}</Text>
                 </View>
-                <LI label={`Số TBMT: ${item.version}`} />
+                <LI label={`Số TBMT: ${item.code}`} />
                 <LI label={`Bên mời thầu: ${item.partner}`} />
                 <LI label={`Thời gian mời thầu: ${item.time_start}`} />
                 <LI label={`Thời gian đóng thầu: ${item.time_end}`} />
