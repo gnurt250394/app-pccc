@@ -74,6 +74,11 @@ const App = createStackNavigator(
     // bidding
     [ScreenName.ListBiddingScreen]: ListBidding,
     [ScreenName.DetailBiddingScreen]: DetailBidding,
+
+
+    // Projeect
+    [ScreenName.InfoProject]: InfoProject,
+    [ScreenName.DetailProject]: DetailProject,
    
   },
   {
