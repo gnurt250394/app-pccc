@@ -1,9 +1,12 @@
-import {  Alert } from 'react-native'
-
+import {  Alert, Dimensions } from 'react-native'
+export const  { width, height } = Dimensions.get('window')
+// fontSize: height < smallScreen ? 10 : 14,
 export const StatusCode = {
     Success: 200,
+    NoContent: 204,
     Tokenvalid:445,
-    TokenExpire:440
+    TokenExpire:440,
+    PhoneExists: 439
 }
 
 export const Gender = {
@@ -16,6 +19,11 @@ export const MessageStatus = {
     read: 1,
 }
 
+export const smallScreen = 550
+export const sreen4_7 = {
+    width:  384,
+    height:  592
+}
 export const color = "#2166A2"
 export const fonts = {
     bold: 'MONTSERRAT-BOLD',
@@ -23,6 +31,13 @@ export const fonts = {
     AcuminBdItPro_0:'Acumin-BdItPro_0',
     MontserratExtraBold:'Montserrat-ExtraBold'
 }
+
+export const defaultStyle = {
+    fontSize: width <= sreen4_7.width ? 10 : 14,
+    padding: width <= sreen4_7.width ? 6 : 11,
+    logoHeight: width <= sreen4_7.width ? 100 : 150,
+}
+
 
 export const ShowGender = gender => {
     if(gender == null) return gender
@@ -36,6 +51,7 @@ export const LoginType  = {
 
 export const CodeToMessage = {
     404: "Sai tài khoản hoặc mật khẩu",
+    438: 'Không tìm thấy tài khoản',
     439: "Số điện thoại đã được sử dụng",
     445: "Invalid token",
     446: "Email đã được sử dụng",
@@ -58,8 +74,9 @@ export const calTotalPrice = data => data.length == 0 ? 0 : data.map(item => ite
 
 export const validateEmail = str => {
     // var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,3}$/;
-    return re.test(String(str).toLowerCase());
+    let re = /^([^<>()\[\]\\.,;:\s@"]+((?:\.[a-zA-Z0-9_]+)*))@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,3}$/;
+    let check = re.test(str.toString());
+    return check
 }
 
 export const validatePhone = str => {

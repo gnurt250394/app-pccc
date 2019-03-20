@@ -8,7 +8,8 @@ const constant ={
     UPDATE_AVATAR :'update-avatar',
     SELL_PRODUCT:'sell-product',
     LIQUIDATION:'liquidation',
-    CHANGE_PASSWORD:'change-password'
+    FORGOT_PASS:'forgot-password',
+    NEW_BIDDING:'new-bidding',
 }
 
 export default constant;

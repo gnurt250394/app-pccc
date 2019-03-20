@@ -17,7 +17,7 @@ import CheckAuth from './CheckAuth';
 import { popupOk } from 'config';
 class Profile extends React.Component {
    state={
-       user: this.props.users?this.props.users:{},
+       user: this.props.users ? this.props.users :{},
        token:''
    }
 
@@ -27,13 +27,13 @@ class Profile extends React.Component {
 
 
 componentWillMount=async()=>{
-    let token =await getItem('token')
+    let token = this.props.token ? this.props.token : await getItem('token')
     this.setState({token})
 }
     // set status bar
     componentDidMount= async()=> {
         
-        let token =await getItem('token')
+        let token = this.props.token ? this.props.token : await getItem('token')
        
             if(token){
             this.getInfo()
@@ -75,7 +75,7 @@ componentWillMount=async()=>{
                     </TouchableOpacity>
                     <View style={style.mt20}>
                         <NavItem 
-                            title='Mua gói dịch vụ' 
+                            title='Gói dịch vụ' 
                             onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pService} />
                         <NavItem 
@@ -83,10 +83,6 @@ componentWillMount=async()=>{
                             onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pShop} />
                         
-                        {/* <NavItem 
-                            title='Sản phẩm yêu cầu báo giá' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pProduct} /> */}
                         <NavItem 
                             title='Thay đổi mật khẩu' 
                             onPress={this._navTo(ChangePasswordScreen)}

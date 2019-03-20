@@ -1,17 +1,19 @@
 import React from 'react'
-import { View, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { Header, BaseInput, Btn} from 'components'
 import {  popupOk, color, CodeToMessage, StatusCode } from 'config'
 import  { accountKit } from 'config/accountKit'
-import  { ForgotPasswordScreen } from 'config/screenNames'
+import  { ForgotPasswordScreen  } from 'config/screenNames'
 import {  checkPhoneOrEmail } from 'config/apis/users'
+import * as firebase from 'react-native-firebase'
 
 class CheckPhone extends React.Component {
     state = {
         password: '',
         rePassword: '',
+        loading: false
     }
     // set status bar
     componentDidMount() {
@@ -29,9 +31,14 @@ class CheckPhone extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
                     <Header 
-                    ckeck={1}
-                    title="Nhập số điện thoại" onPress={this._goBack}/>
+                        ckeck={1}
+                        title="Nhập số điện thoại" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
                         <View>

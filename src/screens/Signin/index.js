@@ -1,18 +1,20 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts} from 'config'
-import { login, loginSocial } from 'config/apis/users'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height, width, sreen4_7} from 'config'
+import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import  { RegisterScreen, HomeScreen, UpdateProfileScreen, CheckPhoneScreen } from 'config/screenNames'
+import { GoogleSignin } from 'react-native-google-signin';
+import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
+import  { accountKit, getCurrentAccount } from 'config/accountKit'
+
 class Signin extends React.Component {
     state = {
         username: '',
@@ -22,6 +24,9 @@ class Signin extends React.Component {
 
     // set status bar
     componentDidMount() {
+        LoginManager.logOut() // logout facebook
+        GoogleSignin.signOut() // logout google
+
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
@@ -43,6 +48,12 @@ class Signin extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
+                
+                <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
+                    <Image 
+                            style={styles.close}
+                            source={images.closeBlue} />
+                </TouchableOpacity>
                 
                 <View>
                     <Image 
@@ -74,7 +85,7 @@ class Signin extends React.Component {
 
                     
                     <Text 
-                        onPress={this._navTo(CheckPhoneScreen)}
+                        onPress={this._onForgotPassword}
                         style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
                     <View style={style.boxOr}>
                         <View style={style.line}></View>
@@ -112,10 +123,14 @@ class Signin extends React.Component {
         Keyboard.dismiss()
     }
 
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
 
     _onFacebookLogin = async () => {
         try {
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+          console.log('result: ', result);
           
           if (result.isCancelled)  throw new Error('User cancelled request'); 
           const data = await AccessToken.getCurrentAccessToken();
@@ -135,12 +150,11 @@ class Signin extends React.Component {
           
           this.setState({loading: true})
           loginSocial(body).then(res => {
-              
-                
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
                     
                     this._onSwitchToHomePage(res, LoginType.facebook);
+                    
                 }else{
                     popupOk(CodeToMessage[res.data.code])
                 }
@@ -157,37 +171,36 @@ class Signin extends React.Component {
 
     _onGoogleLogin =  async () => {
         try {
-            await GoogleSignin.configure();
+            await GoogleSignin.configure({ forceConsentPrompt: true });
             const data = await GoogleSignin.signIn();
             
-            const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+            this.setState({loading: true}, async () => {
+                const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
 
-            const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-            
-            let provider = firebaseUserCredential.user.toJSON();
-            
-
-            
-            this.setState({loading: true})
-            loginSocial({
-                name: provider.displayName,
-                email: provider.providerData[0].email,
-                login_type: LoginType.google
-            }).then(res => {
+                const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
                 
-                this.setState({loading: false})
-                if(res.data.code == StatusCode.Success){
-                    
-                    this._onSwitchToHomePage(res, LoginType.google);
-                }else{
-                    popupOk(CodeToMessage[res.data.code])
-                }
-            }).catch(err => {
+                let provider = firebaseUserCredential.user.toJSON();
                 
-                
-                popupOk("Đăng nhập thất bại");
-                this.setState({loading: false})
+                this.setState({loading: true})
+                loginSocial({
+                    name: provider.displayName,
+                    email: provider.providerData[0].email,
+                    login_type: LoginType.google
+                }).then(res => {
+                    this.setState({loading: false})
+                    if(res.data.code == StatusCode.Success){
+                        
+                        this._onSwitchToHomePage(res);
+                    }else{
+                        popupOk(CodeToMessage[res.data.code])
+                    }
+                }).catch(err => {
+                    console.log('err: ', err);
+                    this.setState({loading: false})
+                    popupOk("Đăng nhập thất bại");
+                })
             })
+            
             
         } catch (e) {
             
@@ -228,31 +241,109 @@ class Signin extends React.Component {
         }
     }
 
-    _onForgotPassword = () => {
+    _onForgotPassword = async () => {
+        this.setState({loading: true}, async () => {
+            let Actoken = await getCurrentAccount();
+            if(Actoken){
+                let phone = await accountkitInfo(Actoken)
+                this.setState({loading: false})
+
+                if(phone){
+                    // call api check phone
+                    checkPhoneOrEmail({phone: phone}).then(res => {
+                        if(res.data != "" && res.data.code == StatusCode.PhoneExists ){
+                            this.props.navigation.navigate(ForgotPasswordScreen, {token: res.data.token})
+                        }else{
+
+                           popupOk("Số điện thoại chưa được sử dụng.")
+                        }
+                    })
+                    
+                }else{
+                    popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+                }
+                
+            }else{
+                this.setState({loading: false})
+                popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+            }
+        })
         
     }
 
-    _onSwitchToHomePage = (res, type) => {
-        
+    _onSwitchToHomePage = async (res, type) => {
         let data = res.data,
             user = data.data;
+            console.log('user: ', user);
         
         this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             
             
         // check update profile
-        if(!user.phone || user.phone == "" || !user.email || user.email == ""){
-            // AsyncStorage.setItem('token',data.token)
-            console.log(data.token,'tokeeeeeee')
-            this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
+        let phone = user.phone;
+        let userToken = data.token;
+        if(!phone || phone == ""){
+            // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
+            this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
         }else{
-            navigation.reset(HomeScreen);
-        AsyncStorage.setItem('token',data.token)
-
+            // navigation.reset(HomeScreen);
+            AsyncStorage.setItem('token',userToken)
+            navigation.reset(HomeScreen)
+            
         }
         
     }
-  
+
+    _popupUpdatePhone = (userToken) => {
+        Alert.alert(
+            'Thông báo',
+            'Vui lòng cập nhật số điện thoại',
+            [
+              {
+                text: 'Cancel', style: 'cancel',
+              },
+              {text: 'OK', onPress: async () => {
+                let Actoken = await getCurrentAccount()
+                if(Actoken){
+                    let phone = await accountkitInfo(Actoken)
+                    this.setState({loading: false})
+
+                    if(phone){
+                        // call api check phone
+                        checkPhoneOrEmail({phone: phone}).then(res => {
+                            if(res.data.code != StatusCode.Success  || res.data == ""){
+                                popupOk(CodeToMessage[res.data.code])
+                            }else{
+
+                                // call api update phone
+                                updateUser({phone: phone}, userToken).then(res => {
+                                    if(res.data.code == StatusCode.Success){
+                                        AsyncStorage.setItem('token', this.state.token)
+                                        navigation.reset(HomeScreen)
+                                    }else{
+                                        popupOk(CodeToMessage[res.data.code])
+                                    }
+                                }).catch(err => {
+                                    console.log('err: ', err);
+                                    popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                                })
+                            }
+                        })
+                        
+                    }else{
+                        popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                    }
+                }else{
+                    this.setState({loading: false})
+                    popupOk("Mã xác nhận không đúng.")
+                }
+                
+              }},
+            ],
+            {cancelable: false},
+          );
+    }
+
    
 }
 const mapStateToProps=(state)=>{
@@ -264,23 +355,25 @@ const mapStateToProps=(state)=>{
 export default connect(mapStateToProps)(Signin)
 
 const style = StyleSheet.create({
-    or: {color: '#80C9F0', fontSize: 14, paddingLeft: 10, paddingRight: 10},
+    or: {color: '#80C9F0', fontSize: defaultStyle.fontSize, paddingLeft: 10, paddingRight: 10},
     line: {flex: 1, height: 1, backgroundColor: '#80C9F0'},
     boxOr: {width: '60%',
      flexDirection: 'row',
       alignSelf: 'center',
        marginTop: 13,
         alignItems: 'center'},
-    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5},
+    forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5, fontSize: defaultStyle.fontSize},
     social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
     register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,fontFamily:fonts.bold},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
-    iconSocial: {width: 55,
-        height:55,
-    resizeMode: 'contain',
-    marginTop: 15,
-    marginBottom: 18,},
+    iconSocial: {
+        width: width <= sreen4_7.width ? 40 : 55,
+        height: width <= sreen4_7.width ? 40 : 55,
+        resizeMode: 'contain',
+        marginTop: width <= sreen4_7.width ? 8 : 15,
+        marginBottom: 18,
+    },
     flex: { flex:1},
     w11: { height: 15},
     w53: { width: 53},

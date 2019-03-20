@@ -1,71 +1,121 @@
 import React from 'react'
-import { View, Text, Keyboard, TouchableWithoutFeedback, StatusBar, TextInput, Alert } from 'react-native'
+import { View, Text, Keyboard, TouchableWithoutFeedback, StatusBar, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { signup } from 'config/apis/users'
-import { Input, Btn, Header} from 'components'
-import RNAccountKit from 'react-native-facebook-account-kit'
+import { updateUser } from 'config/apis/users'
+import {  color, popupOk, StatusCode, CodeToMessage } from 'config'
+import { Input, Btn, Header, BaseInput} from 'components'
 
 class Confirm extends React.Component {
     state = {
         phone: "",
     }
 
+    constructor(props){
+        super(props)
+        this.user = this.props.navigation.getParam('data')
+        console.log('this.user: ', this.user);
+    }
     confirm = () => {
-        // if(this.state.phone.trim().length != 10){
-        //     Alert.alert(
-        //         'Thông báo',
-        //         'Số điện thoại không đúng.',
-        //         [
-        //           {text: 'OK'},
-        //         ],
-        //         {cancelable: false},
-        //       );
-        // }else{
-            // RNAccountKit.configure({
-            //     responseType: 'code',
-            //     // titleType: 'login',
-            //     initialAuthState: '',
-            //     initialPhoneCountryPrefix: '+84' + this.state.phone.replace(/^0+/, ""), 
-            //     defaultCountry: 'VN',
-            // })
-    
-            RNAccountKit.loginWithPhone()
-            .then((token) => {
-                if (!token) {
-                console.log('Login cancelled')
-                } else {
-                console.log(`Logged with phone. Token: ${token}`)
+        let phone = this.phone ? this.phone.getValue() : "";
+        if(phone.trim().length != 10){
+            popupOk('Số điện thoại không đúng')
+        }else { 
+            updateUser(this.token, data).then(res => {
+                console.log( data,'data')
+                console.log(res,'res')
+                if(res.data.code == StatusCode.Success){
+                    this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
+                    navigation.reset(HomeScreen)
+                }else{
+                    popupOk(CodeToMessage[res.data.code])
                 }
+            }).catch(err => {
+                popupOk("Cập nhật thông tin thất bại")
             })
-        // }
+        }
         
        
     }
     
     render(){
         return (
-            <TouchableWithoutFeedback style= { { flex:1}} onPress={() =>Keyboard.dismiss()}>
-            <View >
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-                <Header title="Xác thực tài khoản" onPress={() => this.props.navigation.goBack() }/>
-                <View style={{height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}}>
-                    <View style={{width: "70%", alignSelf: 'center'}}>
-                        <Text style={{textAlign: "center", fontSize: 18}}>Nhập số điện thoại của bạn để xác thực tài khoản đăng ký</Text>
+            <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
+                <View >
+                    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+                    <Header title="Xác thực tài khoản" onPress={this._goBack }/>
+                    <View style={style.content}>
+                        <View style={style.boxMsg}>
+                            <Text style={style.msg}>Nhập số điện thoại của bạn để xác thực tài khoản đăng ký</Text>
+                        </View>
+                        <BaseInput 
+                            styleIcon={style.h15}
+                            icon={images.phoneDark}
+                            removeSpace={true}
+                            ref={val => this.phone = val}
+                            onBlur={this._checkPhone}
+                            keyboardType='numeric'
+                            maxLength={10}
+                            placeholder="Số điện thoại" />
+
+                        <Btn
+                            onPress={this.confirm} 
+                            name="Gửi" />
                     </View>
-                    <Input 
-                        // customStyle={{margin: 0, borderBottomWidth: 0, padding: 0}}
-                        keyboardType='numeric'
-                        onChangeText={phone => this.setState({phone})}
-                        placeholder="Số điện thoại" />
-                    <Btn
-                        onPress={this.confirm} 
-                        name="Gửi" />
                 </View>
-            </View>
             </TouchableWithoutFeedback>
         )
     }
+
+    _dismiss = () => {
+        Keyboard.dismiss()
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
+    }
+
+    _checkPhone = () => {
+        let phone = this.phone.getValue();
+        if(phone == "") return;
+        try {
+            this.setState({loading: true}, () => {
+                checkPhoneOrEmail({phone: phone}).then(res => {
+                    console.log('res: ', res);
+                    if(res.data.code != StatusCode.Success || res.data == ""){
+                        this.setState({allowPhone: false, loading: false})
+                        popupOk(CodeToMessage[res.data.code])
+                    }else{
+                        this.setState({allowPhone: true, loading: false})
+                    }
+        
+                }).catch(err => {
+                    console.log('err: ', err);
+                    this.setState({allowPhone: false, loading: false})
+                })
+            })
+            
+        } catch (error) {
+            console.log('error: ', error);
+            this.setState({allowPhone: false})
+            
+        }
+    }
 }
 export default connect()(Confirm)
+const style = StyleSheet.create({
+    content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40},
+    flex: { flex:1},
+    msg: {textAlign: "center", fontSize: 18},
+    boxMsg: {width: "80%", alignSelf: 'center'},
+    inputView: {flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#C3E5FE', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
+    resend: {padding: 0, marginBottom: 0},
+    input: {margin: 0, borderBottomWidth: 0, padding: 0},
+    btn: {marginTop:  40, marginBottom: 50},
+    boxForgot: {width: '50%', alignSelf: 'center',},
+    h15: {height: 15},
+    h70p: {height: '70%'},
+    title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'},
+    flex: {flex: 1}
+})

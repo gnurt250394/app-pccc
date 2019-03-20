@@ -1,17 +1,20 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,AsyncStorage } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,ActivityIndicator, Image, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles" 
 import { signup, checkPhoneOrEmail } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
-import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color } from 'config'
+import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color, defaultStyle, height, smallScreen } from 'config'
 import  { accountKit } from 'config/accountKit'
-import  { SigninScreen, HomeScreen } from 'config/screenNames'
+import  { SigninScreen, HomeScreen, } from 'config/screenNames'
 import { actionTypes } from 'actions'
+import navigation from 'navigation/NavigationService'
+
 class Register extends React.Component {
     state = {
         allowPhone: false,
+        loading: false,
         allowEmail: true,
         name: ""
     }
@@ -32,6 +35,17 @@ class Register extends React.Component {
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <View style={styles.content}>
+                {   this.state.loading ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> : null
+                }
+                <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
+                    <Image 
+                            style={styles.close}
+                            source={images.closeBlue} />
+                </TouchableOpacity>
+
                 <Text style={style.title}>{toUpperCase('Đăng ký')}</Text>
                 <View style={style.h70p}>
                     <BaseInput 
@@ -85,8 +99,12 @@ class Register extends React.Component {
         )
     }
 
-    _navTo = screen => () => {
-        this.props.navigation.navigate(screen)
+    _navTo = (screen, params = {}) => () => {
+        this.props.navigation.navigate(screen, params)
+    }
+
+    _goBack = () => {
+        this.props.navigation.goBack()
     }
 
     _dismiss = () => {
@@ -103,16 +121,18 @@ class Register extends React.Component {
         let email = this.email.getValue();
         if(email == "") return;
         try {
-            checkPhoneOrEmail({email: email}).then(res => {
-                if(res.data.code != StatusCode.Success  || res.data == ""){
-                    this.setState({allowEmail: false})
-                    popupOk(CodeToMessage[res.data.code])
-                }else{
-                    this.setState({allowEmail: true})
-                }
-            }).catch(err => {
-                console.log('err: ', err);
-                this.setState({allowEmail: false})
+            this.setState({loading: true}, () => {
+                checkPhoneOrEmail({email: email}).then(res => {
+                    if(res.data.code != StatusCode.Success  || res.data == ""){
+                        this.setState({allowEmail: false, loading: false})
+                        popupOk(CodeToMessage[res.data.code])
+                    }else{
+                        this.setState({allowEmail: true, loading: false})
+                    }
+                }).catch(err => {
+                    console.log('err: ', err);
+                    this.setState({allowEmail: false, loading: false})
+                })
             })
         } catch (error) {
             console.log('error: ', error);
@@ -121,23 +141,28 @@ class Register extends React.Component {
        
     }
 
+
+
     _checkPhone = () => {
         let phone = this.phone.getValue();
         if(phone == "") return;
         try {
-            checkPhoneOrEmail({phone: phone}).then(res => {
-                console.log('res: ', res);
-                if(res.data.code != StatusCode.Success || res.data == ""){
-                    this.setState({allowPhone: false})
-                    popupOk(CodeToMessage[res.data.code])
-                }else{
-                    this.setState({allowPhone: true})
-                }
-    
-            }).catch(err => {
-                console.log('err: ', err);
-                this.setState({allowPhone: false})
+            this.setState({loading: true}, () => {
+                checkPhoneOrEmail({phone: phone}).then(res => {
+                    console.log('res: ', res);
+                    if(res.data.code != StatusCode.Success || res.data == ""){
+                        this.setState({allowPhone: false, loading: false})
+                        popupOk(CodeToMessage[res.data.code])
+                    }else{
+                        this.setState({allowPhone: true, loading: false})
+                    }
+        
+                }).catch(err => {
+                    console.log('err: ', err);
+                    this.setState({allowPhone: false, loading: false})
+                })
             })
+            
         } catch (error) {
             console.log('error: ', error);
             this.setState({allowPhone: false})
@@ -152,6 +177,10 @@ class Register extends React.Component {
             email = this.email.getValue(),
             password = this.password.getValue(),
             rePassword = this.rePassword.getValue();
+
+        let allowEmail = this.state.allowEmail;
+        if(email.trim() == "") allowEmail = true;
+
         if(name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(name)){
@@ -167,7 +196,7 @@ class Register extends React.Component {
         }else {
            
             // // call api
-            if(this.state.allowPhone && this.state.allowEmail){
+            if(this.state.allowPhone && allowEmail){
                 let RNAccountKit = accountKit(phone);
                 RNAccountKit.loginWithPhone()
                 .then((token) => {
@@ -180,13 +209,13 @@ class Register extends React.Component {
                             }).then(res => {
                             if(res.data.code == StatusCode.Success){
                                 AsyncStorage.setItem('token',res.data.token)
-                                this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
-                                this.props.navigation.navigate(HomeScreen)
+                                navigation.reset(HomeScreen)
                             }else{
                                 popupOk(CodeToMessage[res.data.code])
                             }
                             
                         }).catch(err => {
+                            console.log('err: ', err);
                             popupOk("Đăng ký thất bại")
                         })
                     }else {
@@ -195,7 +224,7 @@ class Register extends React.Component {
                 })
             }else if(!this.state.allowPhone){
                 popupOk('Số điện thoại đã được sử dụng')
-            }else if(!this.state.allowEmail){
+            }else if(!allowEmail){
                 popupOk('Email đã được sử dụng')
             }else{
                 popupOk('Email & Số điện thoại đã được sử dụng')
@@ -210,6 +239,7 @@ const style = StyleSheet.create({
     boxForgot: {width: '50%', alignSelf: 'center',},
     h15: {height: 15},
     h70p: {height: '70%'},
-    title: {color: color, fontWeight: 'bold', fontSize: 22, marginBottom: '10%', textAlign: 'center'},
-    flex: {flex: 1}
+    title: {color: color, fontWeight: 'bold', fontSize:  height < smallScreen ? 16 : 22, marginBottom: '10%', textAlign: 'center'},
+    flex: {flex: 1},
+    btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},
 })
