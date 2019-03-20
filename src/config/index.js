@@ -19,6 +19,10 @@ export const MessageStatus = {
 }
 
 export const smallScreen = 550
+export const sreen4_7 = {
+    width:  384,
+    height:  592
+}
 export const color = "#2166A2"
 export const fonts = {
     bold: 'MONTSERRAT-BOLD',
@@ -28,9 +32,9 @@ export const fonts = {
 }
 
 export const defaultStyle = {
-    fontSize: height < smallScreen ? 10 : 14,
-    padding: height < smallScreen ? 6 : 11,
-    logoHeight: height < smallScreen ? 100 : 150,
+    fontSize: width <= sreen4_7.width ? 10 : 14,
+    padding: width <= sreen4_7.width ? 6 : 11,
+    logoHeight: width <= sreen4_7.width ? 100 : 150,
 }
 
 

@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native'
-import { color, defaultStyle, fonts, height, smallScreen } from 'config'
+import { color, defaultStyle, fonts, width, height, sreen4_7 } from 'config'
 
 
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: height < smallScreen ? 15 : 19,
+        fontSize: width <= sreen4_7.width ? 15 : 19,
         fontWeight: 'bold',
         color: color,
         marginBottom: 50,
@@ -15,7 +15,7 @@ export default styles = StyleSheet.create({
         backgroundColor: color,
         width: "80%",
         alignSelf: "center",
-        marginTop: height < smallScreen ? 15 : 25,
+        marginTop: width <= sreen4_7.width ? 15 : 25,
         marginBottom: 25,
         borderRadius: 3,
         padding: defaultStyle.padding,
@@ -44,7 +44,7 @@ export default styles = StyleSheet.create({
         height: defaultStyle.logoHeight,
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop: height < smallScreen ? -10 : 30,
+        marginTop: width <= sreen4_7.width ? -10 : 30,
         marginBottom: 18,
     },
     icon: {
@@ -115,7 +115,7 @@ export default styles = StyleSheet.create({
         left: '48%'
     },
     close: {
-        width: height < smallScreen ? 10 : 15,
+        width: width <= sreen4_7.width ? 10 : 15,
         resizeMode: 'contain',
     },
     btnClose: {

@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Sta
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height} from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height, width, sreen4_7} from 'config'
 import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
@@ -365,10 +365,10 @@ const style = StyleSheet.create({
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {
-        width: height < smallScreen ? 40 : 55,
-        height: height < smallScreen ? 40 : 55,
+        width: width <= sreen4_7.width ? 40 : 55,
+        height: width <= sreen4_7.width ? 40 : 55,
         resizeMode: 'contain',
-        marginTop: height < smallScreen ? 8 : 15,
+        marginTop: width <= sreen4_7.width ? 8 : 15,
         marginBottom: 18,
     },
     flex: { flex:1},
