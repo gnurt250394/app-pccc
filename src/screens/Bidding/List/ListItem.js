@@ -1,9 +1,8 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
 import images from "assets/images"
-import { ProductDetailScreen } from 'config/screenNames'
+import { DetailBiddingScreen } from 'config/screenNames'
 import { toPrice, color } from 'config'
-const {width} = Dimensions.get('screen')
 
 class LI extends React.Component {
 
@@ -50,17 +49,19 @@ export default class ListItem extends React.Component {
         )
     }
     renderItem = ({item, index}) => {
-        return <View style={style.box}>
+        return <TouchableOpacity 
+                    onPress={this._navTo(DetailBiddingScreen, {name: item.name})}
+                    style={style.box}>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={[style.row, style.calender]}>
                     <Image source={images.calender} style={style.iconCalender}/>
-                    <Text style={style.time}>16:00 - 25/01/2019</Text>
+                    <Text style={style.time}>{item.time}</Text>
                 </View>
                 <LI label={`Số TBMT: ${item.version}`} />
-                <LI label={`Bên mời thầu: ${toPrice(item.price)}`} />
-                <LI label={`Thời gian mời thầu: ${item.createdAt}`} />
-                <LI label={`Thời gian đóng thầu: ${item.createdAt}`} />
-            </View>
+                <LI label={`Bên mời thầu: ${item.partner}`} />
+                <LI label={`Thời gian mời thầu: ${item.time_start}`} />
+                <LI label={`Thời gian đóng thầu: ${item.time_end}`} />
+            </TouchableOpacity>
     }
     render(){
         return (

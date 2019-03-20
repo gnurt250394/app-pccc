@@ -5,6 +5,8 @@ import { signup } from 'config/apis/users'
 import {  color} from 'config'
 import ListItem from './ListItem'
 import { Header } from 'components'
+
+
 class ListBidding extends React.Component {
     state = {
         loading: false
@@ -70,51 +72,56 @@ let data = [
         id: 1,
         name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
         version: 1,
-        price: 500000000,
+        "time": "2019-03-16 10:36:00",
+        partner: "Ông A",
         stage: 'Thiết kế kỹ thuật',
-        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
-        projectCode: '95821463',
-        createdAt: '25/01/2019'
+        code: '95821463',
+        time_start: '25/01/2019',
+        time_end: '25/01/2019'
     },
     {
         id: 2,
         name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
         version: 2,
-        price: 500000000,
+        "time": "2019-03-16 10:36:00",
+        partner: "Ông A",
         stage: 'Thiết kế kỹ thuật',
-        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
-        projectCode: '95821463',
-        createdAt: '25/01/2019'
+        code: '95821463',
+        time_start: '25/01/2019',
+        time_end: '25/01/2019'
     },
     {
         id: 3,
         name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
         version: 3,
-        price: 500000000,
+        "time": "2019-03-16 10:36:00",
+        partner: "Ông A",
         stage: 'Thiết kế kỹ thuật',
-        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
-        projectCode: '95821463',
-        createdAt: '25/01/2019'
+        code: '95821463',
+        time_start: '25/01/2019',
+        time_end: '25/01/2019'
     },
     {
         id: 4,
         name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
         version: 4,
-        price: 500000000,
+        "time": "2019-03-16 10:36:00",
+        partner: "Ông A",
         stage: 'Thiết kế kỹ thuật',
-        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
-        projectCode: '95821463',
-        createdAt: '25/01/2019'
+        code: '95821463',
+        time_start: '25/01/2019',
+        time_end: '25/01/2019'
     },
     {
         id: 5,
         name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
         version: 5,
-        price: 500000000,
+        "time": "2019-03-16 10:36:00",
+        partner: "Ông A",
         stage: 'Thiết kế kỹ thuật',
-        localtion: 'Số 8, Phan Văn Trường, Cầu Giấy, Hà Nội',
-        projectCode: '95821463',
-        createdAt: '25/01/2019'
+        code: '95821463',
+        time_start: '25/01/2019',
+        time_end: '25/01/2019'
     },
     
    
