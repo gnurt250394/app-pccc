@@ -8,11 +8,10 @@ let instance = axios.create({
 });
 
 
-export const signup = (body, token) => {
-    return instance.post(constant.NEW_BIDDING, body)
-}
-
-export const login = body => {
-    return instance.post(constant.LOGIN, body)
+export const listBiddings = async () => {
+    let token = await getItem('token')
+    
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.NEW_BIDDING)
 }
 

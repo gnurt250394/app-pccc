@@ -2,7 +2,8 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
 import images from "assets/images"
 import { DetailBiddingScreen } from 'config/screenNames'
-import { toPrice, color } from 'config'
+import {  color, StatusCode} from 'config'
+import { listBiddings } from 'config/apis/bidding'
 
 class LI extends React.Component {
 
@@ -20,15 +21,23 @@ export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: this.props.data,
+            biddings: [],
             keyword: 'Máy bơm' ,
         }
-        
     }
-    toggleLike = (index) => () => {
-        let data = [...this.state.data];
-        data[index].like = !data[index].like
-        this.setState({data});
+
+    async componentDidMount() {
+        let biddings = await listBiddings().then(res => {
+            if(res.data.code == StatusCode.Success){
+                return res.data.data
+            }else{
+                return []
+            }
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({biddings})
     }
 
     _showName = name => {
@@ -66,7 +75,7 @@ export default class ListItem extends React.Component {
     render(){
         return (
             <FlatList
-                data={this.state.data}
+                data={this.state.biddings}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => index.toString()} />
         )

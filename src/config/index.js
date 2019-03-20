@@ -3,6 +3,7 @@ export const  { width, height } = Dimensions.get('window')
 // fontSize: height < smallScreen ? 10 : 14,
 export const StatusCode = {
     Success: 200,
+    NoContent: 204,
     Tokenvalid:445,
     TokenExpire:440,
     PhoneExists: 439

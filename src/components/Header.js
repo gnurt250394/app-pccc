@@ -7,7 +7,6 @@ import navigation from 'navigation/NavigationService';
 
 export default class Header extends React.Component {
     render(){
-        console.log(1, this.props.check);
         return (
             <View style={ style.content} >
             <StatusBar
