@@ -126,6 +126,11 @@ class EditProfile extends React.Component {
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <ScrollView >
                 <View style={style.header}>
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
                     <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
                             style={style.iconBack}

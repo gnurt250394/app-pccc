@@ -1,23 +1,24 @@
 import { StyleSheet } from 'react-native'
-import { color } from 'config'
-import { fonts } from 'config';
+import { color, defaultStyle, fonts, width, height, sreen4_7 } from 'config'
+
+
 export default styles = StyleSheet.create({
     slogan: {
         alignSelf: "center",
-        fontSize: 19,
+        fontSize: width <= sreen4_7.width ? 15 : 19,
         fontWeight: 'bold',
         color: color,
         marginBottom: 50,
-        marginTop: -10
+        // marginTop: -10
     },
     btnLogin: {
         backgroundColor: color,
         width: "80%",
         alignSelf: "center",
-        marginTop: 25,
+        marginTop: width <= sreen4_7.width ? 15 : 25,
         marginBottom: 25,
         borderRadius: 3,
-        padding: 11,
+        padding: defaultStyle.padding,
     },
     btnSignup: {
         backgroundColor: "white",
@@ -29,8 +30,7 @@ export default styles = StyleSheet.create({
     },
     textLogin: {
         alignSelf: 'center',
-        // fontWeight: "500",
-        fontSize: 14,
+        fontSize: defaultStyle.fontSize,
         color: 'white',
         fontFamily: fonts.bold,
     },
@@ -41,10 +41,10 @@ export default styles = StyleSheet.create({
        
     },
     logo: {
-        height: 150,
+        height: defaultStyle.logoHeight,
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop: 30,
+        marginTop: width <= sreen4_7.width ? -10 : 30,
         marginBottom: 18,
     },
     icon: {
@@ -58,7 +58,7 @@ export default styles = StyleSheet.create({
     forgot: {
         textAlign: 'center',
         color: color,
-        fontSize: 14,
+        fontSize: defaultStyle.fontSize,
         fontWeight: 'bold',
         textDecorationLine: 'underline'
     },
@@ -113,6 +113,15 @@ export default styles = StyleSheet.create({
         position: "absolute",
         top: '48%',
         left: '48%'
-    }
+    },
+    close: {
+        width: width <= sreen4_7.width ? 10 : 15,
+        resizeMode: 'contain',
+    },
+    btnClose: {
+        alignSelf: 'flex-end',
+        padding: 20,
+    },
+    
 
 })

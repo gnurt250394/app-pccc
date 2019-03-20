@@ -11,3 +11,15 @@ export const  accountKit = (phone = "") => {
     })
     return RNAccountKit
 }
+
+export const  getCurrentAccount = async (phone = "") => {
+    RNAccountKit.configure({
+        responseType: 'token',
+        initialAuthState: '',
+        initialPhoneCountryPrefix: phone != "" ? '+84' + phone.replace(/^0+/, "") : '+84', 
+        defaultCountry: 'VN',
+    })
+
+    let Actoken = await RNAccountKit.loginWithPhone().then((res) => res.token).catch(err => false)
+    return Actoken
+}
