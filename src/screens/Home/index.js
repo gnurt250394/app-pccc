@@ -220,7 +220,7 @@ const style = StyleSheet.create({
     imgbox4: {
         width: '100%',
         alignSelf: 'center',
-        resizeMode: 'stretch',
+        // resizeMode: 'stretch',
         height: '100%'},
     box3: {
         width: width/3 + 1.5, 
