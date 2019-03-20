@@ -1,12 +1,15 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView,AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { updateUser } from 'config/apis/users'
+import { updateUser, updateAvatar, getInfoAcount } from 'config/apis/users'
 import {  Input} from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
+import navigation from 'navigation/NavigationService';
+import { SigninScreen } from 'config/screenNames';
+import { removeItem, Status } from 'config/Controller';
 class InputItem extends React.Component {
     render() {
         return <View style={style.mb5}>
@@ -65,25 +68,52 @@ class EditProfile extends React.Component {
         
         this.user = {...user} // check old email
         this.state = {
-            name: user.name ? user.name : "",
+            name:  "",
             company: user.company ? user.company : "",
             email: user.email ? user.email : "",
             phone: user.phone ? user.phone.toString() : "",
             address: user.address ? user.address : "",
             tax_code: user.tax_code ? user.tax_code : "",
             gender: user.gender != null ? user.gender : Gender.male,
-           
+            image:null,
         }
     }
 
     // set status bar
     componentDidMount() {
+        this.getInfoAccount()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
       }
     
+      getInfoAccount=()=>{
+          getInfoAcount().then(res=>{
+              if(res.data.code == Status.SUCCESS){
+                this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
+                console.log('object')
+                  this.setState({
+                    image: res.data.data.image,
+                    name:res.data.data.name,
+                    address:res.data.data.address,
+                    email:res.data.data.email,
+                    company:res.data.data.company,
+                    phone:res.data.data.phone,
+                    gender:res.data.data.gender,
+                    tax_code:res.data.data.tax_code
+                  })
+              } else if(res.data.code == Status.TOKEN_EXPIRED){
+                popupOk(CodeToMessage[res.data.code])
+                navigation.reset(SigninScreen)
+                removeItem('token')
+              } else if(res.data.code == Status.TOKEN_VALID){
+                popupOk(CodeToMessage[res.data.code])
+                navigation.reset(SigninScreen)
+                removeItem('token')
+              }
+          })
+      }
     componentWillUnmount() {
         this._navListener.remove();
     }
@@ -91,10 +121,16 @@ class EditProfile extends React.Component {
     // end set status bar
 
     render(){
+        let {image,name,company,email,phone,address,tax_code} = this.state
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <ScrollView >
                 <View style={style.header}>
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
                     <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
                             style={style.iconBack}
@@ -105,26 +141,30 @@ class EditProfile extends React.Component {
                         <Text style={style.textDone}>Xong</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={style.boxUser}>
-                    <TouchableOpacity onPress={this._onUploadImage}>
+                    <TouchableOpacity onPress={this._onUploadImage}
+                    style={style.boxUser}>
                         <Image 
                             style={style.avatar}
-                            source={images.userBlue} />
+                            source={image?{uri: image}:images.userBlue}
+                             />
+                            <Image
+                                source={images.camera}
+                                style={style.editCamera}
+                            />
                     </TouchableOpacity>
-                </View>
 
                 <View style={style.mt30}>
                     <InputItem icon={images.pUser} 
-                        value={this.state.name}
+                        value={name}
                         onChangeText={this.onChangeText('name')}
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
-                        value={this.state.phone}
+                        value={phone}
                         editable={false}
                         placeholder="Số điện thoại"/>
                     <InputItem icon={images.pEmail} 
                         keyboardType='email-address'
-                        value={this.state.email}
+                        value={email}
                         onChangeText={this.onChangeText('email')}
                         placeholder="Email của bạn"/>
                     <GenderItem 
@@ -132,15 +172,15 @@ class EditProfile extends React.Component {
                         onSelectFemale={this._updateGender(Gender.female)}
                         gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
-                        value={this.state.address}
+                        value={address}
                         onChangeText={this.onChangeText('address')}
                         placeholder="Địa chỉ"/>
                     <InputItem icon={images.pCompany} 
-                        value={this.state.company}
+                        value={company}
                         onChangeText={this.onChangeText('company')}
                         placeholder="Tên công ty"/>
                     <InputItem icon={images.pThue} 
-                        value={this.state.tax_code}
+                        value={tax_code}
                         onChangeText={this.onChangeText('tax_code')}
                         placeholder="Mã số thuế"/>
                 </View>
@@ -157,7 +197,7 @@ class EditProfile extends React.Component {
     }
 
     _navTo = screen => () => {
-        this.props.navigation.navigate(screen)
+       navigation.navigate(screen)
     }
 
     _goBack = () => {
@@ -170,20 +210,23 @@ class EditProfile extends React.Component {
 
     _onUploadImage = () => {
         chooseImage().then(url => {
-            console.log('url: ', url);
+            
+            
+            this.setState({image: url.uri})
 
         }).catch(err => {
-            console.log('err: ', err);
+            
 
         })
     }
 
     _onSuccess = () => {
-        if(this.state.name.trim().length < 2){
+        let {user} = this.props
+        if(this.state.name&&this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
             popupOk('Họ và tên không được dùng ký tự đặc biệt')
-        }else if(this.state.email.trim() != "" && !validateEmail(this.state.email)){
+        }else if(this.state.email&&this.state.email.trim() != "" && !validateEmail(this.state.email)){
             popupOk('Email không đúng')
         } else {
             // call api -> go back
@@ -194,18 +237,48 @@ class EditProfile extends React.Component {
                 address: this.state.address,
                 tax_code: this.state.tax_code,
             }
-            console.log(11, data);
-            if(this.state.email != this.user.email) data.email = this.state.email;
-            updateUser(this.props.token, data).then(res => {
-                console.log('res: ', res);
-                if(res.data.code == StatusCode.Success){
+            
+            if(this.state.email != user.email){
+                data.email = this.state.email;
+            } else {
+                
+            }
+            updateAvatar(this.state.image).then(res=>{
+                if(res.data.code== Status.SUCCESS){
+                    console.log(res.data,'image')
+                    
+                } else if(res.data.code== Status.TOKEN_EXPIRED){
+                    popupOk(CodeToMessage[res.data.code])
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                    
+                } else{
+                    console.log(res,'eeeee')
+                }
+            }).catch(err=>{
+                console.log(err,'err')
+                
+            })
+            updateUser(data).then(res => {
+                
+                if(res.data.code == Status.SUCCESS){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
-                    this.props.navigation.goBack()
-                }else{
+                    navigation.pop()
+                    this.props.navigation.state.params.refress()
+                }else if(res.data.code == Status.TOKEN_EXPIRED){
+                    popupOk(CodeToMessage[res.data.code])
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                } else if(res.data.code== Status.TOKEN_VALID){
+                    popupOk(CodeToMessage[res.data.code])
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                } else{
+                    console.log(res.data,'else')
                     popupOk(CodeToMessage[res.data.code])
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 popupOk('Cập nhật thông tin không thành công')
             })
             
@@ -213,6 +286,7 @@ class EditProfile extends React.Component {
     }
 }
 const mapStateToProps = (state) =>{
+    console.log(state,'sta')
     return {
         user: state.users && state.users.data ? state.users.data : null,
         token: state.users && state.users.token ? state.users.token : null,
@@ -228,11 +302,20 @@ const style = StyleSheet.create({
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     gender: {fontSize: 14, color: '#555555', paddingLeft: 10},
-    avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
-    boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center'},
+    avatar: { height: 70,width:70,borderRadius:35 },
+    boxUser: {  alignItems: 'center',height:70,width:70,borderRadius: 35,justifyContent:'center',alignSelf: 'center',marginTop:10},
     p10: {padding: 10},
     mt30: { marginTop: 30},
     flex:  { flex:1},
     w19: {width: 19},
-    mb5: { marginBottom: 0, flexDirection: 'row'}
+    mb5: { marginBottom: 0, flexDirection: 'row'},
+    editCamera:{
+        height:17,
+        width:21,
+        // tintColor:color,
+        // opacity:0.4,
+        position:'absolute',
+        bottom:0,
+        right:3
+    }
 })

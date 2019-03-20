@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView,
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
-import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen } from 'config/screenNames'
+import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, HomeScreen } from 'config/screenNames'
 import { color, toUpperCase,StatusCode } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
@@ -12,9 +12,13 @@ import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
+import { getItem, removeItem } from 'config/Controller';
+import CheckAuth from './CheckAuth';
+import { popupOk } from 'config';
 class Profile extends React.Component {
    state={
-       user:{}
+       user: this.props.users ? this.props.users :{},
+       token:''
    }
 
     edit = () => {
@@ -22,17 +26,18 @@ class Profile extends React.Component {
     }
 
 
+componentWillMount=async()=>{
+    let token = this.props.token ? this.props.token : await getItem('token')
+    this.setState({token})
+}
     // set status bar
     componentDidMount= async()=> {
         
+        let token = this.props.token ? this.props.token : await getItem('token')
        
-        let token = await AsyncStorage.getItem('token')
-        if(token == null ){
-            navigation.reset(CheckAuthScreen)
-        } else{
-            this.getInfoAccount()
-        }
-
+            if(token){
+            this.getInfo()
+            }
         // this._navListener = this.props.navigation.addListener('didFocus', () => {
         //   StatusBar.setBarStyle('light-content');
         //   StatusBar.setBackgroundColor(color);
@@ -45,8 +50,9 @@ class Profile extends React.Component {
     }
 
     render(){
-        let {user} = this.state
-        return (
+        
+        let {user,token} = this.state
+        return (token?
             <View style={style.flex}>
                 <ScrollView >
                     <View style={style.head}>
@@ -54,11 +60,11 @@ class Profile extends React.Component {
                     </View>
 
                     <TouchableOpacity 
-                        onPress={this._navTo(ViewProfileScreen,{name:user.name})}
+                        onPress={this._navTo(ViewProfileScreen,{update: this.getInfo})}
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
-                            source={images.userBlue} />
+                            source={user&& user.image?{uri:user.image}:images.userBlue} />
                         <View style={style.user}>
                             <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
                             <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
@@ -68,19 +74,15 @@ class Profile extends React.Component {
                             source={images.next} />
                     </TouchableOpacity>
                     <View style={style.mt20}>
-
+                        <NavItem 
+                            title='Gói dịch vụ' 
+                            onPress={this._navTo(ChangePasswordScreen)}
+                            icon={images.pService} />
                         <NavItem 
                             title='Shop của tôi' 
                             onPress={this._navTo(ChangePasswordScreen)}
                             icon={images.pShop} />
-                        <NavItem 
-                            title='Mua gói dịch vụ' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pService} />
-                        <NavItem 
-                            title='Sản phẩm yêu cầu báo giá' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pProduct} />
+                        
                         <NavItem 
                             title='Thay đổi mật khẩu' 
                             onPress={this._navTo(ChangePasswordScreen)}
@@ -92,14 +94,26 @@ class Profile extends React.Component {
                     onPress={this._logout}
                     style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
             </View>
+            :
+            <CheckAuth/>
         )
     }
 
-    getInfoAccount=()=>{
+    getInfo=()=>{
 
         getInfoAcount().then(res=>{
+            
+            console.log(res,'data')
             if(res.data.code == StatusCode.Success ){
                this.setState({user:res.data.data})
+            } else if(res.data.code== StatusCode.Tokenvalid){
+            navigation.reset(SigninScreen)
+            popupOk(CodeToMessage[res.data.code])
+            AsyncStorage.removeItem('token')
+            } else if(res.data.code== StatusCode.TokenExpire){
+            navigation.reset(SigninScreen)
+            popupOk(CodeToMessage[res.data.code])
+            AsyncStorage.removeItem('token')
             }
         })
     }
@@ -111,41 +125,7 @@ class Profile extends React.Component {
         navigation.reset(SigninScreen)
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
         
-    //  GoogleSignin.isSignedIn().then(res=>{
-    //       if(res){
-    //           console.log(res,'gg')
-    //         try {
-    //             //  GoogleSignin.revokeAccess().then(res=>{
-    //             //     console.log(res,'gg')
-    //             // });
-                 
-    //             AsyncStorage.removeItem('token')
-    //             navigation.reset(SigninScreen)
-    //             this.props.dispatch({type: actionTypes.USER_LOGOUT})
-    //             // this.setState({ user: null }); // Remove the user from your app's state as well
-    //           } catch (error) {
-    //             console.error(error);
-    //           }
-              
-            
-     
-    //       }
-    //   }).catch(err=>{
-    //       console.log(err)
-    //   })
-    //   AccessToken.getCurrentAccessToken().then(res=>{
-    //        if(res){
-    //            console.log(res.getUserId(),'fb')
-    // // // logout FB
-           
-    //        }
-    //    }).catch(err=>{
-    //        console.log(err)
-    //    })
-      
-    //    this.props.dispatch({type: actionTypes.USER_LOGOUT})
-    //     AsyncStorage.removeItem('token')
-    //     navigation.reset(SigninScreen)
+    
 
     }
 
@@ -157,7 +137,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = (state) =>{
     return {
-        user: state.users && state.users.data ? state.users.data : null,
+        users: state.users && state.users.data ? state.users.data : null,
         token: state.users && state.users.token ? state.users.token : null,
     }
 }
@@ -171,9 +151,9 @@ const style = StyleSheet.create({
     btnLogout: {color: '#F55555', fontSize: 16, width: '60%', alignSelf: 'center', textAlign:'center', fontWeight: 'bold', padding: 10, marginBottom: 50},
     head: {backgroundColor: color},
     name: {fontSize: 16, color: '#333333', fontWeight: 'bold', paddingBottom: 6},
-    email: {fontSize: 14, color: '#999999', },
+    email: {fontSize: 12, color: '#999999', },
     user: { flex: 1, flexDirection: 'column', padding: 18},
-    avatar: {width: 70, height: 70, alignSelf: 'center' },
+    avatar: {width: 70, height: 70, alignSelf: 'center',borderRadius: 35, },
     boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     mt20: { marginTop: 20},
     flex: {flex: 1}

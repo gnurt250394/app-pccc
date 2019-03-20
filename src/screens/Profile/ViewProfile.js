@@ -1,9 +1,13 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import {  ShowGender, color } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
+import { getInfoAcount } from 'config/apis/users';
+import { Status } from 'config/Controller';
+
+const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
     render() {
       return this.props.name ? <View style={{ marginBottom: 2, flexDirection: 'row'}}>
@@ -15,19 +19,26 @@ class ListItem extends React.Component {
     };
 }
 class ViewProfile extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            user: this.props.user ? this.props.user : {}
-        }
+        state = {
+            user:  {},
     }
 
-    componentWillReceiveProps(props){
-        if(props.user) this.setState({user: props.user})
-    }
+   
 
-    // set status bar
-    componentDidMount() {
+    getInfo= ()=>{
+        getInfoAcount().then(res=>{
+            console.log(res.data,'da')
+
+            if(res.data.code==Status.SUCCESS){
+                this.setState({
+                    user:res.data.data,
+                })
+            }
+        })
+    }
+        // set status bar
+    componentDidMount =()=> {
+        this.getInfo()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -40,6 +51,7 @@ class ViewProfile extends React.Component {
     // end set status bar
   
     render(){
+        let {user} = this.state
         return (
             <View >
                 <View style={style.header}>
@@ -49,7 +61,7 @@ class ViewProfile extends React.Component {
                             source={images.backLight} />
                     </TouchableOpacity>
                     <Text style={style.title}> Thông tin cá nhân </Text>
-                    <TouchableOpacity style={style.p10} onPress={this._navTo(EditProfileScreen)}>
+                    <TouchableOpacity style={style.p10} onPress={this._navTo(EditProfileScreen,{refress:this.getInfo})}>
                         <Image 
                             style={style.iconEdit}
                             source={images.edit} />
@@ -58,27 +70,28 @@ class ViewProfile extends React.Component {
                 <View style={style.boxUser}>
                     <Image 
                         style={style.avatar}
-                        source={images.userBlue} />
-                    <Text style={style.name}>{this.props.navigation.state.params&& this.props.navigation.state.params.name ? this.props.navigation.state.params.name : "Nguyen Van A"}</Text>
+                        source={user&&user.image?{uri:user.image}:images.userBlue} />
+                    <Text style={style.name}>{user.name}</Text>
                 </View>
                 <View style={style.mt30}>
-                    <ListItem icon={images.pPhone} name={this.state.user.phone} />
-                    <ListItem icon={images.pEmail} name={this.state.user.email} />
-                    <ListItem icon={images.pGender} name={ShowGender(this.state.user.gender)} />
-                    <ListItem icon={images.pLocation} name={this.state.user.address} />
-                    <ListItem icon={images.pCompany} name={this.state.user.company} />
-                    <ListItem icon={images.pThue} name={this.state.user.tax_code} />
+                    <ListItem icon={images.pPhone} name={user.phone} />
+                    <ListItem icon={images.pEmail} name={user.email} />
+                    <ListItem icon={images.pGender} name={ShowGender(user.gender)} />
+                    <ListItem icon={images.pLocation} name={user.address} />
+                    <ListItem icon={images.pCompany} name={user.company} />
+                    <ListItem icon={images.pThue} name={user.tax_code} />
                 </View>
             </View>
         )
     }
 
-    _navTo = screen => () => {
-        this.props.navigation.navigate(screen)
+    _navTo = (screen,params) => () => {
+        this.props.navigation.navigate(screen,params)
     }
 
     _goBack = () => {
         this.props.navigation.goBack()
+        this.props.navigation.state.params.update()
     }
 
 }
@@ -95,12 +108,18 @@ const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
-    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10},
+    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#F1F1F1',borderBottomWidth:2},
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
     name: {fontSize: 16, color: '#333333', fontWeight: 'bold', padding: 6},
-    avatar: {resizeMode: 'contain', height: 70, alignSelf: 'center' },
+    avatar: { height: 70,width:70,borderRadius: 35, alignSelf: 'center' },
     p10: {padding: 10},
-    mt30: { marginTop: 30}
+    mt30: { marginTop: 30},
+    end:{
+        height:1,
+        width:width-100,
+        alignSelf:'flex-end',
+        backgroundColor:'#F1F1F1'
+    }
 })

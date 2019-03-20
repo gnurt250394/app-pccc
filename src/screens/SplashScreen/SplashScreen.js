@@ -11,13 +11,22 @@ export default class SplashScreen extends Component {
     }
   
     componentDidMount = async()=>{
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('#179ECE');
+        });
+
         let token = await AsyncStorage.getItem('token')
-        console.log(token,'token')
+        let Remember = await AsyncStorage.getItem('Remember')
       if(token){
         setTimeout(()=>{
             navigation.reset(HomeScreen)
-    }, 3000)
+    }, 2000)
          
+      } else if(Remember){
+        setTimeout(()=>{
+        navigation.reset(HomeScreen)
+    }, 2000)
       } else{
         setTimeout(()=>{
             navigation.navigate(HelloScreen)
@@ -25,13 +34,25 @@ export default class SplashScreen extends Component {
       }
        
     }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor(color);
+        });
+    }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback style= {styles.flex} onPress={this._navTo(HomeScreen)}>
                 <ImageBackground 
                     style={styles.container}
                     source={images.spBg} resizeMode="stretch">
-                    <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
                     <Image source={images.spLogo} style={styles.logo} />
                     <Image source={images.spSlogan} style={styles.slogan} />
                 </ImageBackground>

@@ -1,19 +1,22 @@
 import React from 'react'
-import { View, Alert, Image, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Alert, ActivityIndicator, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { updateUser } from 'config/apis/users'
+import { forgotPassword } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
-import { ScreenName, popupOk, color } from 'config'
-
+import { StatusCode, CodeToMessage, popupOk, color } from 'config'
+import  {  SigninScreen } from 'config/screenNames'
 class ChangePassword extends React.Component {
     state = {
+        token: this.props.navigation.getParam('token'),
         password: '',
         rePassword: '',
+        loading: false
     }
     // set status bar
     componentDidMount() {
+        console.log(this.state);
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -28,7 +31,14 @@ class ChangePassword extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
                 <View >
-                    <Header title="Đổi mật khẩu" onPress={this._goBack}/>
+                    {   this.state.loading ? 
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> : null
+                    }
+                    <Header
+                        check={1}
+                        title="Đổi mật khẩu" onPress={this._goBack}/>
                     <View style={style.content}>
                         <View></View>
                         <View>
@@ -67,7 +77,29 @@ class ChangePassword extends React.Component {
             popupOk('Mật khẩu nhập lại không đúng')
         }else{
             // call api
-            // updateUser()
+            this.setState({loading: true}, async () => {
+                forgotPassword({password: password}, this.state.token).then(res => {
+                    console.log('res: ', res);
+                    this.setState({loading: false})
+                    if(res.data.code != StatusCode.Success  || res.data == ""){
+                        popupOk(CodeToMessage[res.data.code])
+                    }else{
+                        Alert.alert(
+                            'Thông báo',
+                            'Thay đổi mật khẩu thành công. Quay lại đăng nhập.',
+                            [
+                            {text: 'OK', onPress: async () => {
+                                this.props.navigation.navigate(SigninScreen)
+                            }},
+                            ],
+                            {cancelable: false},
+                        );
+                    }
+                }).catch(err => {
+                    console.log('err: ', err);
+
+                })
+            })
         }
     }
 }

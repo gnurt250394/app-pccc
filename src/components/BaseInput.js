@@ -1,7 +1,8 @@
 import React from 'react'
 import { TextInput, View, Image, StyleSheet } from 'react-native'
 import styles from "assets/styles" 
-import { color } from 'config'
+import { color, defaultStyle } from 'config'
+
 export default class BaseInput extends React.PureComponent {
 
     static defaultProps = {
@@ -9,7 +10,8 @@ export default class BaseInput extends React.PureComponent {
     }
 
     state = {
-        value: this.props.value
+        value: this.props.value,
+        showIcon: this.props.showIcon || true,
     }
     componentWillReceiveProps(props){
         if(props.value != "") this.setState({value: props.value})
@@ -18,12 +20,14 @@ export default class BaseInput extends React.PureComponent {
     render(){
         return (
             <View style={style.inputView}>
-                <Image 
+
+                {this.state.showIcon && <Image 
                     style={[styles.icon,style.w12, this.props.styleIcon || {}, ]} 
-                    source={this.props.icon} />
+                    source={this.props.icon} />}
                 <TextInput 
                     placeholder={this.props.placeholder || "Enter something"}
-                    placeholderTextColor={this.props.placeholderTextColor || "#8FBEDF"}
+                    // placeholderTextColor={this.props.placeholderTextColor || "#8FBEDF"}
+                    placeholderTextColor={this.props.placeholderTextColor || "rgba(33, 102, 162, 0.5)"}
                     keyboardType={this.props.keyboardType || "default" }
                     secureTextEntry={this.props.secureTextEntry }
                     onChangeText={this.onChangeText}
@@ -49,10 +53,10 @@ const style = StyleSheet.create({
         color: color,
         padding: 0,
         paddingLeft: 8,
-        fontSize: 14,
+        fontSize: defaultStyle.fontSize,
         backgroundColor: 'white',
         flex: 1,
-        opacity: 0.8,
+        // opacity: 0.8,
     },
     inputView: {flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#C3E5FE', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
     w12: {width: 12}

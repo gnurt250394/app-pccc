@@ -10,26 +10,42 @@ import navigation from 'navigation/NavigationService';
 import {connect} from 'react-redux'
 
 const {width,height} =Dimensions.get('window')
+console.log('width: ', width);
+console.log('height: ', height);
  class ScreenHello extends Component {
 
     nextHome=()=>{
         navigation.reset(HomeScreen)
+        AsyncStorage.setItem('Remember','Remember')
     }
 
     onLogin=()=>{
-        navigation.reset(SigninScreen)
+        // navigation.reset(SigninScreen)
+        this.props.navigation.navigate(SigninScreen)
     }
 
     onSignUp=()=>{
-        navigation.reset(RegisterScreen)
+        // navigation.reset(RegisterScreen)
+        this.props.navigation.navigate(RegisterScreen)
       
+    }
+
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
+    }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
     }
 
     render() {
         
         return (
             <ScrollView>
-                <StatusBar backgroundColor="#fff" barStyle="dark-content" />
                 <View >
                     <Swiper  autoplay={true}
                         dotColor="#E5F4FC"

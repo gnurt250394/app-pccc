@@ -1,5 +1,7 @@
 export const SignupScreen = "SignupScreen" 
 export const SigninScreen = "SigninScreen" 
+export const CompleteUpdateScreen = "CompleteUpdateScreen" 
+
 export const RegisterScreen = "RegisterScreen" 
 export const ForgotPasswordScreen = "ForgotPasswordScreen" 
 export const ChangePasswordScreen = "ChangePasswordScreen"
@@ -35,3 +37,8 @@ export const SearchBiddingScreen ="SearchBiddingScreen"
 // messenger
 export const ListChatScreen ="ListChatScreen"
 export const MessengerScreen = "MessengerScreen"
+
+// binding
+export const ListBindingScreen = "ListBindingScreen"
+export const DetailBindingScreen = "DetailBindingScreen"
+
