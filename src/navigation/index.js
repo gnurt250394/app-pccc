@@ -28,6 +28,10 @@ import Shop from "../screens/Shop";
 import Search from "../screens/Search";
 import Messenger from 'screens/Messenger'
 
+// binding
+import ListBinding from 'screens/Binding/List'
+import DetailBinding from 'screens/Binding/Detail'
+
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
@@ -64,6 +68,10 @@ const App = createStackNavigator(
     [ScreenName.SearchScreen]: Search,
     [ScreenName.CheckPhoneScreen]: CheckPhone,
     [ScreenName.MessengerScreen]: Messenger,
+
+    // binding
+    [ScreenName.ListBindingScreen]: ListBinding,
+    // [ScreenName.DetailBindingScreen]: DetailBinding,
    
   },
   {

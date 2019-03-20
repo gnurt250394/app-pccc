@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen,ShopScreen } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBindingScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
 let {width, height} = Dimensions.get('window')
@@ -83,7 +83,7 @@ class Home extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box4} 
-                                // onPress={this._navTo(SearchScreen)} 
+                                onPress={this._navTo(ListBindingScreen)} 
                                 >
                                 {/* <Image 
                                     style={style.imgbox4}

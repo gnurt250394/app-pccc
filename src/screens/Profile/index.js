@@ -17,7 +17,7 @@ import CheckAuth from './CheckAuth';
 import { popupOk } from 'config';
 class Profile extends React.Component {
    state={
-       user: this.props.users?this.props.users:{},
+       user: this.props.users ? this.props.users :{},
        token:''
    }
 
@@ -27,13 +27,13 @@ class Profile extends React.Component {
 
 
 componentWillMount=async()=>{
-    let token =await getItem('token')
+    let token = this.props.token ? this.props.token : await getItem('token')
     this.setState({token})
 }
     // set status bar
     componentDidMount= async()=> {
         
-        let token =await getItem('token')
+        let token = this.props.token ? this.props.token : await getItem('token')
        
             if(token){
             this.getInfo()
