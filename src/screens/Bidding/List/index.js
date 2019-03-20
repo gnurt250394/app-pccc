@@ -1,14 +1,17 @@
 import React from 'react'
-import { View,  StatusBar, StyleSheet, AsyncStorage } from 'react-native'
+import { View,  StatusBar, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import { signup } from 'config/apis/users'
 import {  color} from 'config'
 import ListItem from './ListItem'
-class SearchBinding extends React.Component {
-
+import { Header } from 'components'
+class ListBidding extends React.Component {
+    state = {
+        loading: false
+    }
     // set status bar
     async componentDidMount() {
-        console.log(this.props, 11);
+        
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -24,10 +27,22 @@ class SearchBinding extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                <ListItem 
-                    data={data} 
-                    keyword={this.keyword}
-                    navigation={this.props.navigation} />
+                 {   this.state.loading ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> : null
+                }
+                <Header
+                    check={1}
+                    title="Thông tin đấu thầu" onPress={this._goBack}/>
+                <ScrollView>
+
+                    <ListItem 
+                        data={data} 
+                        keyword={this.keyword}
+                        navigation={this.props.navigation} />
+                </ScrollView>
+                
 
                 
             </View>
@@ -44,10 +59,10 @@ class SearchBinding extends React.Component {
 
 
 }
-export default connect()(SearchBinding)
+export default connect()(ListBidding)
 
 const style = StyleSheet.create({
-    flex: {flex: 1, marginTop: 10,},
+    flex: {flex: 1},
 })
 
 let data = [

@@ -9,6 +9,7 @@ const constant ={
     SELL_PRODUCT:'sell-product',
     LIQUIDATION:'liquidation',
     FORGOT_PASS:'forgot-password',
+    NEW_BIDDING:'new-bidding',
 }
 
 export default constant;

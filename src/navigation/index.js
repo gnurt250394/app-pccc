@@ -28,9 +28,9 @@ import Shop from "../screens/Shop";
 import Search from "../screens/Search";
 import Messenger from 'screens/Messenger'
 
-// binding
-import ListBinding from 'screens/Binding/List'
-import DetailBinding from 'screens/Binding/Detail'
+// bidding
+import ListBidding from 'screens/Bidding/List'
+import DetailBidding from 'screens/Bidding/Detail'
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -69,9 +69,9 @@ const App = createStackNavigator(
     [ScreenName.CheckPhoneScreen]: CheckPhone,
     [ScreenName.MessengerScreen]: Messenger,
 
-    // binding
-    [ScreenName.ListBindingScreen]: ListBinding,
-    // [ScreenName.DetailBindingScreen]: DetailBinding,
+    // bidding
+    [ScreenName.ListBiddingScreen]: ListBidding,
+    // [ScreenName.DetailBiddingScreen]: DetailBidding,
    
   },
   {

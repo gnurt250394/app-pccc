@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Dimensions} from  'react-native'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
-import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBindingScreen } from "config/screenNames"
+import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBiddingScreen } from "config/screenNames"
 import ProductShop from './product/ProductShop';
 import LiquidationShop from './liquidation/LiquidationShop';
 import { color } from 'config'
