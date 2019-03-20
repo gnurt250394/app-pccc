@@ -26,6 +26,8 @@ import Introduce from "../screens/Introduce/Introduce";
 import Shop from "../screens/Shop";
 import Search from "../screens/Search";
 import Messenger from 'screens/Messenger'
+import InfoProject from "screens/Project/InfoProject";
+import DetailProject from "screens/Project/DetailProject";
 
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -60,7 +62,9 @@ const App = createStackNavigator(
     [ScreenName.SearchScreen]: Search,
     [ScreenName.CheckPhoneScreen]: CheckPhone,
     [ScreenName.MessengerScreen]: Messenger,
-   
+    [ScreenName.InfoProject]: InfoProject,
+    [ScreenName.DetailProject]: DetailProject,
+    
   },
   {
     initialRouteName: ScreenName.SplashScreen,

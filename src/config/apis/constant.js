@@ -7,7 +7,8 @@ const constant ={
     CHECK_PHONE_EMAIL: 'check-phone-email',
     UPDATE_AVATAR :'update-avatar',
     SELL_PRODUCT:'sell-product',
-    LIQUIDATION:'liquidation'
+    LIQUIDATION:'liquidation',
+    CHANGE_PASSWORD:'change-password'
 }
 
 export default constant;

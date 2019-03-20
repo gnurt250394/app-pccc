@@ -35,3 +35,7 @@ export const SearchBiddingScreen ="SearchBiddingScreen"
 // messenger
 export const ListChatScreen ="ListChatScreen"
 export const MessengerScreen = "MessengerScreen"
+
+// project
+export const DetailProject ="DetailProject"
+export const InfoProject = "InfoProject"

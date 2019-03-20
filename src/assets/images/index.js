@@ -116,5 +116,8 @@ module.exports = {
     offline: require('./offline.png'),
     camera:require('./camera.png'),
     checkNetWorking:require('./checknetworking.jpg'),
-    shopAdd:require('./shopAdd.png')
+    shopAdd:require('./shopAdd.png'),
+    icon_up:require('./icon_up.png'),
+    icon_square:require('./square.png'),
+    icon_ticker:require('./ticker.png')
 }

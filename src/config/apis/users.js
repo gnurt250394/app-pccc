@@ -25,6 +25,11 @@ export const updateUser =async ( body) => {
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.put(constant.USER, body)
 }
+export const changePassword =async ( body) => {
+    let token =await getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.post(constant.CHANGE_PASSWORD, body)
+}
 
 export const checkPhoneOrEmail = body => {
     return instance.post(constant.CHECK_PHONE_EMAIL, body)
