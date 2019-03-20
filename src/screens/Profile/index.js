@@ -10,9 +10,10 @@ import NavItem from './NavItem'
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { actionTypes } from 'actions'
+import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
-import { getItem, removeItem } from 'config/Controller';
+import { getItem, removeItem, Status } from 'config/Controller';
 import CheckAuth from './CheckAuth';
 import { popupOk } from 'config';
 class Profile extends React.Component {
@@ -34,7 +35,7 @@ componentWillMount=async()=>{
     componentDidMount= async()=> {
         
         let token = this.props.token ? this.props.token : await getItem('token')
-       
+       console.log(token,'liii')
             if(token){
             this.getInfo()
             }
@@ -106,21 +107,24 @@ componentWillMount=async()=>{
             console.log(res,'data')
             if(res.data.code == StatusCode.Success ){
                this.setState({user:res.data.data})
-            } else if(res.data.code== StatusCode.Tokenvalid){
+            } else if(res.data.code== Status.TOKEN_VALID){
             navigation.reset(SigninScreen)
-            popupOk(CodeToMessage[res.data.code])
+            Toast.show('Phiên đăng nhập đã hết hạn')
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
             AsyncStorage.removeItem('token')
-            } else if(res.data.code== StatusCode.TokenExpire){
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
+            } else if(res.data.code== Status.TOKEN_EXPIRED){
             navigation.reset(SigninScreen)
-            popupOk(CodeToMessage[res.data.code])
+            Toast.show('Phiên đăng nhập đã hết hạn')
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
             AsyncStorage.removeItem('token')
             }
         })
     }
     _logout =  () => {
        
-        LoginManager.logOut()
-        GoogleSignin.signOut();
+        // LoginManager.logOut()
+        // GoogleSignin.signOut();
         AsyncStorage.removeItem('token')
         navigation.reset(SigninScreen)
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
