@@ -47,5 +47,8 @@ export const DetailBiddingScreen = "DetailBiddingScreen"
 export const DetailProject = "DetailProject"
 export const InfoProject = "InfoProject"
 
+// tttd
+export const TrackingInfoScreen = "TrackingInfoScreen"
+
 
 

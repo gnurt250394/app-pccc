@@ -49,6 +49,7 @@ export const LoginType  = {
     google: 2,
 }
 
+
 export const CodeToMessage = {
     404: "Sai tài khoản hoặc mật khẩu",
     438: 'Không tìm thấy tài khoản',
@@ -102,5 +103,9 @@ export const validateName = str => {
 
 export const ellipsis = (str, max = 30) => {
     return (str.length > max)? str.substring(0, max) + "...": str;
+}
+
+export const toParams = (obj, first = '?') => {
+    return  first + Object.entries(obj).map(e => e.join('=')).join('&');
 }
 

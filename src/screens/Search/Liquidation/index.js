@@ -1,90 +1,81 @@
 import React from 'react'
-import { View,  StatusBar, StyleSheet, AsyncStorage } from 'react-native'
+import { View,  StyleSheet, AsyncStorage, ActivityIndicator, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { signup } from 'config/apis/users'
-import {  color} from 'config'
+import { search } from 'config/apis/bidding'
+import {  StatusCode, toParams } from 'config'
 import ListItem from './ListItem'
 class SearchLiquidation extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            datas: [],
+            loading: false
+        }
+    }
+
+
     // set status bar
     async componentDidMount() {
-        console.log(this.props, 11);
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        this.setState({loading: true}, async () => {
+            let keyword = await AsyncStorage.getItem('home_search') || ""
 
-        this.keyword = await AsyncStorage.getItem('keyword')
-        console.log('this.keyword: thanh ly', this.keyword);
+            let params = toParams({
+                table: 'sell_products',
+                type: 1,
+                keyword: keyword
+            })
+            search(params).then(res => {
+                console.log('res Liquidation : ', res.data.data);
+                if(res.data.code == StatusCode.Success){
+                    this.setState({
+                        datas: res.data.data,
+                        loading: false
+                    })
+                }else{
+                    this.setState({ loading: false })
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                this.setState({ loading: false })
+            })
+        })
     }
     
-    componentWillUnmount() {
-        this._navListener.remove();
-    }
+
 
     render(){
         return (
             <View style={style.flex}>
-                <ListItem 
-                    data={data} 
-                    keyword={this.keyword}
-                    navigation={this.props.navigation} />
-
-                
+                {   this.state.loading ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> : null
+                }
+                {
+                    this.state.datas.length == 0 
+                        ?
+                    !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                        :
+                    <ListItem 
+                        data={this.state.datas} 
+                        keyword={this.keyword}
+                        navigation={this.props.navigation} />
+                }
             </View>
         )
     }
-
-    _navTo = (screen, params = {} ) => () => {
-        this.props.navigation.navigate(screen, params)
-    }
-
-    _goBack = () => {
-        this.props.navigation.goBack()
-    }
-
 
 }
 export default connect()(SearchLiquidation)
 
 const style = StyleSheet.create({
     flex: {flex: 1, marginTop: 10,},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    }
 })
 
-let data = [
-    {
-        id: 1,
-        name: 'Thanh lý máy bơm ly tâm KPR',
-        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 2,
-        name: 'Thanh lý máy bơm ly tâm KPR',
-        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
-        price: 220000,
-        like: true
-    },
-    {
-        id: 3,
-        name: 'Thanh lý máy bơm ly tâm KPR',
-        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 4,
-        name: 'Thanh lý máy bơm ly tâm KPR',
-        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 5,
-        name: 'Thanh lý máy bơm ly tâm KPR',
-        desc: 'Mình đang cần bán 1 máy bơm chữa cháy hàng thanh lý quanh khu vực cầu giấy, hàng thanh lý quanh khu vực cầu giấy',
-        price: 250000,
-        like: false
-    },
-]

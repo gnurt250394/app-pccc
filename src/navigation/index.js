@@ -34,6 +34,8 @@ import DetailProject from "screens/Project/DetailProject";
 import ListBidding from 'screens/Bidding/List'
 import DetailBidding from 'screens/Bidding/Detail'
 
+// tttd
+import TrackingInfo from 'screens/TrackingInfo'
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
@@ -79,6 +81,9 @@ const App = createStackNavigator(
     // Projeect
     [ScreenName.InfoProject]: InfoProject,
     [ScreenName.DetailProject]: DetailProject,
+
+    // tttd
+    [ScreenName.TrackingInfoScreen]: TrackingInfo,
    
   },
   {
