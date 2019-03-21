@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet ,Image, Dimensions,TouchableOpacity,ActivityIndicator} from 'react-native';
 import images from "assets/images"
 import { getProduct } from 'config/apis/myShop';
-import { Status, _formatNumber, removeItem } from 'config/Controller';
+import { Status, removeItem, formatNumber } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 export default class ProductShop extends Component {
@@ -64,7 +64,7 @@ export default class ProductShop extends Component {
                 />
                 </TouchableOpacity>
                 <Text style={styles.txtName}>{item.product_name}</Text>
-                <Text style={styles.txtPrice}>{_formatNumber(item.price)} đ</Text>
+                <Text style={styles.txtPrice}>{formatNumber(item.price)} đ</Text>
             </View>
         )
     }
