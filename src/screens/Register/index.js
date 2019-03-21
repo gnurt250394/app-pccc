@@ -240,7 +240,7 @@ const style = StyleSheet.create({
     boxForgot: {width: '50%', alignSelf: 'center',},
     h15: {height: 15},
     h70p: {height: '70%'},
-    title: {color: color, fontSize:  height < smallScreen ? 16 : 22, marginBottom: '10%', textAlign: 'center',
+    title: {color: color, fontSize:  height < smallScreen ? 16 : 22,fontWeight: '500', marginBottom: '10%', textAlign: 'center',
     fontFamily: fontStyle.bold,
 },
     flex: {flex: 1},

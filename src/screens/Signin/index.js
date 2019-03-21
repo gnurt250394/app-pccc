@@ -298,10 +298,14 @@ class Signin extends React.Component {
         if(!phone || phone == ""){
             // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
             this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
+        console.log(userToken,'token1')
+
         }else{
             // navigation.reset(HomeScreen);
             this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             AsyncStorage.setItem('token',userToken)
+        console.log(userToken,'token2')
+
             navigation.reset(HomeScreen)
             
         }
@@ -332,7 +336,7 @@ class Signin extends React.Component {
                                 // call api update phone
                                 updateUser({phone: phone}, userToken).then(res => {
                                     if(res.data.code == StatusCode.Success){
-                                        AsyncStorage.setItem('token', this.state.token)
+                                        AsyncStorage.setItem('token', userToken)
                                         navigation.reset(HomeScreen)
                                     }else{
                                         popupOk(CodeToMessage[res.data.code])
@@ -382,8 +386,8 @@ const style = StyleSheet.create({
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {
-        width: width <= sreen4_7.width ? 40 : 55,
-        height: width <= sreen4_7.width ? 40 : 55,
+        width: width <= sreen4_7.width ? 55 : 55,
+        height: width <= sreen4_7.width ? 55 : 55,
         resizeMode: 'contain',
         marginTop: width <= sreen4_7.width ? 8 : 15,
         marginBottom: 18,

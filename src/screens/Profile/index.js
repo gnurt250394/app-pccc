@@ -28,13 +28,13 @@ class Profile extends React.Component {
     }
 
 componentWillMount=async()=>{
-    let token = this.props.token ? this.props.token : await getItem('token')
+    let token =  await getItem('token')
     this.setState({token})
 }   
     // set status bar
     componentDidMount= async()=> {
         
-        let token = this.props.token ? this.props.token : await getItem('token')
+        let token =  await getItem('token')
        console.log(token,'liii')
             if(token){
             this.getInfo()

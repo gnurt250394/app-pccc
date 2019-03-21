@@ -51,7 +51,7 @@ const {width,height}= Dimensions.get('window')
             this._folowUser(item)
         }
     })
-    console.log(this.state.listPartner,'liiii')
+    
     this.setState({listPartner:data})
   }
   _uncheck=(item)=>()=>{
@@ -117,11 +117,11 @@ const {width,height}= Dimensions.get('window')
         />
             <Text>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
         </View>
-        <TouchableOpacity style={styles.folow}
+        {<TouchableOpacity style={styles.folow}
         onPress={this._folowProject}
         >
             <Text style={styles.txtButton}>Theo dõi dự án</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
         </View>
         <CustomText value={"Giá trị"} name={formatNumber(project.value) +" "+ "đ"}/>
         <CustomText value={"Giai đoạn"} name={project.phase}/>
@@ -163,7 +163,7 @@ const {width,height}= Dimensions.get('window')
                     project:res.data.data,
                     listPartner:res.data.data.partner
                 })
-                console.log(res.data,'lll')
+                
                 
             } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
                 Toast.show('Phiên đăng nhập hết hạn')
@@ -237,7 +237,8 @@ const styles= StyleSheet.create({
         height:15,
         width:15,
         alignSelf:'center',
-        tintColor:'#2166A2'
+        tintColor:'#2166A2',
+        marginRight:5
     },
     txtButton:{
         color:'#FFFFFF'

@@ -7,6 +7,7 @@ import {  Input} from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
 import { actionTypes } from 'actions'
+import FastImage from 'react-native-fast-image'
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import { removeItem, Status } from 'config/Controller';
@@ -143,7 +144,7 @@ class EditProfile extends React.Component {
                 </View>
                     <TouchableOpacity onPress={this._onUploadImage}
                     style={style.boxUser}>
-                        <Image 
+                        <FastImage 
                             style={style.avatar}
                             source={image?{uri: image}:images.userBlue}
                              />
