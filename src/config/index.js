@@ -33,8 +33,8 @@ export const fonts = {
 }
 
 export const defaultStyle = {
-    fontSize: width <= sreen4_7.width ? 10 : 14,
-    padding: width <= sreen4_7.width ? 6 : 11,
+    fontSize: width <= sreen4_7.width ? 11 : 14,
+    padding: width <= sreen4_7.width ? 8 : 11,
     logoHeight: width <= sreen4_7.width ? 100 : 150,
 }
 

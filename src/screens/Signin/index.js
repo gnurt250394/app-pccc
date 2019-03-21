@@ -24,8 +24,23 @@ class Signin extends React.Component {
 
     // set status bar
     componentDidMount() {
-        LoginManager.logOut() // logout facebook
-        GoogleSignin.signOut() // logout google
+        //  // logout facebook
+        // LoginManager.logOut().then(fb => {
+        //     console.log('fb: ', fb);
+
+        // }).catch(err => {
+        //     console.log('err: ', err);
+
+        // })
+
+        //  // logout google
+        // GoogleSignin.signOut().then(gg => {
+        //     console.log('gg: ', gg);
+
+        // }).catch(err => {
+        //     console.log('err: ', err);
+
+        // })
 
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('dark-content');
@@ -149,6 +164,7 @@ class Signin extends React.Component {
           } 
           
           this.setState({loading: true})
+          LoginManager.logOut()
           loginSocial(body).then(res => {
                 this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
@@ -182,6 +198,8 @@ class Signin extends React.Component {
                 let provider = firebaseUserCredential.user.toJSON();
                 
                 this.setState({loading: true})
+                GoogleSignin.signOut()
+
                 loginSocial({
                     name: provider.displayName,
                     email: provider.providerData[0].email,
@@ -224,7 +242,6 @@ class Signin extends React.Component {
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
-                    console.log(res)
                     navigation.reset(HomeScreen)
                     AsyncStorage.setItem('token',res.data.token)
                     this.setState({loading: false})
@@ -274,11 +291,7 @@ class Signin extends React.Component {
     _onSwitchToHomePage = async (res, type) => {
         let data = res.data,
             user = data.data;
-            console.log('user: ', user);
         
-        this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
-            
-            
         // check update profile
         let phone = user.phone;
         let userToken = data.token;
@@ -287,6 +300,7 @@ class Signin extends React.Component {
             this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
         }else{
             // navigation.reset(HomeScreen);
+            this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             AsyncStorage.setItem('token',userToken)
             navigation.reset(HomeScreen)
             
