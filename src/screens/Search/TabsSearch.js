@@ -9,12 +9,6 @@ import SearchLiquidation from './Liquidation'
 import SearchProject from './Project'
 // IndicatorStyle is an absolute positioned View
 
-const indicatorStyle = props => ({
-	borderBottomColor:  props.activeTintColor,
-	alignSelf: 'center',
-});
-
-
 const tabs =  createMaterialTopTabNavigator(
   {
     [SearchProductScreen]: { 

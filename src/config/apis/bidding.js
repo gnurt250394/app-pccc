@@ -16,7 +16,6 @@ export const listBiddings = async () => {
 }
 
 export const search = async params => {
-    console.log('params: ', params);
     return instance.get(constant.SEARCH + params)
 }
 
