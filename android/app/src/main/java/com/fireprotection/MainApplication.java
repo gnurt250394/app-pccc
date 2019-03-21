@@ -4,12 +4,14 @@ import android.app.Application;
 
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import io.underscope.react.fbak.RNAccountKitPackage;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;

@@ -4,6 +4,7 @@ import images from "assets/images"
 import styles from "assets/styles" 
 import { color } from 'config'
 import navigation from 'navigation/NavigationService';
+import { fontStyle } from 'config/Controller';
 
 export default class Header extends React.Component {
     render(){
@@ -44,12 +45,11 @@ const style = StyleSheet.create({
         resizeMode: 'contain', 
     },
     title: {
-       
+        fontFamily: fontStyle.Montserrat_SemiBold,
         flex: 1, 
-        fontSize: 18, 
+        fontSize: 16, 
         color: '#fff', 
         textAlign: 'center', 
-        fontWeight: 'bold', 
         // paddingRight: 20, 
     },
     btn: {

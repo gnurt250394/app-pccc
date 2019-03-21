@@ -8,6 +8,7 @@ import { color, fonts } from 'config'
 import { Btn } from 'components'
 import navigation from 'navigation/NavigationService';
 import {connect} from 'react-redux'
+import { fontStyle } from 'config/Controller';
 
 const {width,height} =Dimensions.get('window')
 console.log('width: ', width);
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         // fontWeight: 'bold',
         marginTop: 10,
-        fontFamily: fonts.bold,
+        fontFamily: fontStyle.bold,
     },
     btn:{
         alignItems:'center',
