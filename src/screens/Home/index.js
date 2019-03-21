@@ -6,6 +6,8 @@ import styles from "assets/styles"
 import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase, width } from 'config'
+import { getItem } from 'config/Controller';
+import navigation from 'navigation/NavigationService';
 
 
 class Home extends React.Component {
@@ -187,7 +189,7 @@ class Home extends React.Component {
         } else {
             Alert.alert(
                 'Thông báo',
-                'Bạn muốn xem cái này ư??? \n Vui lòng ra đăng nhập nhé!! HIHI',
+                '     Bạn muốn xem cái này ư???\nVui lòng ra đăng nhập nhé!! HIHI  🍕🍕🍕',
                 [
                   {
                     text: 'Cancel', style: 'cancel',
