@@ -24,6 +24,10 @@ class ListBidding extends React.Component {
         this._navListener.remove();
     }
 
+    /**
+     * check thêm phần chuyển từ màn tracking qua => param type: tracking
+     */
+
     render(){
         return (
             <View style={style.flex}>

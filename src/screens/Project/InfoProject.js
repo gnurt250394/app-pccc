@@ -12,6 +12,11 @@ export default class InfoProject extends Component {
     this.state = {
     };
   }
+
+/**
+ * check thêm phần chuyển từ màn tracking qua => param type: tracking
+ */
+
 _nextPage=(router,params)=>()=>{
     navigation.navigate(router,params)
 }
