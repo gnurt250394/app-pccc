@@ -21,8 +21,8 @@ export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: this.props.data,
-            keyword: 'Máy bơm' ,
+            data: this.props.data || [],
+            keyword: this.props.keyword || '' ,
         }
         
     }

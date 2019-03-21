@@ -9,22 +9,21 @@ import { ScreenName, color } from 'config'
 import {SearchScreen } from 'config/screenNames'
 import TabsSearch from './TabsSearch'
 
+
 class Search extends React.Component {
 
     state = {
-        keyword: ''
+        keyword: '',
+        isSearch: false
     }
 
     // set status bar
     async componentDidMount() {
-        console.log(11,this.props);
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
-        let keyword = await AsyncStorage.getItem('home_search') || ""
-        console.log('keyword: ', keyword);
-        this.props.navigation.setParams({keyword})
+        let keyword = this.props.navigation.getParam('keyword') || ""
         this.setState({keyword})
     }
     
@@ -59,18 +58,19 @@ class Search extends React.Component {
                         style={style.cancel}>Hủy</Text>
                 </View>
                 <View style={style.flex}>
-                    <TabsSearch keywords={this.state.keyword} />
+                    <TabsSearch screenProps={{ keyword: this.state.keyword, isSearch: this.state.isSearch }} />
                 </View>
             
             </View>
         )
     }
 
+    _onSearch = () => {
+        this.setState({isSearch: true})
+    }
+
     onChangeText = key => val => {
-        if(key == "keyword")
-            this.setState({[key]: val}, () => AsyncStorage.setItem([key], val))
-        else
-            this.setState({[key]: val})
+        this.setState({[key]: val})
     }
 
     _navTo = screen => () => {

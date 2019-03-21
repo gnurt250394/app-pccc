@@ -9,23 +9,31 @@ class SearchProduct extends React.Component {
         super(props);
         this.state = {
             datas: [],
-            loading: false
+            loading: false,
+            keyword: ''
         }
     }
 
 
     // set status bar
     async componentDidMount() {
-        this.setState({loading: true}, async () => {
-            let keyword = await AsyncStorage.getItem('home_search') || ""
+        this.props.navigation.addListener('willFocus', () => this.loadData())
+    }
 
+    componentWillReceiveProps(props){
+        if(props.screenProps && props.screenProps.isSearch) this.loadData()
+    }
+
+    loadData = () => {
+        let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
+        console.log('Focus Product: ', keyword);
+        if(keyword != "")
+        this.setState({loading: true, keyword: keyword}, async () => {
             let params = toParams({
-                table: 'sell_products',
-                type: 0,
+                table: 'news_projects',
                 keyword: keyword
             })
             search(params).then(res => {
-                console.log('res products: ', res.data.data);
                 if(res.data.code == StatusCode.Success){
                     this.setState({
                         datas: res.data.data,
@@ -39,7 +47,6 @@ class SearchProduct extends React.Component {
             })
         })
     }
-    
 
     render(){
         return (
@@ -56,7 +63,7 @@ class SearchProduct extends React.Component {
                         :
                     <ListItem 
                         data={this.state.datas} 
-                        keyword={this.keyword}
+                        keyword={this.state.keyword}
                         navigation={this.props.navigation} />
                 }
             </View>
