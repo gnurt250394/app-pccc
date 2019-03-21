@@ -78,7 +78,7 @@ showList=()=>{
                 <TouchableOpacity style={styles.button}
                 onPress={this.showList}
                 >
-                <Text style={{fontSize:17,fontWeight:'500'}}>{this.props.item.name}</Text>
+                <Text style={{fontSize:17,fontWeight:'500'}}>{this.props.item.user_name}</Text>
                 <Animated.Image source={images.icon_up}
                 resizeMode="contain"
                     style={[{transform:[{rotate}]},styles.ticker]}

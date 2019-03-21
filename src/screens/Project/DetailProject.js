@@ -32,7 +32,7 @@ const {width,height}= Dimensions.get('window')
     return name 
   }
   _folowUser=(item)=>{
-      FolowUser({investor_id:item.id}).then(res=>{
+      FolowUser({investor_id:item.user_id}).then(res=>{
           if(res.data.code == Status.SUCCESS){
             //   Toast.show('Bạn đã theo dõi dự án ' + item.name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
@@ -46,17 +46,18 @@ const {width,height}= Dimensions.get('window')
   _check=(item)=>()=>{
     let data = this.state.listPartner
     data.forEach(e=>{
-        if(e.id == item.id){
+        if(e.user_id == item.user_id){
             e.checked = true
             this._folowUser(item)
         }
     })
+    console.log(this.state.listPartner,'liiii')
     this.setState({listPartner:data})
   }
   _uncheck=(item)=>()=>{
     let data = this.state.listPartner
     data.forEach(e=>{
-        if(e.id == item.id){
+        if(e.user_id == item.user_id){
             e.checked = false
         }
     })
@@ -72,7 +73,7 @@ const {width,height}= Dimensions.get('window')
       )
   }
   _keyExtractor=(item,index)=>{
-      return `${item.id|| index}`
+      return `${item.user_id|| index}`
   }
   _goBack=()=>{
       navigation.pop()
@@ -162,6 +163,7 @@ const {width,height}= Dimensions.get('window')
                     project:res.data.data,
                     listPartner:res.data.data.partner
                 })
+                console.log(res.data,'lll')
                 
             } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
                 Toast.show('Phiên đăng nhập hết hạn')

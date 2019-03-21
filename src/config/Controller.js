@@ -22,3 +22,10 @@ export const Status = {
 export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
   }
+  export const fontStyle = {
+    
+    SemiBoldItalic:'Montserrat-SemiBoldItalic',
+    AcuminBdItPro_0:'Acumin-BdItPro_0',
+    bold:'Montserrat-ExtraBold',
+    Montserrat_SemiBold:'Montserrat-SemiBold'
+}

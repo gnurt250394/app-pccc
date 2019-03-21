@@ -10,6 +10,7 @@ import  { accountKit } from 'config/accountKit'
 import  { SigninScreen, HomeScreen, } from 'config/screenNames'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
+import { fontStyle } from 'config/Controller';
 
 class Register extends React.Component {
     state = {
@@ -239,7 +240,9 @@ const style = StyleSheet.create({
     boxForgot: {width: '50%', alignSelf: 'center',},
     h15: {height: 15},
     h70p: {height: '70%'},
-    title: {color: color, fontWeight: 'bold', fontSize:  height < smallScreen ? 16 : 22, marginBottom: '10%', textAlign: 'center'},
+    title: {color: color, fontSize:  height < smallScreen ? 16 : 22, marginBottom: '10%', textAlign: 'center',
+    fontFamily: fontStyle.bold,
+},
     flex: {flex: 1},
     btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},
 })
