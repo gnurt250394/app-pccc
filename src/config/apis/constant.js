@@ -11,6 +11,7 @@ const constant ={
     FORGOT_PASS:'forgot-password',
     NEW_BIDDING:'new-bidding',
     CHANGE_PASSWORD:'change-password',
+    SEARCH:'search',
 }
 
 export default constant;

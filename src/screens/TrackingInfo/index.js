@@ -46,7 +46,9 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgStreet}
                                     source={images.trackingDA} />
-                                <Text style={style.textB6}>Thông tin dự án</Text> 
+                                <Text style={style.text}>
+                                    Thông tin dự án  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                </Text> 
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
@@ -56,7 +58,7 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgStreet}
                                         source={images.trackingDT} />
-                                    <Text style={[style.textB4]}>Thông tin đấu thầu</Text> 
+                                    <Text style={[style.text]}>Thông tin đấu thầu</Text> 
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -68,7 +70,7 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgStreet}
                                     source={images.trackingSP} />
-                                <Text style={style.textB6}>Sản phẩm</Text> 
+                                <Text style={style.text}>Sản phẩm</Text> 
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
@@ -78,7 +80,7 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgStreet}
                                         source={images.trackingNT} />
-                                    <Text style={[style.textB4]}>Nhà thầu</Text> 
+                                    <Text style={[style.text]}>Nhà thầu   <Image  style={style.iconNotify} source={images.dotYellow} /></Text> 
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -92,7 +94,7 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgContaint}
                                         source={images.video} />
-                                    <Text style={style.textB4}>Video</Text> 
+                                    <Text style={style.text}>Video</Text> 
                                 </View>
                             </TouchableOpacity>
 
@@ -103,7 +105,7 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgContaint}
                                         source={images.catalog} />
-                                    <Text style={style.textB4}>Catalog</Text> 
+                                    <Text style={style.text}>Catalog</Text> 
                                 </View>
                             </TouchableOpacity>
 
@@ -114,7 +116,7 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgContaint}
                                         source={images.tailieu} />
-                                    <Text style={style.textB4}>Tài liệu</Text> 
+                                    <Text style={style.text}>Tài liệu</Text> 
                                 </View>
                             </TouchableOpacity>
                             
@@ -163,16 +165,13 @@ const style = StyleSheet.create({
         alignSelf: 'center',
         resizeMode: 'stretch',
     },
-    textB6: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, 
-        // textShadowColor: "gray",
-        // textShadowOffset: {
-        //     width: -1,
-        //     height: 1,
-        // },
-        // textShadowRadius: 2,
-        // elevation: 2,
+    iconNotify: {
+        width: 12, 
+        height: 12, 
+        resizeMode: 'contain',
     },
-    textB4: {position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
+    text: {
+        position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
         // textShadowColor: "gray",
         // textShadowOffset: {
         //     width: -1,

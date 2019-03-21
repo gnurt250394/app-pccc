@@ -1,83 +1,76 @@
 import React from 'react'
-import { View,  StatusBar, StyleSheet, AsyncStorage } from 'react-native'
+import { View,  ActivityIndicator, StyleSheet, AsyncStorage, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { signup } from 'config/apis/users'
-import {  color} from 'config'
+import { search } from 'config/apis/bidding'
+import {  StatusCode, toParams } from 'config'
 import ListItem from './ListItem'
 class SearchProduct extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            datas: [],
+            loading: false
+        }
+    }
+
 
     // set status bar
     async componentDidMount() {
-        console.log(this.props, 11);
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        this.setState({loading: true}, async () => {
+            let keyword = await AsyncStorage.getItem('home_search') || ""
 
-        this.keyword = await AsyncStorage.getItem('keyword')
+            let params = toParams({
+                table: 'sell_products',
+                type: 0,
+                keyword: keyword
+            })
+            search(params).then(res => {
+                console.log('res products: ', res.data.data);
+                if(res.data.code == StatusCode.Success){
+                    this.setState({
+                        datas: res.data.data,
+                        loading: false
+                    })
+                }else{
+                    this.setState({ loading: false })
+                }
+            }).catch(err => {
+                this.setState({ loading: false })
+            })
+        })
     }
     
-    componentWillUnmount() {
-        this._navListener.remove();
-    }
 
     render(){
         return (
             <View style={style.flex}>
-                <ListItem 
-                    data={data} 
-                    keyword={this.keyword}
-                    navigation={this.props.navigation} />
-
-                
+                {   this.state.loading ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> : null
+                }
+                {
+                    this.state.datas.length == 0 
+                        ?
+                    !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                        :
+                    <ListItem 
+                        data={this.state.datas} 
+                        keyword={this.keyword}
+                        navigation={this.props.navigation} />
+                }
             </View>
         )
     }
-
-    _navTo = (screen, params = {} ) => () => {
-        this.props.navigation.navigate(screen, params)
-    }
-
-    _goBack = () => {
-        this.props.navigation.goBack()
-    }
-
 }
 export default connect()(SearchProduct)
 
 const style = StyleSheet.create({
     flex: {flex: 1, marginTop: 10,},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    }
 })
-
-let data = [
-    {
-        id: 1,
-        name: 'loại Máy bơm litaam 1',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 2,
-        name: 'máy bơm litaam 2',
-        price: 220000,
-        like: true
-    },
-    {
-        id: 3,
-        name: 'Máy bơm litaam 3',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 4,
-        name: 'Máy bơm litaam 4',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 5,
-        name: 'Máy bơm litaam 5',
-        price: 250000,
-        like: false
-    },
-]

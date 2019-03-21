@@ -171,8 +171,8 @@ class Home extends React.Component {
     }
 
     _onSearch = async () => {
-        AsyncStorage.setItem('keyword', this.state.keyword)
-        this.props.navigation.navigate(SearchScreen)
+        AsyncStorage.setItem('home_search', this.state.keyword)
+        if(this.state.keyword.trim() != "") this.props.navigation.navigate(SearchScreen)
     }
 
     onChangeText = key => val => {

@@ -18,25 +18,25 @@ const indicatorStyle = props => ({
 const tabs =  createMaterialTopTabNavigator(
   {
     [SearchProductScreen]: { 
-      screen: props => <SearchProduct indicatorStyle={indicatorStyle(props)} {...props} />,
+      screen: props => <SearchProduct  {...props} />,
       navigationOptions: () => ({
         title: 'Sản phẩm',
       }),
     },
     [SearchLiquidationScreen]: { 
-      screen: props => <SearchLiquidation indicatorStyle={indicatorStyle(props)} {...props} />,
+      screen: props => <SearchLiquidation  {...props} />,
       navigationOptions: () => ({
         title: 'Thanh lý',
       }),
     },
     [SearchProjectScreen]: { 
-      screen: props => <SearchProject indicatorStyle={indicatorStyle(props)} {...props} />,
+      screen: props => <SearchProject  {...props} />,
       navigationOptions: () => ({
         title: 'Tin dự án',
       }),
     },
     [SearchBiddingScreen]: { 
-      screen: props => <SearchBidding indicatorStyle={indicatorStyle(props)} {...props} />,
+      screen: props => <SearchBidding  {...props} />,
       navigationOptions: () => ({
         title: 'Tin đấu thầu',
       }),
@@ -49,6 +49,7 @@ const tabs =  createMaterialTopTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
 
       swipeEnabled: true,
+      lazy: false,
       tabBarPosition: 'top',
       tabBarOptions: {
         activeTintColor: color,
@@ -66,8 +67,11 @@ const tabs =  createMaterialTopTabNavigator(
           backgroundColor: 'white', //<== remove background color
           borderColor: '#ccc' // <== remove border
         }
-      }
+      },
+
+      
     }),
+   
   }
 );
 
