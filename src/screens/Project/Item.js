@@ -19,18 +19,18 @@ export default class Item extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        show:false
+        show:false,
+        checked:true,
     };
     this.rotate = new Animated.Value(0)
   }
-  _rolate=()=>{
-    this.rotate.setValue(0)
+  _rolate=(value)=>{
     Animated.spring(
       this.rotate,
       {
-        toValue: 1,
+        toValue: value,
         duration: 1000,
-        easing: Easing.linear
+        // easing: Easing.cubic
       }
     ).start()
   }
@@ -38,12 +38,12 @@ export default class Item extends Component {
  
 showList=()=>{
     if(this.state.show){
-        this._rolate()
+        this._rolate(0)
         this.setState({
             show:false
         })
     } else{
-        this._rolate()
+        this._rolate(1)
         this.setState({
             show:true
         })
@@ -59,11 +59,22 @@ showList=()=>{
     return (
                 <View style={styles.containerList}>
                 <View style={styles.rowList}>
-                <TouchableOpacity style={styles.buttonTicker}>
+                {this.props.item.checked?<TouchableOpacity 
+                    style={styles.buttonTicker}
+                    onPress={this.props.onPressCheck}
+                >
                 <Image source={images.icon_ticker}
                     style={styles.ticker}
                 />
                 </TouchableOpacity>
+                :
+                <TouchableOpacity 
+                    onPress={this.props.onPressUncheck}
+                    style={styles.buttonTicker}>
+                <Image source={images.unselect}
+                    style={styles.ticker}
+                />
+                </TouchableOpacity>}
                 <TouchableOpacity style={styles.button}
                 onPress={this.showList}
                 >

@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "820178239499-31qm4gnjp1vvr4jqrvbnplvs38033s1d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pccc.test",
+            "certificate_hash": "0c280cf4ecc26203e5871ee4f7687b3b129b16fc"
+          }
+        },
+        {
           "client_id": "820178239499-jb2vqori99fr9jua7d30tm5dadlps2g6.apps.googleusercontent.com",
           "client_type": 3
         }

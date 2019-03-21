@@ -16,6 +16,7 @@ import { getInfoAcount } from 'config/apis/users';
 import { getItem, removeItem, Status } from 'config/Controller';
 import CheckAuth from './CheckAuth';
 import { popupOk } from 'config';
+import Item from 'screens/Project/Item';
 class Profile extends React.Component {
    state={
        user: this.props.users ? this.props.users :{},
@@ -26,11 +27,10 @@ class Profile extends React.Component {
         this.props.navigation.navigate(EditProfileScreen)
     }
 
-
 componentWillMount=async()=>{
     let token = this.props.token ? this.props.token : await getItem('token')
     this.setState({token})
-}
+}   
     // set status bar
     componentDidMount= async()=> {
         
