@@ -16,7 +16,7 @@ export default class ListItem extends Component {
               </View>
               <View style={styles.row}>
                  
-                 <Text>
+                 <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
@@ -24,7 +24,7 @@ export default class ListItem extends Component {
               </View>
               <View style={styles.row}>
                  
-                 <Text>
+                 <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
@@ -32,7 +32,7 @@ export default class ListItem extends Component {
               </View>
               <View style={styles.row}>
                  
-                 <Text>
+                 <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
@@ -40,7 +40,7 @@ export default class ListItem extends Component {
               </View>
               <View style={styles.row}>
                  
-                 <Text>
+                 <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
@@ -48,7 +48,7 @@ export default class ListItem extends Component {
               </View>
               <View style={styles.row}>
                  
-                 <Text>
+                 <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
@@ -65,12 +65,15 @@ const styles= StyleSheet.create({
         flex:1,
         padding: 10,
     },
+    txtColor:{
+        color:'#555555'
+    },
     container:{
         flex:1,
     },
     image:{
-        height:8,
-        width:8,
+        height:7,
+        width:7,
         tintColor:'gray',
         alignSelf: 'center',
         marginRight: 8,

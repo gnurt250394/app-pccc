@@ -45,9 +45,9 @@ const style = StyleSheet.create({
         resizeMode: 'contain', 
     },
     title: {
-        fontFamily: fontStyle.Montserrat_SemiBold,
+        fontFamily: fontStyle.Acumin_bold,
         flex: 1, 
-        fontSize: 16, 
+        fontSize: 18, 
         color: '#fff', 
         textAlign: 'center', 
         // paddingRight: 20, 

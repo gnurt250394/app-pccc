@@ -1,11 +1,14 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
+import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions,Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, SigninScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
 import { color, toUpperCase } from 'config'
+import { getItem } from 'config/Controller';
+import SimpleToast from 'react-native-simple-toast';
+import navigation from 'navigation/NavigationService';
 let {width, height} = Dimensions.get('window')
 
 
@@ -92,7 +95,8 @@ class Home extends React.Component {
                                 <View  style={style.box4} >
                                     <Image 
                                         style={style.imgbox4}
-                                        source={images.thongtindauthau} />
+                                        source={images.thongtindauthau}
+                                    />
                                     <Text style={[style.textB4]}>Thông tin đấu thầu</Text> 
                                 </View>
                             </TouchableOpacity>
@@ -181,8 +185,26 @@ class Home extends React.Component {
         this.setState({[key]: val})
     }
 
-    _navTo = (screen, params = {} ) => () => {
-        this.props.navigation.navigate(screen, params)
+    _navTo = (screen, params = {} ) => async() => {
+        let token = await getItem('token')
+        if(token){
+            this.props.navigation.navigate(screen, params)
+        } else {
+            Alert.alert(
+                'Thông báo',
+                'Bạn muốn xem cái này ư??? \n Vui lòng ra đăng nhập nhé!! HIHI',
+                [
+                  {
+                    text: 'Cancel', style: 'cancel',
+                  },
+                  {text: 'OK', onPress:() => {navigation.navigate(SigninScreen)}}
+    
+                        
+                ],
+                {cancelable: false},
+              );
+        }
+        
     }
 
     _goBack = () => {

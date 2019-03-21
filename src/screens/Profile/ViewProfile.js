@@ -108,7 +108,7 @@ const style = StyleSheet.create({
     icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
-    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#F1F1F1',borderBottomWidth:1},
+    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#CCCCCC',borderBottomWidth:0.5},
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},

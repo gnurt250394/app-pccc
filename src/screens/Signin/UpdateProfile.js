@@ -18,7 +18,7 @@ class UpdateProfile extends React.Component {
         this.state = {
             allowPhone: false,
             loading: false,
-            token: this.props.navigation.getParam('token'),
+            // token: this.props.navigation.state && this.props.navigation.state.params.token,
             user: this.props.navigation.getParam('user'),
         }
         
@@ -118,7 +118,7 @@ class UpdateProfile extends React.Component {
                         
                         updateUser(this.state.token, {phone: phone}).then(res => {
                             if(res.data.code == StatusCode.Success){
-                                AsyncStorage.setItem('token', this.state.token)
+                                // AsyncStorage.setItem('token', this.state.token)
                                 this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: this.state.token})
                                 navigation.reset(HomeScreen)
                             }else{

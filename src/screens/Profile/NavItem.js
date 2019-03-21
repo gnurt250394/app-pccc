@@ -25,6 +25,6 @@ const style = StyleSheet.create({
     title: {color: '#fff', fontSize: 20, alignSelf: 'center',  paddingTop: 15 },
     txt:{  flex: 1, color:'#333333', fontSize: 14,  paddingBottom: 15, paddingTop: 8 },
     img: {marginRight: 15, marginLeft: 10},
-    label: {  flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomColor: "#707070", borderBottomWidth: 0.5,},
+    label: {  flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomColor: "#CCCCCC", borderBottomWidth: 0.5,},
     next: {width: 9, marginRight: 10}
 })

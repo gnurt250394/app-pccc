@@ -19,6 +19,9 @@ export default styles = StyleSheet.create({
         marginTop: width <= sreen4_7.width ? 15 : 25,
         marginBottom: 25,
         borderRadius: 3,
+        height:38,
+        alignItems:'center',
+        justifyContent:'center',
         padding: defaultStyle.padding,
     },
     btnSignup: {
@@ -33,6 +36,7 @@ export default styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: defaultStyle.fontSize,
         color: 'white',
+        fontWeight:'500',
         fontFamily: fontStyle.bold,
     },
     textSignup: {
@@ -116,7 +120,7 @@ export default styles = StyleSheet.create({
         left: '48%'
     },
     close: {
-        width: width <= sreen4_7.width ? 10 : 15,
+        width: 15,
         resizeMode: 'contain',
     },
     btnClose: {

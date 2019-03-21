@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color:color,
         textAlign:'center',
-        // fontWeight: 'bold',
+        // fontWeight: '500',
         marginTop: 10,
-        fontFamily: fontStyle.bold,
+        fontFamily: fontStyle.Montserrat_SemiBold,
     },
     btn:{
         alignItems:'center',
