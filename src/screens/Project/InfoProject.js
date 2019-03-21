@@ -18,6 +18,11 @@ const {width,height}= Dimensions.get('window')
       page:0
     };
   }
+
+/**
+ * check thêm phần chuyển từ màn tracking qua => param type: tracking
+ */
+
 _nextPage=(router,params)=>()=>{
     navigation.navigate(router,params)
 }

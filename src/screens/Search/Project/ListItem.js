@@ -51,15 +51,20 @@ export default class ListItem extends React.Component {
     }
     renderItem = ({item, index}) => {
         return <View style={style.box}>
-                <Text style={style.name}>{item.name}</Text>
-                <LI label={`Phiên bản: ${item.version}`} />
-                <LI label={`Giá trị: ${toPrice(item.price)}`} />
-                <LI label={`Giai đoạn: ${item.stage}`} />
-                <LI label={`Địa điểm: ${item.localtion}`} />
-                <LI label={`Mã dự án: ${item.projectCode}`} />
-                <LI label={`Ngày đăng tin: ${item.createdAt}`} />
+                {item.name && <Text style={style.name}>{item.name}</Text>}
+                {item.version && <LI label={`Phiên bản: ${item.version}`} />}
+                {item.price && <LI label={`Giá trị: ${toPrice(item.price)}`} />}
+                {item.phase && <LI label={`Giai đoạn: ${item.phase}`} />}
+                {item.tbmt && <LI label={`Số TBMT: ${item.tbmt}`} />}
+                {item.partner && <LI label={`Bên mời thầu: ${item.partner}`} />}
+                {item.address && <LI label={`Địa điểm: ${item.address}`} />}
+                {item.project_code && <LI label={`Mã dự án: ${item.project_code}`} />}
+                {item.time_start && <LI label={`Ngày đăng tin: ${item.time_start}`} />}
+                {item.time_end && <LI label={`Ngày kết thúc: ${item.time_end}`} />}
+                {/* {item.description && <LI label={`Thông tin: ${item.description}`} />} */}
             </View>
     }
+
     render(){
         return (
             <FlatList

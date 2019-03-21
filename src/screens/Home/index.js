@@ -3,10 +3,9 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen } from 'config/screenNames'
 import { DrawerActions } from 'react-navigation-drawer';
-import { color, toUpperCase } from 'config'
-let {width, height} = Dimensions.get('window')
+import { color, toUpperCase, width } from 'config'
 
 
 class Home extends React.Component {
@@ -52,8 +51,7 @@ class Home extends React.Component {
 
                     <View style={style.top}>
                         <TouchableOpacity style={[style.btnTop, style.mr20p]} 
-                        // onPress={this._navTo(SearchScreen)} 
-                        >
+                            onPress={this._navTo(TrackingInfoScreen)} >
                             <Image 
                                     style={style.iconTop}
                                 source={images.tttd} />
@@ -173,8 +171,8 @@ class Home extends React.Component {
     }
 
     _onSearch = async () => {
-        AsyncStorage.setItem('keyword', this.state.keyword)
-        this.props.navigation.navigate(SearchScreen)
+        AsyncStorage.setItem('home_search', this.state.keyword)
+        if(this.state.keyword.trim() != "") this.props.navigation.navigate(SearchScreen)
     }
 
     onChangeText = key => val => {

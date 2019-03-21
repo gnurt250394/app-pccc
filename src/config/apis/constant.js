@@ -11,6 +11,7 @@ const constant ={
     FORGOT_PASS:'forgot-password',
     NEW_BIDDING:'new-bidding',
     CHANGE_PASSWORD:'change-password',
+    SEARCH:'search',
     PROJECT_DETAIL:'project-detail',
     NEW_PROJECT:'new-project'
 }

@@ -39,10 +39,10 @@ export default class ListItem extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
-                    <Image source={images.maybom} style={style.image}/>
+                    <Image source={item.image && item.image != "" ? {uri: item.image} : images.logo } style={style.image}/>
                 </TouchableOpacity>
-                {this._showName(item.name)}
-                {/* <Text style={style.name}>{item.name}</Text> */}
+                {/* {this._showName(item.name)} */}
+                <Text style={style.name}>{item.name}</Text>
                 <Text style={style.price}>{toPrice(item.price)}</Text>
             </View>
     }
@@ -67,7 +67,7 @@ export default class ListItem extends React.Component {
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderWidth: 1, borderColor: '#ddd', margin: 5, borderRadius: 10, maxWidth: '31%'},
-    image: {width: 90,  resizeMode: 'contain', margin: 10,},
+    image: {width: 90,  height: 90, resizeMode: 'contain', margin: 10,},
     name: { fontSize: 15, padding: 10, textAlign: 'left',color: '#707070'},
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},

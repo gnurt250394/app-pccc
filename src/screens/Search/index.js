@@ -22,7 +22,9 @@ class Search extends React.Component {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
-        let keyword = await AsyncStorage.getItem('keyword') || ""
+        let keyword = await AsyncStorage.getItem('home_search') || ""
+        console.log('keyword: ', keyword);
+        this.props.navigation.setParams({keyword})
         this.setState({keyword})
     }
     
@@ -57,7 +59,7 @@ class Search extends React.Component {
                         style={style.cancel}>Hủy</Text>
                 </View>
                 <View style={style.flex}>
-                    <TabsSearch keyword={this.state.keyword} />
+                    <TabsSearch keywords={this.state.keyword} />
                 </View>
             
             </View>
