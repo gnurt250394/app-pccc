@@ -1,15 +1,20 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtubeLink} from 'config'
+import {  color, width, StatusCode, youtubeApiKey} from 'config'
 import images from "assets/images"
 import { listDocuments } from 'config/apis/Project'
+import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
 
 class Video extends React.Component {
     state = {
         loading: false,
         keyword: '',
-        datas: []
+        datas: [],
+        isReady: false,
+        status: null,
+        quality: null,
+        error: null,
     }
     // set status bar
     async componentDidMount() {
@@ -81,6 +86,7 @@ class Video extends React.Component {
                 </View>
 
                 <ScrollView>
+
                     {
                         this.state.datas.length == 0 
                             ?
@@ -98,9 +104,22 @@ class Video extends React.Component {
 
     renderItem = ({item, index}) => {
         return <View style={style.box}>
-                <Image 
-                    style={style.image}
-                    source={item.link_id && item.link_id != "" ? {uri: youtubeLink + item.link_id} : images.videoImage} />
+
+                {/* <YouTube
+                    apiKey={youtubeApiKey}
+                    videoId={item.link_id}  // The YouTube video ID
+                    play={true}             // control playback of video with true/false
+                    fullscreen={true}       // control whether the video should play in fullscreen or inline
+                    loop={true}             // control whether the video should loop when ended
+                    onReady={this.onReady}
+                    onChangeState={this.onChangeState}
+                    onChangeQuality={this.onChangeQuality}
+                    onError={this.onError}
+                    style={style.youtube} /> */}
+                
+                <TouchableOpacity onPress={this.playvideo(item.link_id)} >
+                    <Image style={style.image} source={images.videoImage}/>
+                </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
                     <Text style={style.time}>Ngày đăng: {item.date}</Text>
@@ -110,6 +129,38 @@ class Video extends React.Component {
                     </TouchableOpacity>
                 </View>
             </View>
+    }
+
+    playvideo = id => () => {
+        YouTubeStandaloneAndroid.playVideo({
+            apiKey: youtubeApiKey,     // Your YouTube Developer API Key
+            videoId: id,     // YouTube video ID
+            autoplay: true,             // Autoplay the video
+            fullscreen: true,
+            startTime: 120,             // Starting point of video (in seconds)
+          })
+            .then(() => console.log('Standalone Player Exited'))
+            .catch(errorMessage => console.error(errorMessage))
+    }
+
+    onReady = e => {
+        console.log('e: ', e);
+        this.setState({ isReady: true })
+    }
+
+    onChangeState = e => {
+        console.log('e: ', e);
+        this.setState({ status: e.state })
+    }
+
+    onChangeQuality = e => {
+        console.log('e: ', e);
+        this.setState({ quality: e.quality })
+    }
+
+    onError = e => {
+        console.log('e: ', e);
+        this.setState({ error: e.error })
     }
 
     _onSearch = () => {

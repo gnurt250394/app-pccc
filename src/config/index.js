@@ -33,6 +33,7 @@ export const fonts = {
 }
 
 export const youtubeLink = "https://www.youtube.com/watch?v="
+export const youtubeApiKey = "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY"
 
 export const defaultStyle = {
     fontSize: width <= sreen4_7.width ? 13 : 14,
