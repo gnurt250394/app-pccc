@@ -14,7 +14,9 @@ const constant ={
     SEARCH:'search',
     PROJECT_DETAIL:'project-detail',
     NEW_PROJECT:'new-project',
-    FOLOW:'/add-follows'
+    FOLOW:'/add-follows',
+    LIST_FOLLOW:'list-object-follows',
+    Document:'document',
 }
 
 export default constant;

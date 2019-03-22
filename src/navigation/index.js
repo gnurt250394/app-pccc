@@ -38,6 +38,12 @@ import DetailBidding from 'screens/Bidding/Detail'
 import TrackingInfo from 'screens/TrackingInfo'
 import BuyProduct from "screens/Shop/product/BuyProduct";
 
+// video
+import Video from 'screens/Video'
+
+// Catalog
+import Catalog from 'screens/Catalog'
+
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
  },{
@@ -56,22 +62,27 @@ const App = createStackNavigator(
     [ScreenName.ForgotPasswordScreen]: ForgotPassword,
     [ScreenName.ChangePasswordScreen]: ChangePassword,
     [ScreenName.CompleteScreen]: Complete,
+
     [ScreenName.ViewProfileScreen]: ViewProfile,
     [ScreenName.EditProfileScreen]: EditProfile,
     [ScreenName.ProfileScreen]: Profile,
+
     [ScreenName.ConfirmScreen]: Confirm,
     [ScreenName.HomeScreen]: MyDrawerNavigator,
     [ScreenName.CartScreen]: Cart,
     [ScreenName.ProductDetailScreen]: ProductDetail,
     [ScreenName.CheckAuthScreen]: CheckAuth,
+
     [ScreenName.IntroduceScreen]: Introduce,
     [ScreenName.ContactsScreen]: Contacts,
     [ScreenName.ViewAllProductScreen]: ViewAllProduct,
     [ScreenName.ShopScreen]: Shop,
+
     [ScreenName.MyProfile]: MyProfile,
     [ScreenName.UpdateProfileScreen]: UpdateProfile,
     [ScreenName.SearchScreen]: Search,
     [ScreenName.CheckPhoneScreen]: CheckPhone,
+    
     [ScreenName.MessengerScreen]: Messenger,
 
     // bidding
@@ -86,6 +97,12 @@ const App = createStackNavigator(
 
     // tttd
     [ScreenName.TrackingInfoScreen]: TrackingInfo,
+
+    // Video
+    [ScreenName.VideoScreen]: Video,
+
+    // Catalog
+    [ScreenName.CatalogScreen]: Catalog,
    
   },
   {

@@ -129,17 +129,12 @@ module.exports = {
     trackingSP: require('./trackingSP.png'),
     dotYellow: require('./dotYellow.png'),
 
+    // video
+    videoImage: require('./videoImage.png'),
+
+    // catalog
+    pdf: require('./pdf.png'),
+    document: require('./document.png'),
 
 
-
-
-    // Buy Product
-    proConfirm:require('./proConfirm.png'),
-    proManufacturer:require('./proManufacturer.png'),
-    proPrice:require('./proPrice.png'),
-    proPriceAfter:require('./proPriceAfter.png'),
-    proQuanlity:require('./proQuanlity.png'),
-    proStatus:require('./proStatus.png'),
-    proSupplier:require('./proSupplier.png'),
-    proYear:require('./proYear.png'),
 }
