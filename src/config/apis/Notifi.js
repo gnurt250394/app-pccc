@@ -18,7 +18,7 @@ export const getListNotifiSystem = async(body)=>{
 export const getNewListNotifiFolow = async(page)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.NEW_PROJECT,{params:page})
+        return instance.get(constant.NEW_PROJECT,{params:{page:page}})
 }
 // export const FolowProject = async(body)=>{
 //     let token = await getItem('token')

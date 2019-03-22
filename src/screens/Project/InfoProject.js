@@ -15,9 +15,9 @@ const {width,height}= Dimensions.get('window')
     super(props);
     this.state = {
       listProject:[],
-      page:0,
+      page:1,
       Threshold:0.1,
-      refresing:false
+      refresing:true
     };
   }
 
@@ -44,6 +44,8 @@ _nextPage=(router,params)=>()=>{
           page: prev.page +1
         }
       },this.getData)
+    } else{
+      return null
     }
   }
   ListFooterComponent=()=>{
@@ -83,6 +85,8 @@ _nextPage=(router,params)=>()=>{
   }
   getData=()=>{
     getNewProject({page:this.state.page}).then(res=>{
+      console.log(res.data,'data')
+      
       if(res.data.code == Status.SUCCESS){
         this.setState({
           listProject:[...this.state.listProject,...res.data.data]

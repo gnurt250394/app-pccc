@@ -6,7 +6,7 @@ class Folow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        refresing:false,
+        refresing:true,
         Thresold:0.1,
         page:0
     };
@@ -20,12 +20,17 @@ class Folow extends Component {
     )
 }
 onEndReached=()=>{
-    this.setState((prev)=>{
-        return{
-            refresing:true,
-            page:prev.page +1
-        }
-    },this.getData)
+    if(this.state.refresing){
+        this.setState((prev)=>{
+            return{
+                refresing:true,
+                page:prev.page +1
+            }
+        },this.getData)
+    } else{
+        return null
+    }
+    
 }
 ListFooterComponent=()=>{
     if(this.state.refresing){

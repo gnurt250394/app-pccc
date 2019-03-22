@@ -121,7 +121,7 @@ module.exports = {
     shopAdd:require('./shopAdd.png'),
     icon_up:require('./icon_up.png'),
     icon_square:require('./square.png'),
-
+    icon_ticker:require('./ticker.png'),
     // tracking
     trackingDA: require('./trackingDA.png'),
     trackingDT: require('./trackingDT.png'),

@@ -11,7 +11,7 @@ export default class CustomText extends Component {
   render() {
     return (
         this.props.name?<View style={styles.row}>
-               <Text>
+               <Text style={styles.txt}>
                <Image
                 source={images.offline}
                 style={styles.image}
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     row:{
         flexDirection:'row',
         marginBottom:9
+    },
+    txt:{
+      color:'#333131'
     },
     image:{
         height:8,

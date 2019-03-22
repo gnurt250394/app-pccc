@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList,  } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import {connect} from 'react-redux'
 import ItemList from './ItemList';
 
@@ -7,6 +7,9 @@ import ItemList from './ItemList';
   constructor(props) {
     super(props);
     this.state = {
+        refresing:true,
+        Thresold:0.1,
+        page:0
     };
   }
 
@@ -17,6 +20,29 @@ import ItemList from './ItemList';
           />
       )
   }
+  onEndReached=()=>{
+    if(this.state.refresing){
+        this.setState((prev)=>{
+            return{
+                refresing:true,
+                page:prev.page +1
+            }
+        },this.getData)
+    } else{
+        return null
+    }
+    
+}
+ListFooterComponent=()=>{
+    if(this.state.refresing){
+        return <ActivityIndicator
+            size="large"
+            color="#2166A2"
+        />
+    } else{
+        return null
+    }
+}
   _keyExtractor=(item,index)=>{
       return `${item.id|| index}`
   }
@@ -24,13 +50,23 @@ import ItemList from './ItemList';
     return (
       <View>
        <FlatList
-           data={data}
-           renderItem={this._renderItem}
-           keyExtractor={this._keyExtractor}
+            data={data}
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={this.state.Thresold}
+            ListFooterComponent={this.ListFooterComponent}                                  
        />
       </View>
     );
   }
+  getData=()=>{
+      this.setState({refresing:false})
+  }
+  componentDidMount = () => {
+    this.getData()
+  };
+  
 }
 
 
