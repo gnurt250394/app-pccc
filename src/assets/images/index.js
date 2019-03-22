@@ -132,5 +132,9 @@ module.exports = {
     // video
     videoImage: require('./videoImage.png'),
 
+    // catalog
+    pdf: require('./pdf.png'),
+    document: require('./document.png'),
+
 
 }

@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen } from 'config/screenNames'
 import { color, toUpperCase, width } from 'config'
 import { getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
@@ -142,8 +142,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
-                            //  onPress={this._navTo(SearchScreen)}
-                            >
+                                onPress={this._navTo(CatalogScreen, {type: 'catalog'})} >
                                 <View  style={style.box3} >
                                     <Image 
                                         style={style.imgbox3}
@@ -153,8 +152,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
-                                // onPress={this._navTo(SearchScreen)} 
-                                >
+                                onPress={this._navTo(CatalogScreen, {type: 'document'})} >
                                 <View  style={style.box3} >
                                     <Image 
                                         style={style.imgbox3}

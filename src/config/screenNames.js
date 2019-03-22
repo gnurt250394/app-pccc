@@ -53,6 +53,9 @@ export const TrackingInfoScreen = "TrackingInfoScreen"
 // Video
 export const VideoScreen = "VideoScreen"
 
+// Catalog
+export const CatalogScreen = "CatalogScreen"
+
 
 
 
