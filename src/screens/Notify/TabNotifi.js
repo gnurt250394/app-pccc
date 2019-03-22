@@ -36,7 +36,7 @@ const TabNotifi = createMaterialTopTabNavigator({
               fontSize: 12,
               fontWeight: '500',
               // textTransform: 'none'
-              fontFamily: fontStyle.Acumin_bold,
+              fontFamily: fontStyle.Acumin_bold
             },
             tabStyle: {
               width: width/2,

@@ -41,7 +41,8 @@ export const MessengerScreen = "MessengerScreen"
 // bidding
 export const ListBiddingScreen = "ListBiddingScreen"
 export const DetailBiddingScreen = "DetailBiddingScreen"
-
+//Myshop
+export const BuyProduct = "BuyProduct"
 
 // Project
 export const DetailProject = "DetailProject"

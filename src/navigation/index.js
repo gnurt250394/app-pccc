@@ -36,6 +36,7 @@ import DetailBidding from 'screens/Bidding/Detail'
 
 // tttd
 import TrackingInfo from 'screens/TrackingInfo'
+import BuyProduct from "screens/Shop/product/BuyProduct";
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
@@ -76,7 +77,8 @@ const App = createStackNavigator(
     // bidding
     [ScreenName.ListBiddingScreen]: ListBidding,
     [ScreenName.DetailBiddingScreen]: DetailBidding,
-
+    //MyShop
+    [ScreenName.BuyProduct]: BuyProduct,
 
     // Projeect
     [ScreenName.InfoProject]: InfoProject,

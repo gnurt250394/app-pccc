@@ -20,7 +20,8 @@ import Item from 'screens/Project/Item';
 class Profile extends React.Component {
    state={
        user: this.props.users ? this.props.users :{},
-       token:''
+       token:'',
+       image:null
    }
 
     edit = () => {
@@ -53,7 +54,7 @@ componentWillMount=async()=>{
 
     render(){
         console.log(this.state.token,'tooooken')
-        let {user,token} = this.state
+        let {user,token,image} = this.state
         return (token?
             <View style={style.flex}>
                 <ScrollView >
@@ -66,7 +67,7 @@ componentWillMount=async()=>{
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
-                            source={user&& user.image?{uri:user.image}:images.userBlue} />
+                            source={image?{uri:image}:images.userBlue} />
                         <View style={style.user}>
                             <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
                             <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
@@ -105,9 +106,11 @@ componentWillMount=async()=>{
 
         getInfoAcount().then(res=>{
             
-            console.log(res,'data')
+            console.log(res.data.data.image.full_path,'data')
             if(res.data.code == StatusCode.Success ){
-               this.setState({user:res.data.data})
+               this.setState({user:res.data.data,
+            image:res.data.data.image.full_path
+        })
             } else if(res.data.code== Status.TOKEN_VALID){
             navigation.reset(SigninScreen)
             Toast.show('Phiên đăng nhập đã hết hạn')

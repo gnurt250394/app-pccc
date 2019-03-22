@@ -13,9 +13,16 @@ export default class ItemList extends Component {
 
   checColor=()=>{
       if(this.props.item.status == 1){
-          return '#DEDEDE'
+          return {
+            color:'#555555',
+            fontWeight: 'normal',
+            fontFamily:fontStyle.Acumin_ItPro_0
+        }
       }else{
-          return '#333333'
+          return {
+              color:'#333333',
+              fontFamily:fontStyle.Acumin_bold
+            }
       }
   }
   render() {
@@ -23,12 +30,12 @@ export default class ItemList extends Component {
         <View style={{flex:1}}>
       <TouchableOpacity style={styles.container}>
         <Image 
-            source={images.logo}
+            source={this.props.item.image&&this.props.item.image.full_path?this.props.item.image.full_path:images.logo}
             style={styles.image}
             resizeMode="contain"
         />
         <View style={styles.containerTxt}>
-            <Text style={[styles.txt,{color:this.checColor()}]}>{this.props.item.name}</Text>
+            <Text style={[styles.txt,this.checColor()]}>{this.props.item.name}</Text>
             <Text style={styles.time}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>
@@ -45,14 +52,15 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     image:{
-        height:60,
-        width:60,
-        padding:9
+        height:40,
+        width:40,
+        padding:9,
+        margin: 7,
     },
     txt:{
         marginBottom: 12,
         marginTop: 5,
-        fontFamily:fontStyle.Acumin_bold ,
+        // fontFamily:fontStyle.Acumin_bold ,
     },
     time:{
         color:'#CCCCCC',

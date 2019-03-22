@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,TouchableOpacity,Animated,Easing } from 'react-native';
+import { View, Text,Image,StyleSheet,TouchableOpacity,Animated,Easing ,Dimensions} from 'react-native';
 import images from "assets/images"
-
+const {width} = Dimensions.get('window')
 class ListItem extends Component{
     render(){
         return this.props.name? <View style={styles.Square}>
                  
-                 <Text >
+                 <Text style={styles.txt} >
                  <Image source={images.icon_square}
                      style={styles.image}
                      resizeMode="contain"
@@ -25,12 +25,12 @@ export default class Item extends Component {
     this.rotate = new Animated.Value(0)
   }
   _rolate=(value)=>{
-    Animated.spring(
+    Animated.timing(
       this.rotate,
       {
         toValue: value,
-        duration: 1000,
-        // easing: Easing.cubic
+        duration: 500,
+        easing: Easing.bounce
       }
     ).start()
   }
@@ -54,7 +54,7 @@ showList=()=>{
       let {show} = this.state
       const rotate = this.rotate.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '180deg']
+        outputRange: ['180deg', '0deg']
       })
     return (
                 <View style={styles.containerList}>
@@ -94,6 +94,9 @@ showList=()=>{
             <ListItem name={this.props.item.position}/>
             <ListItem name={this.props.item.sub}/>
             </View> : null}
+            <View
+                style={styles.end}
+            />
             </View>
     );
   }
@@ -103,6 +106,14 @@ const styles = StyleSheet.create({
     containerList:{
         flex:1,
         marginTop: 19,
+    },
+    txt:{
+        color:'#333131'
+    },
+    end:{
+        height:0.6,
+        width,
+        backgroundColor: '#CCCCCC',
     },
     Square:{
         flexDirection:'row',
