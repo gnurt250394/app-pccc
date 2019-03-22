@@ -37,6 +37,9 @@ import DetailBidding from 'screens/Bidding/Detail'
 // tttd
 import TrackingInfo from 'screens/TrackingInfo'
 
+// video
+import Video from 'screens/Video'
+
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
  },{
@@ -84,6 +87,9 @@ const App = createStackNavigator(
 
     // tttd
     [ScreenName.TrackingInfoScreen]: TrackingInfo,
+
+    // tttd
+    [ScreenName.VideoScreen]: Video,
    
   },
   {

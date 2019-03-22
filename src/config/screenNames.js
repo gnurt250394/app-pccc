@@ -50,5 +50,10 @@ export const InfoProject = "InfoProject"
 // tttd
 export const TrackingInfoScreen = "TrackingInfoScreen"
 
+// Video
+export const VideoScreen = "VideoScreen"
+
+
+
 
 

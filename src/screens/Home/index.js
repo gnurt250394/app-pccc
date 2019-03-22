@@ -3,8 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen } from 'config/screenNames'
-import { DrawerActions } from 'react-navigation-drawer';
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen } from 'config/screenNames'
 import { color, toUpperCase, width } from 'config'
 import { getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
@@ -133,8 +132,7 @@ class Home extends React.Component {
                         </View>
                         <View style={[style.row, style.mt0]}>
                             <TouchableOpacity style={style.box3} 
-                            // onPress={this._navTo(SearchScreen)} 
-                            >
+                                onPress={this._navTo(VideoScreen)} >
                                 <View  style={style.box3} >
                                     <Image 
                                         style={style.imgbox3}
@@ -193,9 +191,7 @@ class Home extends React.Component {
                   {
                     text: 'Cancel', style: 'cancel',
                   },
-                  {text: 'OK', onPress:() => {navigation.navigate(SigninScreen)}}
-    
-                        
+                  {text: 'OK', onPress:() => navigation.navigate(SigninScreen)}
                 ],
                 {cancelable: false},
               );
