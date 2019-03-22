@@ -5,14 +5,28 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
-import { ScreenName } from 'config'
+import { HomeScreen } from 'config/screenNames'
+import { color, MessageStatus, popupOk } from 'config'
 import TabNotifi from './TabNotifi';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 
 class Notify extends React.Component {
 
-  
+    // set status bar
+    componentDidMount() {
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor(color);
+          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+        });
+    }
+    
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
+    // end status bar
+
     render(){
         return (
             <View style={{flex:1}}>

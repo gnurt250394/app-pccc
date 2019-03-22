@@ -85,16 +85,17 @@ export const validatePhone = str => {
     return re.test(str);
 }
 
-export const popupOk = msg =>{
+export const popupOk = (msg, onPress = null) =>{
     Alert.alert(
         'Thông báo',
         msg,
         [
-          { text: 'ok',style: 'cancel' }
+          { text: 'ok',style: 'ok', onPress: () => onPress }
         ],
         {cancelable: false},
     );
 }
+
 
 export const validateName = str => {
     var re =  /^[ A-Za-z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/;

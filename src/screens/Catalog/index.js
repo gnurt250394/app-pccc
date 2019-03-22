@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode} from 'config'
+import {  color, width, StatusCode, popupOk} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
 import { listDocuments } from 'config/apis/Project'
+import { getItem } from 'config/Controller';
+import { SigninScreen } from 'config/screenNames'
 
 class Catalog extends React.Component {
     state = {
@@ -15,7 +17,7 @@ class Catalog extends React.Component {
     }
     // set status bar
     async componentDidMount() {
-        console.log(this.state.type);
+        this.token = await getItem('token')
         this._navListener = this.props.navigation.addListener('didFocus', () => {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor(color);
@@ -88,16 +90,29 @@ class Catalog extends React.Component {
                     <Text style={style.description}>{item.description}</Text>
                     <View style={style.row}>
 
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={this.onDownload}>
                             <Text style={style.download}>tải xuống</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
+                            onPress={this.onFollow}
                             style={style.btn}>
                             <Text style={style.textBtn}>Theo dõi</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
+    }
+
+    onFollow = () => {
+        if(!this.token){
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', this.props.navigation.navigate(SigninScreen))
+        }else{
+            popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
+        }
+    }
+
+    onDownload = () => {
+        popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
     }
 
     _onSearch = () => {

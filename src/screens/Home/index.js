@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
 import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen } from 'config/screenNames'
-import { color, toUpperCase, width } from 'config'
+import { color, toUpperCase, width, popupOk } from 'config'
 import { getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 
@@ -101,6 +101,7 @@ class Home extends React.Component {
                         <View style={style.row}>
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)} 
+                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')} 
                                 >
                                 <View  style={style.box3} >
                                     <Image 
@@ -111,6 +112,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)} 
+                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={style.box3} >
                                     <Image 
@@ -121,6 +123,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 // onPress={this._navTo(SearchScreen)}
+                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={[style.box3, style.mr0]} >
                                     <Image 
@@ -178,22 +181,16 @@ class Home extends React.Component {
     }
 
     _navTo = (screen, params = {} ) => async() => {
-        let token = await getItem('token')
-        if(token){
+        let listcheckLogin = [TrackingInfoScreen, ShopScreen]
+
+        if(!listcheckLogin.includes(screen)){
             this.props.navigation.navigate(screen, params)
-        } else {
-            Alert.alert(
-                'Thông báo',
-                '     Bạn muốn xem cái này ư???\nVui lòng ra đăng nhập nhé!! HIHI  🍕🍕🍕',
-                [
-                  {
-                    text: 'Cancel', style: 'cancel',
-                  },
-                  {text: 'OK', onPress:() => navigation.navigate(SigninScreen)}
-                ],
-                {cancelable: false},
-              );
+        }else{
+            let token = await getItem('token')
+            if(token) this.props.navigation.navigate(screen, params)
+            else  popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', navigation.navigate(SigninScreen))
         }
+        
         
     }
 

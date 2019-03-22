@@ -1,10 +1,12 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtubeApiKey} from 'config'
+import {  color, width, StatusCode, youtubeApiKey, popupOk} from 'config'
 import images from "assets/images"
 import { listDocuments } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
+import { getItem } from 'config/Controller';
+import { SigninScreen } from 'config/screenNames'
 
 class Video extends React.Component {
     state = {
@@ -18,6 +20,8 @@ class Video extends React.Component {
     }
     // set status bar
     async componentDidMount() {
+        this.token = await getItem('token')
+
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -124,11 +128,20 @@ class Video extends React.Component {
                 <View style={style.row}>
                     <Text style={style.time}>Ngày đăng: {item.date}</Text>
                     <TouchableOpacity
+                        onPress={this.onFollow}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+    }
+
+    onFollow = () => {
+        if(!this.token){
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', this.props.navigation.navigate(SigninScreen))
+        }else{
+            popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
+        }
     }
 
     playvideo = id => () => {
