@@ -1,23 +1,42 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import {  color, width, StatusCode} from 'config'
 import { Header } from 'components'
-import {  ListBiddingScreen, InfoProject } from 'config/screenNames'
 import images from "assets/images"
+import { listDocuments } from 'config/apis/Project'
 
 class Catalog extends React.Component {
     state = {
         loading: false,
         keyword: '',
-        type: this.props.navigation.getParam('type') || 'catalog'
+        type: this.props.navigation.getParam('type') || 'catalog',
+        datas: []
     }
     // set status bar
     async componentDidMount() {
-        console.log(1, this.state);
+        console.log(this.state.type);
         this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor(color);
+
+            this.setState({loading: true}, () => {
+                listDocuments(this.state.type).then(res => {
+                    console.log('res: ', res);
+                    if(res.data.code == StatusCode.Success){
+                        this.setState({
+                            datas: res.data.data,
+                            loading: false
+                        })
+                    }else{
+                        this.setState({ loading: false })
+                    }
+                }).catch(err => {
+                    console.log('err: ', err);
+                    this.setState({ loading: false })
+                })
+            })
+        
         });
 
     }
@@ -43,10 +62,16 @@ class Catalog extends React.Component {
                     title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/>
                
                 <ScrollView>
-                    <FlatList
-                        data={data}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item, index) => index.toString()} />
+                    {
+                        this.state.datas.length == 0 
+                            ?
+                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                            :
+                        <FlatList
+                            data={this.state.datas}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item, index) => index.toString()} />
+                    }
                 </ScrollView>
             </View>
         )
@@ -157,27 +182,12 @@ const style = StyleSheet.create({
     download: {
         fontSize: 12,
         color
+    },
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
     }
 })
-
-const data = [
-    {
-        id: 1,
-        name: 'Tên tài liệu chia sẻ',
-        description: 'mô tả.......',
-        created_at: '22/03/2019'
-    },
-    {
-        id: 2,
-        name: 'Tên tài liệu chia sẻ',
-        description: 'mô tả.......',
-        created_at: '22/03/2019'
-    },
-    {
-        id: 3,
-        name: 'Tên tài liệu chia sẻ',
-        description: 'mô tả.......',
-        created_at: '22/03/2019'
-    },
-]
 

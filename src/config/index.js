@@ -1,6 +1,6 @@
 import {  Alert, Dimensions } from 'react-native'
 export const  { width, height } = Dimensions.get('window')
-// fontSize: height < smallScreen ? 10 : 14,
+
 export const StatusCode = {
     Success: 200,
     NoContent: 204,
@@ -31,6 +31,8 @@ export const fonts = {
     AcuminBdItPro_0:'Acumin-BdItPro_0',
     MontserratExtraBold:'Montserrat-ExtraBold'
 }
+
+export const youtubeLink = "https://www.youtube.com/watch?v="
 
 export const defaultStyle = {
     fontSize: width <= sreen4_7.width ? 13 : 14,
@@ -63,9 +65,6 @@ export const CodeToMessage = {
 }
 
 export const toUpperCase = str => str.toUpperCase()
-// export const toPrice = str => {
-//     return  str ? str.toLocaleString("vi", {style: "currency", currency: "VND", minimumFractionDigits: 0}) : 0
-// }
 export const toPrice = str => {
     return str ? str.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " đ" : 0 + " đ"
 }
