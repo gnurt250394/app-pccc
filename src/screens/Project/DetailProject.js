@@ -41,6 +41,8 @@ const {width,height}= Dimensions.get('window')
             removeItem('token')
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
           }
+      }).catch(err=>{
+        console.log(err.response,'errr')
       })
   }
   _check=(item)=>()=>{
@@ -93,7 +95,9 @@ const {width,height}= Dimensions.get('window')
         } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
             Toast.show('Dự án bạn theo dõi không tồn tại')
         }
-    })
+    }).catch(err=>{
+        console.log(err.response,'errr')
+      })
     }
   }
   render() {
