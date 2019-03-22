@@ -39,8 +39,8 @@ export const forgotPassword = async ( body, token) => {
 export const checkPhoneOrEmail = body => {
     return instance.post(constant.CHECK_PHONE_EMAIL, body)
 }
-export const getInfoAcount = async () => {
-    let token =await getItem('token')
+export const getInfoAcount = async t => {
+    let token = t ? t : await getItem('token')
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.get(constant.USER)
 }

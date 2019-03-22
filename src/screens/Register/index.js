@@ -41,11 +41,11 @@ class Register extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
-                <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
+                {/* <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
                     <Image 
                             style={styles.close}
                             source={images.closeBlue} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <Text style={style.title}>{toUpperCase('Đăng ký')}</Text>
                 <View style={style.h70p}>

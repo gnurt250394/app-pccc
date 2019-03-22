@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import images from "assets/images"
 import { Btn } from 'components'
 import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, HomeScreen } from 'config/screenNames'
-import { color, toUpperCase,StatusCode } from 'config'
+import { color, toUpperCase,StatusCode, popupOk } from 'config'
 import {StackActions,NavigationActions} from 'react-navigation'
 import NavItem from './NavItem'
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
@@ -15,7 +15,6 @@ import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem, removeItem, Status } from 'config/Controller';
 import CheckAuth from './CheckAuth';
-import { popupOk } from 'config';
 import Item from 'screens/Project/Item';
 class Profile extends React.Component {
    state={
@@ -28,14 +27,19 @@ class Profile extends React.Component {
         this.props.navigation.navigate(EditProfileScreen)
     }
 
-componentWillMount=async()=>{
-    getItem('token').then(token=>{
-        if(token){
-            this.setState({token},()=>{ this.getInfo()})
-        }
-        })
-        
-}   
+    componentWillMount=async()=>{
+        this._navListener = this.props.navigation.addListener('willFocus', async () => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor(color);
+            let token = await getItem('token')
+            console.log('token: ', token);
+            this.setState({token}, this.getInfo)
+        });
+            
+    }   
+
+  
+
     // set status bar
     componentDidMount= async()=> {
        
@@ -49,11 +53,10 @@ componentWillMount=async()=>{
     }
     
     componentWillUnmount() {
-        // this._navListener.remove();
+        this._navListener.remove();
     }
 
     render(){
-        console.log(this.state.token,'tooooken')
         let {user,token,image} = this.state
         return (token?
             <View style={style.flex}>
@@ -102,39 +105,27 @@ componentWillMount=async()=>{
         )
     }
 
-    getInfo=()=>{
-
-        getInfoAcount().then(res=>{
-            
-            console.log(res.data.data.image.full_path,'data')
+    getInfo = () => {
+        getInfoAcount(this.state.token).then(res=>{
             if(res.data.code == StatusCode.Success ){
-               this.setState({user:res.data.data,
-            image:res.data.data.image.full_path
-        })
-            } else if(res.data.code== Status.TOKEN_VALID){
-            navigation.reset(SigninScreen)
-            Toast.show('Phiên đăng nhập đã hết hạn')
-            this.props.dispatch({type: actionTypes.USER_LOGOUT})
-            AsyncStorage.removeItem('token')
-            this.props.dispatch({type: actionTypes.USER_LOGOUT})
-            } else if(res.data.code== Status.TOKEN_EXPIRED){
-            navigation.reset(SigninScreen)
-            Toast.show('Phiên đăng nhập đã hết hạn')
-            this.props.dispatch({type: actionTypes.USER_LOGOUT})
-            AsyncStorage.removeItem('token')
+                this.setState({
+                    user:res.data.data,
+                    image:res.data.data.image.full_path
+                })
+            } else if(res.data.code == Status.TOKEN_VALID || res.data.code == Status.TOKEN_EXPIRED){
+                navigation.reset(SigninScreen)
+                Toast.show('Phiên đăng nhập đã hết hạn')
+                this.props.dispatch({type: actionTypes.USER_LOGOUT})
+                AsyncStorage.removeItem('token')
+                this.props.dispatch({type: actionTypes.USER_LOGOUT})
             }
         })
     }
+
     _logout =  () => {
-       
-        // LoginManager.logOut()
-        // GoogleSignin.signOut();
         AsyncStorage.removeItem('token')
         navigation.reset(SigninScreen)
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
-        
-    
-
     }
 
     _navTo = (screen,params) => () => {

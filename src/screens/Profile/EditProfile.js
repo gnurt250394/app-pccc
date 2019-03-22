@@ -92,27 +92,26 @@ class EditProfile extends React.Component {
       getInfoAccount=()=>{
           getInfoAcount().then(res=>{
               if(res.data.code == Status.SUCCESS){
-                this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
-                console.log('object')
-                  this.setState({
-                    image: res.data.data.image.full_path,
-                    name:res.data.data.name,
-                    address:res.data.data.address,
-                    email:res.data.data.email,
-                    company:res.data.data.company,
-                    phone:res.data.data.phone,
-                    gender:res.data.data.gender,
-                    tax_code:res.data.data.tax_code
-                  })
-              } else if(res.data.code == Status.TOKEN_EXPIRED){
-                popupOk(CodeToMessage[res.data.code])
-                navigation.reset(SigninScreen)
-                removeItem('token')
-              } else if(res.data.code == Status.TOKEN_VALID){
-                popupOk(CodeToMessage[res.data.code])
-                navigation.reset(SigninScreen)
-                removeItem('token')
-              }
+                    this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
+                    this.setState({
+                        image: res.data.data.image.full_path,
+                        name:res.data.data.name,
+                        address:res.data.data.address,
+                        email:res.data.data.email,
+                        company:res.data.data.company,
+                        phone:res.data.data.phone,
+                        gender:res.data.data.gender,
+                        tax_code:res.data.data.tax_code
+                    })
+                } else if(res.data.code == Status.TOKEN_EXPIRED){
+                    popupOk(CodeToMessage[res.data.code])
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                } else if(res.data.code == Status.TOKEN_VALID){
+                    popupOk(CodeToMessage[res.data.code])
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                }
           })
       }
     componentWillUnmount() {
@@ -222,7 +221,8 @@ class EditProfile extends React.Component {
     }
 
     _onSuccess = () => {
-        let {user} = this.props
+        let user = this.props.user || {} // user = null => crash
+        
         if(this.state.name&&this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
@@ -239,11 +239,8 @@ class EditProfile extends React.Component {
                 tax_code: this.state.tax_code,
             }
             
-            if(this.state.email&& this.state.email != user.email){
-                data.email = this.state.email;
-            } else {
-                
-            }
+            if(this.state.email&& this.state.email != user.email)  data.email = this.state.email; // check để ko bị trùng email cũ
+
             updateAvatar(this.state.image).then(res=>{
                 if(res.data.code== Status.SUCCESS){
                     console.log(res.data,'image')
@@ -260,21 +257,17 @@ class EditProfile extends React.Component {
                 console.log(err,'err')
                 
             })
+
             updateUser(data).then(res => {
-                
                 if(res.data.code == Status.SUCCESS){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     navigation.pop()
                     this.props.navigation.state.params.refress()
-                }else if(res.data.code == Status.TOKEN_EXPIRED){
+                }else if(res.data.code == Status.TOKEN_EXPIRED || res.data.code== Status.TOKEN_VALID){
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     removeItem('token')
-                } else if(res.data.code== Status.TOKEN_VALID){
-                    popupOk(CodeToMessage[res.data.code])
-                    navigation.reset(SigninScreen)
-                    removeItem('token')
-                } else{
+                }else{
                     console.log(res.data,'else')
                     popupOk(CodeToMessage[res.data.code])
                 }
