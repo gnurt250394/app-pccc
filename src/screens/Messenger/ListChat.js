@@ -5,8 +5,8 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
-import { SearchScreen, MessengerScreen } from 'config/screenNames'
-import { color, MessageStatus } from 'config'
+import { HomeScreen, MessengerScreen } from 'config/screenNames'
+import { color, MessageStatus, popupOk } from 'config'
 
 
 class ListChat extends React.Component {
@@ -19,6 +19,7 @@ class ListChat extends React.Component {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
+          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
         });
     }
     
