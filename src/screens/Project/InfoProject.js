@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image,Dimensions,TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,Dimensions,TouchableOpacity,ActivityIndicator } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import images from "assets/images"
@@ -15,7 +15,9 @@ const {width,height}= Dimensions.get('window')
     super(props);
     this.state = {
       listProject:[],
-      page:0
+      page:0,
+      Threshold:0.1,
+      refresing:false
     };
   }
 
@@ -33,6 +35,26 @@ _nextPage=(router,params)=>()=>{
         item={item}
       />
     )
+  }
+  onEndReached=()=>{
+    if(this.state.refresing){
+      this.setState((prev)=>{
+        return{
+          refresing:true,
+          page: prev.page +1
+        }
+      },this.getData)
+    }
+  }
+  ListFooterComponent=()=>{
+    if(this.state.refresing){
+      return <ActivityIndicator
+                size={"large"}
+                color="#2166A2"
+              />
+    } else{
+      return null
+    }
   }
   _keyExtractor=(item,index)=>{
       return `${item.id|| index}`
@@ -52,6 +74,9 @@ _nextPage=(router,params)=>()=>{
             data={this.state.listProject}
             renderItem={this._renderItem}
             keyExtractor={this._keyExtractor}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={this.state.Threshold}
+            ListFooterComponent={this.ListFooterComponent}
         />
       </View>
     );
@@ -60,15 +85,22 @@ _nextPage=(router,params)=>()=>{
     getNewProject({page:this.state.page}).then(res=>{
       if(res.data.code == Status.SUCCESS){
         this.setState({
-          listProject:res.data.data
+          listProject:[...this.state.listProject,...res.data.data]
         })
       } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
         Toast.show('Phiên đăng nhập hết hạn')
         navigation.reset(SigninScreen)
         removeItem('token')
         this.props.dispatch({type: actionTypes.USER_LOGOUT})
-    }
-    })
+      } else if(res.data.code == Status.NO_CONTENT){
+        this.setState({ refresing :false, Threshold:0})
+      } else{
+        this.setState({refresing:false,Threshold:0})
+      }
+      }).catch(err=>{
+        console.log(err.response,'errr')
+        this.setState({refresing:false,Threshold:0})
+      })
   }
   componentDidMount = () => {
     this.getData()

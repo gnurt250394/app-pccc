@@ -28,17 +28,18 @@ class Profile extends React.Component {
     }
 
 componentWillMount=async()=>{
-    let token =  await getItem('token')
-    this.setState({token})
+    getItem('token').then(token=>{
+        if(token){
+            this.setState({token},()=>{ this.getInfo()})
+        }
+        })
+        
 }   
     // set status bar
     componentDidMount= async()=> {
-        
-        let token =  await getItem('token')
-       console.log(token,'liii')
-            if(token){
-            this.getInfo()
-            }
+       
+        // let token =  await getItem('token')
+           
         // this._navListener = this.props.navigation.addListener('didFocus', () => {
         //   StatusBar.setBarStyle('light-content');
         //   StatusBar.setBackgroundColor(color);
@@ -51,7 +52,7 @@ componentWillMount=async()=>{
     }
 
     render(){
-        
+        console.log(this.state.token,'tooooken')
         let {user,token} = this.state
         return (token?
             <View style={style.flex}>

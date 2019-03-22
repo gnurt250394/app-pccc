@@ -6,28 +6,27 @@ import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
 import { ScreenName } from 'config'
+import TabNotifi from './TabNotifi';
+import { Header } from 'components';
+import navigation from 'navigation/NavigationService';
 
 class Notify extends React.Component {
+
+  
     render(){
         return (
-            <View style={{}}>
-                <ScrollView>
-                    <Text>Thông báo</Text>
-                </ScrollView>
+            <View style={{flex:1}}>
+            <Header
+            title={"Thông báo"}
+            />
+                <TabNotifi/>
             </View>
         )
     }
     // set status bar
-    componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
-        });
-      }
     
-    componentWillUnmount() {
-        this._navListener.remove();
-    }
+    
+  
 }
 export default connect()(Notify)
 
