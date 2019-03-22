@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator,RefreshControl, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -57,12 +57,19 @@ class Signin extends React.Component {
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
             
-            <ScrollView style={style.content}>
-                {   this.state.loading ? 
+            <ScrollView style={style.content}
+            refreshControl={
+                <RefreshControl
+            refreshing={this.state.loading}
+            colors={["#2166A2",'white']}
+            tintColor="#2166A2"
+          />
+            }>
+                {/* {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
-                }
+                } */}
                 
                 <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
                     <Image 
@@ -318,7 +325,7 @@ class Signin extends React.Component {
             'Vui lòng cập nhật số điện thoại',
             [
               {
-                text: 'Cancel', style: 'cancel',
+                text: 'Cancel', style: 'cancel',onPress:()=>{this.setState({loading:false})}
               },
               {text: 'OK', onPress: async () => {
                 let Actoken = await getCurrentAccount()

@@ -240,6 +240,8 @@ class EditProfile extends React.Component {
             }
             
             if(this.state.email != user.email){
+                console.log(this.state.email,'email1')
+                console.log(user.email,'email2')
                 data.email = this.state.email;
             } else {
                 
