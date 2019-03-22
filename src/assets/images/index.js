@@ -128,4 +128,13 @@ module.exports = {
     trackingNT: require('./trackingNT.png'),
     trackingSP: require('./trackingSP.png'),
     dotYellow: require('./dotYellow.png'),
+
+    // video
+    videoImage: require('./videoImage.png'),
+
+    // catalog
+    pdf: require('./pdf.png'),
+    document: require('./document.png'),
+
+
 }
