@@ -83,7 +83,7 @@ const {width,height}= Dimensions.get('window')
   _folowProject=()=>{
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
     FolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
-        
+        console.log(this.props.navigation.state.params.id)
         if(res.data.code == Status.SUCCESS){
             
             Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
@@ -139,7 +139,7 @@ const {width,height}= Dimensions.get('window')
         <CustomText value={"Units"} name={project.unit}/>
         <CustomText value={"Loại hình dự án"} name={project.type_project}/>
             {/*  đang thiếu loại hình phụ */}
-        <CustomText value={"Loại hình phụ"} name={''}/>
+        <CustomText value={"Loại hình phụ"} name={project.sub}/>
         <CustomText value={"Mã số dự án"} name={project.project_code}/>
         <CustomText value={"Loại quyền sở hữu"} name={project.ownership}/>
         <CustomText value={"Loại đầu tư"} name={project.type_invest}/>
@@ -162,6 +162,7 @@ const {width,height}= Dimensions.get('window')
         getListProject({
             project_id:this.props.navigation.state.params.id
           }).then(res=>{
+              console.log(res.data,'dd')
             if(res.data.code== Status.SUCCESS){
                 this.setState({
                     project:res.data.data,
@@ -253,8 +254,8 @@ const styles= StyleSheet.create({
         fontWeight: '600',
     },
     txtTicker:{
-        fontSize:11,
-        color:'#CCCCCC',
+        fontSize:13,
+        color:'#999999',
         fontStyle: 'italic',
     },
     row:{
@@ -287,13 +288,11 @@ const styles= StyleSheet.create({
          height:40,
         //  width:width/2.5,
         paddingHorizontal:35,
-         marginLeft: 15,
-         borderColor: '#707070',
-         borderWidth: 1,
-         borderRadius: 5,
-         alignItems: 'center',
-         justifyContent: 'center',
-         backgroundColor:'#2166A2'
+        marginLeft: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'#2166A2'
     },
     image:{
         height:8,

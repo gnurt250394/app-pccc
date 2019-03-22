@@ -35,7 +35,7 @@ export default class ItemList extends Component {
             resizeMode="contain"
         />
         <View style={styles.containerTxt}>
-            <Text style={[styles.txt,this.checColor()]}>{this.props.item.name}</Text>
+            <Text style={[styles.txt,this.checColor()]}>{this.props.item.message}</Text>
             <Text style={styles.time}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>

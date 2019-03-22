@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
       color:'#333131'
     },
     image:{
-        height:8,
-        width:8,
+        height:6,
+        width:6,
         tintColor:'gray',
         alignSelf: 'center',
         marginRight: 8,
