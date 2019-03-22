@@ -1,22 +1,37 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
+import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode} from 'config'
-import { Header } from 'components'
-import {  ListBiddingScreen, InfoProject } from 'config/screenNames'
+import {  color, width, StatusCode, youtubeLink} from 'config'
 import images from "assets/images"
+import { listDocuments } from 'config/apis/Project'
 
 class Video extends React.Component {
     state = {
         loading: false,
-        keyword: ''
+        keyword: '',
+        datas: []
     }
     // set status bar
     async componentDidMount() {
-        
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
+
+          this.setState({loading: true}, () => {
+            listDocuments('video').then(res => {
+                if(res.data.code == StatusCode.Success){
+                    this.setState({
+                        datas: res.data.data,
+                        loading: false
+                    })
+                }else{
+                    this.setState({ loading: false })
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                this.setState({ loading: false })
+            })
+          })
         });
 
     }
@@ -28,7 +43,7 @@ class Video extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                 {   this.state.loading ? 
+                {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
@@ -66,10 +81,16 @@ class Video extends React.Component {
                 </View>
 
                 <ScrollView>
-                    <FlatList
-                        data={data}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item, index) => index.toString()} />
+                    {
+                        this.state.datas.length == 0 
+                            ?
+                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                            :
+                        <FlatList
+                            data={this.state.datas}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item, index) => index.toString()} />
+                    }
                 </ScrollView>
             </View>
         )
@@ -79,10 +100,10 @@ class Video extends React.Component {
         return <View style={style.box}>
                 <Image 
                     style={style.image}
-                    source={images.videoImage} />
+                    source={item.link_id && item.link_id != "" ? {uri: youtubeLink + item.link_id} : images.videoImage} />
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
-                    <Text style={style.time}>Ngày đăng: {item.created_at}</Text>
+                    <Text style={style.time}>Ngày đăng: {item.date}</Text>
                     <TouchableOpacity
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
@@ -166,24 +187,12 @@ const style = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         alignItems: 'flex-end'
+    },
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
     }
 })
-
-const data = [
-    {
-        id: 1,
-        name: 'Diễn tập phương án chữa cháy cứu hộ, cứu nạn tại bến xe Mỹ Đình',
-        created_at: '22/03/2019'
-    },
-    {
-        id: 2,
-        name: 'Diễn tập phương án chữa cháy cứu hộ, cứu nạn tại bến xe Mỹ Đình',
-        created_at: '22/03/2019'
-    },
-    {
-        id: 3,
-        name: 'Diễn tập phương án chữa cháy cứu hộ, cứu nạn tại bến xe Mỹ Đình',
-        created_at: '22/03/2019'
-    },
-]
 
