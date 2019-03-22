@@ -121,7 +121,7 @@ module.exports = {
     shopAdd:require('./shopAdd.png'),
     icon_up:require('./icon_up.png'),
     icon_square:require('./square.png'),
-
+    icon_ticker:require('./ticker.png'),
     // tracking
     trackingDA: require('./trackingDA.png'),
     trackingDT: require('./trackingDT.png'),
@@ -136,5 +136,13 @@ module.exports = {
     pdf: require('./pdf.png'),
     document: require('./document.png'),
 
-
+    // Buy Product
+    proConfirm:require('./proConfirm.png'),
+    proManufacturer:require('./proManufacturer.png'),
+    proPrice:require('./proPrice.png'),
+    proPriceAfter:require('./proPriceAfter.png'),
+    proQuanlity:require('./proQuanlity.png'),
+    proStatus:require('./proStatus.png'),
+    proSupplier:require('./proSupplier.png'),
+    proYear:require('./proYear.png'),
 }

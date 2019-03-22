@@ -10,28 +10,20 @@ let instance = axios.create({
 });
 
 export const getProduct=async(page)=>{
-    let instance = axios.create({
-        baseURL:constant.BASEURL,
-        timeout: constant.SERVER_TIMEOUT,
-        headers: {
-            'content-type': "application/json",
-            "page":page
-        }
-    });
+ 
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.SELL_PRODUCT)
+        return instance.get(constant.SELL_PRODUCT,{params:{page:page}})
+}
+export const postProduct=async(body)=>{
+ 
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.post(constant.SELL_PRODUCT,body)
 }
 export const getLiquidation=async(page)=>{
-    let instance = axios.create({
-        baseURL:constant.BASEURL,
-        timeout: constant.SERVER_TIMEOUT,
-        headers: {
-            'content-type': "application/json",
-            "page":page
-        }
-    });
+    
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.LIQUIDATION)
+        return instance.get(constant.LIQUIDATION,{params:{page:page}})
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet,Dimensions,TouchableOpacity } from 'react-native';
 import images from "assets/images"
+import moment from 'moment';
 
 const {width} = Dimensions.get('window')
 export default class ListItem extends Component {
@@ -36,7 +37,7 @@ export default class ListItem extends Component {
                  <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Thời gian bắt đầu: {this.props.item.time_start}</Text>
+                 />  Thời gian bắt đầu: {moment(this.props.item.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
               </View>
               <View style={styles.row}>
                  
@@ -44,7 +45,7 @@ export default class ListItem extends Component {
                  <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Thời gian kết thúc: {this.props.item.time_end}</Text>
+                 />  Thời gian kết thúc: {moment(this.props.item.time_end,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
               </View>
               <View style={styles.row}>
                  
@@ -66,14 +67,14 @@ const styles= StyleSheet.create({
         padding: 10,
     },
     txtColor:{
-        color:'#555555'
+        color:'#333131'
     },
     container:{
         flex:1,
     },
     image:{
-        height:7,
-        width:7,
+        height:5,
+        width:5,
         tintColor:'gray',
         alignSelf: 'center',
         marginRight: 8,

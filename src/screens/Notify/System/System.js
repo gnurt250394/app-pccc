@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { View, FlatList,  } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import {connect} from 'react-redux'
 import ItemList from './ItemList';
-
+import { getListNotifi } from 'config/apis/Notifi';
+import { Status, removeItem } from 'config/Controller';
+import navigation from 'navigation/NavigationService';
+import { SigninScreen } from 'config/screenNames';
+import SimpleToast from 'react-native-simple-toast';
+import { actionTypes } from 'actions'
  class System extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        refresing:true,
+        Thresold:0.1,
+        page:0,
+        listSystems:[]
     };
   }
 
@@ -17,6 +26,29 @@ import ItemList from './ItemList';
           />
       )
   }
+  onEndReached=()=>{
+    if(this.state.refresing){
+        this.setState((prev)=>{
+            return{
+                refresing:true,
+                page:prev.page +1
+            }
+        })
+    } else{
+        return null
+    }
+    
+}
+ListFooterComponent=()=>{
+    if(this.state.refresing){
+        return <ActivityIndicator
+            size="large"
+            color="#2166A2"
+        />
+    } else{
+        return null
+    }
+}
   _keyExtractor=(item,index)=>{
       return `${item.id|| index}`
   }
@@ -24,13 +56,37 @@ import ItemList from './ItemList';
     return (
       <View>
        <FlatList
-           data={data}
-           renderItem={this._renderItem}
-           keyExtractor={this._keyExtractor}
+            data={this.state.listSystems}
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={this.state.Thresold}
+            ListFooterComponent={this.ListFooterComponent}                                  
        />
       </View>
     );
   }
+  getData=()=>{
+     getListNotifi({type:'system'}).then(res=>{
+         console.log(res.data,'aaaa')
+         if(res.data.code== Status.SUCCESS){
+             this.setState({listSystems:[...this.state.listSystems,...res.data.data],refresing:true})
+         } else if(res.data.code == Status.NO_CONTENT){
+             this.setState({refresing:false,Thresold:0})
+         } else if(res.data.code== Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID){
+             navigation.reset(SigninScreen)
+             SimpleToast.show('Phiên đăng nhập hết hạn')
+             removeItem('token')
+             this.props.dispatch({type: actionTypes.USER_LOGOUT})
+         }else{
+             SimpleToast.show("Lỗi hệ thống")
+         }
+     })
+  }
+  componentDidMount = () => {
+    this.getData()
+  };
+  
 }
 
 

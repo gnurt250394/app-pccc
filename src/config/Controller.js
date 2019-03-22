@@ -28,5 +28,7 @@ export const formatNumber =(num)=> {
     Montserrat_SemiBold:'Montserrat-SemiBold',
     Montserrat_Regular:'Montserrat-Regular',
     Acumin_bold:'Acumin-BdPro_0',
-    Acumin_thin:'Acumin-BdItPro_0'
+    Acumin_thin:'Acumin-BdItPro_0',
+    Acumin_ItPro_0:'Acumin-ItPro_0',
+    Acumin_RPro_0:'Acumin-RPro_0'
 }

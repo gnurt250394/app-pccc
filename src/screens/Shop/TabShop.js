@@ -23,7 +23,7 @@ const TabShop = createMaterialTopTabNavigator({
       },
 
     },{
-        initialRouteName:'LiquidationShop',
+        // initialRouteName:'LiquidationShop',
         defaultNavigationOptions: ({ navigation }) => ({
           swipeEnabled: true,
           tabBarPosition: 'top',

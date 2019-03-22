@@ -21,6 +21,7 @@ class ListItem extends React.Component {
 class ViewProfile extends React.Component {
         state = {
             user:  {},
+            image:null
     }
 
    
@@ -32,6 +33,7 @@ class ViewProfile extends React.Component {
             if(res.data.code==Status.SUCCESS){
                 this.setState({
                     user:res.data.data,
+                    image:res.data.data.image.full_path
                 })
             }
         })
@@ -51,7 +53,7 @@ class ViewProfile extends React.Component {
     // end set status bar
   
     render(){
-        let {user} = this.state
+        let {user,image} = this.state
         return (
             <View >
                 <View style={style.header}>
@@ -70,7 +72,7 @@ class ViewProfile extends React.Component {
                 <View style={style.boxUser}>
                     <Image 
                         style={style.avatar}
-                        source={user&&user.image?{uri:user.image}:images.userBlue} />
+                        source={image?{uri:image}:images.userBlue} />
                     <Text style={style.name}>{user.name}</Text>
                 </View>
                 <View style={style.mt30}>

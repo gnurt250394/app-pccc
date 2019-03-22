@@ -10,15 +10,15 @@ let instance = axios.create({
 });
 
 
-export const getListNotifiSystem = async(body)=>{
+export const getListNotifi  = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.PROJECT_DETAIL,{params:body})
+        return instance.get(constant.Notification,{params:body})
 }
-export const getNewListNotifiFolow = async(page)=>{
+export const postNotifi = async(page)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.NEW_PROJECT,{params:page})
+        return instance.post(constant.Notification,{params:{page:page}})
 }
 // export const FolowProject = async(body)=>{
 //     let token = await getItem('token')

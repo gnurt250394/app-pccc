@@ -95,7 +95,7 @@ class EditProfile extends React.Component {
                 this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                 console.log('object')
                   this.setState({
-                    image: res.data.data.image,
+                    image: res.data.data.image.full_path,
                     name:res.data.data.name,
                     address:res.data.data.address,
                     email:res.data.data.email,
@@ -239,9 +239,7 @@ class EditProfile extends React.Component {
                 tax_code: this.state.tax_code,
             }
             
-            if(this.state.email != user.email){
-                console.log(this.state.email,'email1')
-                console.log(user.email,'email2')
+            if(this.state.email&& this.state.email != user.email){
                 data.email = this.state.email;
             } else {
                 
