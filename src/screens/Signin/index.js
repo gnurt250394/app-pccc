@@ -22,6 +22,9 @@ class Signin extends React.Component {
         loading: false
     }
 
+    componentWillMount(){
+        LoginManager.logOut()
+    }
     // set status bar
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
@@ -42,10 +45,10 @@ class Signin extends React.Component {
             <ScrollView style={style.content}
             refreshControl={
                 <RefreshControl
-            refreshing={this.state.loading}
-            colors={["#2166A2",'white']}
-            tintColor="#2166A2"
-          />
+                    refreshing={this.state.loading}
+                    colors={["#2166A2",'white']}
+                    tintColor="#2166A2"
+                />
             }>
                 {/* {   this.state.loading ? 
                     <View style={styles.loading}>
@@ -153,14 +156,12 @@ class Signin extends React.Component {
           } 
           
           this.setState({loading: true})
-          LoginManager.logOut()
+          
           loginSocial(body).then(res => {
-                this.setState({loading: false})
                 if(res.data.code == StatusCode.Success){
-                    
                     this._onSwitchToHomePage(res, LoginType.facebook);
-                    
                 }else{
+                    this.setState({loading: false})
                     popupOk(CodeToMessage[res.data.code])
                 }
           }).catch(err => {
@@ -176,29 +177,26 @@ class Signin extends React.Component {
 
     _onGoogleLogin =  async () => {
         try {
-            await GoogleSignin.configure({ forceConsentPrompt: true });
-            const data = await GoogleSignin.signIn();
-            
             this.setState({loading: true}, async () => {
+                await GoogleSignin.configure();
+                GoogleSignin.signOut()
+                const data = await GoogleSignin.signIn();
                 const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
 
                 const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
                 
                 let provider = firebaseUserCredential.user.toJSON();
-                
                 this.setState({loading: true})
-                GoogleSignin.signOut()
-
                 loginSocial({
                     name: provider.displayName,
                     email: provider.providerData[0].email,
                     login_type: LoginType.google
                 }).then(res => {
-                    this.setState({loading: false})
+                    
                     if(res.data.code == StatusCode.Success){
-                        
                         this._onSwitchToHomePage(res);
                     }else{
+                        this.setState({loading: false})
                         popupOk(CodeToMessage[res.data.code])
                     }
                 }).catch(err => {
@@ -286,7 +284,7 @@ class Signin extends React.Component {
         let userToken = data.token;
         if(!phone || phone == ""){
             // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
-            this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
+            this._popupUpdatePhone(userToken, phone)
 
         }else{
             // navigation.reset(HomeScreen);
@@ -311,17 +309,17 @@ class Signin extends React.Component {
                 let Actoken = await getCurrentAccount()
                 if(Actoken){
                     let phone = await accountkitInfo(Actoken)
-                    this.setState({loading: false})
-
                     if(phone){
                         // call api check phone
                         checkPhoneOrEmail({phone: phone}).then(res => {
                             if(res.data.code != StatusCode.Success  || res.data == ""){
+                                this.setState({loading: false})
                                 popupOk(CodeToMessage[res.data.code])
                             }else{
 
                                 // call api update phone
                                 updateUser({phone: phone}, userToken).then(res => {
+                                    this.setState({loading: false})
                                     if(res.data.code == StatusCode.Success){
                                         AsyncStorage.setItem('token', userToken)
                                         navigation.reset(HomeScreen)
@@ -336,11 +334,12 @@ class Signin extends React.Component {
                         })
                         
                     }else{
+                        this.setState({loading: false})
                         popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
                     }
                 }else{
                     this.setState({loading: false})
-                    popupOk("Mã xác nhận không đúng.")
+                    popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
                 }
                 
               }},

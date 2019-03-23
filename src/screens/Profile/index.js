@@ -1,26 +1,21 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ScrollView,AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { Btn } from 'components'
-import { CheckAuthScreen, ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, HomeScreen } from 'config/screenNames'
-import { color, toUpperCase,StatusCode, popupOk } from 'config'
-import {StackActions,NavigationActions} from 'react-navigation'
+import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen} from 'config/screenNames'
+import { color, toUpperCase,StatusCode} from 'config'
 import NavItem from './NavItem'
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { AccessToken, LoginManager  } from 'react-native-fbsdk';
 import { actionTypes } from 'actions'
-import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
-import { getItem, removeItem, Status } from 'config/Controller';
-// import CheckAuth from './CheckAuth';
-import Item from 'screens/Project/Item';
+import { getItem} from 'config/Controller';
+import CheckAuth from './CheckAuth';
+
 class Profile extends React.Component {
    state={
-       user: this.props.users ? this.props.users :{},
+       user: this.props.users || {},
        token: null,
-       image: null
+       image: null,
    }
 
     edit = () => {
@@ -28,19 +23,17 @@ class Profile extends React.Component {
     }
   
 
-    
-    async componentDidMount(){
-       this.getInfo()
+    async componentWillMount(){
+        await this.getInfo()
     }
-    
-    componentWillUnmount() {
-        // if(this._navListener) this._navListener.remove();
-    }
+   
 
     render(){
         let {user,token,image} = this.state
         
         return (
+            token 
+                ?
             <View style={style.flex}>
                 <ScrollView >
                     <View style={style.head}>
@@ -82,6 +75,9 @@ class Profile extends React.Component {
                     onPress={this._logout}
                     style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
             </View>
+                : 
+            <CheckAuth />
+
         )
     }
 
@@ -92,13 +88,15 @@ class Profile extends React.Component {
         if(user && user.name ){
             this.setState({
                 user: user,
+                token: token,
                 image: user.image ? user.image.full_path : null
             })
             return
-        } else{
-            navigation.reset(CheckAuthScreen)
-            return
-        }
+        } 
+        // else{
+        //     navigation.reset(CheckAuthScreen)
+        //     return
+        // }
     }
 
     _logout =  () => {
@@ -115,7 +113,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = (state) =>{
     return {
-        users: state.users && state.users.data ? state.users.data : null,
+        users: state.users && state.users.data ? state.users.data : {},
         token: state.users && state.users.token ? state.users.token : null,
     }
 }
