@@ -10,7 +10,7 @@ import { SigninScreen } from 'config/screenNames'
 
 class Catalog extends React.Component {
     state = {
-        loading: false,
+        loading: true,
         keyword: '',
         type: this.props.navigation.getParam('type') || 'catalog',
         datas: []
@@ -18,27 +18,16 @@ class Catalog extends React.Component {
     // set status bar
     async componentDidMount() {
         this.token = await getItem('token')
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor(color);
-
-            this.setState({loading: true}, () => {
-                listDocuments(this.state.type).then(res => {
-                    console.log('res: ', res);
-                    if(res.data.code == StatusCode.Success){
-                        this.setState({
-                            datas: res.data.data,
-                            loading: false
-                        })
-                    }else{
-                        this.setState({ loading: false })
-                    }
-                }).catch(err => {
-                    console.log('err: ', err);
-                    this.setState({ loading: false })
-                })
+            let datas = await listDocuments(this.state.type).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
             })
-        
+            this.setState({ datas, loading: false })
         });
 
     }

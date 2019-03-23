@@ -10,7 +10,7 @@ class SearchLiquidation extends React.Component {
         super(props);
         this.state = {
             datas: [],
-            loading: false,
+            loading: true,
             keyword: ''
         }
     }

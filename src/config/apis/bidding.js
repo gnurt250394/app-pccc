@@ -9,9 +9,8 @@ let instance = axios.create({
 
 
 export const listBiddings = async () => {
-    let token = await getItem('token')
-    
-    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    // let token = await getItem('token')
+    // instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.get(constant.NEW_BIDDING)
 }
 

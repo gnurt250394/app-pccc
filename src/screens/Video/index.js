@@ -10,7 +10,7 @@ import { SigninScreen } from 'config/screenNames'
 
 class Video extends React.Component {
     state = {
-        loading: false,
+        loading: true,
         keyword: '',
         datas: [],
         isReady: false,
@@ -22,25 +22,17 @@ class Video extends React.Component {
     async componentDidMount() {
         this.token = await getItem('token')
 
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
+            StatusBar.setBarStyle('light-content');
+             StatusBar.setBackgroundColor(color);
 
-          this.setState({loading: true}, () => {
-            listDocuments('video').then(res => {
-                if(res.data.code == StatusCode.Success){
-                    this.setState({
-                        datas: res.data.data,
-                        loading: false
-                    })
-                }else{
-                    this.setState({ loading: false })
-                }
+            let datas = await listDocuments('video').then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 console.log('err: ', err);
-                this.setState({ loading: false })
+                return []
             })
-          })
+            this.setState({ datas, loading: false })
         });
 
     }

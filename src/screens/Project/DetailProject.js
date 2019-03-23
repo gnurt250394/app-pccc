@@ -11,7 +11,8 @@ import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import moment from 'moment';
-const {width,height}= Dimensions.get('window')
+import { popupOk } from 'config'
+
  class DetailProject extends Component {
   constructor(props) {
     super(props);
@@ -85,11 +86,10 @@ const {width,height}= Dimensions.get('window')
     FolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
         console.log(this.props.navigation.state.params.id)
         if(res.data.code == Status.SUCCESS){
-            
             Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
         } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
-            navigation.reset(SigninScreen)
+            this.props.navigation.navigate(SigninScreen)
             removeItem('token')
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
         } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
@@ -157,27 +157,20 @@ const {width,height}= Dimensions.get('window')
       </View>
     );
   }
-  _getData=()=>{
+  _getData= async () => {
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
-        getListProject({
-            project_id:this.props.navigation.state.params.id
-          }).then(res=>{
-              console.log(res.data,'dd')
-            if(res.data.code== Status.SUCCESS){
-                this.setState({
-                    project:res.data.data,
-                    listPartner:res.data.data.partner
-                })
-                
-                
-            } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
-                Toast.show('Phiên đăng nhập hết hạn')
-                navigation.reset(SigninScreen)
-                removeItem('token')
-                this.props.dispatch({type: actionTypes.USER_LOGOUT})
-            }
+        let project = await getListProject({ project_id:this.props.navigation.state.params.id }).then(res=>{
+            return res.data.code == Status.SUCCESS ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({
+            project,
+            listPartner: project.partner
         })
       }
+      
      
   }
   componentDidMount =  () => {

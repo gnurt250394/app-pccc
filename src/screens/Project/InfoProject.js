@@ -83,28 +83,15 @@ _nextPage=(router,params)=>()=>{
       </View>
     );
   }
-  getData=()=>{
-    getNewProject({page:this.state.page}).then(res=>{
-      console.log(res.data,'data')
-      
-      if(res.data.code == Status.SUCCESS){
-        this.setState({
-          listProject:[...this.state.listProject,...res.data.data]
+  getData = async () => {
+        let listProject = await getNewProject({page: this.state.page}).then(res=>{
+            return res.data.code == Status.SUCCESS ? res.data.data : []
+        }).catch(err=> {
+            console.log('err: ', err);
+            return []
         })
-      } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
-        Toast.show('Phiên đăng nhập hết hạn')
-        navigation.reset(SigninScreen)
-        removeItem('token')
-        this.props.dispatch({type: actionTypes.USER_LOGOUT})
-      } else if(res.data.code == Status.NO_CONTENT){
-        this.setState({ refresing :false, Threshold:0})
-      } else{
-        this.setState({refresing:false,Threshold:0})
-      }
-      }).catch(err=>{
-        console.log(err.response,'errr')
-        this.setState({refresing:false,Threshold:0})
-      })
+
+      this.setState({listProject, refresing: false})
   }
   componentDidMount = () => {
     this.getData()

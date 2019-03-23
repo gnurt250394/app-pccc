@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} 
 import images from "assets/images"
 import { DetailBiddingScreen } from 'config/screenNames'
 import {  color, StatusCode} from 'config'
-import { listBiddings } from 'config/apis/bidding'
 
 class LI extends React.Component {
 
@@ -21,42 +20,12 @@ export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            biddings: [],
-            keyword: 'Máy bơm' ,
+            biddings: this.props.biddings || []
         }
     }
 
-    async componentDidMount() {
-        let biddings = await listBiddings().then(res => {
-            if(res.data.code == StatusCode.Success){
-                return res.data.data
-            }else{
-                return []
-            }
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
-        this.setState({biddings})
-    }
+    
 
-    _showName = name => {
-        let keyword = this.state.keyword;
-        let keywordLower = this.state.keyword.toLocaleLowerCase(); // chuyển từ khóa tìm kiếm về chữ thường
-        let nameLower = name.toLocaleLowerCase(); // chuyển tên về chữ thường
-        let index = nameLower.indexOf(keywordLower); // lấy vị trí của từ khóa trong tên
-        let firtStr = name.substr(0, index) // cắt chuổi trước từ khóa
-        let keyStr = name.substr(index, keyword.length + 1) // cắt từ khóa
-        let lastStr = name.substr(index + keyword.length, name.length - 1) // cắt chuỗi sau từ khóa
-        
-        return (
-            <Text style={style.txt}>
-                {firtStr}
-                <Text style={style.keyword}>{keyStr}</Text>
-                {lastStr}
-            </Text>
-        )
-    }
     renderItem = ({item, index}) => {
         return <TouchableOpacity 
                     onPress={this._navTo(DetailBiddingScreen, {name: item.name})}

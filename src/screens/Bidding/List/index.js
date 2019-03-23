@@ -1,14 +1,15 @@
 import React from 'react'
-import { View,  StatusBar, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native'
+import { View,  StatusBar, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import {  color, StatusCode} from 'config'
 import ListItem from './ListItem'
 import { Header } from 'components'
-
+import { listBiddings } from 'config/apis/bidding'
 
 class ListBidding extends React.Component {
     state = {
-        loading: false,
+        loading: true,
+        biddings: []
     }
     // set status bar
     async componentDidMount() {
@@ -18,7 +19,17 @@ class ListBidding extends React.Component {
           StatusBar.setBackgroundColor(color);
         });
 
+        let biddings = await listBiddings().then(res => {
+            console.log('res: ', res);
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({biddings, loading: false})
+
     }
+
     
     componentWillUnmount() {
         this._navListener.remove();
@@ -31,7 +42,7 @@ class ListBidding extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                 {   this.state.loading ? 
+                {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
@@ -41,10 +52,15 @@ class ListBidding extends React.Component {
                     title="Thông tin đấu thầu" onPress={this._goBack}/>
                 <ScrollView>
 
-                    <ListItem 
-                        data={this.state.biddings} 
-                        keyword={this.keyword}
-                        navigation={this.props.navigation} />
+                    {
+                        this.state.biddings.length == 0 
+                            ?
+                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                            :
+                        <ListItem 
+                            biddings={this.state.biddings} 
+                            navigation={this.props.navigation} />
+                    }
                 </ScrollView>
                 
 
@@ -67,4 +83,10 @@ export default connect()(ListBidding)
 
 const style = StyleSheet.create({
     flex: {flex: 1},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    }
 })
