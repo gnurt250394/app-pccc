@@ -65,55 +65,31 @@ class EditProfile extends React.Component {
 
     constructor(props){
         super(props);
-        let user = this.props.user || {}
+        let user = this.props.navigation.getParam('user') || {}
         
         this.user = {...user} // check old email
         this.state = {
-            name:  "",
+            name:  user.name ? user.name : "",
             company: user.company ? user.company : "",
             email: user.email ? user.email : "",
             phone: user.phone ? user.phone.toString() : "",
             address: user.address ? user.address : "",
             tax_code: user.tax_code ? user.tax_code : "",
             gender: user.gender != null ? user.gender : Gender.male,
-            image:null,
+            image: this.props.navigation.getParam('image'),
         }
     }
 
     // set status bar
     componentDidMount() {
-        this.getInfoAccount()
+        
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
       }
     
-      getInfoAccount=()=>{
-          getInfoAcount().then(res=>{
-              if(res.data.code == Status.SUCCESS){
-                    this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
-                    this.setState({
-                        image: res.data.data.image.full_path,
-                        name:res.data.data.name,
-                        address:res.data.data.address,
-                        email:res.data.data.email,
-                        company:res.data.data.company,
-                        phone:res.data.data.phone,
-                        gender:res.data.data.gender,
-                        tax_code:res.data.data.tax_code
-                    })
-                } else if(res.data.code == Status.TOKEN_EXPIRED){
-                    popupOk(CodeToMessage[res.data.code])
-                    navigation.reset(SigninScreen)
-                    removeItem('token')
-                } else if(res.data.code == Status.TOKEN_VALID){
-                    popupOk(CodeToMessage[res.data.code])
-                    navigation.reset(SigninScreen)
-                    removeItem('token')
-                }
-          })
-      }
+      
     componentWillUnmount() {
         this._navListener.remove();
     }
@@ -221,8 +197,6 @@ class EditProfile extends React.Component {
     }
 
     _onSuccess = () => {
-        let user = this.props.user || {} // user = null => crash
-        
         if(this.state.name&&this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
@@ -239,7 +213,10 @@ class EditProfile extends React.Component {
                 tax_code: this.state.tax_code,
             }
             
-            if(this.state.email&& this.state.email != user.email)  data.email = this.state.email; // check để ko bị trùng email cũ
+            if(this.state.email && this.state.email != this.user.email)  {
+                console.log(22);
+                data.email = this.state.email; // check để ko bị trùng email cũ
+            }
 
             updateAvatar(this.state.image).then(res=>{
                 if(res.data.code== Status.SUCCESS){
@@ -257,7 +234,7 @@ class EditProfile extends React.Component {
                 console.log(err,'err')
                 
             })
-
+            console.log(12, data);
             updateUser(data).then(res => {
                 if(res.data.code == Status.SUCCESS){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
@@ -280,7 +257,6 @@ class EditProfile extends React.Component {
     }
 }
 const mapStateToProps = (state) =>{
-    console.log(state,'sta')
     return {
         user: state.users && state.users.data ? state.users.data : null,
         token: state.users && state.users.token ? state.users.token : null,

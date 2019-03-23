@@ -14,51 +14,33 @@ import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem, removeItem, Status } from 'config/Controller';
-import CheckAuth from './CheckAuth';
+// import CheckAuth from './CheckAuth';
 import Item from 'screens/Project/Item';
 class Profile extends React.Component {
    state={
        user: this.props.users ? this.props.users :{},
-       token:'',
-       image:null
+       token: null,
+       image: null
    }
 
     edit = () => {
         this.props.navigation.navigate(EditProfileScreen)
     }
-
-    componentWillMount=async()=>{
-        this._navListener = this.props.navigation.addListener('willFocus', async () => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor(color);
-            let token = await getItem('token')
-            console.log('token: ', token);
-            this.setState({token}, this.getInfo)
-        });
-            
-    }   
-
   
 
-    // set status bar
-    componentDidMount= async()=> {
-       
-        // let token =  await getItem('token')
-           
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //   StatusBar.setBarStyle('light-content');
-        //   StatusBar.setBackgroundColor(color);
-        // });
-        
+    
+    async componentDidMount(){
+       this.getInfo()
     }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // if(this._navListener) this._navListener.remove();
     }
 
     render(){
         let {user,token,image} = this.state
-        return (token?
+        
+        return (
             <View style={style.flex}>
                 <ScrollView >
                     <View style={style.head}>
@@ -66,7 +48,7 @@ class Profile extends React.Component {
                     </View>
 
                     <TouchableOpacity 
-                        onPress={this._navTo(ViewProfileScreen,{update: this.getInfo})}
+                        onPress={this._navTo(ViewProfileScreen, {user: this.state.user, image: this.state.image, update: this.getInfo})}
                         style={style.boxUser}>
                         <Image 
                             style={style.avatar}
@@ -100,26 +82,23 @@ class Profile extends React.Component {
                     onPress={this._logout}
                     style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
             </View>
-            :
-            <CheckAuth/>
         )
     }
 
-    getInfo = () => {
-        getInfoAcount(this.state.token).then(res=>{
-            if(res.data.code == StatusCode.Success ){
-                this.setState({
-                    user:res.data.data,
-                    image:res.data.data.image.full_path
-                })
-            } else if(res.data.code == Status.TOKEN_VALID || res.data.code == Status.TOKEN_EXPIRED){
-                navigation.reset(SigninScreen)
-                Toast.show('Phiên đăng nhập đã hết hạn')
-                this.props.dispatch({type: actionTypes.USER_LOGOUT})
-                AsyncStorage.removeItem('token')
-                this.props.dispatch({type: actionTypes.USER_LOGOUT})
-            }
-        })
+    getInfo = async () => {
+        let token = await getItem('token')
+        let user = await getInfoAcount(token).then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
+        
+        if(user && user.name ){
+            this.setState({
+                user: user,
+                image: user.image ? user.image.full_path : null
+            })
+            return
+        } else{
+            navigation.reset(CheckAuthScreen)
+            return
+        }
     }
 
     _logout =  () => {

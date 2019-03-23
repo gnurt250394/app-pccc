@@ -2,11 +2,10 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import {  ShowGender, color } from 'config'
+import {  ShowGender, color,StatusCode  } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
 import { getInfoAcount } from 'config/apis/users';
-import { Status } from 'config/Controller';
-
+import { getItem, removeItem, Status } from 'config/Controller';
 const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
     render() {
@@ -19,28 +18,13 @@ class ListItem extends React.Component {
     };
 }
 class ViewProfile extends React.Component {
-        state = {
-            user:  {},
-            image:null
+    state = {
+        user:  this.props.navigation.getParam('user') || {},
+        image: this.props.navigation.getParam('image')
     }
-
-   
-
-    getInfo= ()=>{
-        getInfoAcount().then(res=>{
-            console.log(res.data,'da')
-
-            if(res.data.code==Status.SUCCESS){
-                this.setState({
-                    user:res.data.data,
-                    image:res.data.data.image.full_path
-                })
-            }
-        })
-    }
+  
         // set status bar
     componentDidMount =()=> {
-        this.getInfo()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -63,7 +47,7 @@ class ViewProfile extends React.Component {
                             source={images.backLight} />
                     </TouchableOpacity>
                     <Text style={style.title}> Thông tin cá nhân </Text>
-                    <TouchableOpacity style={style.p10} onPress={this._navTo(EditProfileScreen,{refress:this.getInfo})}>
+                    <TouchableOpacity style={style.p10} onPress={this._navTo(EditProfileScreen, {user: this.state.user, image: this.state.image, refress: this.getInfo})}>
                         <Image 
                             style={style.iconEdit}
                             source={images.edit} />
@@ -87,13 +71,31 @@ class ViewProfile extends React.Component {
         )
     }
 
+    getInfo = async () => {
+        let token = await getItem('token')
+        
+        let user = await getInfoAcount(token).then( res=> {
+            return res.data.code == StatusCode.Success ? res.data.data : null
+        }).catch(err => {
+            return null
+        })
+        
+        if(user && user.name ){
+            this.setState({
+                user: user,
+                image: user.image ? user.image.full_path : null
+            })
+            return
+        }
+    }
+
     _navTo = (screen,params) => () => {
         this.props.navigation.navigate(screen,params)
     }
 
     _goBack = () => {
-        this.props.navigation.goBack()
         this.props.navigation.state.params.update()
+        this.props.navigation.goBack()
     }
 
 }

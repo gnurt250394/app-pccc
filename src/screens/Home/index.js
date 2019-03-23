@@ -23,7 +23,7 @@ class Home extends React.Component {
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        if(this._navListener) this._navListener.remove();
     }
 
     render(){

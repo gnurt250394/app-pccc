@@ -11,6 +11,7 @@ import {withNavigation} from 'react-navigation'
 class CheckAuth extends React.Component {
     constructor(props){
         super(props);
+        
         this.state = {
             modalVisible: true,
         };

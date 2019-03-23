@@ -24,24 +24,6 @@ class Signin extends React.Component {
 
     // set status bar
     componentDidMount() {
-        //  // logout facebook
-        // LoginManager.logOut().then(fb => {
-        //     console.log('fb: ', fb);
-
-        // }).catch(err => {
-        //     console.log('err: ', err);
-
-        // })
-
-        //  // logout google
-        // GoogleSignin.signOut().then(gg => {
-        //     console.log('gg: ', gg);
-
-        // }).catch(err => {
-        //     console.log('err: ', err);
-
-        // })
-
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
@@ -49,7 +31,7 @@ class Signin extends React.Component {
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        if(this._navListener) this._navListener.remove();
     }
     // end set status bar
 
@@ -305,15 +287,13 @@ class Signin extends React.Component {
         if(!phone || phone == ""){
             // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
             this.setState({loading: true}, () => this._popupUpdatePhone(userToken, phone))
-        console.log(userToken,'token1')
 
         }else{
             // navigation.reset(HomeScreen);
             this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             AsyncStorage.setItem('token',userToken)
-        console.log(userToken,'token2')
 
-            navigation.reset(HomeScreen)
+            this.props.navigation.navigate(HomeScreen)
             
         }
         
