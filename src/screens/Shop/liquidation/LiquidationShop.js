@@ -3,8 +3,9 @@ import { View, Text, FlatList, StyleSheet ,Image, Dimensions,TouchableOpacity} f
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
-import { Status } from 'config/Controller';
+import { Status, removeItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
+import { SigninScreen } from 'config/screenNames';
     moment.locale('vn')
 export default class LiquidationShop extends Component {
 

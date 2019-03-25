@@ -145,4 +145,11 @@ module.exports = {
     proStatus:require('./proStatus.png'),
     proSupplier:require('./proSupplier.png'),
     proYear:require('./proYear.png'),
+    proPhone: require('./proPhone.png'),
+    proEmail: require('./proEmail.png'),
+    proCompany: require('./proCompany.png'),
+    proFax: require('./proFax.png'),
+    proSub: require('./proSub.png'),
+    proPosition: require('./proPosition.png'),
+    proLocation: require('./proLocation.png')
 }

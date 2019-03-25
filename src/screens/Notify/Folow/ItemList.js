@@ -30,11 +30,11 @@ export default class ItemList extends Component {
         <View style={{flex:1}}>
       <TouchableOpacity style={styles.container}>
         <Image 
-            source={{uri:this.props.item.image}}
+            source={{uri:this.props.item.image.full_path}}
             style={styles.image}
         />
         <View style={styles.containerTxt}>
-            <Text style={[styles.txt,this.checColor()]}>{this.props.item.name}</Text>
+            <Text style={[styles.txt,this.checColor()]}>{this.props.item.message}</Text>
             <Text style={styles.time}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>

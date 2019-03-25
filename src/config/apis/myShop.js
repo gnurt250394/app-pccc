@@ -27,3 +27,8 @@ export const getLiquidation=async(page)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.get(constant.LIQUIDATION,{params:{page:page}})
 }
+export const getOtherData=(body)=>{
+    
+        // instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.get(constant.Data_other,{params:body})
+}

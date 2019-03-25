@@ -89,7 +89,7 @@ import { popupOk } from 'config'
             Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
         } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
-            this.props.navigation.navigate(SigninScreen)
+            navigation.navigate(SigninScreen)
             removeItem('token')
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
         } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
@@ -119,7 +119,7 @@ import { popupOk } from 'config'
             style={styles.imgCalenda}
             resizeMode="contain"
         />
-            <Text>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
+            <Text style={{color:'#333131'}}>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
         </View>
         {<TouchableOpacity style={styles.folow}
         onPress={this._folowProject}
@@ -134,7 +134,7 @@ import { popupOk } from 'config'
         <CustomText value={"Hoàn công"} name={moment(project.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}/>
         <CustomText value={"Hạng công trình xanh"} name={project.field_area}/>
         <CustomText value={"Địa điểm"} name={project.address}/>
-        <CustomText value={"Diện tích sàn"} name={project.floor_area}/>
+        <CustomText value={"Diện tích sàn"} name={project.floor_area+ ' m2'}/>
         <CustomText value={"Số tầng"} name={project.floor}/>
         <CustomText value={"Units"} name={project.unit}/>
         <CustomText value={"Loại hình dự án"} name={project.type_project}/>
@@ -160,6 +160,7 @@ import { popupOk } from 'config'
   _getData= async () => {
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
         let project = await getListProject({ project_id:this.props.navigation.state.params.id }).then(res=>{
+            console.log(res,'daaaaa')
             return res.data.code == Status.SUCCESS ? res.data.data : []
         }).catch(err => {
             console.log('err: ', err);
@@ -270,7 +271,7 @@ const styles= StyleSheet.create({
          height:40,
         //  width:width/2.5,
         paddingHorizontal: 10,
-         borderColor: '#707070',
+         borderColor: '#333131',
          borderWidth: 1,
          borderRadius: 5,
          alignItems: 'center',

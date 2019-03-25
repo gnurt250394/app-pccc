@@ -42,6 +42,7 @@ import Video from 'screens/Video'
 
 // Catalog
 import Catalog from 'screens/Catalog'
+import ListCategory from "screens/Shop/product/ListCategory";
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
@@ -88,6 +89,7 @@ const App = createStackNavigator(
     [ScreenName.DetailBiddingScreen]: DetailBidding,
     //MyShop
     [ScreenName.BuyProduct]: BuyProduct,
+    [ScreenName.ListCategory]: ListCategory,
 
     // Projeect
     [ScreenName.InfoProject]: InfoProject,

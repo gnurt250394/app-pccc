@@ -5,12 +5,14 @@ const {width} = Dimensions.get('window')
 class ListItem extends Component{
     render(){
         return this.props.name? <View style={styles.Square}>
-                 
-                 <Text style={styles.txt} >
-                 <Image source={images.icon_square}
+                 <Image source={this.props.source}
                      style={styles.image}
                      resizeMode="contain"
-                 />  {this.props.name}</Text>
+                 />
+                 <View style={{flexWrap:'wrap',flexShink:5}}>
+                 <Text style={styles.txt} >
+                 {this.props.name}</Text>
+                 </View>  
              </View>
         : null
     }
@@ -25,12 +27,12 @@ export default class Item extends Component {
     this.rotate = new Animated.Value(0)
   }
   _rolate=(value)=>{
-    Animated.timing(
+    Animated.spring(
       this.rotate,
       {
         toValue: value,
-        duration: 500,
-        easing: Easing.bounce
+        duration: 1000,
+        // easing: Easing.bounce
       }
     ).start()
   }
@@ -86,13 +88,13 @@ showList=()=>{
                 </TouchableOpacity>
             </View>
             {show?<View style={styles.container}>
-            <ListItem name={this.props.item.email}/>
-            <ListItem name={this.props.item.phone}/>
-            <ListItem name={this.props.item.fax}/>
-            <ListItem name={this.props.item.address}/>
-            <ListItem name={this.props.item.company}/>
-            <ListItem name={this.props.item.position}/>
-            <ListItem name={this.props.item.sub}/>
+            <ListItem source={images.proEmail} name={this.props.item.email}/>
+            <ListItem source={images.proPhone} name={this.props.item.phone}/>
+            <ListItem source={images.proFax} name={this.props.item.fax}/>
+            <ListItem source={images.proLocation} name={this.props.item.address}/>
+            <ListItem source={images.proCompany} name={this.props.item.company}/>
+            <ListItem source={images.proPosition} name={this.props.item.position}/>
+            <ListItem source={images.proSub} name={this.props.item.sub}/>
             </View> : null}
             <View
                 style={styles.end}
@@ -109,7 +111,8 @@ const styles = StyleSheet.create({
     },
     txt:{
         color:'#333131',
-        fontSize:13
+        fontSize:13,
+        // textAlign:'center'
     },
     end:{
         height:0.6,
@@ -130,9 +133,9 @@ const styles = StyleSheet.create({
         marginBottom:9
     },
     image:{
-        height:8,
-        width:8,
-        tintColor:'gray',
+        height:10,
+        width:10,
+        // tintColor:'gray',
         alignSelf: 'center',
         marginRight: 8,
     },
