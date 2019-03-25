@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
@@ -78,7 +78,7 @@ class Catalog extends React.Component {
                 
                 <View style={style.right}>
                     <Text style={style.name}>{item.name}</Text>
-                    <Text style={style.description}>{item.description}</Text>
+                    <Text style={style.description}>{ellipsis(item.description, 50)}</Text>
                     <View style={style.row}>
 
                         <TouchableOpacity onPress={this.onDownload(item.link_id)}>
@@ -93,6 +93,8 @@ class Catalog extends React.Component {
                 </View>
             </View>
     }
+
+
 
     onFollow = document_id => () => {
         if(!this.token){

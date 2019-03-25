@@ -1,13 +1,30 @@
 import React from 'react'
-import { View,  StatusBar, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native'
+import { View,  StatusBar, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
-import { signup } from 'config/apis/users'
-import {  color, ellipsis} from 'config'
+import { detailBidding } from 'config/apis/bidding'
+import {  color, ellipsis, popupOk, BiddingField } from 'config'
 import { Header } from 'components'
+import { getItem, Status } from 'config/Controller';
+import images from "assets/images"
+import styles from "assets/styles"
+class LI extends React.Component {
+
+    render(){
+        return (
+            <View style={style.row}>
+                <Image source={images.dot} style={style.dot}/>
+                <Text style={style.label}>{this.props.label}</Text>
+            </View>
+        )
+    }
+}
+
+
 class DetailBidding extends React.Component {
     state = {
-        loading: false,
-        name: this.props.navigation.getParam('name')
+        loading: true,
+        bidding_id: this.props.navigation.getParam('bidding_id'),
+        bidding: {}
     }
     // set status bar
     async componentDidMount() {
@@ -17,7 +34,20 @@ class DetailBidding extends React.Component {
           StatusBar.setBackgroundColor(color);
         });
 
-        this.keyword = await AsyncStorage.getItem('keyword')
+        let bidding = await detailBidding(this.state.bidding_id).then(res => {
+            console.log('res: ', res);
+            return res.data.code == Status.SUCCESS ? res.data.data : null
+        }).catch(err => {
+            console.log('err: ', err);
+            return null
+        })
+
+        if(!bidding || (bidding && !bidding.id)){
+            popupOk("Không tìm thấy dữ liệu.", this._goBack)
+            this.setState({loading: false})
+        }else{
+            this.setState({bidding, loading: false})
+        }
     }
     
     componentWillUnmount() {
@@ -25,19 +55,70 @@ class DetailBidding extends React.Component {
     }
 
     render(){
+        let { bidding } = this.state
+        console.log('bidding: ', bidding);
+        
         return (
             <View style={style.flex}>
-                 {   this.state.loading ? 
+                {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
                 <Header
                     check={1}
-                    title={ellipsis(this.state.name)} onPress={this._goBack}/>
+                    title={ellipsis(bidding.name_bidding || "")} onPress={this._goBack}/>
                 
                 <ScrollView>
+                    <Text style={style.name}>{bidding.name_bidding}</Text>
+                    <View style={style.rowCalender}>
+                        <View style={[style.row, style.calender]}>
+                            <Image source={images.calender} style={style.iconCalender}/>
+                            <Text style={style.time}>{bidding.time_start}</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={this.onFollow}
+                            // style={style.btn}>
+                            style={[style.row, style.calender, style.btn]}>
+                            <Text style={style.textBtn}>Theo dõi tin đấu thầu</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
+                    {bidding.notification_form && <LI label={`Hình thức thông báo: ${bidding.notification_form}`} />}
+                    {bidding.notification_type && <LI label={`Loại thông báo: ${bidding.notification_type}`} />}
 
+                    <Text style={style.h3}>Thông tin chung:</Text>
+                    {bidding.tbmt && <LI label={`Số TBMT: ${bidding.tbmt}`} />}
+                    {bidding.number_khlcnt && <LI label={`Số hiệu KHLCNT: ${bidding.number_khlcnt}`} />}
+                    {bidding.name_khlcnt && <LI label={`Tên KHLCNT: ${bidding.name_khlcnt}`} />}
+                    <LI label={`Lĩnh vực: ${BiddingField(bidding.field)}`} />
+                    {bidding.partner && <LI label={`Bên mời thầu: ${bidding.partner}`} />}
+                    {bidding.name_project && <LI label={`Chủ đầu tư: ${bidding.name_project}`} />}
+                    {bidding.type && <LI label={`Phân loại: ${bidding.type}`} />}
+                    {bidding.source_detail && <LI label={`Chi tiết nguồn vốn: ${bidding.source_detail}`} />}
+                    {bidding.type_contract && <LI label={`Loại hợp đồng: ${bidding.type_contract}`} />}
+                    {bidding.contractor_form && <LI label={`Hình thức lựa chọn nhà thầu: ${bidding.contractor_form}`} />}
+                    {bidding.method_lcnt && <LI label={`Phương thức LCNT: ${bidding.method_lcnt}`} />}
+                    {bidding.perform_contract && <LI label={`Thời gian thực hiện hợp đồng: ${bidding.perform_contract}`} />}
+
+                    <Text style={style.h3}>Tham gia dự thầu:</Text>
+                    {/* {bidding.price && <LI label={`Hình thức mời thầu: ${bidding.price}`} />} // chưa rõ */}
+                    {bidding.time_start_hsmt && <LI label={`Thời gian nhận E-HSDT từ ngày: ${bidding.time_start_hsmt}`} />}
+                    {bidding.time_end_hsmt && <LI label={`Đến ngày: ${bidding.time_end_hsmt}`} />}
+                    {bidding.released && <LI label={`Phát hành E-HSMT: ${bidding.released}`} />}
+                    {bidding.address_hsdt && <LI label={`Địa điểm nhận HSDT: ${bidding.address_hsdt}`} />}
+                    {bidding.address_bidding && <LI label={`Địa điểm thực hiện gói thầu: ${bidding.address_bidding}`} />}
+
+                    <Text style={style.h3}>Mở thầu:</Text>
+                    {bidding.time_open_close && <LI label={`Thời điểm đóng/mở thầu: ${bidding.time_open_close}`} />}
+                    {bidding.address_open_bidding && <LI label={`Địa điểm mở thầu: ${bidding.address_open_bidding}`} />}
+                    {bidding.estimates_bidding && <LI label={`Dự toán gói thầu: ${bidding.estimates_bidding}`} />}
+
+                    <Text style={style.h3}>Đảm bảo dự thầu:</Text>
+                    {bidding.amount_bidding && <LI label={`Số tiền bảo đảm dự thầu: ${bidding.amount_bidding}`} />}
+                    {bidding.bidding_form && <LI label={`Hình thức bảo đảm dự thầu: ${bidding.bidding_form}`} />}
+                    {bidding.bidding_document && <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />}
+                    {bidding.care && <LI label={`Quan tâm: ${bidding.care}`} />}
                 </ScrollView>
 
                 
@@ -59,65 +140,31 @@ export default connect()(DetailBidding)
 
 const style = StyleSheet.create({
     flex: {flex: 1},
+    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
+    box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
+    dot: {width: 6,  resizeMode: 'contain', margin: 10,},
+    name: { fontSize: 16, padding: 10, paddingBottom: 15, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
+    h3: { fontSize: 16, padding: 10, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
+    txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
+    time: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 5},
+    price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
+    iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,},
+    keyword: {color, textAlign: 'left',},
+    row: {flexDirection: 'row', alignItems: 'center',},
+    calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
+    rowCalender: {flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start'},
+    label: {color: '#555555', fontSize: 14},
+    btn: {
+        width: '40%',
+        backgroundColor: color,
+        justifyContent: 'center',
+        borderRadius: 5,
+        borderWidth: 0,
+    },
+    textBtn: {
+        color: 'white',
+        fontSize: 12,
+        textAlign: 'center'
+    },
 })
 
-let data = [
-    {
-        id: 1,
-        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
-        version: 1,
-        "time": "2019-03-16 10:36:00",
-        partner: "Ông A",
-        stage: 'Thiết kế kỹ thuật',
-        code: '95821463',
-        time_start: '25/01/2019',
-        time_end: '25/01/2019'
-    },
-    {
-        id: 2,
-        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
-        version: 2,
-        "time": "2019-03-16 10:36:00",
-        partner: "Ông A",
-        stage: 'Thiết kế kỹ thuật',
-        code: '95821463',
-        time_start: '25/01/2019',
-        time_end: '25/01/2019'
-    },
-    {
-        id: 3,
-        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
-        version: 3,
-        "time": "2019-03-16 10:36:00",
-        partner: "Ông A",
-        stage: 'Thiết kế kỹ thuật',
-        code: '95821463',
-        time_start: '25/01/2019',
-        time_end: '25/01/2019'
-    },
-    {
-        id: 4,
-        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
-        version: 4,
-        "time": "2019-03-16 10:36:00",
-        partner: "Ông A",
-        stage: 'Thiết kế kỹ thuật',
-        code: '95821463',
-        time_start: '25/01/2019',
-        time_end: '25/01/2019'
-    },
-    {
-        id: 5,
-        name: 'Tư vấn thiết kế bản vẽ thi công và tổng dự án',
-        version: 5,
-        "time": "2019-03-16 10:36:00",
-        partner: "Ông A",
-        stage: 'Thiết kế kỹ thuật',
-        code: '95821463',
-        time_start: '25/01/2019',
-        time_end: '25/01/2019'
-    },
-    
-   
-    
-]

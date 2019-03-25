@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtubeApiKey, popupOk, Follow} from 'config'
+import {  color, width, StatusCode, youtubeApiKey, popupOk, Follow, defaultStyle} from 'config'
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
@@ -229,17 +229,18 @@ const style = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: 250
+        height: 160
         // resizeMode:'stretch'
     },
     name: {
         fontWeight: 'bold',
         fontSize: 14,
-        padding: 10
+        padding: 10,
+        color: '#333333'
     },
     btn: {
         width: 150,
-        padding: 10,
+        padding: defaultStyle.padding,
         backgroundColor: color,
         alignItems: 'center',
         borderRadius: 5
@@ -258,7 +259,7 @@ const style = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 10,
         paddingRight: 10,
-        alignItems: 'flex-end'
+        alignItems: 'center'
     },
     notFound: {
         fontSize: 16,

@@ -28,7 +28,7 @@ export default class ListItem extends React.Component {
 
     renderItem = ({item, index}) => {
         return <TouchableOpacity 
-                    onPress={this._navTo(DetailBiddingScreen, {name: item.name})}
+                    onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
                     style={style.box}>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={[style.row, style.calender]}>
@@ -66,11 +66,12 @@ const style = StyleSheet.create({
     box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
     dot: {width: 6,  resizeMode: 'contain', margin: 10,},
     name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
-    txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
-    time: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 5},
+    txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
+    time: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 5},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconCalender: {width: 15,  resizeMode: 'contain', margin: 5,},
     keyword: {color, textAlign: 'left',},
     row: {flexDirection: 'row', alignItems: 'center',},
-    calender: {width: '45%', alignSelf: 'flex-start', borderWidth: 1, borderColor: '#ddd', alignContent: 'center', borderRadius: 5, justifyContent: 'center', marginLeft: 10,}
+    calender: {width: '45%', alignSelf: 'flex-start', borderWidth: 1, borderColor: '#ddd', alignContent: 'center', borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5,},
+    label: {color: '#555555', fontSize: 14}
 })

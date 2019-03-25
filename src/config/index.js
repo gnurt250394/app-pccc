@@ -1,4 +1,5 @@
 import {  Alert, Dimensions } from 'react-native'
+import { Switch } from 'react-native-gesture-handler';
 export const  { width, height } = Dimensions.get('window')
 
 export const StatusCode = {
@@ -12,6 +13,37 @@ export const StatusCode = {
 export const Gender = {
     male: 0,
     female: 1,
+}
+
+export const BiddingField = field => {
+    let name = ""
+    switch (field){
+        case 0:
+        case "0":
+            name = 'Hàng hóa'
+            break
+        case 1:
+        case "1":
+            name = 'Xây lắp'
+            break
+        case 2:
+        case "2":
+            name = 'Tư vấn'
+            break
+        case 3:
+        case "3":
+            name = 'Phi tư vấn'
+            break
+        case 4:
+        case "4":
+            name = 'Hỗn hợp'
+            break
+        default:
+            name = 'Hỗn hợp'
+            break
+    }
+
+    return name
 }
 
 export const Follow = {
@@ -111,7 +143,7 @@ export const validateName = str => {
     return re.test(str);
 }
 
-export const ellipsis = (str, max = 30) => {
+export const ellipsis = (str = "", max = 30) => {
     return (str.length > max)? str.substring(0, max) + "...": str;
 }
 
