@@ -40,7 +40,7 @@ import { actionTypes } from 'actions'
     
 }
 ListFooterComponent=()=>{
-    if(this.state.refresing){
+    if(this.state.refresing ){
         return <ActivityIndicator
             size="large"
             color="#2166A2"
@@ -68,11 +68,11 @@ ListFooterComponent=()=>{
   }
   getData=()=>{
      getListNotifi({type:'system'}).then(res=>{
-         console.log(res.data,'aaaa')
+         console.log(res,'aaaa')
          if(res.data.code== Status.SUCCESS){
-             this.setState({listSystems:[...this.state.listSystems,...res.data.data],refresing:true})
+             this.setState({listSystems:res.data.data})
          } else if(res.data.code == Status.NO_CONTENT){
-             this.setState({refresing:false,Thresold:0})
+             SimpleToast.show("Không có thông báo")
          } else if(res.data.code== Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID){
              navigation.reset(SigninScreen)
              SimpleToast.show('Phiên đăng nhập hết hạn')
@@ -80,7 +80,10 @@ ListFooterComponent=()=>{
              this.props.dispatch({type: actionTypes.USER_LOGOUT})
          }else{
              SimpleToast.show("Lỗi hệ thống")
+             
          }
+     }).catch(err=>{
+         console.log(err.response,'errr')
      })
   }
   componentDidMount = () => {

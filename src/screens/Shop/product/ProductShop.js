@@ -109,37 +109,8 @@ _addItem=()=>{
      
    
  }
+
  
- _renderFooter=()=>{
-     if(this.state.loadMore){
-     return(
-        <ActivityIndicator
-            size={"large"}
-            color={"#2166A2"}
-        />
-     )
-    } else{
-        return null
-    }
-
- }
-
- _loadMore=()=>{
-     if(!this.state.loadMore){
-         console.log('bb')
-        return null
-     } else{
-         this.setState((preState)=>{
-             return{
-                loadMore:true,
-                page:preState.page +1
-             }
-         },()=>{
-             this.getDetail()
-            console.log('aa')
-         })
-     }
- }
  _keyExtractor=(item,index)=>{
    return `${item.product_id|| index}`
  }
@@ -153,10 +124,6 @@ _addItem=()=>{
             numColumns={3}
             renderItem={(this._renderItem)}
             keyExtractor={this._keyExtractor}
-            ListFooterComponent={this._renderFooter}
-            onEndReached={this._loadMore}
-            onEndReachedThreshold={this.state.Threshold}
-            initialNumToRender={5}
        />
       </View>
     );

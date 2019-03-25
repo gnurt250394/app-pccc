@@ -25,12 +25,12 @@ export default class Item extends Component {
     this.rotate = new Animated.Value(0)
   }
   _rolate=(value)=>{
-    Animated.timing(
+    Animated.spring(
       this.rotate,
       {
         toValue: value,
-        duration: 500,
-        easing: Easing.bounce
+        duration: 1000,
+        // easing: Easing.bounce
       }
     ).start()
   }

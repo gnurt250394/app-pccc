@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {  color, width, StatusCode, youtubeApiKey, popupOk} from 'config'
 import images from "assets/images"
 import { listDocuments } from 'config/apis/Project'
-import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
+// import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
 import { getItem } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 

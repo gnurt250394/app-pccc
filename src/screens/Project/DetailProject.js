@@ -89,7 +89,7 @@ import { popupOk } from 'config'
             Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
         } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
-            this.props.navigation.navigate(SigninScreen)
+            navigation.navigate(SigninScreen)
             removeItem('token')
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
         } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
@@ -160,6 +160,7 @@ import { popupOk } from 'config'
   _getData= async () => {
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
         let project = await getListProject({ project_id:this.props.navigation.state.params.id }).then(res=>{
+            console.log(res,'daaaaa')
             return res.data.code == Status.SUCCESS ? res.data.data : []
         }).catch(err => {
             console.log('err: ', err);

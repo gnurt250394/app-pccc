@@ -5,6 +5,7 @@ import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
 import { Status } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
+import { SigninScreen } from 'config/screenNames';
     moment.locale('vn')
 export default class LiquidationShop extends Component {
 
