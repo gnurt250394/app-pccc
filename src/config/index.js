@@ -14,6 +14,14 @@ export const Gender = {
     female: 1,
 }
 
+export const Follow = {
+    unfollow: 0,
+    follow: 1,
+    table_project: 'UserProject',
+    table_user: 'UserInvestor',
+
+}
+
 export const MessageStatus = {
     unread: 0,
     read: 1,

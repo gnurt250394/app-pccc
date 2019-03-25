@@ -5,27 +5,38 @@ import {  color, StatusCode} from 'config'
 import ListItem from './ListItem'
 import { Header } from 'components'
 import { listBiddings } from 'config/apis/bidding'
+import { listFollows } from 'config/apis/Project'
 
 class ListBidding extends React.Component {
     state = {
         loading: true,
-        biddings: []
+        biddings: [],
+        type: this.props.navigation.getParam('type')
     }
     // set status bar
     async componentDidMount() {
-        
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
-
-        let biddings = await listBiddings().then(res => {
-            console.log('res: ', res);
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
+        let type = this.state.type,
+            biddings = [];
+        if(type && type == 'tracking'){
+            biddings = await listFollows().then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
+            })
+        }else{
+            biddings = await listBiddings().then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
+            })
+        }
+        
         this.setState({biddings, loading: false})
 
     }
@@ -49,7 +60,7 @@ class ListBidding extends React.Component {
                 }
                 <Header
                     check={1}
-                    title="Thông tin đấu thầu" onPress={this._goBack}/>
+                    title={this.state.type && this.state.type == 'tracking' ? "Theo dõi đấu thầu" : "Thông tin đấu thầu"} onPress={this._goBack}/>
                 <ScrollView>
 
                     {

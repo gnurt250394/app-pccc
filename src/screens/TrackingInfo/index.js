@@ -1,7 +1,7 @@
 import React from 'react'
 import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode} from 'config'
+import {  color, width,height, StatusCode, sreen4_7} from 'config'
 import { Header } from 'components'
 import {  ListBiddingScreen, InfoProject } from 'config/screenNames'
 import images from "assets/images"
@@ -86,38 +86,32 @@ class TrackingInfo extends React.Component {
                         </View>
 
                         
-                        <View style={[style.row, style.mt0]}>
+                        <View style={[style.mt0, style.row3]}>
                             <TouchableOpacity style={style.box3} 
                             // onPress={this._navTo(SearchScreen)} 
                             >
-                                <View  style={style.box3} >
-                                    <Image 
-                                        style={style.imgContaint}
-                                        source={images.video} />
-                                    <Text style={style.text}>Video</Text> 
-                                </View>
+                                <Image 
+                                    style={style.imgBox3}
+                                    source={images.video} />
+                                <Text style={style.textB3}>Video</Text> 
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
                             //  onPress={this._navTo(SearchScreen)}
                             >
-                                <View  style={style.box3} >
-                                    <Image 
-                                        style={style.imgContaint}
-                                        source={images.catalog} />
-                                    <Text style={style.text}>Catalog</Text> 
-                                </View>
+                                <Image 
+                                    style={style.imgBox3}
+                                    source={images.catalog} />
+                                <Text style={style.textB3}>Catalog</Text> 
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
                                 // onPress={this._navTo(SearchScreen)} 
                                 >
-                                <View  style={style.box3} >
-                                    <Image 
-                                        style={style.imgContaint}
-                                        source={images.tailieu} />
-                                    <Text style={style.text}>Tài liệu</Text> 
-                                </View>
+                                <Image 
+                                    style={style.imgBox3}
+                                    source={images.tailieu} />
+                                <Text style={style.textB3}>Tài liệu</Text> 
                             </TouchableOpacity>
                             
                         </View>
@@ -160,8 +154,10 @@ const style = StyleSheet.create({
         height: '100%',
         marginRight: 1,  
         position: 'relative'},
-    imgContaint: {
+    imgBox3: {
+        position: 'absolute',
         width: '100%', 
+        height: '100%',
         alignSelf: 'center',
         resizeMode: 'stretch',
     },
@@ -171,7 +167,7 @@ const style = StyleSheet.create({
         resizeMode: 'contain',
     },
     text: {
-        position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '60%',
+        position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '80%',
         // textShadowColor: "gray",
         // textShadowOffset: {
         //     width: -1,
@@ -180,7 +176,9 @@ const style = StyleSheet.create({
         // textShadowRadius: 2,
         // elevation: 2,
     },
-    row: { flex: 1, flexDirection: 'row', width: '100%', marginTop: 1,},
+    textB3: { position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '80%' },
+    row: { flex: 1, flexDirection: 'row', width: '100%',  marginTop: 1,},
+    row3: {height: 180, flexDirection: 'row', borderWidth: 1,},
     content: { flexDirection: 'column', justifyContent: 'center', flex: 1},
     mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
