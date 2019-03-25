@@ -1,9 +1,9 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtubeApiKey, popupOk} from 'config'
+import {  color, width, StatusCode, youtubeApiKey, popupOk, Follow} from 'config'
 import images from "assets/images"
-import { listDocuments } from 'config/apis/Project'
+import { listDocuments, FolowProject } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
 import { getItem } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
@@ -119,19 +119,29 @@ class Video extends React.Component {
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
                     <Text style={style.time}>Ngày đăng: {item.date}</Text>
-                    <TouchableOpacity
+                    {item.follow == Follow.unfollow && <TouchableOpacity
                         onPress={this.onFollow}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
             </View>
     }
 
-    onFollow = () => {
+    onFollow = (id) => {
         if(!this.token){
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', this.props.navigation.navigate(SigninScreen))
         }else{
+            FolowProject({
+                table: Follow.table_project,
+                project_id: id
+            }).then(res => {
+                console.log('res: ', res);
+                
+            }).catch(err => {
+                console.log('err: ', err);
+
+            })
             popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
         }
     }
