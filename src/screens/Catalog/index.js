@@ -1,13 +1,14 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
-import { listDocuments } from 'config/apis/Project'
-import { getItem } from 'config/Controller';
+import { listDocuments, addFolow } from 'config/apis/Project'
+import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
+
 
 class Catalog extends React.Component {
     state = {
@@ -84,7 +85,7 @@ class Catalog extends React.Component {
                             <Text style={style.download}>tải xuống</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={this.onFollow}
+                            onPress={this.onFollow(item.id)}
                             style={style.btn}>
                             <Text style={style.textBtn}>Theo dõi</Text>
                         </TouchableOpacity>
@@ -93,17 +94,32 @@ class Catalog extends React.Component {
             </View>
     }
 
-    onFollow = () => {
+    onFollow = document_id => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', this.props.navigation.navigate(SigninScreen))
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
-            popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
-            
+            addFolow({document_id, table: Follow.table_document}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Theo dõi thành công.')
+                        break;
+                
+                    default:
+                        popupOk('Theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Theo dõi thất bại.')
+            })
         }
     }
 
     onDownload = link  => () => {
-        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt' 
+        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
         
         RNFetchBlob.config({
             addAndroidDownloads : {
@@ -118,7 +134,6 @@ class Catalog extends React.Component {
             res.path()
             popupOk('Tải xuống thành công.')
         })
-        // Status code is not 200
         .catch((errorMessage, statusCode) => {
             console.log('statusCode: ', statusCode);
             console.log('errorMessage: ', errorMessage);
@@ -141,6 +156,10 @@ class Catalog extends React.Component {
 
     _goBack = () => {
         this.props.navigation.goBack()
+    }
+
+    onSignin = () => {
+        this.props.navigation.navigate(SigninScreen)
     }
 
 

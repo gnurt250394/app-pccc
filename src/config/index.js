@@ -19,7 +19,8 @@ export const Follow = {
     follow: 1,
     table_project: 'UserProject',
     table_user: 'UserInvestor',
-
+    table_document: 'UserDocument',
+    table_bidding: 'UserBidding',
 }
 
 export const MessageStatus = {
@@ -98,7 +99,7 @@ export const popupOk = (msg, onPress = null) =>{
         'Thông báo',
         msg,
         [
-          { text: 'ok',style: 'ok', onPress: () => onPress }
+          { text: 'ok',style: 'ok', onPress: onPress ? onPress : () => null }
         ],
         {cancelable: false},
     );

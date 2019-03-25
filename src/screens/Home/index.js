@@ -188,7 +188,7 @@ class Home extends React.Component {
         }else{
             let token = await getItem('token')
             if(token) this.props.navigation.navigate(screen, params)
-            else  popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', navigation.navigate(SigninScreen))
+            else  popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }
         
         
