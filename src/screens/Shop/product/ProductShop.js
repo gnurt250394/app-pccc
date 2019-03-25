@@ -129,7 +129,7 @@ _addItem=()=>{
     );
   }
   componentDidMount = () => {
-    // this.getDetail()
+    this.getDetail()
   };
   
 }

@@ -85,6 +85,7 @@ _nextPage=(router,params)=>()=>{
   }
   getData = async () => {
         let listProject = await getNewProject({page: this.state.page}).then(res=>{
+          console.log(res.data,'aaaa')
             return res.data.code == Status.SUCCESS ? res.data.data : []
         }).catch(err=> {
             console.log('err: ', err);
