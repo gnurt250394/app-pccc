@@ -14,6 +14,10 @@ export const listBiddings = async () => {
     return instance.get(constant.NEW_BIDDING)
 }
 
+export const detailBidding = async id => {
+    return instance.get(constant.NEW_BIDDING + '/' + id)
+}
+
 export const search = async params => {
     return instance.get(constant.SEARCH + params)
 }
