@@ -119,7 +119,7 @@ import { popupOk } from 'config'
             style={styles.imgCalenda}
             resizeMode="contain"
         />
-            <Text>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
+            <Text style={{color:'#333131'}}>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
         </View>
         {<TouchableOpacity style={styles.folow}
         onPress={this._folowProject}
@@ -271,7 +271,7 @@ const styles= StyleSheet.create({
          height:40,
         //  width:width/2.5,
         paddingHorizontal: 10,
-         borderColor: '#707070',
+         borderColor: '#333131',
          borderWidth: 1,
          borderRadius: 5,
          alignItems: 'center',
