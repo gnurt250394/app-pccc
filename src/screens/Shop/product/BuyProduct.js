@@ -5,12 +5,32 @@ import navigation from 'navigation/NavigationService';
 import Item from './Item';
 import images from 'assets/images'
 import { chooseImage } from 'config/uploadImage';
+import { ListCategory } from 'config/screenNames';
+import ModalCustom from './Modal';
 const {width} = Dimensions.get('window')
 export default class BuyProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        listImage:[]
+        listImage:[],
+        name:'',
+        price :'',
+        price_reduced:'',
+        amount_sell :'',
+        amount_remain :'',
+        time_start :'',
+        time_end :'',
+        status :'',
+        category_id :'',
+        description:'',
+        manufacturer:'',
+        year_of_manufacture:'',
+        user_id :'',
+        city_id :'',
+        district_id :'',
+        address :'',
+        file:'',
+        visible:false
     };
   }
 _goBack=()=>{
@@ -19,24 +39,25 @@ _goBack=()=>{
 
     _sellProduct=()=>{
         let params={
-            name:'',
-            price :'',
-            price_reduced:'',
-            amount_sell :'',
-            amount_remain :'',
-            time_start :'',
-            time_end :'',
-            status :'',
-            category_id :'',
-            description:'',
-            manufacturer:'',
-            year_of_manufacture:'',
-            user_id :'',
-            city_id :'',
-            district_id :'',
-            address :'',
-            file:'',
+            name:this.state.name,
+            price :this.state.price,
+            price_reduced:this.state.price_reduced,
+            amount_sell :this.state.amount_sell,
+            amount_remain :this.state.amount_remain,
+            time_start :this.state.time_start,
+            time_end :this.state.time_end,
+            status :this.state.status,
+            category_id :this.state.category_id,
+            description:this.state.description,
+            manufacturer:this.state.manufacturer,
+            year_of_manufacture:this.state.year_of_manufacture,
+            user_id :this.state.user_id,
+            city_id :this.state.city_id,
+            district_id :this.state.district_id,
+            address :this.state.address,
+            file:this.state.file,
         }
+        console.log(params,'aaa')
     }
     _renderItem=({item,index})=>{
         if(index >= 2 && this.state.listImage.length !== 3){
@@ -95,7 +116,16 @@ _goBack=()=>{
         return `${item.id|| index}`
     }
     _nextCategory=()=>{
-        navigation.navigate()
+        navigation.navigate(ListCategory)
+    }
+
+    onChangeText=(index)=>(val)=>{
+        this.setState({[index]:val})
+    }
+    _OpenModal=()=>{
+        this.setState({
+            visible:true
+        })
     }
   render() {
     return (
@@ -105,7 +135,9 @@ _goBack=()=>{
                 check={1}
                 onPress={this._goBack}
             />
-            <ScrollView>
+            <ScrollView
+            keyboardShouldPersistTaps="handled"
+            >
             <View style={styles.container}>
             <FlatList
                    data={this.state.listImage.slice(0,3)}
@@ -119,12 +151,15 @@ _goBack=()=>{
                <View style={styles.end}/>
                <TextInput 
                     style={styles.TextInput}
+                    value={this.state.name}
+                    onChangeText={this.onChangeText('name')}
                     placeholder={"Tên sản phẩm"}
                />
                <View style={styles.end}/>
                <TextInput 
                     style={styles.TextInput}
                     placeholder={"Mô tả sản phẩm"}
+                    onChangeText={this.onChangeText('description')}
                 />
                <View style={styles.end}/>
                <TextInput 
@@ -133,8 +168,9 @@ _goBack=()=>{
                />
                 <View style={styles.end2}/>
                <Item
-                   source={images.menu}
-                   onPress={this._nextCategory}
+                    edit={1}
+                    source={images.menu}
+                    onPress={this._nextCategory}
                    title={"Danh mục"}
                    name={''}
                    subName={">"}
@@ -142,66 +178,79 @@ _goBack=()=>{
                <Item
                    source={images.proPrice}
                    title={"Giá sản phẩm"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Thiết lập giá"}
                />
                <Item
                    source={images.proPriceAfter}
                    title={"Giá sau giảm"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Thiết lập giá"}
                />
                <Item
                    source={images.proQuanlity}
                    title={"Số lượng đăng bán"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Thiết lập số lượng"}
                />
                <Item
                    source={images.proSupplier}
                    title={"Nhà cung cấp"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Tên nhà cung cấp"}
                />
                <Item
                    source={images.calender}
                    title={"Thời gian đăng bán"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"adbf"}
                />
                <Item
                    source={images.sLocation}
                    title={"Địa điểm bán"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"adbf"}
+                   edit={1}
+                   onPress={this._OpenModal}
                />
                <Item
                    source={images.proManufacturer}
                    title={"Hãng sản phẩm"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Tên hãng sản phẩm"}
                />
                <Item
                    source={images.proYear}
                    title={"Năm sản xuất"}
-                   name={''}
-                   subName={">"}
+                   placeholder={"Thiết lập năm"}
                />
                <Item
+                    edit={1}
                    source={images.proStatus}
                    title={"Tình trạng sản phẩm"}
+                   placeholder={"adbf"}
+                   onPress={this._nextCategory}
                    name={''}
                    subName={">"}
                />
                <Item
                    source={images.proConfirm}
+                   edit={1}
                    title={"APP xác nhận chất lượng"}
+                   placeholder={"adbf"}
+                   onPress={this._nextCategory}
                    name={''}
                    subName={">"}
                />
-               <TouchableOpacity style={styles.button}>
+               <ModalCustom
+            // closeModal={this.onVisibleModal}
+            // getListCounty={this.getListCounty}
+            visible={this.state.visible}
+            // data={this.state.listCity}
+            // listCountry={this.state.listCountry}
+            onClose={() => {
+              this.setState({ visible: false });
+            }}
+               />
+               <TouchableOpacity style={styles.button}
+               onPress={this._sellProduct}
+               >
                    <Text style={styles.TextButton}>BÁN SẢN PHẨM</Text>
                </TouchableOpacity>
+               
             </View>
            
             </ScrollView>
@@ -210,28 +259,6 @@ _goBack=()=>{
     );
   }
 }
-
-const data =[
-    // {
-    //     id:1,
-    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    // },
-    // {
-    //     id:2,
-    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    // },
-    // {
-    //     id:3,
-    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    // },
-    // {
-    //     id:4,
-    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    // },
-
-   
-    
-]
 const styles = StyleSheet.create({
     container:{
         flex:1
@@ -284,8 +311,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#2166A2',
         height:45,
         width:width-90,
-        // marginVertical: 30,
-        marginBottom:80,
+        marginBottom:60,
+        marginTop:20,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -294,7 +321,7 @@ const styles = StyleSheet.create({
     },
     end:{
         height:1,
-        marginTop: 5,
+        // marginTop: 5,
         width,
         backgroundColor:'#CCCCCC'
     },

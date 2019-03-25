@@ -43,6 +43,7 @@ export const ListBiddingScreen = "ListBiddingScreen"
 export const DetailBiddingScreen = "DetailBiddingScreen"
 //Myshop
 export const BuyProduct = "BuyProduct"
+export const ListCategory = "ListCategory"
 
 // Project
 export const DetailProject = "DetailProject"
@@ -56,6 +57,7 @@ export const VideoScreen = "VideoScreen"
 
 // Catalog
 export const CatalogScreen = "CatalogScreen"
+
 
 
 

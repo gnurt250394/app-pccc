@@ -2,10 +2,14 @@ import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
 import { Slide, ViewMore, BaseHeader,Header } from 'components'
-import { ViewAllProductScreen } from 'config/screenNames'
+import { ViewAllProductScreen, HomeScreen } from 'config/screenNames'
 import ListItem from './ListItem'
 import TabShop from './TabShop';
+import { popupOk } from 'config';
 class Shop extends React.Component {
+   componentDidMount = () => {
+    popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+   };
    
     render(){
         return (

@@ -18,6 +18,7 @@ const constant ={
     LIST_FOLLOW:'list-object-follows',
     Document:'document',
     Notification:'notification',
+    Data_other:'data-other'
 }
 
 export default constant;

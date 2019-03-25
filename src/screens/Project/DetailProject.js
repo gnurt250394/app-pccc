@@ -134,7 +134,7 @@ import { popupOk } from 'config'
         <CustomText value={"Hoàn công"} name={moment(project.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}/>
         <CustomText value={"Hạng công trình xanh"} name={project.field_area}/>
         <CustomText value={"Địa điểm"} name={project.address}/>
-        <CustomText value={"Diện tích sàn"} name={project.floor_area}/>
+        <CustomText value={"Diện tích sàn"} name={project.floor_area+ ' m2'}/>
         <CustomText value={"Số tầng"} name={project.floor}/>
         <CustomText value={"Units"} name={project.unit}/>
         <CustomText value={"Loại hình dự án"} name={project.type_project}/>

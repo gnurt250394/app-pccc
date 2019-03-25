@@ -15,14 +15,14 @@ export default class ListItem extends Component {
               <View style={styles.Header}>
                   <Text style={styles.txtHeader}>{this.props.item.name}</Text>
               </View>
-              <View style={styles.row}>
+              {/* <View style={styles.row}>
                  
                  <Text style={styles.txtColor}>
                  <Image
                   source={images.offline}
                   style={styles.image}
                  />  Loại dự án: {this.props.item.type_project}</Text>
-              </View>
+              </View> */}
               <View style={styles.row}>
                  
                  <Text style={styles.txtColor}>
