@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,Dimensions } from 'react-native';
+import { View, Text,Image,StyleSheet,Dimensions,TouchableOpacity } from 'react-native';
 const {width} = Dimensions.get('window')
 export default class Item extends Component {
  
 
   render() {
     return (
-        <View style={styles.containerColum}>
+        <TouchableOpacity style={styles.containerColum}
+        onPress={this.props.onPress}
+        >
       <View style={styles.container}>
       <View style={styles.containerRow}>
       <Image
@@ -19,7 +21,7 @@ export default class Item extends Component {
         <Text style={[styles.txt,{color:this.props.name?'#2166A2':'#999999'}]}>{this.props.name?this.props.name:this.props.subName}</Text>
       </View>
       <View style={styles.end}/>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

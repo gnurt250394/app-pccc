@@ -4,11 +4,13 @@ import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import Item from './Item';
 import images from 'assets/images'
+import { chooseImage } from 'config/uploadImage';
 const {width} = Dimensions.get('window')
 export default class BuyProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        listImage:[]
     };
   }
 _goBack=()=>{
@@ -36,6 +38,65 @@ _goBack=()=>{
             file:'',
         }
     }
+    _renderItem=({item,index})=>{
+        if(index >= 2 && this.state.listImage.length !== 3){
+            return(
+                <View style={styles.containerList}>
+                <Image 
+                    source={{uri:item.image}}
+                    style={styles.imageList}
+                />  
+                 <View style={styles.viewOpacity}>
+                    <Text style={{color:'#FFFFFF'}}>{this.state.listImage.length -3}++</Text>
+                </View>
+                
+                
+               
+            </View>
+            )
+        } else{
+            return(
+                <View style={styles.containerList}>
+                    <Image 
+                        source={{uri:item.image}}
+                        style={styles.imageList}
+                    />
+                </View>
+            )
+            }
+       
+    }
+    _choseImage=()=>{
+        chooseImage().then(url => {
+            this.setState({listImage: [...this.state.listImage,{image:url.uri}]})
+
+        }).catch(err => {
+            
+
+        })
+    }
+    _listFooter=()=>{
+        return(
+            <TouchableOpacity style={styles.containerAdd}
+            onPress={this._choseImage}
+            >
+                <Image 
+                    source={images.mAdd}
+                    style={styles.imageAdd}
+                    resizeMode="contain"
+                />
+                    <Text style={{fontSize:12,color:'#2166A2'}}
+                    >Thêm ảnh</Text>
+
+            </TouchableOpacity>
+        )
+    }
+    _keyExtractor=(item,index)=>{
+        return `${item.id|| index}`
+    }
+    _nextCategory=()=>{
+        navigation.navigate()
+    }
   render() {
     return (
       <View>
@@ -47,8 +108,14 @@ _goBack=()=>{
             <ScrollView>
             <View style={styles.container}>
             <FlatList
-                   
+                   data={this.state.listImage.slice(0,3)}
+                   horizontal={true}
+                   ListFooterComponent={this._listFooter}
+                   showsHorizontalScrollIndicator={false}
+                   renderItem={this._renderItem}
+                   keyExtractor={this._keyExtractor}
                />
+               
                <View style={styles.end}/>
                <TextInput 
                     style={styles.TextInput}
@@ -67,6 +134,7 @@ _goBack=()=>{
                 <View style={styles.end2}/>
                <Item
                    source={images.menu}
+                   onPress={this._nextCategory}
                    title={"Danh mục"}
                    name={''}
                    subName={">"}
@@ -142,9 +210,73 @@ _goBack=()=>{
     );
   }
 }
+
+const data =[
+    // {
+    //     id:1,
+    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
+    // },
+    // {
+    //     id:2,
+    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
+    // },
+    // {
+    //     id:3,
+    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
+    // },
+    // {
+    //     id:4,
+    //     image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
+    // },
+
+   
+    
+]
 const styles = StyleSheet.create({
     container:{
         flex:1
+    },
+    viewOpacity:{
+        opacity:0.6,
+        backgroundColor:'#333333',
+        flex:1,
+        position: "absolute",
+        height:80,
+        width:width/4.4,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    containerAdd:{
+        flex:1,
+        height:80,
+        width:width/4.4,
+        marginVertical:7,
+        marginLeft: 7,
+        alignItems:'center',
+        justifyContent:'center',
+        borderColor: '#2166A2',
+        borderWidth: 1,
+    },
+    containerList:{
+        flex:1,
+        height:80,
+        width:width/4.4,
+        marginVertical:7,
+        marginLeft: 7,
+        alignItems:'center',
+        justifyContent:'center',
+        borderColor: '#2166A2',
+        borderWidth: 1,
+    },
+    imageList:{
+        height:65,
+        width:50,
+
+    },
+    imageAdd:{
+        height:20,
+        width:20,
+        tintColor:'#2166A2'
     },
     button:{
         alignItems:'center',
