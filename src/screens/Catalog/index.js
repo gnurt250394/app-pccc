@@ -14,32 +14,32 @@ class Catalog extends React.Component {
     state = {
         loading: true,
         keyword: '',
+        maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
         datas: [],
         backup: []
     }
     // set status bar
     async componentDidMount() {
+        let datas = await listDocuments(this.state.type).then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        let backup = [...datas]
+        datas = datas.map(e => {
+            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+            return {...e, description: description.value, showMore: description.showMore, showLess: false}
+        })
+        this.setState({ datas, backup, loading: false })
+
         this.token = await getItem('token')
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor(color);
-            let datas = await listDocuments(this.state.type).then(res => {
-                return res.data.code == StatusCode.Success ? res.data.data : []
-            }).catch(err => {
-                console.log('err: ', err);
-                return []
-            })
-            let backup = [...datas]
-            
-            let newData = []
-            backup.forEach(e => {
-                let description = ellipsisCheckShowMore(e.description, 50)
-                newData.push({...e, description: description.value, showMore: description.showMore})
-            })
-            this.setState({ datas: newData, backup, loading: false })
         });
-
+        
     }
     
     componentWillUnmount() {
@@ -111,7 +111,8 @@ class Catalog extends React.Component {
     renderItem = ({item, index}) => {
         item.link_id = item.link_id.replace('uploads/documents/', 'uploads/document/') // server return  path failed
         
-        return <View style={style.box}>
+        let count = this.state.datas.length
+        return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
         
                 { this.showImage(item.link_id) }
                 
@@ -138,6 +139,16 @@ class Catalog extends React.Component {
         let backup = [...this.state.backup]
         datas[index].description = backup[index].description
         datas[index].showMore = backup[index].showMore
+        datas[index].showLess = true
+        this.setState({datas})
+    }
+
+    _showLess = index => () => {
+        let datas = [...this.state.datas]
+        let description = ellipsisCheckShowMore(datas[index].description, this.state.maxDesc)
+        datas[index].description = description.value
+        datas[index].showMore = description.showMore
+        datas[index].showLess = false
         this.setState({datas})
     }
 
@@ -145,13 +156,20 @@ class Catalog extends React.Component {
 
     showDescription = (item, index) => {
         if(!item.showMore){
-            return <Text style={style.description}>{item.description}</Text>
+            return (
+                <View>
+                    <Text style={style.description}>{item.description}</Text>
+                    {item.showLess && <TouchableOpacity onPress={this._showLess(index)} style={[style.p8, style.flexEnd, style.pr10]}>
+                        <Image source={images.lessThan} style={style.iconMore} />
+                    </TouchableOpacity>}
+                </View>
+            )
         }else{
             
             return (
                 <View style={style.boxDesc}>
                     <Text style={style.description}>{item.description}</Text>
-                    <TouchableOpacity onPress={this._showMore(index)} style={style.p8}>
+                    <TouchableOpacity onPress={this._showMore(index)} style={[style.p8, style.pr10]}>
                         <Image source={images.moreThan} style={style.iconMore} />
                     </TouchableOpacity>
                     
@@ -290,6 +308,7 @@ const style = StyleSheet.create({
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     w15: { width: 15},
     p8: {padding: 8},
+    pr10: {paddingRight: 10},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
     box: {
@@ -314,10 +333,13 @@ const style = StyleSheet.create({
     },
     btn: {
         padding: 8,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: color,
         alignItems: 'center',
         borderRadius: 5
+    },
+    btw0: {
+        borderBottomWidth: 0,
     },
     textBtn: {
         color,
@@ -353,6 +375,9 @@ const style = StyleSheet.create({
     iconMore: {
         width: 12,
         resizeMode: 'contain'
+    },
+    flexEnd: {
+        alignSelf: 'flex-end',
     },
     showMore: {
         fontSize: 12,

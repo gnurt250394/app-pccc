@@ -73,9 +73,11 @@ export const fonts = {
     MontserratExtraBold:'Montserrat-ExtraBold'
 }
 
-export const youtubeLink = "https://www.youtube.com/watch?v="
-export const youtubeApiKey = "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY"
-
+export const youtube = {
+    link: "https://www.youtube.com/watch?v=",
+    apiKey: "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY",
+    thumbnail: id => `https://img.youtube.com/vi/${id}/0.jpg`
+}
 export const defaultStyle = {
     fontSize: width <= sreen4_7.width ? 13 : 14,
     padding: width <= sreen4_7.width ? 8 : 11,
