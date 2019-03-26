@@ -134,6 +134,7 @@ module.exports = {
 
     // catalog
     pdf: require('./pdf.png'),
+    excel: require('./excel.png'),
     document: require('./document.png'),
 
     // Buy Product

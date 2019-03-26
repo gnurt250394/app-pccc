@@ -176,7 +176,7 @@ export const MIME = {
     'webm': 'video/webm',
     'webp': 'image/webp',
     'xls': 'application/vnd.ms-excel',
-    'xlsx': 'application/xml',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'zip': 'application/zip',
     '3gp': 'video/3gpp',
     '3g2': 'video/3gpp2',

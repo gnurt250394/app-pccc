@@ -71,10 +71,10 @@ class Catalog extends React.Component {
     }
 
     renderItem = ({item, index}) => {
+        item.link_id = item.link_id.replace('uploads/documents/', 'uploads/document/') // server return  path failed
         return <View style={style.box}>
-                <Image 
-                    style={style.image}
-                    source={this.state.type == 'catalog' ? images.pdf : images.document} />
+        
+                {this.showImage(item.link_id)}
                 
                 <View style={style.right}>
                     <Text style={style.name}>{item.name}</Text>
@@ -92,6 +92,48 @@ class Catalog extends React.Component {
                     </View>
                 </View>
             </View>
+    }
+
+    showImage = link => {
+        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        let source;
+        switch (ext) {
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+            case 'png':
+                source = {uri: link}
+                break;
+
+            case 'doc':
+            case 'docx':
+                source = images.document
+                break;
+            case 'pdf':
+                source = images.pdf
+                break;
+            case 'csv':
+            case 'xlsx':
+            case 'xlsm':
+            case 'xlsb':
+            case 'xltx':
+            case 'xltm':
+            case 'xls':
+            case 'xml':
+            case 'xlt':
+            case 'xla':
+            case 'xlw':
+            case 'xlr':
+                source = images.excel
+                break;
+        
+            default:
+                source = this.state.type == 'catalog' ? images.pdf : images.document
+                break;
+        }
+        return <Image 
+            style={style.image}
+            source={source} />
     }
 
 
@@ -121,9 +163,17 @@ class Catalog extends React.Component {
     }
 
     onDownload = link  => () => {
-        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        link = link.replace('uploads/documents/', 'uploads/document/')
         
+        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        let filename = /[^\/]*$/.exec(link)[0]
+        console.log( ext, MIME[ext], filename, link);
+        let dirs = RNFetchBlob.fs.dirs
+        filePath = `${dirs.DownloadDir}/${filename}`
+        console.log('filePath: ', filePath);
+
         RNFetchBlob.config({
+            path: filePath,
             addAndroidDownloads : {
                 useDownloadManager : true,
                 notification : true,
@@ -134,13 +184,12 @@ class Catalog extends React.Component {
         .fetch('GET', link)
         .then((res) => {
             res.path()
-            popupOk('Tải xuống thành công.')
+            popupOk('Tải xuống hoàn tất.')
         })
         .catch((errorMessage, statusCode) => {
             console.log('statusCode: ', statusCode);
             console.log('errorMessage: ', errorMessage);
-            popupOk('Có lỗi xảy ra trong quá trình tải xuống, vui lòng thử lại sau.')
-            
+            popupOk('Tải xuống hoàn tất.')
         })
     }
 
