@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import {  color, width,height, StatusCode, sreen4_7} from 'config'
 import { Header } from 'components'
-import {  ListBiddingScreen, InfoProject } from 'config/screenNames'
+import {  ListBiddingScreen, InfoProject, FolowContractor } from 'config/screenNames'
 import images from "assets/images"
 
 class TrackingInfo extends React.Component {
@@ -65,7 +65,7 @@ class TrackingInfo extends React.Component {
                         
                         <View style={style.row}>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(InfoProject)} 
+                                onPress={this._navTo(ListBiddingScreen)} 
                                 >
                                 <Image 
                                     style={style.imgStreet}
@@ -74,7 +74,7 @@ class TrackingInfo extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(ListBiddingScreen)} 
+                                onPress={this._navTo(FolowContractor)} 
                                 >
                                 <View  style={style.box2} >
                                     <Image 

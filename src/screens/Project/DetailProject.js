@@ -5,8 +5,8 @@ import images from "assets/images"
 import { connect } from 'react-redux'
 import Item from './Item';
 import CustomText from './CustomText';
-import { getListProject, FolowProject, FolowUser } from 'config/apis/Project';
-import { Status, removeItem, formatNumber } from 'config/Controller';
+import { getListProject, FolowProject, FolowUser, unFolowProject, UnFolowUser } from 'config/apis/Project';
+import { Status, removeItem, formatNumber, getItem } from 'config/Controller';
 import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
@@ -32,7 +32,10 @@ import { popupOk } from 'config'
       }
     return name 
   }
-  _folowUser=(item)=>{
+  _folowUser= async(item)=>{
+      let token = await getItem('token')
+      if(token){
+
       FolowUser({investor_id:item.user_id}).then(res=>{
           if(res.data.code == Status.SUCCESS){
             //   Toast.show('Bạn đã theo dõi dự án ' + item.name + ' thành công')
@@ -41,10 +44,36 @@ import { popupOk } from 'config'
             navigation.reset(SigninScreen)
             removeItem('token')
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
+          }else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
+            Toast.show('Dự án không tồn tại')
           }
       }).catch(err=>{
-        console.log(err.response,'errr')
+        
       })
+    }else{
+        popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+    }
+  }
+  _UnfolowUser= async(item)=>{
+    let token = await getItem('token')
+    if(token){
+      UnFolowUser({investor_id:item.user_id}).then(res=>{
+          if(res.data.code == Status.SUCCESS){
+            //   Toast.show('Bạn đã theo dõi dự án ' + item.name + ' thành công')
+          } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
+            Toast.show('Phiên đăng nhập hết hạn')
+            navigation.reset(SigninScreen)
+            removeItem('token')
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
+          } else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
+            Toast.show('Dự án không tồn tại')
+          }
+      }).catch(err=>{
+        
+      })
+    }else{
+        popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+    }
   }
   _check=(item)=>()=>{
     let data = this.state.listPartner
@@ -81,23 +110,56 @@ import { popupOk } from 'config'
   _goBack=()=>{
       navigation.pop()
   }
-  _folowProject=()=>{
+  _folowProject=async()=>{
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
-    FolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
-        console.log(this.props.navigation.state.params.id)
-        if(res.data.code == Status.SUCCESS){
-            Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
-        } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
-            Toast.show('Phiên đăng nhập hết hạn')
-            navigation.navigate(SigninScreen)
-            removeItem('token')
-            this.props.dispatch({type: actionTypes.USER_LOGOUT})
-        } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
-            Toast.show('Dự án bạn theo dõi không tồn tại')
-        }
-    }).catch(err=>{
-        console.log(err.response,'errr')
-      })
+          let token = await getItem('token')
+          if(token){
+            FolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
+                
+                if(res.data.code == Status.SUCCESS){
+                    Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+                } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
+                    Toast.show('Phiên đăng nhập hết hạn')
+                    navigation.navigate(SigninScreen)
+                    removeItem('token')
+                    this.props.dispatch({type: actionTypes.USER_LOGOUT})
+                } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
+                    Toast.show('Dự án không tồn tại')
+                }
+            }).catch(err=>{
+                
+              })
+          } else{
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            
+          }
+    
+    }
+  }
+  _UNfolowProject=async()=>{
+      if(this.props.navigation.state&& this.props.navigation.state.params.id){
+          let token = await getItem('token')
+          if(token){
+            unFolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
+                
+                if(res.data.code == Status.SUCCESS){
+                    Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+                } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
+                    Toast.show('Phiên đăng nhập hết hạn')
+                    navigation.navigate(SigninScreen)
+                    removeItem('token')
+                    this.props.dispatch({type: actionTypes.USER_LOGOUT})
+                } else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
+                    Toast.show('Dự án không tồn tại')
+                }
+            }).catch(err=>{
+                
+              })
+          } else{
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            
+          }
+    
     }
   }
   render() {
@@ -121,11 +183,18 @@ import { popupOk } from 'config'
         />
             <Text style={{color:'#333131'}}>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
         </View>
-        {<TouchableOpacity style={styles.folow}
+        {project.status&& project.status== 1? <TouchableOpacity style={styles.folow}
+        onPress={this._UNfolowProject}
+        >
+            <Text style={styles.txtButton}>Bỏ theo dõi</Text>
+        </TouchableOpacity>
+        :
+        <TouchableOpacity style={styles.folow}
         onPress={this._folowProject}
         >
             <Text style={styles.txtButton}>Theo dõi dự án</Text>
-        </TouchableOpacity>}
+        </TouchableOpacity>
+        }
         </View>
         <CustomText value={"Giá trị"} name={formatNumber(project.value) +" "+ "đ"}/>
         <CustomText value={"Giai đoạn"} name={project.phase}/>
@@ -135,7 +204,7 @@ import { popupOk } from 'config'
         <CustomText value={"Hạng công trình xanh"} name={project.field_area}/>
         <CustomText value={"Địa điểm"} name={project.address}/>
         <CustomText value={"Diện tích sàn"} name={project.floor_area+ ' m2'}/>
-        <CustomText value={"Số tầng"} name={project.floor}/>
+        <CustomText value={"Số tầng"} name={project.storeys}/>
         <CustomText value={"Units"} name={project.unit}/>
         <CustomText value={"Loại hình dự án"} name={project.type_project}/>
             {/*  đang thiếu loại hình phụ */}
@@ -160,10 +229,10 @@ import { popupOk } from 'config'
   _getData= async () => {
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
         let project = await getListProject({ project_id:this.props.navigation.state.params.id }).then(res=>{
-            console.log(res,'daaaaa')
+            
             return res.data.code == Status.SUCCESS ? res.data.data : []
         }).catch(err => {
-            console.log('err: ', err);
+            
             return []
         })
         this.setState({

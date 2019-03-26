@@ -9,7 +9,7 @@ import { fontStyle } from 'config/Controller';
 export default class Header extends React.Component {
     render(){
         return (
-            <View style={ style.content} >
+            <View style={ [style.content,{...this.props.style}]} >
             <StatusBar
                 barStyle="light-content" 
                 backgroundColor={color} />
@@ -53,10 +53,10 @@ const style = StyleSheet.create({
         // paddingRight: 20, 
     },
     btn: {
-        padding: 12, 
-        paddingLeft: 0, 
+        paddingLeft: 12, 
+        paddingBottom: 8, 
         paddingTop: 0, 
-        marginTop: 10,
+        marginTop: 7,
         alignItems: 'center',
         justifyContent:'center'
     },
