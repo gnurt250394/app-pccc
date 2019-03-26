@@ -132,7 +132,7 @@ class Signin extends React.Component {
     }
 
     _goBack = () => {
-        this.props.navigation.goBack()
+        this.props.navigation.navigate(HomeScreen)
     }
 
     _onFacebookLogin = async () => {

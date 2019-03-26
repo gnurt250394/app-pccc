@@ -13,7 +13,7 @@ let instance = axios.create({
 export const getListProject = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.PROJECT_DETAIL,{params:body})
+        return instance.get(constant.PROJECT_DETAIL+`${body}`)
 }
 export const getNewProject = async(page)=>{
     let token = await getItem('token')
@@ -23,12 +23,12 @@ export const getNewProject = async(page)=>{
 export const FolowProject = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.post(constant.FOLOW,{body,table:'UserProject'})
+        return instance.post(constant.FOLOW,body)
 }
 export const unFolowProject = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.post(constant.UNFOLOW,{body,table:'UserProject'})
+        return instance.post(constant.UNFOLOW,body)
 }
 export const addFolow = async body => {
     // table: UserBidding, UserDocument, UserInverstor, UserProject
@@ -40,12 +40,12 @@ export const addFolow = async body => {
 export const FolowUser = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.post(constant.FOLOW,{body,table:'UserInvestor'})
+        return instance.post(constant.FOLOW,body)
 }
 export const UnFolowUser = async(body)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.post(constant.UNFOLOW,{body,table:'UserInvestor'})
+        return instance.post(constant.UNFOLOW,body)
 }
 
 

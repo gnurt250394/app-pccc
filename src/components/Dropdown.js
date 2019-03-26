@@ -55,13 +55,13 @@ export default class DropDown extends PureComponent {
   const styles= StyleSheet.create({
     editText:{
         color:'#333333',
-        backgroundColor:'#F3F5F6',
+        backgroundColor:'#FFFFFF',
         borderRadius:5,
         height:40,
         marginTop:3,
         paddingLeft:12,
-        borderWidth:0.09,
-        borderColor: '#333333',
+        borderWidth:1,
+        borderColor: '#707070',
     },
     imageButton:{
         height:80,

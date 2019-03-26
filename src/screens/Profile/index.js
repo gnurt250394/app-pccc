@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen} from 'config/screenNames'
+import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen} from 'config/screenNames'
 import { color, toUpperCase,StatusCode} from 'config'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
@@ -23,14 +23,16 @@ class Profile extends React.Component {
     }
   
 
-    async componentWillMount(){
+    async componentDidMount(){
+        console.log('1')
         await this.getInfo()
     }
    
 
     render(){
         let {user,token,image} = this.state
-        
+        console.log('2')
+        console.log(token,'token')
         return (
             token 
                 ?
@@ -61,7 +63,7 @@ class Profile extends React.Component {
                             icon={images.pService} />
                         <NavItem 
                             title='Shop của tôi' 
-                            onPress={this._navTo(ChangePasswordScreen)}
+                            onPress={this._navTo(ShopScreen)}
                             icon={images.pShop} />
                         
                         <NavItem 
@@ -73,7 +75,7 @@ class Profile extends React.Component {
 
                 <Text 
                     onPress={this._logout}
-                    style={style.btnLogout}>{toUpperCase('Đăng xuất' )}</Text>
+                    style={style.btnLogout}>{toUpperCase('Đăng xuất')}</Text>
             </View>
                 : 
             <CheckAuth />
@@ -83,7 +85,7 @@ class Profile extends React.Component {
 
     getInfo = async () => {
         let token = await getItem('token')
-        let user = await getInfoAcount(token).then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
+        let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
         console.log(token,'tttt')
         if(user && user.name ){
             this.setState({

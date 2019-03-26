@@ -8,7 +8,7 @@ import TabShop from './TabShop';
 import { popupOk } from 'config';
 class Shop extends React.Component {
    componentDidMount = () => {
-    popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+    // popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
    };
    
     render(){

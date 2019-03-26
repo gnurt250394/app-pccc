@@ -3,17 +3,18 @@ import { View, Text ,StyleSheet,Dimensions,Image,FlatList,ScrollView} from 'reac
 import { Header } from 'components';
 import { fontStyle } from 'config/Controller';
 import images from 'assets/images'
+import navigation from 'navigation/NavigationService';
 const {width,height}= Dimensions.get('window')
 class Item extends Component{
     render(){
         return this.props.name? <View style={styles.Square}>
-                 <Image source={this.props.source}
+                <Image source={this.props.source}
                      style={styles.image}
                      resizeMode="contain"
                  />
                  <View style={{flexWrap:'wrap',flexShink:5}}>
                  <Text style={styles.txt} >
-                 {this.props.name}</Text>
+                    {this.props.name}</Text>
                  </View>  
              </View>
         : null
@@ -41,6 +42,9 @@ export default class DetailContractor extends Component {
   _keyExtractor=(item,index)=>{
       return `${item.id|| index}`
   }
+  _goBack=()=>{
+    navigation.pop()
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -55,7 +59,7 @@ export default class DetailContractor extends Component {
         />
        <View style={styles.containerPosition}>
             <Text style={styles.txtBold}>abc</Text>
-            <Item source={images.proEmail} name={'aaa'}/>
+            <Item source={images.proEmail} name={'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm '}/>
             <Item source={images.proPhone} name={'aaa'}/>
             <Item source={images.proLocation} name={'aaa'}/>
             <Item source={images.proCompany} name={'aaa'}/>

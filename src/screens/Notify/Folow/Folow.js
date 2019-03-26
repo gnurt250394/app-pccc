@@ -12,7 +12,7 @@ class Folow extends Component {
     this.state = {
         refresing:true,
         Thresold:0.1,
-        page:0,
+        page:1,
         listFolow:[]
     };
   }
@@ -65,12 +65,16 @@ render() {
   );
   }
   getData=()=>{
-    getListNotifi({type:''}).then(res=>{
-        console.log(res.data,'aaaa')
+    getListNotifi({page:this.state.page,type:''}).then(res=>{
+        console.log(res.data,'folow')
         if(res.data.code== Status.SUCCESS){
-            this.setState({listFolow:res.data.data})
+            this.setState({listFolow:[...this.state.listFolow,...res.data.data]})
         } else if(res.data.code == Status.NO_CONTENT){
-            SimpleToast.show("Không có thông báo")
+            this.setState({
+                refresing:false,
+                Thresold:0
+            })
+            
         } else if(res.data.code== Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID){
             navigation.reset(SigninScreen)
             SimpleToast.show('Phiên đăng nhập hết hạn')

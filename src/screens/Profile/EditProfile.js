@@ -123,10 +123,17 @@ class EditProfile extends React.Component {
                             style={style.avatar}
                             source={image?{uri: image}:images.userBlue}
                              />
+                             {/* <View style={style.groupImage}> */}
+                             <Image source={images.groupCamera}
+                                 style={style.image}
+                                 resizeMode="contain"
+                             />
                             <Image
                                 source={images.camera}
                                 style={style.editCamera}
+                                resizeMode="contain"
                             />
+                            {/* </View> */}
                     </TouchableOpacity>
 
                 <View style={style.mt30}>
@@ -280,12 +287,22 @@ const style = StyleSheet.create({
     w19: {width: 19},
     mb5: { marginBottom: 0, flexDirection: 'row'},
     editCamera:{
-        height:17,
-        width:21,
+        height:16,
+        width:16,
         // tintColor:color,
         // opacity:0.4,
         position:'absolute',
-        bottom:0,
-        right:3
+        bottom:1,
+    },
+    image:{
+        // backgroundColor:'#707070',
+        height:75,
+        // opacity: 0.9,
+        width:90,
+        // tintColor:'black',
+        position:'absolute',
+        top:35,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
     }
 })

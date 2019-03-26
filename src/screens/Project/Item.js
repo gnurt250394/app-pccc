@@ -61,7 +61,7 @@ showList=()=>{
     return (
                 <View style={styles.containerList}>
                 <View style={styles.rowList}>
-                {this.props.item.checked?<TouchableOpacity 
+                {this.props.item.follow ==0?<TouchableOpacity 
                     style={styles.buttonTicker}
                     onPress={this.props.onPressCheck}
                 >
@@ -88,13 +88,13 @@ showList=()=>{
                 </TouchableOpacity>
             </View>
             {show?<View style={styles.container}>
-            <ListItem source={images.proEmail} name={this.props.item.email}/>
-            <ListItem source={images.proPhone} name={this.props.item.phone}/>
-            <ListItem source={images.proFax} name={this.props.item.fax}/>
-            <ListItem source={images.proLocation} name={this.props.item.address}/>
-            <ListItem source={images.proCompany} name={this.props.item.company}/>
-            <ListItem source={images.proPosition} name={this.props.item.position}/>
-            <ListItem source={images.proSub} name={this.props.item.sub}/>
+            <ListItem source={images.proEmail} name={this.props.item.user_email}/>
+            <ListItem source={images.proPhone} name={this.props.item.user_phone}/>
+            <ListItem source={images.proFax} name={this.props.item.user_fax}/>
+            <ListItem source={images.proLocation} name={this.props.item.user_address}/>
+            <ListItem source={images.proCompany} name={this.props.item.user_company}/>
+            <ListItem source={images.proPosition} name={this.props.item.user_position}/>
+            <ListItem source={images.proSub} name={this.props.item.user_sub}/>
             </View> : null}
             <View
                 style={styles.end}

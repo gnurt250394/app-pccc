@@ -155,5 +155,6 @@ module.exports = {
     proFax: require('./proFax.png'),
     proSub: require('./proSub.png'),
     proPosition: require('./proPosition.png'),
-    proLocation: require('./proLocation.png')
+    proLocation: require('./proLocation.png'),
+    groupCamera: require('./groupCamera.png'),
 }

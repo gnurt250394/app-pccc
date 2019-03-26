@@ -55,7 +55,7 @@ export default class ModalCustom extends Component {
             </Text>
             <View style={styles.position}/>
             <View  
-              style={{flex:1}}
+              style={{flex:1,justifyContent:'space-around'}}
               onStartShouldSetResponderCapture={() => {
                 this.setState({ enableScrollViewScroll: true });
               }}>
@@ -153,14 +153,14 @@ const styles = StyleSheet.create({
     position:{
       backgroundColor: "gray",
       height: 1,
-      width: width / 1.3,
+      width: width -50,
       marginTop: 10,
       alignSelf: "center"
     },
     modal: {
       backgroundColor: "#FFFFFF",
-      height: height / 2.5,
-      width: width / 1.3,
+      height: height / 2,
+      width: width -50,
       borderColor: "green",
       borderWidth: 2,
       borderRadius: 15,
@@ -173,21 +173,27 @@ const styles = StyleSheet.create({
         // backgroundColor: "#F3F5F6",
         borderRadius: 5,
         height: 40,
-        marginTop: 5,
-        width: width / 1.4,
+        marginTop: 10,
+        width: width -70,
         paddingLeft: 12,
         borderWidth: 1,
         borderColor: "#707070",
       },
       button: {
         height: 42,
-        width: width/1.3,
+        width: width-50,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0082C0",
         alignSelf: "center",
-        marginTop: 25,
+        position:'absolute',
+        bottom:-9.5,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
         // borderRadius: 20,
       },
+      searchText:{
+        marginTop:8
+      }
   });
   

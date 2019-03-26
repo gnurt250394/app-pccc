@@ -14,7 +14,7 @@ import { actionTypes } from 'actions'
     this.state = {
         refresing:true,
         Thresold:0.1,
-        page:0,
+        page:1,
         listSystems:[]
     };
   }
@@ -33,7 +33,7 @@ import { actionTypes } from 'actions'
                 refresing:true,
                 page:prev.page +1
             }
-        })
+        },this.getData)
     } else{
         return null
     }
@@ -67,12 +67,19 @@ ListFooterComponent=()=>{
     );
   }
   getData=()=>{
-     getListNotifi({type:'system'}).then(res=>{
+     getListNotifi({page:this.state.page,type:'system'}).then(res=>{
          console.log(res,'aaaa')
+         console.log(this.state.page,'page')
          if(res.data.code== Status.SUCCESS){
-             this.setState({listSystems:res.data.data})
+             this.setState({
+                 listSystems:[...this.state.listSystems,...res.data.data]
+                })
          } else if(res.data.code == Status.NO_CONTENT){
-             SimpleToast.show("Không có thông báo")
+            //  SimpleToast.show("Không có thông báo")
+             this.setState({
+                refresing:false,
+                Thresold:0
+            })
          } else if(res.data.code== Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID){
              navigation.reset(SigninScreen)
              SimpleToast.show('Phiên đăng nhập hết hạn')
