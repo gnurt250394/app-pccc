@@ -58,6 +58,10 @@ export const VideoScreen = "VideoScreen"
 // Catalog
 export const CatalogScreen = "CatalogScreen"
 
+//Contractor
+export const FolowContractor = "FolowContractor"
+export const DetailContractor = "DetailContractor"
+
 
 
 

@@ -43,6 +43,8 @@ import Video from 'screens/Video'
 // Catalog
 import Catalog from 'screens/Catalog'
 import ListCategory from "screens/Shop/product/ListCategory";
+import FolowContractor from "screens/Contractors/FolowContractor";
+import DetailContractor from "screens/Contractors/Detail/DetailContractor";
 
 const MyDrawerNavigator = createDrawerNavigator({
   Tabs: TabsHome
@@ -103,6 +105,12 @@ const App = createStackNavigator(
 
     // Catalog
     [ScreenName.CatalogScreen]: Catalog,
+
+    
+
+    //FolowContractor
+    [ScreenName.FolowContractor]: FolowContractor,
+    [ScreenName.DetailContractor]: DetailContractor,
    
   },
   {

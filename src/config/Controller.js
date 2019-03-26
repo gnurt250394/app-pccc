@@ -17,7 +17,8 @@ export const Status = {
     TOKEN_EXPIRED:440,
     NO_CONTENT:204,
     PASS_FAIL:448,
-    PROJECT_ID_NOT_FOUND:406
+    PROJECT_ID_NOT_FOUND:406,
+    DELETE_ID_NOT_FOUND:404
 }
 export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;

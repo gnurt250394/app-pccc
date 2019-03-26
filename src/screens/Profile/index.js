@@ -14,7 +14,7 @@ import CheckAuth from './CheckAuth';
 class Profile extends React.Component {
    state={
        user: this.props.users || {},
-       token: null,
+       token: this.props.token|| '',
        image: null,
    }
 
@@ -84,7 +84,7 @@ class Profile extends React.Component {
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount(token).then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        
+        console.log(token,'tttt')
         if(user && user.name ){
             this.setState({
                 user: user,

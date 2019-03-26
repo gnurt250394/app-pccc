@@ -25,7 +25,11 @@ export const FolowProject = async(body)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.post(constant.FOLOW,{body,table:'UserProject'})
 }
-
+export const unFolowProject = async(body)=>{
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.post(constant.UNFOLOW,{body,table:'UserProject'})
+}
 export const addFolow = async body => {
     // table: UserBidding, UserDocument, UserInverstor, UserProject
     // param: bidding_id, document_id, inverstor_id, project_id
@@ -38,6 +42,12 @@ export const FolowUser = async(body)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.post(constant.FOLOW,{body,table:'UserInvestor'})
 }
+export const UnFolowUser = async(body)=>{
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.post(constant.UNFOLOW,{body,table:'UserInvestor'})
+}
+
 
 export const listFollows = async body => {
     let token = await getItem('token')
