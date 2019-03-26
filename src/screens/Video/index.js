@@ -13,20 +13,13 @@ class Video extends React.Component {
         loading: true,
         keyword: '',
         datas: [],
-        isReady: false,
-        status: null,
-        quality: null,
-        error: null,
+        page: 1,
+        threshold: 0.1,
+        refresing: true
     }
     // set status bar
     async componentDidMount() {
-        let datas = await listDocuments('video').then(res => {
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
-        this.setState({ datas, loading: false })
+        await this.getData()
         this.token = await getItem('token')
 
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
@@ -90,13 +83,36 @@ class Video extends React.Component {
                             :
                         <FlatList
                             data={this.state.datas}
-                            renderItem={this.renderItem}
-                            keyExtractor={(item, index) => index.toString()} />
+                            keyExtractor={(item, index) => index.toString()} 
+                            // onEndReached={this.onEndReached}
+                            // onEndReachedThreshold={this.state.threshold}
+                            // ListFooterComponent={this.ListFooterComponent} 
+                            renderItem={this.renderItem}/>
                     }
                 </ScrollView>
             </View>
         )
     }
+
+    onEndReached = () => {
+        console.log(123);
+        this.state.refresing ? this.setState( { refresing: true, page: this.state.page + 1 } , this.getData) : null
+    }
+
+    getData = async () => {
+        let datas = await listDocuments('video').then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({ datas, loading: false, refresing: false })
+    }
+
+    ListFooterComponent = () => {
+        return  this.state.refresing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+    }
+    
 
     renderItem = ({item, index}) => {
         let count = this.state.datas.length
