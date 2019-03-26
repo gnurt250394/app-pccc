@@ -32,13 +32,15 @@ import { popupOk } from 'config'
       }
     return name 
   }
+
+  // theo dõi user
   _folowUser= async(item)=>{
       let token = await getItem('token')
       if(token){
 
-      FolowUser({investor_id:item.user_id}).then(res=>{
+      FolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
-            //   Toast.show('Bạn đã theo dõi dự án ' + item.name + ' thành công')
+              Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.reset(SigninScreen)
@@ -54,12 +56,15 @@ import { popupOk } from 'config'
         popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
     }
   }
+
+  // bỏ theo dõi user
   _UnfolowUser= async(item)=>{
     let token = await getItem('token')
     if(token){
-      UnFolowUser({investor_id:item.user_id}).then(res=>{
+      
+      UnFolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
-            //   Toast.show('Bạn đã theo dõi dự án ' + item.name + ' thành công')
+              Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.reset(SigninScreen)
@@ -75,11 +80,13 @@ import { popupOk } from 'config'
         popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
     }
   }
+
+  // 
   _check=(item)=>()=>{
     let data = this.state.listPartner
     data.forEach(e=>{
         if(e.user_id == item.user_id){
-            e.checked = true
+            e.follow = Status.CHECKED
             this._folowUser(item)
         }
     })
@@ -90,7 +97,8 @@ import { popupOk } from 'config'
     let data = this.state.listPartner
     data.forEach(e=>{
         if(e.user_id == item.user_id){
-            e.checked = false
+            e.follow = Status.UNCHECKED
+            this._UnfolowUser()
         }
     })
     this.setState({listPartner:data})
@@ -114,9 +122,13 @@ import { popupOk } from 'config'
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
           let token = await getItem('token')
           if(token){
-            FolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
-                
+            FolowProject({
+              project_id: this.props.navigation.state.params.id,
+              table:'UserProject'
+            }).then(res=>{
                 if(res.data.code == Status.SUCCESS){
+                    this.state.project.follow = Status.UNCHECKED
+                    this.setState({})
                     Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
                 } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
                     Toast.show('Phiên đăng nhập hết hạn')
@@ -140,10 +152,15 @@ import { popupOk } from 'config'
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
           let token = await getItem('token')
           if(token){
-            unFolowProject({project_id: this.props.navigation.state.params.id}).then(res=>{
+            unFolowProject({
+              project_id: this.props.navigation.state.params.id,
+              table:'UserProject'
+            }).then(res=>{
                 
                 if(res.data.code == Status.SUCCESS){
-                    Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+                    Toast.show('Bạn đã bỏ theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+                    this.state.project.follow = Status.CHECKED
+                    this.setState({})
                 } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
                     Toast.show('Phiên đăng nhập hết hạn')
                     navigation.navigate(SigninScreen)
@@ -183,9 +200,11 @@ import { popupOk } from 'config'
         />
             <Text style={{color:'#333131'}}>{moment(project.time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
         </View>
-        {project.status&& project.status== 1? <TouchableOpacity style={styles.folow}
-        onPress={this._UNfolowProject}
-        >
+        {project.follow&& project.follow== Status.UNCHECKED? 
+        <TouchableOpacity
+          style={styles.folow}
+          onPress={this._UNfolowProject}
+          >
             <Text style={styles.txtButton}>Bỏ theo dõi</Text>
         </TouchableOpacity>
         :
@@ -204,19 +223,21 @@ import { popupOk } from 'config'
         <CustomText value={"Hạng công trình xanh"} name={project.field_area}/>
         <CustomText value={"Địa điểm"} name={project.address}/>
         <CustomText value={"Diện tích sàn"} name={project.floor_area+ ' m2'}/>
+        <CustomText value={"Diện tích thực địa"} name={project.site_area}/>
         <CustomText value={"Số tầng"} name={project.storeys}/>
         <CustomText value={"Units"} name={project.unit}/>
         <CustomText value={"Loại hình dự án"} name={project.type_project}/>
             {/*  đang thiếu loại hình phụ */}
-        <CustomText value={"Loại hình phụ"} name={project.sub}/>
+        <CustomText value={"Loại hình phụ"} name={project.dev_type}/>
         <CustomText value={"Mã số dự án"} name={project.project_code}/>
-        <CustomText value={"Loại quyền sở hữu"} name={project.ownership}/>
+        <CustomText value={"Loại quyền sở hữu"} name={project.owner_type}/>
+        <CustomText value={"Diện tích thực địa"} name={project.site_area}/>
         <CustomText value={"Loại đầu tư"} name={project.type_invest}/>
         <CustomText value={"Mô tả dự án"} name={project.description}/>
         <CustomText value={"Các đối tác liên hệ"} name={' '}/>
         <Text style={styles.txtTicker}>(Tích chọn để theo dõi các thông tin của đối tác)</Text>
         <FlatList
-            data={this.state.listPartner}
+            data={listPartner}
             renderItem={this._renderItem}
             extraData={this.state}
             keyExtractor={this._keyExtractor}
@@ -227,14 +248,20 @@ import { popupOk } from 'config'
     );
   }
   _getData= async () => {
+    
+
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
-        let project = await getListProject({ project_id:this.props.navigation.state.params.id }).then(res=>{
+        
+
+        let project = await getListProject(this.props.navigation.state.params.id ).then(res=>{
+         
             
             return res.data.code == Status.SUCCESS ? res.data.data : []
         }).catch(err => {
             
-            return []
+           return err.response
         })
+        
         this.setState({
             project,
             listPartner: project.partner

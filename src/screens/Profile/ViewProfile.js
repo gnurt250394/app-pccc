@@ -14,7 +14,12 @@ class ListItem extends React.Component {
                     style={style.icon}
                     source={this.props.icon} />
                 <Text style={style.label}>{this.props.name}</Text>
-            </View> : null
+            </View> : <View style={{ marginBottom: 2, flexDirection: 'row'}}>
+                <Image 
+                    style={style.icon}
+                    source={this.props.icon} />
+                <Text style={style.sub}>{this.props.label}</Text>
+            </View>
     };
 }
 class ViewProfile extends React.Component {
@@ -60,12 +65,12 @@ class ViewProfile extends React.Component {
                     <Text style={style.name}>{user.name}</Text>
                 </View>
                 <View style={style.mt30}>
-                    <ListItem icon={images.pPhone} name={user.phone} />
-                    <ListItem icon={images.pEmail} name={user.email} />
-                    <ListItem icon={images.pGender} name={ShowGender(user.gender)} />
-                    <ListItem icon={images.pLocation} name={user.address} />
-                    <ListItem icon={images.pCompany} name={user.company} />
-                    <ListItem icon={images.pThue} name={user.tax_code} />
+                    <ListItem icon={images.pPhone} label={""} name={user.phone} />
+                    <ListItem icon={images.pEmail} label={"Cập nhật Email"} name={user.email} />
+                    <ListItem icon={images.pGender} label={"Cập nhật giới tính"} name={ShowGender(user.gender)} />
+                    <ListItem icon={images.pLocation} label={"Cập nhật địa chỉ"} name={user.address} />
+                    <ListItem icon={images.pCompany} label={"Cập nhật tên công ty"} name={user.company} />
+                    <ListItem icon={images.pThue} label={"Cập nhật mã số thuế"} name={user.tax_code} />
                 </View>
             </View>
         )
@@ -79,7 +84,6 @@ class ViewProfile extends React.Component {
         }).catch(err => {
             return null
         })
-        
         if(user && user.name ){
             this.setState({
                 user: user,
@@ -125,5 +129,6 @@ const style = StyleSheet.create({
         width:width-100,
         alignSelf:'flex-end',
         backgroundColor:'#F1F1F1'
-    }
+    },
+    sub: {color: '#BBBBBB', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#CCCCCC',borderBottomWidth:0.5},
 })

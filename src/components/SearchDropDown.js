@@ -82,7 +82,7 @@ export default class SearchableDropDown extends Component{
  render() {
     return (
       <View keyboardShouldpersist='always' style={{...this.props.containerStyle}}>
-        { this.renderFlatList() }
+        
         <TextInput
             underlineColorAndroid={this.props.underlineColorAndroid}
           editable={this.props.editable}
@@ -108,6 +108,7 @@ export default class SearchableDropDown extends Component{
             style={{ ...this.props.textInputStyle }}
             placeholderTextColor={this.props.placeholderTextColor}
             placeholder={this.props.placeholder} />
+            { this.renderFlatList() }
       </View>
     );
   };

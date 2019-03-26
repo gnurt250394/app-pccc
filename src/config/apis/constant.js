@@ -12,7 +12,7 @@ const constant ={
     NEW_BIDDING:'new-bidding',
     CHANGE_PASSWORD:'change-password',
     SEARCH:'search',
-    PROJECT_DETAIL:'project-detail',
+    PROJECT_DETAIL:'project-detail/',
     NEW_PROJECT:'new-project',
     FOLOW:'add-follows',
     UNFOLOW:'del-follows',
