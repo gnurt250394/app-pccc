@@ -19,8 +19,8 @@ class Catalog extends React.Component {
         datas: [],
         backup: [],
         page: 1,
-        threshold: 0.1,
-        refresing: true
+        threshold: 0,
+        refreshing: false
     }
     // set status bar
     async componentDidMount() {
@@ -93,7 +93,8 @@ class Catalog extends React.Component {
                             data={this.state.datas}
                             renderItem={this.renderItem}
                             keyExtractor={(item, index) => index.toString()} 
-                            // onRefresh={this.handleRefresh}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.handleRefresh}
                             // onEndReached={this.handleLoadmore}
                             // onEndReachedThreshold={this.state.threshold}
                             // ListFooterComponent={this.ListFooterComponent} 
@@ -105,18 +106,19 @@ class Catalog extends React.Component {
     }
 
     handleRefresh = () => {
-        console.log('handleRefresh: ', 1);
-        this.setState( { refresing: true, page: this.state.page + 1 }  , this.getData)
+        this.setState( { refreshing: true, page:  1 }  , this.getData)
     }
 
     handleLoadmore = () => {
-        console.warn('onEndReached: ', this.state.page);
-        this.state.refresing ? this.setState( { refresing: true, page: this.state.page + 1 } , this.getData) : null
+        console.log('handleLoadmore: ', 1);
+        this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData)
+        // this.state.refreshing ? this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData) : null
     }
 
     getData = async () => {
-        
-        let datas = await listDocuments(this.state.type).then(res => {
+        console.log('page: ', this.state.page);
+
+        let datas = await listDocuments(this.state.type, this.state.page).then(res => {
             return res.data.code == StatusCode.Success ? res.data.data : []
         }).catch(err => {
             console.log('err: ', err);
@@ -128,12 +130,17 @@ class Catalog extends React.Component {
             let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
             return {...e, description: description.value, showMore: description.showMore, showLess: false}
         })
-        this.setState({ datas, backup, loading: false, refresing: false  })
+        if(this.state.page == 1){
+            this.setState({ datas, backup, loading: false, refreshing: false  })
+        }else{
+            this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: false, refreshing: false  })
+        }
+        
 
     }
 
     ListFooterComponent = () => {
-        return  this.state.refresing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return  this.state.refreshing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     renderItem = ({item, index}) => {
@@ -253,7 +260,7 @@ class Catalog extends React.Component {
 
     onFollow = document_id => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
         }else{
             addFolow({document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
