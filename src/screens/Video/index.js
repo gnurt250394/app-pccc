@@ -5,7 +5,7 @@ import {  color, width, StatusCode, youtube, popupOk, Follow, defaultStyle} from
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
-import { getItem } from 'config/Controller';
+import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 
 class Video extends React.Component {
@@ -109,7 +109,7 @@ class Video extends React.Component {
                 <View style={style.row}>
                     <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
                     {item.follow == Follow.unfollow && <TouchableOpacity
-                        onPress={this.onFollow}
+                        onPress={this.onFollow(item.id)}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
                     </TouchableOpacity>}
@@ -117,7 +117,7 @@ class Video extends React.Component {
             </View>
     }
 
-    onFollow = document_id => {
+    onFollow = document_id => () => {
         if(!this.token){
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
