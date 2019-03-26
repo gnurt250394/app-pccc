@@ -24,6 +24,7 @@ class Signin extends React.Component {
 
     componentWillMount(){
         LoginManager.logOut()
+        GoogleSignin.signOut()
     }
     // set status bar
     componentDidMount() {
@@ -179,8 +180,9 @@ class Signin extends React.Component {
         try {
             this.setState({loading: true}, async () => {
                 await GoogleSignin.configure();
-                GoogleSignin.signOut()
+                
                 const data = await GoogleSignin.signIn();
+                console.log('data: ', data);
                 const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
 
                 const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);

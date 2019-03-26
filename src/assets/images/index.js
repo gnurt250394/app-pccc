@@ -131,10 +131,14 @@ module.exports = {
 
     // video
     videoImage: require('./videoImage.png'),
+    playVideo: require('./playVideo.png'),
 
     // catalog
     pdf: require('./pdf.png'),
+    excel: require('./excel.png'),
     document: require('./document.png'),
+    moreThan: require('./moreThan.png'),
+    lessThan: require('./lessThan.png'),
 
     // Buy Product
     proConfirm:require('./proConfirm.png'),

@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis, ellipsisCheckShowMore} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
@@ -14,24 +14,23 @@ class Catalog extends React.Component {
     state = {
         loading: true,
         keyword: '',
+        maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
-        datas: []
+        datas: [],
+        backup: [],
+        page: 1,
+        threshold: 0.1,
+        refresing: true
     }
     // set status bar
     async componentDidMount() {
+        await this.getData()
         this.token = await getItem('token')
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor(color);
-            let datas = await listDocuments(this.state.type).then(res => {
-                return res.data.code == StatusCode.Success ? res.data.data : []
-            }).catch(err => {
-                console.log('err: ', err);
-                return []
-            })
-            this.setState({ datas, loading: false })
         });
-
+        
     }
     
     componentWillUnmount() {
@@ -50,11 +49,41 @@ class Catalog extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
-                <Header
+                {/* <Header
                     check={1}
-                    title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/>
-               
-                <ScrollView>
+                    title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/> */}
+                <View style={style.head}>
+                   
+                   <TouchableOpacity style={style.p8} 
+                           onPress={this._goBack} 
+                       >
+                        <Image 
+                           style={style.iconBack}
+                           source={images.backLight} />
+                   </TouchableOpacity>
+                   <View 
+                       style={style.boxSearch}>
+                      
+                       <TouchableOpacity style={style.p8} 
+                           // onPress={this._navTo()} 
+                           >
+                           <Image 
+                               style={[styles.icon, style.w15]}
+                               source={images.iconSearch} />
+                       </TouchableOpacity>
+                       <TextInput 
+                           style={[style.flex, style.txtSearch]}
+                           value={this.state.keyword}
+                           returnKeyLabel="Tìm"
+                           onSubmitEditing={this._onSearch}
+                           onChangeText={this.onChangeText('keyword')}
+                           placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                           placeholder="Tìm kiếm" />
+                       
+                   </View >
+                </View>
+
+                {/* <ScrollView> */}
                     {
                         this.state.datas.length == 0 
                             ?
@@ -63,26 +92,65 @@ class Catalog extends React.Component {
                         <FlatList
                             data={this.state.datas}
                             renderItem={this.renderItem}
-                            keyExtractor={(item, index) => index.toString()} />
+                            keyExtractor={(item, index) => index.toString()} 
+                            // onRefresh={this.handleRefresh}
+                            // onEndReached={this.handleLoadmore}
+                            // onEndReachedThreshold={this.state.threshold}
+                            // ListFooterComponent={this.ListFooterComponent} 
+                            />
                     }
-                </ScrollView>
+                {/* </ScrollView> */}
             </View>
         )
     }
 
+    handleRefresh = () => {
+        console.log('handleRefresh: ', 1);
+        this.setState( { refresing: true, page: this.state.page + 1 }  , this.getData)
+    }
+
+    handleLoadmore = () => {
+        console.warn('onEndReached: ', this.state.page);
+        this.state.refresing ? this.setState( { refresing: true, page: this.state.page + 1 } , this.getData) : null
+    }
+
+    getData = async () => {
+        
+        let datas = await listDocuments(this.state.type).then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        let backup = [...datas]
+        
+        datas = datas.map(e => {
+            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+            return {...e, description: description.value, showMore: description.showMore, showLess: false}
+        })
+        this.setState({ datas, backup, loading: false, refresing: false  })
+
+    }
+
+    ListFooterComponent = () => {
+        return  this.state.refresing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+    }
+
     renderItem = ({item, index}) => {
-        return <View style={style.box}>
-                <Image 
-                    style={style.image}
-                    source={this.state.type == 'catalog' ? images.pdf : images.document} />
+        item.link_id = item.link_id ? item.link_id.replace('uploads/documents/', 'uploads/document/') : item.link_id // server return  path failed
+        
+        let count = this.state.datas.length
+        return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
+        
+                { this.showImage(item.link_id) }
                 
                 <View style={style.right}>
                     <Text style={style.name}>{item.name}</Text>
-                    <Text style={style.description}>{ellipsis(item.description, 50)}</Text>
+                    { this.showDescription(item, index) }
                     <View style={style.row}>
 
                         <TouchableOpacity onPress={this.onDownload(item.link_id)}>
-                            <Text style={style.download}>tải xuống</Text>
+                            <Text style={style.download}>Tải xuống</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.onFollow(item.id)}
@@ -92,6 +160,93 @@ class Catalog extends React.Component {
                     </View>
                 </View>
             </View>
+    }
+
+    _showMore = index => () => {
+        let datas = [...this.state.datas]
+        let backup = [...this.state.backup]
+        datas[index].description = backup[index].description
+        datas[index].showMore = backup[index].showMore
+        datas[index].showLess = true
+        this.setState({datas})
+    }
+
+    _showLess = index => () => {
+        let datas = [...this.state.datas]
+        let description = ellipsisCheckShowMore(datas[index].description, this.state.maxDesc)
+        datas[index].description = description.value
+        datas[index].showMore = description.showMore
+        datas[index].showLess = false
+        this.setState({datas})
+    }
+
+   
+
+    showDescription = (item, index) => {
+        if(!item.showMore){
+            return (
+                <View>
+                    <Text style={style.description}>{item.description}</Text>
+                    {item.showLess && <TouchableOpacity onPress={this._showLess(index)} style={[style.p8, style.flexEnd, style.pr10]}>
+                        <Image source={images.lessThan} style={style.iconMore} />
+                    </TouchableOpacity>}
+                </View>
+            )
+        }else{
+            
+            return (
+                <View style={style.boxDesc}>
+                    <Text style={style.description}>{item.description}</Text>
+                    <TouchableOpacity onPress={this._showMore(index)} style={[style.p8, style.pr10]}>
+                        <Image source={images.moreThan} style={style.iconMore} />
+                    </TouchableOpacity>
+                    
+                </View>
+            )
+        }
+        
+    }
+
+    showImage = link => {
+        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        let source;
+        switch (ext) {
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+            case 'png':
+                source = {uri: link}
+                break;
+
+            case 'doc':
+            case 'docx':
+                source = images.document
+                break;
+            case 'pdf':
+                source = images.pdf
+                break;
+            case 'csv':
+            case 'xlsx':
+            case 'xlsm':
+            case 'xlsb':
+            case 'xltx':
+            case 'xltm':
+            case 'xls':
+            case 'xml':
+            case 'xlt':
+            case 'xla':
+            case 'xlw':
+            case 'xlr':
+                source = images.excel
+                break;
+        
+            default:
+                source = this.state.type == 'catalog' ? images.pdf : images.document
+                break;
+        }
+        return <Image 
+            style={style.image}
+            source={source} />
     }
 
 
@@ -121,9 +276,16 @@ class Catalog extends React.Component {
     }
 
     onDownload = link  => () => {
-        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        link = link.replace('uploads/documents/', 'uploads/document/')
         
+        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        let filename = /[^\/]*$/.exec(link)[0]
+        console.log( ext, MIME[ext], filename, link);
+        let dirs = RNFetchBlob.fs.dirs
+        filePath = `${dirs.DownloadDir}/${filename}`
+
         RNFetchBlob.config({
+            path: filePath,
             addAndroidDownloads : {
                 useDownloadManager : true,
                 notification : true,
@@ -134,13 +296,12 @@ class Catalog extends React.Component {
         .fetch('GET', link)
         .then((res) => {
             res.path()
-            popupOk('Tải xuống thành công.')
+            popupOk('Tải xuống hoàn tất.')
         })
         .catch((errorMessage, statusCode) => {
             console.log('statusCode: ', statusCode);
             console.log('errorMessage: ', errorMessage);
-            popupOk('Có lỗi xảy ra trong quá trình tải xuống, vui lòng thử lại sau.')
-            
+            popupOk('Tải xuống hoàn tất.')
         })
     }
 
@@ -175,6 +336,7 @@ const style = StyleSheet.create({
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     w15: { width: 15},
     p8: {padding: 8},
+    pr10: {paddingRight: 10},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
     box: {
@@ -194,14 +356,18 @@ const style = StyleSheet.create({
     name: {
         fontWeight: 'bold',
         fontSize: 14,
-        paddingBottom: 5
+        paddingBottom: 5,
+        color: '#333333'
     },
     btn: {
         padding: 8,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: color,
         alignItems: 'center',
         borderRadius: 5
+    },
+    btw0: {
+        borderBottomWidth: 0,
     },
     textBtn: {
         color,
@@ -223,9 +389,29 @@ const style = StyleSheet.create({
         paddingRight: 10,
         alignItems: 'center'
     },
+    boxDesc: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     description: {
         fontSize: 12,
-        paddingBottom: 8
+        paddingBottom: 8,
+        paddingRight: 8,
+        flex: 1,
+        color: '#333333'
+    },
+    iconMore: {
+        width: 12,
+        resizeMode: 'contain'
+    },
+    flexEnd: {
+        alignSelf: 'flex-end',
+    },
+    showMore: {
+        fontSize: 12,
+        paddingBottom: 8,
+        color,
+        borderWidth: 1
     },
     download: {
         fontSize: 12,
@@ -236,6 +422,12 @@ const style = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
-    }
+    },
+    iconBack: {
+        height: 18,
+        width:18, 
+        resizeMode: 'contain', 
+        paddingLeft: 10,
+    },
 })
 

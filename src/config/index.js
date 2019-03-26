@@ -73,9 +73,11 @@ export const fonts = {
     MontserratExtraBold:'Montserrat-ExtraBold'
 }
 
-export const youtubeLink = "https://www.youtube.com/watch?v="
-export const youtubeApiKey = "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY"
-
+export const youtube = {
+    link: "https://www.youtube.com/watch?v=",
+    apiKey: "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY",
+    thumbnail: id => `https://img.youtube.com/vi/${id}/0.jpg`
+}
 export const defaultStyle = {
     fontSize: width <= sreen4_7.width ? 13 : 14,
     padding: width <= sreen4_7.width ? 8 : 11,
@@ -147,6 +149,19 @@ export const ellipsis = (str = "", max = 30) => {
     return (str.length > max)? str.substring(0, max) + "...": str;
 }
 
+export const ellipsisCheckShowMore = (str = "", max = 30) => {
+    let data = {
+        value: str,
+        showMore: false
+    }
+    if(str.length > max){
+        data.value = str.substring(0, max) + "..."
+        data.showMore = true
+    }
+    
+    return data;
+}
+
 export const toParams = (obj, first = '?') => {
     return  first + Object.entries(obj).map(e => e.join('=')).join('&');
 }
@@ -176,7 +191,7 @@ export const MIME = {
     'webm': 'video/webm',
     'webp': 'image/webp',
     'xls': 'application/vnd.ms-excel',
-    'xlsx': 'application/xml',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'zip': 'application/zip',
     '3gp': 'video/3gpp',
     '3g2': 'video/3gpp2',

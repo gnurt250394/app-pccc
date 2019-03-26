@@ -1,11 +1,11 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtubeApiKey, popupOk, Follow, defaultStyle} from 'config'
+import {  color, width, StatusCode, youtube, popupOk, Follow, defaultStyle} from 'config'
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
-import { getItem } from 'config/Controller';
+import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 
 class Video extends React.Component {
@@ -13,26 +13,18 @@ class Video extends React.Component {
         loading: true,
         keyword: '',
         datas: [],
-        isReady: false,
-        status: null,
-        quality: null,
-        error: null,
+        page: 1,
+        threshold: 0.1,
+        refresing: true
     }
     // set status bar
     async componentDidMount() {
+        await this.getData()
         this.token = await getItem('token')
 
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
             StatusBar.setBarStyle('light-content');
              StatusBar.setBackgroundColor(color);
-
-            let datas = await listDocuments('video').then(res => {
-                return res.data.code == StatusCode.Success ? res.data.data : []
-            }).catch(err => {
-                console.log('err: ', err);
-                return []
-            })
-            this.setState({ datas, loading: false })
         });
 
     }
@@ -42,6 +34,7 @@ class Video extends React.Component {
     }
 
     render(){
+        
         return (
             <View style={style.flex}>
                 {   this.state.loading ? 
@@ -90,37 +83,49 @@ class Video extends React.Component {
                             :
                         <FlatList
                             data={this.state.datas}
-                            renderItem={this.renderItem}
-                            keyExtractor={(item, index) => index.toString()} />
+                            keyExtractor={(item, index) => index.toString()} 
+                            // onEndReached={this.onEndReached}
+                            // onEndReachedThreshold={this.state.threshold}
+                            // ListFooterComponent={this.ListFooterComponent} 
+                            renderItem={this.renderItem}/>
                     }
                 </ScrollView>
             </View>
         )
     }
 
-    renderItem = ({item, index}) => {
-        return <View style={style.box}>
+    onEndReached = () => {
+        console.log(123);
+        this.state.refresing ? this.setState( { refresing: true, page: this.state.page + 1 } , this.getData) : null
+    }
 
-                {/* <YouTube
-                    apiKey={youtubeApiKey}
-                    videoId={item.link_id}  // The YouTube video ID
-                    play={true}             // control playback of video with true/false
-                    fullscreen={true}       // control whether the video should play in fullscreen or inline
-                    loop={true}             // control whether the video should loop when ended
-                    onReady={this.onReady}
-                    onChangeState={this.onChangeState}
-                    onChangeQuality={this.onChangeQuality}
-                    onError={this.onError}
-                    style={style.youtube} /> */}
-                
-                <TouchableOpacity onPress={this.playvideo(item.link_id)} >
-                    <Image style={style.image} source={images.videoImage}/>
+    getData = async () => {
+        let datas = await listDocuments('video').then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.setState({ datas, loading: false, refresing: false })
+    }
+
+    ListFooterComponent = () => {
+        return  this.state.refresing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+    }
+    
+
+    renderItem = ({item, index}) => {
+        let count = this.state.datas.length
+        return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
+                <TouchableOpacity onPress={this.playvideo(item.link_id)} style={style.posR} >
+                    <Image style={style.image} source={{uri: youtube.thumbnail(item.link_id)}}/>
+                    <Image style={style.iconPlay} source={images.playVideo}/>
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
-                    <Text style={style.time}>Ngày đăng: {item.date}</Text>
+                    <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
                     {item.follow == Follow.unfollow && <TouchableOpacity
-                        onPress={this.onFollow}
+                        onPress={this.onFollow(item.id)}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
                     </TouchableOpacity>}
@@ -128,7 +133,7 @@ class Video extends React.Component {
             </View>
     }
 
-    onFollow = document_id => {
+    onFollow = document_id => () => {
         if(!this.token){
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
@@ -154,7 +159,7 @@ class Video extends React.Component {
 
     playvideo = id => () => {
         YouTubeStandaloneAndroid.playVideo({
-            apiKey: youtubeApiKey,     // Your YouTube Developer API Key
+            apiKey: youtube.apiKey,     // Your YouTube Developer API Key
             videoId: id,     // YouTube video ID
             autoplay: true,             // Autoplay the video
             fullscreen: true,
@@ -213,6 +218,8 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
+    iconPlay: {position: 'absolute', top: 48, left: '46%', width: 60, resizeMode: 'contain'},
+    posR: {position: 'relative'},
     iconBack: {
         height: 18,
         width:18, 
@@ -226,6 +233,9 @@ const style = StyleSheet.create({
         borderBottomWidth: 1,
         marginBottom: 8,
         paddingBottom: 10,
+    },
+    btw0: {
+        borderBottomWidth: 0,
     },
     image: {
         width: '100%',
