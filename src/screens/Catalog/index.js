@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis, ellipsisCheckShowMore} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow } from 'config/apis/Project'
@@ -15,7 +15,8 @@ class Catalog extends React.Component {
         loading: true,
         keyword: '',
         type: this.props.navigation.getParam('type') || 'catalog',
-        datas: []
+        datas: [],
+        backup: []
     }
     // set status bar
     async componentDidMount() {
@@ -29,7 +30,14 @@ class Catalog extends React.Component {
                 console.log('err: ', err);
                 return []
             })
-            this.setState({ datas, loading: false })
+            let backup = [...datas]
+            
+            let newData = []
+            backup.forEach(e => {
+                let description = ellipsisCheckShowMore(e.description, 50)
+                newData.push({...e, description: description.value, showMore: description.showMore})
+            })
+            this.setState({ datas: newData, backup, loading: false })
         });
 
     }
@@ -50,10 +58,40 @@ class Catalog extends React.Component {
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
                 }
-                <Header
+                {/* <Header
                     check={1}
-                    title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/>
-               
+                    title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/> */}
+                <View style={style.head}>
+                   
+                   <TouchableOpacity style={style.p8} 
+                           onPress={this._goBack} 
+                       >
+                        <Image 
+                           style={style.iconBack}
+                           source={images.backLight} />
+                   </TouchableOpacity>
+                   <View 
+                       style={style.boxSearch}>
+                      
+                       <TouchableOpacity style={style.p8} 
+                           // onPress={this._navTo()} 
+                           >
+                           <Image 
+                               style={[styles.icon, style.w15]}
+                               source={images.iconSearch} />
+                       </TouchableOpacity>
+                       <TextInput 
+                           style={[style.flex, style.txtSearch]}
+                           value={this.state.keyword}
+                           returnKeyLabel="Tìm"
+                           onSubmitEditing={this._onSearch}
+                           onChangeText={this.onChangeText('keyword')}
+                           placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                           placeholder="Tìm kiếm" />
+                       
+                   </View >
+                </View>
+
                 <ScrollView>
                     {
                         this.state.datas.length == 0 
@@ -72,17 +110,18 @@ class Catalog extends React.Component {
 
     renderItem = ({item, index}) => {
         item.link_id = item.link_id.replace('uploads/documents/', 'uploads/document/') // server return  path failed
+        
         return <View style={style.box}>
         
-                {this.showImage(item.link_id)}
+                { this.showImage(item.link_id) }
                 
                 <View style={style.right}>
                     <Text style={style.name}>{item.name}</Text>
-                    <Text style={style.description}>{ellipsis(item.description, 50)}</Text>
+                    { this.showDescription(item, index) }
                     <View style={style.row}>
 
                         <TouchableOpacity onPress={this.onDownload(item.link_id)}>
-                            <Text style={style.download}>tải xuống</Text>
+                            <Text style={style.download}>Tải xuống</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.onFollow(item.id)}
@@ -92,6 +131,34 @@ class Catalog extends React.Component {
                     </View>
                 </View>
             </View>
+    }
+
+    _showMore = index => () => {
+        let datas = [...this.state.datas]
+        let backup = [...this.state.backup]
+        datas[index].description = backup[index].description
+        datas[index].showMore = backup[index].showMore
+        this.setState({datas})
+    }
+
+   
+
+    showDescription = (item, index) => {
+        if(!item.showMore){
+            return <Text style={style.description}>{item.description}</Text>
+        }else{
+            
+            return (
+                <View style={style.boxDesc}>
+                    <Text style={style.description}>{item.description}</Text>
+                    <TouchableOpacity onPress={this._showMore(index)} style={style.p8}>
+                        <Image source={images.moreThan} style={style.iconMore} />
+                    </TouchableOpacity>
+                    
+                </View>
+            )
+        }
+        
     }
 
     showImage = link => {
@@ -170,7 +237,6 @@ class Catalog extends React.Component {
         console.log( ext, MIME[ext], filename, link);
         let dirs = RNFetchBlob.fs.dirs
         filePath = `${dirs.DownloadDir}/${filename}`
-        console.log('filePath: ', filePath);
 
         RNFetchBlob.config({
             path: filePath,
@@ -243,7 +309,8 @@ const style = StyleSheet.create({
     name: {
         fontWeight: 'bold',
         fontSize: 14,
-        paddingBottom: 5
+        paddingBottom: 5,
+        color: '#333333'
     },
     btn: {
         padding: 8,
@@ -272,9 +339,26 @@ const style = StyleSheet.create({
         paddingRight: 10,
         alignItems: 'center'
     },
+    boxDesc: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     description: {
         fontSize: 12,
-        paddingBottom: 8
+        paddingBottom: 8,
+        paddingRight: 8,
+        flex: 1,
+        color: '#333333'
+    },
+    iconMore: {
+        width: 12,
+        resizeMode: 'contain'
+    },
+    showMore: {
+        fontSize: 12,
+        paddingBottom: 8,
+        color,
+        borderWidth: 1
     },
     download: {
         fontSize: 12,
@@ -285,6 +369,12 @@ const style = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
-    }
+    },
+    iconBack: {
+        height: 18,
+        width:18, 
+        resizeMode: 'contain', 
+        paddingLeft: 10,
+    },
 })
 

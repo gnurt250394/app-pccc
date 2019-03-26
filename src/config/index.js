@@ -147,6 +147,19 @@ export const ellipsis = (str = "", max = 30) => {
     return (str.length > max)? str.substring(0, max) + "...": str;
 }
 
+export const ellipsisCheckShowMore = (str = "", max = 30) => {
+    let data = {
+        value: str,
+        showMore: false
+    }
+    if(str.length > max){
+        data.value = str.substring(0, max) + "..."
+        data.showMore = true
+    }
+    
+    return data;
+}
+
 export const toParams = (obj, first = '?') => {
     return  first + Object.entries(obj).map(e => e.join('=')).join('&');
 }
