@@ -17,23 +17,14 @@ class Catalog extends React.Component {
         maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
         datas: [],
-        backup: []
+        backup: [],
+        page: 1,
+        threshold: 0.1,
+        refresing: true
     }
     // set status bar
     async componentDidMount() {
-        let datas = await listDocuments(this.state.type).then(res => {
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
-        let backup = [...datas]
-        datas = datas.map(e => {
-            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
-            return {...e, description: description.value, showMore: description.showMore, showLess: false}
-        })
-        this.setState({ datas, backup, loading: false })
-
+        await this.getData()
         this.token = await getItem('token')
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
             StatusBar.setBarStyle('light-content');
@@ -92,7 +83,7 @@ class Catalog extends React.Component {
                    </View >
                 </View>
 
-                <ScrollView>
+                {/* <ScrollView> */}
                     {
                         this.state.datas.length == 0 
                             ?
@@ -101,15 +92,52 @@ class Catalog extends React.Component {
                         <FlatList
                             data={this.state.datas}
                             renderItem={this.renderItem}
-                            keyExtractor={(item, index) => index.toString()} />
+                            keyExtractor={(item, index) => index.toString()} 
+                            // onRefresh={this.handleRefresh}
+                            // onEndReached={this.handleLoadmore}
+                            // onEndReachedThreshold={this.state.threshold}
+                            // ListFooterComponent={this.ListFooterComponent} 
+                            />
                     }
-                </ScrollView>
+                {/* </ScrollView> */}
             </View>
         )
     }
 
+    handleRefresh = () => {
+        console.log('handleRefresh: ', 1);
+        this.setState( { refresing: true, page: this.state.page + 1 }  , this.getData)
+    }
+
+    handleLoadmore = () => {
+        console.warn('onEndReached: ', this.state.page);
+        this.state.refresing ? this.setState( { refresing: true, page: this.state.page + 1 } , this.getData) : null
+    }
+
+    getData = async () => {
+        
+        let datas = await listDocuments(this.state.type).then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        let backup = [...datas]
+        
+        datas = datas.map(e => {
+            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+            return {...e, description: description.value, showMore: description.showMore, showLess: false}
+        })
+        this.setState({ datas, backup, loading: false, refresing: false  })
+
+    }
+
+    ListFooterComponent = () => {
+        return  this.state.refresing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+    }
+
     renderItem = ({item, index}) => {
-        item.link_id = item.link_id.replace('uploads/documents/', 'uploads/document/') // server return  path failed
+        item.link_id = item.link_id ? item.link_id.replace('uploads/documents/', 'uploads/document/') : item.link_id // server return  path failed
         
         let count = this.state.datas.length
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
