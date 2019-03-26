@@ -45,7 +45,7 @@ export const listFollows = async body => {
         return instance.get(constant.LIST_FOLLOW, body)
 }
 
-export const listDocuments = async type => {
+export const listDocuments = async (type, page = 1) => {
     // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
-    return instance.get(constant.Document + "?type=" + type)
+    return instance.get(constant.Document + `?type=${type}&page=${page}`)
 }

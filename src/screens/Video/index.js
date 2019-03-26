@@ -135,7 +135,7 @@ class Video extends React.Component {
 
     onFollow = document_id => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
         }else{
             addFolow({document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
