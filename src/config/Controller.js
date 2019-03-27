@@ -20,7 +20,8 @@ export const Status = {
     PROJECT_ID_NOT_FOUND:406,
     DELETE_ID_NOT_FOUND:404,
     CHECKED:0,
-    UNCHECKED:1
+    UNCHECKED:1,
+    USER_NOT_PERMISSION: 449
 }
 export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
