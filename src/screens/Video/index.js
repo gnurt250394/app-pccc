@@ -207,19 +207,16 @@ class Video extends React.Component {
     }
 
     _onSearch = () => {
-        if(this.state.keyword.trim() != "") {
-            this.setState({loading: true, refreshing: true}, async () => {
-                let datas = await searchDocuments('video', this.state.keyword).then(res =>{
-                    // console.log('res: ', res);
-                    return res.data.code == StatusCode.Success ? res.data.data : []
-                }).catch(err => {
-                    console.log('err: ', err);
-                    return []
-                })
-                this.setState({loading: false, datas,refreshing: false})
+        this.setState({loading: true, refreshing: true}, async () => {
+            let datas = await searchDocuments('video', this.state.keyword).then(res =>{
+                // console.log('res: ', res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
             })
-            
-        }
+            this.setState({loading: false, datas,refreshing: false})
+        })
     }
 
     onChangeText = key => val => {

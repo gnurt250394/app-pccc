@@ -304,19 +304,16 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
-        if(this.state.keyword.trim() != "") {
-            this.setState({loading: true}, async () => {
-                let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
-                    // console.log('res:',this.state.type, res);
-                    return res.data.code == StatusCode.Success ? res.data.data : []
-                }).catch(err => {
-                    console.log('err: ', err);
-                    return []
-                })
-               this.formatData(datas)
+        this.setState({loading: true}, async () => {
+            let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
+                // console.log('res:',this.state.type, res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
             })
-            
-        }
+           this.formatData(datas)
+        })
     }
 
     formatData = datas => {
