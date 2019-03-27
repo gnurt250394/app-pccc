@@ -59,3 +59,8 @@ export const listDocuments = async (type, page = 1) => {
     // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
     return instance.get(constant.Document + `?type=${type}&page=${page}`)
 }
+
+export const searchDocuments = async (type, keyword = '', page = 1) => {
+    // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
+    return instance.get(constant.SEARCH + `?table=documents&type=${type}&keyword=${keyword}&page=${page}`)
+}

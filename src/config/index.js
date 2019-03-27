@@ -78,6 +78,11 @@ export const youtube = {
     apiKey: "AIzaSyBmLjdQjvSDmAEeF6lDqQD5Fe3ICkrytZY",
     thumbnail: id => `https://img.youtube.com/vi/${id}/0.jpg`
 }
+
+export const uploadPath = {
+
+}
+
 export const defaultStyle = {
     fontSize: width <= sreen4_7.width ? 13 : 14,
     padding: width <= sreen4_7.width ? 8 : 11,
