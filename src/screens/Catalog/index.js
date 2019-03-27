@@ -263,7 +263,6 @@ class Catalog extends React.Component {
     }
 
     changeButtonFollow = (index, status) => {
-        console.log('status: ', status);
         let datas = [...this.state.datas]
         datas[index].follow = status
         this.setState({datas})

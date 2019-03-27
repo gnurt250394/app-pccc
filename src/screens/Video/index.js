@@ -130,16 +130,21 @@ class Video extends React.Component {
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
                     <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
-                    <TouchableOpacity
-                        onPress={this.onFollow(item.id)}
+                    {item.follow == Follow.unfollow && <TouchableOpacity
+                        onPress={this.onFollow(item.id, index)}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
+                    {item.follow == Follow.follow && <TouchableOpacity
+                        onPress={this.onUnFollow(item.id, index)}
+                        style={style.btn}>
+                        <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                    </TouchableOpacity>}
                 </View>
             </View>
     }
 
-    onFollow = document_id => () => {
+    onFollow = (document_id, index) => () => {
         if(!this.token){
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
         }else{
@@ -150,6 +155,7 @@ class Video extends React.Component {
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.follow)
                         break;
                 
                     default:
@@ -159,6 +165,37 @@ class Video extends React.Component {
             }).catch(err => {
                 console.log('err: ', err);
                 popupOk('Theo dõi thất bại.')
+            })
+        }
+    }
+
+    changeButtonFollow = (index, status) => {
+        let datas = [...this.state.datas]
+        datas[index].follow = status
+        this.setState({datas})
+    }
+
+    onUnFollow = (document_id, index) => () => {
+        if(!this.token){
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
+        }else{
+            UnFolowUser({document_id, table: Follow.table_document}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Bỏ theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.unfollow)
+                        break;
+                
+                    default:
+                        popupOk('Bỏ theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Bỏ theo dõi thất bại.')
             })
         }
     }
