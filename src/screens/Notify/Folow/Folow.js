@@ -3,9 +3,10 @@ import { View, Text,FlatList ,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import ItemList from './ItemList';
 import { getListNotifi } from 'config/apis/Notifi';
-import { Status, removeItem } from 'config/Controller';
+import { Status, removeItem, popup, getItem } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
 import { actionTypes } from 'actions'
+import { SigninScreen } from 'config/screenNames';
 class Folow extends Component {
   constructor(props) {
     super(props);
@@ -85,8 +86,9 @@ render() {
         }
     })
   }
-  componentDidMount = () => {
-    this.getData()
+  componentDidMount = async() => {
+    let token =await getItem('token')
+    !token? this.setState({refresing:false,Thresold:0}) :  this.getData()
   };
   
 }

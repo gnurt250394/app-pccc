@@ -29,11 +29,12 @@ const TabNotifi = createMaterialTopTabNavigator({
           swipeEnabled: true,
           tabBarPosition: 'top',
           tabBarOptions: {
+            upperCaseLabel:false,
             activeTintColor: '#2166A2',
             inactiveTintColor : '#333333',
             scrollEnabled : true,
             labelStyle: {
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: '500',
               // textTransform: 'none'
               fontFamily: fontStyle.Acumin_bold

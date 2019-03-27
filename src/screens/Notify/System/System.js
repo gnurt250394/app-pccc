@@ -3,7 +3,7 @@ import { View, FlatList, ActivityIndicator } from 'react-native';
 import {connect} from 'react-redux'
 import ItemList from './ItemList';
 import { getListNotifi } from 'config/apis/Notifi';
-import { Status, removeItem } from 'config/Controller';
+import { Status, removeItem, popup, getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
@@ -68,7 +68,7 @@ ListFooterComponent=()=>{
   }
   getData=()=>{
      getListNotifi({page:this.state.page,type:'system'}).then(res=>{
-         console.log(res,'aaaa')
+         console.log(res.data,'aaaa')
          console.log(this.state.page,'page')
          if(res.data.code== Status.SUCCESS){
              this.setState({
@@ -93,10 +93,17 @@ ListFooterComponent=()=>{
          console.log(err.response,'errr')
      })
   }
-  componentDidMount = () => {
+  componentDidMount =async () => {
+    let token =await getItem('token')
+    if(!token){
+        this.setState({refresing:false,Thresold:0})
+        popup('Bạn phải đăng nhập để xử dụng tính năng này',SigninScreen)
+   } else{
     this.getData()
+   } 
+    
   };
-  
+ 
 }
 
 
