@@ -38,13 +38,13 @@ export const formatNumber =(num)=> {
     Acumin_RPro_0:'Acumin-RPro_0'
 }
 export const color = "#2166A2"
-export const popup = (txt,fun) => {
+export const popup = (txt,onPress,fun) => {
     Alert.alert(
         'Thông báo',
         txt,
         [
           {
-            text: 'Cancel', style: 'cancel'
+            text: 'Cancel', style: 'cancel',onPress:onPress?() => {navigation.navigate(onPress)}:null
           },
           {text: 'OK', onPress:  () => {navigation.navigate(fun)}}
         ],

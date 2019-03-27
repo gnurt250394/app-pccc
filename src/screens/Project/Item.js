@@ -60,6 +60,9 @@ showList=()=>{
       })
     return (
                 <View style={styles.containerList}>
+               {this.props.index == 0?null: <View
+                style={styles.end}
+                    />}
                 <View style={styles.rowList}>
                 {this.props.item.follow ==1?<TouchableOpacity 
                     style={styles.buttonTicker}
@@ -96,9 +99,7 @@ showList=()=>{
             <ListItem source={images.proPosition} name={this.props.item.user_position}/>
             <ListItem source={images.proSub} name={this.props.item.user_sub}/>
             </View> : null}
-            <View
-                style={styles.end}
-            />
+            
             </View>
     );
   }
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     },
     rowList:{
         flexDirection:'row',
-        marginBottom:9
+        marginTop:9
     },
     image:{
         height:10,
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     buttonTicker:{
         alignItems:'flex-start',
         justifyContent:'center',
-        width:25,
-        height:25
+        width:30,
+        height:30
     }
 })

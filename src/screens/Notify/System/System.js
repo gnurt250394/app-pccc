@@ -5,7 +5,7 @@ import ItemList from './ItemList';
 import { getListNotifi } from 'config/apis/Notifi';
 import { Status, removeItem, popup, getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen } from 'config/screenNames';
+import { SigninScreen, HomeScreen } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
 import { actionTypes } from 'actions'
  class System extends Component {
@@ -97,7 +97,7 @@ ListFooterComponent=()=>{
     let token =await getItem('token')
     if(!token){
         this.setState({refresing:false,Thresold:0})
-        popup('Bạn phải đăng nhập để xử dụng tính năng này',SigninScreen)
+        popup('Bạn phải đăng nhập để xử dụng tính năng này',HomeScreen,SigninScreen)
    } else{
     this.getData()
    } 

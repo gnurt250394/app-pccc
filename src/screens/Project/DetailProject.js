@@ -40,6 +40,14 @@ import { popupOk } from 'config'
 console.log(item,'ggg')
       FolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
+            let data = this.state.listPartner
+            data.forEach(e=>{
+                if(e.users_id == item.users_id){
+                    e.follow = Status.UNCHECKED
+                }
+            })
+            
+            this.setState({listPartner:data})
               Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
@@ -52,7 +60,7 @@ console.log(item,'ggg')
             popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
           }
       }).catch(err=>{
-        
+        Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
       })
     }else{
         popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
@@ -66,6 +74,13 @@ console.log(item,'ggg')
       console.log(item,'eee')
       UnFolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
+            let data = this.state.listPartner
+              data.forEach(e=>{
+            if(e.users_id == item.users_id){
+            e.follow = Status.CHECKED
+          }
+          })
+    this.setState({listPartner:data})
               Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
             Toast.show('Phiên đăng nhập hết hạn')
@@ -76,7 +91,7 @@ console.log(item,'ggg')
             Toast.show('Dự án không tồn tại')
           }
       }).catch(err=>{
-        
+        Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
       })
     }else{
         popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
@@ -85,31 +100,19 @@ console.log(item,'ggg')
 
   // 
   _check=(item)=>()=>{
-    let data = this.state.listPartner
-    data.forEach(e=>{
-        if(e.users_id == item.users_id){
-            e.follow = Status.UNCHECKED
-            this._folowUser(item)
-        }
-    })
-    
-    this.setState({listPartner:data})
+    this._folowUser(item)
+   
   }
   _uncheck=(item)=>()=>{
-    let data = this.state.listPartner
-    data.forEach(e=>{
-        if(e.users_id == item.users_id){
-            e.follow = Status.CHECKED
-            this._UnfolowUser(item)
-        }
-    })
-    this.setState({listPartner:data})
+    this._UnfolowUser(item)
+   
   }
-  _renderItem=({item})=>{
+  _renderItem=({item,index})=>{
       return(
           <Item
             onPressUncheck={this._check(item)}
             item={item}
+            index={index}
             onPressCheck={this._uncheck(item)}
           />
       )
@@ -126,7 +129,7 @@ console.log(item,'ggg')
           if(token){
             FolowProject({
               project_id: this.props.navigation.state.params.id,
-              table:'UserProject'
+              table:'UserProject',
             }).then(res=>{
               console.log(res.data,'hhh')
                 if(res.data.code == Status.SUCCESS){
@@ -145,7 +148,8 @@ console.log(item,'ggg')
                   console.log(res.data)
                 }
             }).catch(err=>{
-                
+              Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
+              console.log(err.response)
               })
           } else{
             popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
@@ -177,7 +181,7 @@ console.log(item,'ggg')
                     Toast.show('Dự án không tồn tại')
                 }
             }).catch(err=>{
-                
+              Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
               })
           } else{
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))

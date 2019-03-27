@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image,Dimensions,TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,Dimensions,TouchableOpacity,ActivityIndicator,TextInput } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import images from "assets/images"
 import { DetailProject, SigninScreen } from 'config/screenNames';
-import { getNewProject } from 'config/apis/Project';
+import { getNewProject, searchProject } from 'config/apis/Project';
 import Toast from 'react-native-simple-toast';
-import { Status } from 'config/Controller';
+import { Status, color } from 'config/Controller';
 import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
 const {width,height}= Dimensions.get('window')
@@ -17,7 +17,8 @@ const {width,height}= Dimensions.get('window')
       listProject:[],
       page:1,
       Threshold:0.1,
-      refresing:true
+      refresing:true,
+      keyword:''
     };
   }
 
@@ -64,14 +65,63 @@ _nextPage=(router,params)=>()=>{
   _goBack=()=>{
     navigation.pop()
   }
+  onChangeText = key => val => {
+    this.setState({[key]: val})
+}
+_onSearch=()=>{
+  searchProject(this.state.keyword,this.state.page).then(res=>{
+    console.log(res.data,'ddd')
+    if(res.data.code == Status.SUCCESS){
+      console.log(res.data,'ddd')
+      this.setState({listProject:res.data.data})
+    }
+  })
+}
+_onClose=()=>{
+  this.setState({keyword:''})
+  searchProject('',this.state.page).then(res=>{
+    console.log(res.data,'ddd')
+    if(res.data.code == Status.SUCCESS){
+      console.log(res.data,'ddd')
+      
+      this.setState({listProject:res.data.data})
+    }
+  })
+}
   render() {
     return (
       <View style={styles.container}>
-        <Header
-            check={1}
-            onPress={this._goBack}
-            title={"Thông tin dự án"}
-        />
+       <View style={styles.head}>
+                   
+                   <TouchableOpacity style={styles.imgBack}  onPress={this._goBack}  >
+                        <Image 
+                           style={styles.iconBack}
+                           source={images.backLight} />
+                   </TouchableOpacity>
+                   <View 
+                       style={styles.boxSearch}>
+                      
+                       <TouchableOpacity style={styles.p8}  onPress={this._onSearch}  >
+                           <Image 
+                               style={styles.imgSearch}
+                               source={images.iconSearch} />
+                       </TouchableOpacity>
+                       <TextInput 
+
+                           style={styles.txtSearch}
+                           value={this.state.keyword}
+                           returnKeyLabel="Tìm"
+                           onSubmitEditing={this._onSearch}
+                           onChangeText={this.onChangeText('keyword')}
+                           placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                           placeholder="Tìm kiếm" />
+                        <TouchableOpacity style={styles.p8}  onPress={this._onClose}  >
+                           <Image 
+                               style={[styles.imgSearch,{tintColor:'#FFFFFF'}]}
+                               source={images.closeBlue} />
+                       </TouchableOpacity>
+                   </View >
+               </View>
         <FlatList
             data={this.state.listProject}
             renderItem={this._renderItem}
@@ -105,6 +155,22 @@ const styles= StyleSheet.create({
         flex:1,
         padding: 10,
     },
+    txtSearch:{
+      flex:1,
+      color:'#FFFFFF'
+    },
+    imgSearch:{
+      height:15,
+      width:15
+    },
+    imgBack:{
+      paddingLeft:10
+    },
+    p8:{
+      padding:8,
+      alignItems:'center',
+      justifyContent:'center',
+    },
     container:{
         flex:1,
     },
@@ -129,6 +195,14 @@ const styles= StyleSheet.create({
         height:8,
         backgroundColor: '#CCCCCC',
         width
-    }
+    },
+    iconBack: {
+      height: 18,
+      width:18, 
+      resizeMode: 'contain', 
+      paddingLeft: 10,
+  },
+  head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
+  boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
 })
 export default connect()(InfoProject)
