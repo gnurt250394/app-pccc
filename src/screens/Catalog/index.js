@@ -14,7 +14,7 @@ class Catalog extends React.Component {
     state = {
         loading: true,
         keyword: '',
-        maxDesc: 48,
+        maxDesc: 35,
         type: this.props.navigation.getParam('type') || 'catalog',
         datas: [],
         backup: [],

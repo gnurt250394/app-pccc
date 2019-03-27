@@ -151,7 +151,7 @@ const style = StyleSheet.create({
     iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,},
     keyword: {color, textAlign: 'left',},
     row: {flexDirection: 'row', alignItems: 'center',},
-    calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
+    calender: {width: '48%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
     rowCalender: {flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start'},
     label: {color: '#555555', fontSize: 14},
     btn: {
