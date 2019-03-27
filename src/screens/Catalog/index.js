@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis, ellipsisCheckShowMore} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
-import { listDocuments, addFolow, searchDocuments  } from 'config/apis/Project'
+import { listDocuments, addFolow, searchDocuments, UnFolowUser  } from 'config/apis/Project'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -135,11 +135,16 @@ class Catalog extends React.Component {
                         <TouchableOpacity onPress={this.onDownload(item.link)}>
                             <Text style={style.download}>Tải xuống</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={this.onFollow(item.id)}
+                        {item.follow == Follow.unfollow && <TouchableOpacity
+                            onPress={this.onFollow(item.id, index)}
                             style={style.btn}>
                             <Text style={style.textBtn}>Theo dõi</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+                        {item.follow == Follow.follow && <TouchableOpacity
+                            onPress={this.onUnFollow(item.id, index)}
+                            style={style.btn}>
+                            <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                        </TouchableOpacity>}
                     </View>
                 </View>
             </View>
@@ -232,7 +237,7 @@ class Catalog extends React.Component {
 
 
 
-    onFollow = document_id => () => {
+    onFollow = (document_id, index) => () => {
         if(!this.token){
             popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
         }else{
@@ -243,6 +248,7 @@ class Catalog extends React.Component {
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.follow)
                         break;
                 
                     default:
@@ -252,6 +258,38 @@ class Catalog extends React.Component {
             }).catch(err => {
                 console.log('err: ', err);
                 popupOk('Theo dõi thất bại.')
+            })
+        }
+    }
+
+    changeButtonFollow = (index, status) => {
+        console.log('status: ', status);
+        let datas = [...this.state.datas]
+        datas[index].follow = status
+        this.setState({datas})
+    }
+
+    onUnFollow = (document_id, index) => () => {
+        if(!this.token){
+            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
+        }else{
+            UnFolowUser({document_id, table: Follow.table_document}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Bỏ theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.unfollow)
+                        break;
+                
+                    default:
+                        popupOk('Bỏ theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Bỏ theo dõi thất bại.')
             })
         }
     }
