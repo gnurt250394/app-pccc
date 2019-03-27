@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
 import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
 import { toPrice, color } from 'config'
-const {width} = Dimensions.get('screen')
+const {width,height} = Dimensions.get('screen')
 export default class ListItem extends React.Component {
     constructor(props){
         super(props);
@@ -46,14 +46,27 @@ export default class ListItem extends React.Component {
                 <Text style={style.price}>{toPrice(item.price)}</Text>
             </View>
     }
-
+    ListEmptyComponent=()=>{
+        return(
+            <View style={style.group}>
+            <Text style={style.notFound}>Không có dữ liệu</Text>
+            </View>
+        )
+    }
     render(){
         return (
             <FlatList
                 horizontal={this.props.horizontal || false}
                 numColumns={this.props.numColumns || 3}
+                refreshControl={
+                <RefreshControl
+                    refreshing={this.props.loading}
+                    colors={["#2166A2",'white']}
+                    tintColor="#2166A2"
+                />}
                 data={this.state.data}
                 renderItem={this.renderItem}
+                ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
         )
     }
@@ -72,5 +85,17 @@ const style = StyleSheet.create({
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
-    keyword: {color, textAlign: 'left',}
+    keyword: {color, textAlign: 'left',},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    },
+    group:{
+        flex:1,
+        alignItems: 'center',
+        justifyContent:'center',
+        marginTop: 50,
+    }
 })

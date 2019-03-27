@@ -53,7 +53,7 @@ class SearchBidding extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                {   this.state.loading ? 
+                {/* {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
@@ -62,12 +62,13 @@ class SearchBidding extends React.Component {
                     this.state.datas.length == 0 
                         ?
                     !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                        :
+                        : */}
                     <ListItem 
                         data={this.state.datas} 
+                        loading={this.state.loading}
                         keyword={this.state.keyword}
                         navigation={this.props.navigation} />
-                }
+                {/* } */}
             </View>
         )
     }
