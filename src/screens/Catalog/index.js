@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis, ellipsisCheckShowMore} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
-import { listDocuments, addFolow } from 'config/apis/Project'
+import { listDocuments, addFolow, searchDocuments  } from 'config/apis/Project'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -20,7 +20,8 @@ class Catalog extends React.Component {
         backup: [],
         page: 1,
         threshold: 0,
-        refreshing: false
+        refreshing: false,
+        
     }
     // set status bar
     async componentDidMount() {
@@ -115,48 +116,23 @@ class Catalog extends React.Component {
         // this.state.refreshing ? this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData) : null
     }
 
-    getData = async () => {
-        console.log('page: ', this.state.page);
-
-        let datas = await listDocuments(this.state.type, this.state.page).then(res => {
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
-        let backup = [...datas]
-        
-        datas = datas.map(e => {
-            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
-            return {...e, description: description.value, showMore: description.showMore, showLess: false}
-        })
-        if(this.state.page == 1){
-            this.setState({ datas, backup, loading: false, refreshing: false  })
-        }else{
-            this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: false, refreshing: false  })
-        }
-        
-
-    }
-
     ListFooterComponent = () => {
         return  this.state.refreshing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     renderItem = ({item, index}) => {
-        item.link_id = item.link_id ? item.link_id.replace('uploads/documents/', 'uploads/document/') : item.link_id // server return  path failed
         
         let count = this.state.datas.length
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
         
-                { this.showImage(item.link_id) }
+                { this.showImage(item.link) }
                 
                 <View style={style.right}>
                     <Text style={style.name}>{item.name}</Text>
                     { this.showDescription(item, index) }
                     <View style={style.row}>
 
-                        <TouchableOpacity onPress={this.onDownload(item.link_id)}>
+                        <TouchableOpacity onPress={this.onDownload(item.link)}>
                             <Text style={style.download}>Tải xuống</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -186,8 +162,6 @@ class Catalog extends React.Component {
         datas[index].showLess = false
         this.setState({datas})
     }
-
-   
 
     showDescription = (item, index) => {
         if(!item.showMore){
@@ -313,7 +287,45 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
+        if(this.state.keyword.trim() != "") {
+            this.setState({loading: true}, async () => {
+                let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
+                    // console.log('res:',this.state.type, res);
+                    return res.data.code == StatusCode.Success ? res.data.data : []
+                }).catch(err => {
+                    console.log('err: ', err);
+                    return []
+                })
+               this.formatData(datas)
+            })
+            
+        }
+    }
 
+    formatData = datas => {
+        let backup = [...datas]
+        
+        datas = datas.map(e => {
+            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+            return {...e, description: description.value, showMore: description.showMore, showLess: false}
+        })
+        if(this.state.page == 1){
+            this.setState({ datas, backup, loading: false, refreshing: false  })
+        }else{
+            this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: false, refreshing: false  })
+        }
+    }
+
+    getData = async () => {
+        // console.log('page: ', this.state.page);
+
+        let datas = await listDocuments(this.state.type, this.state.page).then(res => {
+            return res.data.code == StatusCode.Success ? res.data.data : []
+        }).catch(err => {
+            console.log('err: ', err);
+            return []
+        })
+        this.formatData(datas)
     }
 
     onChangeText = key => val => {
