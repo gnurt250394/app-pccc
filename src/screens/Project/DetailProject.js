@@ -57,13 +57,13 @@ console.log(item,'ggg')
           }else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
             Toast.show('Dự án không tồn tại')
           }else if(res.data.code == Status.USER_PERMISSION){
-            popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
+            popup('Bạn phải mua gói để sử dụng tính năng này.',null, HomeScreen)
           }
       }).catch(err=>{
         Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
       })
     }else{
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.',null, SigninScreen)
     }
   }
 
@@ -94,7 +94,7 @@ console.log(item,'ggg')
         Toast.show('Lỗi hệ thống'+ ' '+err.response.status)
       })
     }else{
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.',null, SigninScreen)
     }
   }
 
@@ -144,7 +144,7 @@ console.log(item,'ggg')
                 } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
                     Toast.show('Dự án không tồn tại')
                 }else if(res.data.code == Status.USER_PERMISSION){
-                  popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
+                  popup('Bạn phải mua gói để sử dụng tính năng này.',null, HomeScreen)
                   console.log(res.data)
                 }
             }).catch(err=>{
@@ -152,7 +152,7 @@ console.log(item,'ggg')
               console.log(err.response)
               })
           } else{
-            popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
+            popup('Bạn phải đăng nhập để sử dụng tính năng này.',null, SigninScreen)
             
           }
     
