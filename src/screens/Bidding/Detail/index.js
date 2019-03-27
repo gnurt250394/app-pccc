@@ -2,11 +2,13 @@ import React from 'react'
 import { View,  StatusBar, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { detailBidding } from 'config/apis/bidding'
-import {  color, ellipsis, popupOk, BiddingField } from 'config'
+import { addFolow } from 'config/apis/Project'
+import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow } from 'config'
 import { Header } from 'components'
 import { getItem, Status } from 'config/Controller';
 import images from "assets/images"
 import styles from "assets/styles"
+import { SigninScreen } from 'config/screenNames'
 class LI extends React.Component {
 
     render(){
@@ -26,6 +28,7 @@ class DetailBidding extends React.Component {
         bidding_id: this.props.navigation.getParam('bidding_id'),
         bidding: {}
     }
+    token = null
     // set status bar
     async componentDidMount() {
         
@@ -34,20 +37,8 @@ class DetailBidding extends React.Component {
           StatusBar.setBackgroundColor(color);
         });
 
-        let bidding = await detailBidding(this.state.bidding_id).then(res => {
-            console.log('res: ', res);
-            return res.data.code == Status.SUCCESS ? res.data.data : null
-        }).catch(err => {
-            console.log('err: ', err);
-            return null
-        })
-
-        if(!bidding || (bidding && !bidding.id)){
-            popupOk("Không tìm thấy dữ liệu.", this._goBack)
-            this.setState({loading: false})
-        }else{
-            this.setState({bidding, loading: false})
-        }
+        await this.getData()
+        this.token = await getItem('token')
     }
     
     componentWillUnmount() {
@@ -56,7 +47,6 @@ class DetailBidding extends React.Component {
 
     render(){
         let { bidding } = this.state
-        console.log('bidding: ', bidding);
         
         return (
             <View style={style.flex}>
@@ -76,12 +66,16 @@ class DetailBidding extends React.Component {
                             <Image source={images.calender} style={style.iconCalender}/>
                             <Text style={style.time}>{bidding.time_start}</Text>
                         </View>
-                        <TouchableOpacity
-                            onPress={this.onFollow}
-                            // style={style.btn}>
+                        {(!bidding.follow || bidding.follow == Follow.unfollow) && <TouchableOpacity
+                            onPress={this.onFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={style.textBtn}>Theo dõi tin đấu thầu</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+                        {(bidding.follow && bidding.follow == Follow.follow) && <TouchableOpacity
+                            onPress={this.onUnFollow(bidding.id)}
+                            style={[style.row, style.calender, style.btn]}>
+                            <Text style={style.textBtn}>Bỏ theo dõi tin</Text>
+                        </TouchableOpacity>}
                     </View>
                     <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
                     {bidding.notification_form && <LI label={`Hình thức thông báo: ${bidding.notification_form}`} />}
@@ -126,6 +120,74 @@ class DetailBidding extends React.Component {
         )
     }
 
+    getData = async () => {
+        let bidding = await detailBidding(this.state.bidding_id).then(res => {
+            return res.data.code == Status.SUCCESS ? res.data.data : null
+        }).catch(err => {
+            console.log('err: ', err);
+            return null
+        })
+
+        if(!bidding || (bidding && !bidding.id)){
+            popupOk("Không tìm thấy dữ liệu.", this._goBack)
+            this.setState({loading: false})
+        }else{
+            this.setState({bidding, loading: false})
+        }
+    }
+
+    onFollow = (bidding_id ) => () => {
+        if(!this.token){
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        }else{
+            addFolow({bidding_id , table: Follow.table_bidding}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.USER_PERMISSION:
+                        popupOk('Vui lòng mua gói để sử dụng tính năng này')
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Theo dõi thành công.')
+                        this.setState({bidding: {...bidding, follow: Follow.follow}})
+                        break;
+                
+                    default:
+                        popupOk('Theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Theo dõi thất bại.')
+            })
+        }
+    }
+
+    onUnFollow = (bidding_id ) => () => {
+        if(!this.token){
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        }else{
+            UnFolowUser({bidding_id , table: Follow.table_bidding}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Bỏ theo dõi thành công.')
+                        this.setState({bidding: {...bidding, follow: Follow.unfollow}})
+                        break;
+                    default:
+                        popupOk('Bỏ theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Bỏ theo dõi thất bại.')
+            })
+        }
+    }
+
     _navTo = (screen, params = {} ) => () => {
         this.props.navigation.navigate(screen, params)
     }
@@ -142,7 +204,7 @@ const style = StyleSheet.create({
     flex: {flex: 1},
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
-    dot: {width: 6,  resizeMode: 'contain', margin: 10,},
+    dot: {width: 6,  resizeMode: 'contain', margin: 10, marginTop: 5},
     name: { fontSize: 16, padding: 10, paddingBottom: 15, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     h3: { fontSize: 16, padding: 10, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
@@ -150,14 +212,15 @@ const style = StyleSheet.create({
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,},
     keyword: {color, textAlign: 'left',},
-    row: {flexDirection: 'row', alignItems: 'center',},
+    row: {flexDirection: 'row', alignItems: 'flex-start'},
     calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
     rowCalender: {flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start'},
-    label: {color: '#555555', fontSize: 14},
+    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap'},
     btn: {
         width: '40%',
         backgroundColor: color,
         justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 5,
         borderWidth: 0,
     },

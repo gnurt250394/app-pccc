@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow, ellipsis, ellipsisCheckShowMore} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore} from 'config'
 import { Header } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser  } from 'config/apis/Project'
@@ -13,14 +13,14 @@ import RNFetchBlob from 'react-native-fetch-blob'
 class Catalog extends React.Component {
     state = {
         loading: true,
+        refreshing: false,
         keyword: '',
         maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
         datas: [],
         backup: [],
         page: 1,
-        threshold: 0,
-        refreshing: false,
+        threshold: 0.1,
         
     }
     // set status bar
@@ -45,19 +45,10 @@ class Catalog extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                 {   this.state.loading ? 
-                    <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
-                    </View> : null
-                }
-                {/* <Header
-                    check={1}
-                    title={ this.state.type == 'catalog' ? "Catalog" : 'Tài liệu'} onPress={this._goBack}/> */}
                 <View style={style.head}>
                    
                    <TouchableOpacity style={style.p8} 
-                           onPress={this._goBack} 
-                       >
+                           onPress={this._goBack}  >
                         <Image 
                            style={style.iconBack}
                            source={images.backLight} />
@@ -65,9 +56,7 @@ class Catalog extends React.Component {
                    <View 
                        style={style.boxSearch}>
                       
-                       <TouchableOpacity style={style.p8} 
-                           // onPress={this._navTo()} 
-                           >
+                       <TouchableOpacity style={style.p8}  onPress={this._onSearch} >
                            <Image 
                                style={[styles.icon, style.w15]}
                                source={images.iconSearch} />
@@ -84,24 +73,21 @@ class Catalog extends React.Component {
                    </View >
                 </View>
 
-                {/* <ScrollView> */}
-                    {
-                        this.state.datas.length == 0 
-                            ?
-                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                            :
-                        <FlatList
-                            data={this.state.datas}
-                            renderItem={this.renderItem}
-                            keyExtractor={(item, index) => index.toString()} 
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.handleRefresh}
-                            // onEndReached={this.handleLoadmore}
-                            // onEndReachedThreshold={this.state.threshold}
-                            // ListFooterComponent={this.ListFooterComponent} 
-                            />
-                    }
-                {/* </ScrollView> */}
+                {
+                    this.state.datas.length == 0 
+                        ?
+                    !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                        :
+                    <FlatList
+                        data={this.state.datas}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item, index) => index.toString()} 
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefresh}
+                        onEndReached={this.handleLoadmore}
+                        onEndReachedThreshold={this.state.threshold}
+                        ListFooterComponent={this.ListFooterComponent}  />
+                }
             </View>
         )
     }
@@ -111,13 +97,11 @@ class Catalog extends React.Component {
     }
 
     handleLoadmore = () => {
-        console.log('handleLoadmore: ', 1);
-        this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData)
-        // this.state.refreshing ? this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData) : null
+        this.state.loading ? this.setState( { loading: true, page: this.state.page + 1 } , this.getData) : null
     }
 
     ListFooterComponent = () => {
-        return  this.state.refreshing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     renderItem = ({item, index}) => {
@@ -195,13 +179,14 @@ class Catalog extends React.Component {
 
     showImage = link => {
         let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
-        let source;
+        let source, uri;
         switch (ext) {
             case 'jpg':
             case 'jpeg':
             case 'gif':
             case 'png':
                 source = {uri: link}
+                uri= true
                 break;
 
             case 'doc':
@@ -230,21 +215,19 @@ class Catalog extends React.Component {
                 source = this.state.type == 'catalog' ? images.pdf : images.document
                 break;
         }
-        return <Image 
-            style={style.image}
-            source={source} />
+        return <Image  
+                    style={[style.image, uri ? style.uri : {}]}
+                    source={source} />
     }
-
-
 
     onFollow = (document_id, index) => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
             addFolow({document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
-                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
@@ -263,7 +246,6 @@ class Catalog extends React.Component {
     }
 
     changeButtonFollow = (index, status) => {
-        console.log('status: ', status);
         let datas = [...this.state.datas]
         datas[index].follow = status
         this.setState({datas})
@@ -271,12 +253,12 @@ class Catalog extends React.Component {
 
     onUnFollow = (document_id, index) => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
             UnFolowUser({document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
-                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
                         popupOk('Bỏ theo dõi thành công.')
@@ -295,11 +277,8 @@ class Catalog extends React.Component {
     }
 
     onDownload = link  => () => {
-        link = link.replace('uploads/documents/', 'uploads/document/')
-        
         let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
         let filename = /[^\/]*$/.exec(link)[0]
-        console.log( ext, MIME[ext], filename, link);
         let dirs = RNFetchBlob.fs.dirs
         filePath = `${dirs.DownloadDir}/${filename}`
 
@@ -325,38 +304,42 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
-        if(this.state.keyword.trim() != "") {
-            this.setState({loading: true}, async () => {
-                let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
-                    // console.log('res:',this.state.type, res);
-                    return res.data.code == StatusCode.Success ? res.data.data : []
-                }).catch(err => {
-                    console.log('err: ', err);
-                    return []
-                })
-               this.formatData(datas)
+        this.setState({loading: true}, async () => {
+            let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
+                // console.log('res:',this.state.type, res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
             })
-            
-        }
+           this.formatData(datas)
+        })
     }
 
     formatData = datas => {
-        let backup = [...datas]
-        
-        datas = datas.map(e => {
-            let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
-            return {...e, description: description.value, showMore: description.showMore, showLess: false}
-        })
-        if(this.state.page == 1){
-            this.setState({ datas, backup, loading: false, refreshing: false  })
+        if(datas.length == 0){
+            this.setState({
+                loading: false,
+                refreshing: false,
+                threshold: 0
+            })
         }else{
-            this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: false, refreshing: false  })
+            let backup = [...datas]
+        
+            datas = datas.map(e => {
+                let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+                return {...e, description: description.value, showMore: description.showMore, showLess: false}
+            })
+            if(this.state.page == 1){
+                this.setState({ datas, backup, loading: true, refreshing: false  })
+            }else{
+                this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: true, refreshing: false})
+            }
         }
+        
     }
 
     getData = async () => {
-        // console.log('page: ', this.state.page);
-
         let datas = await listDocuments(this.state.type, this.state.page).then(res => {
             return res.data.code == StatusCode.Success ? res.data.data : []
         }).catch(err => {
@@ -410,6 +393,12 @@ const style = StyleSheet.create({
         height: 60,
         resizeMode: 'stretch',
     },
+    uri: {
+        borderWidth: 1,
+        borderColor: '#C3E5FE',
+        resizeMode: 'cover',
+        borderRadius: 5
+    },
     name: {
         fontWeight: 'bold',
         fontSize: 14,
@@ -418,10 +407,10 @@ const style = StyleSheet.create({
     },
     btn: {
         padding: 8,
-        borderWidth: 0.5,
+        borderWidth: 1,
         borderColor: color,
         alignItems: 'center',
-        borderRadius: 5
+        borderRadius: 8
     },
     btw0: {
         borderBottomWidth: 0,

@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtube, popupOk, Follow, defaultStyle} from 'config'
+import {  color, width, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle} from 'config'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
@@ -15,7 +15,7 @@ class Video extends React.Component {
         datas: [],
         page: 1,
         threshold: 0.1,
-        refreshing: true
+        refreshing: false
     }
     // set status bar
     async componentDidMount() {
@@ -37,17 +37,9 @@ class Video extends React.Component {
         
         return (
             <View style={style.flex}>
-                {   this.state.loading ? 
-                    <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
-                    </View> : null
-                }
-               
                <View style={style.head}>
                    
-                    <TouchableOpacity style={style.p8} 
-                            onPress={this._goBack} 
-                        >
+                    <TouchableOpacity style={style.p8}  onPress={this._goBack}  >
                          <Image 
                             style={style.iconBack}
                             source={images.backLight} />
@@ -55,9 +47,7 @@ class Video extends React.Component {
                     <View 
                         style={style.boxSearch}>
                        
-                        <TouchableOpacity style={style.p8} 
-                            // onPress={this._navTo()} 
-                            >
+                        <TouchableOpacity style={style.p8}  onPress={this._onSearch}  >
                             <Image 
                                 style={[styles.icon, style.w15]}
                                 source={images.iconSearch} />
@@ -74,51 +64,55 @@ class Video extends React.Component {
                     </View >
                 </View>
 
-                <ScrollView>
-
-                    {
-                        this.state.datas.length == 0 
-                            ?
-                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                            :
-                        <FlatList
-                            data={this.state.datas}
-                            keyExtractor={(item, index) => index.toString()} 
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.handleRefresh}
-                            // onEndReached={this.onEndReached}
-                            // onEndReachedThreshold={this.state.threshold}
-                            // ListFooterComponent={this.ListFooterComponent} 
-                            renderItem={this.renderItem}/>
-                    }
-                </ScrollView>
+                {
+                    this.state.datas.length == 0 
+                        ?
+                    !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                        :
+                    <FlatList
+                        data={this.state.datas}
+                        keyExtractor={(item, index) => index.toString()} 
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefresh}
+                        onEndReached={this.handleLoadmore}
+                        onEndReachedThreshold={this.state.threshold}
+                        ListFooterComponent={this.ListFooterComponent} 
+                        renderItem={this.renderItem}/>
+                }
             </View>
         )
     }
     handleRefresh = () => {
-        console.log(11);
         this.setState( { refreshing: true, page:  1 }  , this.getData)
     }
 
-    onEndReached = () => {
-        console.log(123);
-        this.state.refreshing ? this.setState( { refreshing: true, page: this.state.page + 1 } , this.getData) : null
+    handleLoadmore = () => {
+        this.state.loading ? this.setState( { loading: true, page: this.state.page + 1 } , this.getData) : null
+    }
+
+    ListFooterComponent = () => {
+        return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     getData = async () => {
-        let datas = await listDocuments('video').then(res => {
+        let datas = await listDocuments('video', this.state.page).then(res => {
             return res.data.code == StatusCode.Success ? res.data.data : []
         }).catch(err => {
             console.log('err: ', err);
             return []
         })
-        this.setState({ datas, loading: false, refreshing: false })
+        console.log(datas);
+        if(datas.length == 0){
+            this.setState({ loading: false, refreshing: false, threshold: 0 })
+        }else{
+            if(this.state.page == 1){
+                this.setState({ datas, loading: true, refreshing: false  })
+            }else{
+                this.setState({ datas: [...this.state.datas, ...datas], loading: true, refreshing: false})
+            }
+        }
+        
     }
-
-    ListFooterComponent = () => {
-        return  this.state.refreshing ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
-    }
-    
 
     renderItem = ({item, index}) => {
         let count = this.state.datas.length
@@ -130,26 +124,32 @@ class Video extends React.Component {
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
                     <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
-                    <TouchableOpacity
-                        onPress={this.onFollow(item.id)}
+                    {item.follow == Follow.unfollow && <TouchableOpacity
+                        onPress={this.onFollow(item.id, index)}
                         style={style.btn}>
                         <Text style={style.textBtn}>Theo dõi video</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
+                    {item.follow == Follow.follow && <TouchableOpacity
+                        onPress={this.onUnFollow(item.id, index)}
+                        style={style.btn}>
+                        <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                    </TouchableOpacity>}
                 </View>
             </View>
     }
 
-    onFollow = document_id => () => {
+    onFollow = (document_id, index) => () => {
         if(!this.token){
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.')
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
             addFolow({document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
-                        popupOk('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.follow)
                         break;
                 
                     default:
@@ -159,6 +159,37 @@ class Video extends React.Component {
             }).catch(err => {
                 console.log('err: ', err);
                 popupOk('Theo dõi thất bại.')
+            })
+        }
+    }
+
+    changeButtonFollow = (index, status) => {
+        let datas = [...this.state.datas]
+        datas[index].follow = status
+        this.setState({datas})
+    }
+
+    onUnFollow = (document_id, index) => () => {
+        if(!this.token){
+            popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        }else{
+            UnFolowUser({document_id, table: Follow.table_document}).then(res => {
+                switch (res.data.code) {
+                    case Status.TOKEN_EXPIRED:
+                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                        break;
+                    case Status.SUCCESS:
+                        popupOk('Bỏ theo dõi thành công.')
+                        this.changeButtonFollow(index, Follow.unfollow)
+                        break;
+                
+                    default:
+                        popupOk('Bỏ theo dõi thất bại.')
+                        break;
+                }
+            }).catch(err => {
+                console.log('err: ', err);
+                popupOk('Bỏ theo dõi thất bại.')
             })
         }
     }
@@ -175,36 +206,17 @@ class Video extends React.Component {
             .catch(errorMessage => console.error(errorMessage))
     }
 
-    onReady = e => {
-        this.setState({ isReady: true })
-    }
-
-    onChangeState = e => {
-        this.setState({ status: e.state })
-    }
-
-    onChangeQuality = e => {
-        this.setState({ quality: e.quality })
-    }
-
-    onError = e => {
-        this.setState({ error: e.error })
-    }
-
     _onSearch = () => {
-        if(this.state.keyword.trim() != "") {
-            this.setState({loading: true, refreshing: true}, async () => {
-                let datas = await searchDocuments('video', this.state.keyword).then(res =>{
-                    // console.log('res: ', res);
-                    return res.data.code == StatusCode.Success ? res.data.data : []
-                }).catch(err => {
-                    console.log('err: ', err);
-                    return []
-                })
-                this.setState({loading: false, datas,refreshing: false})
+        this.setState({loading: true, refreshing: true}, async () => {
+            let datas = await searchDocuments('video', this.state.keyword).then(res =>{
+                // console.log('res: ', res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
             })
-            
-        }
+            this.setState({loading: false, datas,refreshing: false})
+        })
     }
 
     onChangeText = key => val => {

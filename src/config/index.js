@@ -138,7 +138,19 @@ export const popupOk = (msg, onPress = null) =>{
         'Thông báo',
         msg,
         [
-          { text: 'ok',style: 'ok', onPress: onPress ? onPress : () => null }
+          { text: 'Ok',style: 'ok', onPress: onPress ? onPress : () => null }
+        ],
+        {cancelable: false},
+    );
+}
+
+export const popupCancel = (msg, onPress = null) =>{
+    Alert.alert(
+        'Thông báo',
+        msg,
+        [
+            { text: 'Cancel',style: 'cancel' },
+            { text: 'Ok',style: 'ok', onPress: onPress ? onPress : () => null },
         ],
         {cancelable: false},
     );
