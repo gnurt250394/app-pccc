@@ -20,7 +20,8 @@ export const Status = {
     PROJECT_ID_NOT_FOUND:406,
     DELETE_ID_NOT_FOUND:404,
     CHECKED:0,
-    UNCHECKED:1
+    UNCHECKED:1,
+    USER_PERMISSION:449
 }
 export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
@@ -35,3 +36,4 @@ export const formatNumber =(num)=> {
     Acumin_ItPro_0:'Acumin-ItPro_0',
     Acumin_RPro_0:'Acumin-RPro_0'
 }
+export const color = "#2166A2"

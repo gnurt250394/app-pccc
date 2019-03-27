@@ -86,7 +86,7 @@ class Profile extends React.Component {
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        console.log(token,'tttt')
+        console.log(user,'tttt')
         if(user && user.name ){
             this.setState({
                 user: user,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,Dimensions,StyleSheet,TouchableOpacity,ScrollView,FlatList } from 'react-native';
+import { View, Text,Image,Dimensions,StyleSheet,TouchableOpacity,ScrollView,FlatList,Alert } from 'react-native';
 import { Header } from 'components';
 import images from "assets/images"
 import { connect } from 'react-redux'
@@ -9,7 +9,7 @@ import { getListProject, FolowProject, FolowUser, unFolowProject, UnFolowUser } 
 import { Status, removeItem, formatNumber, getItem } from 'config/Controller';
 import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen } from 'config/screenNames';
+import { SigninScreen, HomeScreen } from 'config/screenNames';
 import moment from 'moment';
 import { popupOk } from 'config'
 
@@ -48,6 +48,8 @@ import { popupOk } from 'config'
             this.props.dispatch({type: actionTypes.USER_LOGOUT})
           }else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
             Toast.show('Dự án không tồn tại')
+          }else if(res.data.code == Status.USER_PERMISSION){
+            popupOk('bạn chưa mua gói OK')
           }
       }).catch(err=>{
         
@@ -126,6 +128,7 @@ import { popupOk } from 'config'
               project_id: this.props.navigation.state.params.id,
               table:'UserProject'
             }).then(res=>{
+              console.log(res.data,'hhh')
                 if(res.data.code == Status.SUCCESS){
                     this.state.project.follow = Status.UNCHECKED
                     this.setState({})
@@ -137,17 +140,33 @@ import { popupOk } from 'config'
                     this.props.dispatch({type: actionTypes.USER_LOGOUT})
                 } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
                     Toast.show('Dự án không tồn tại')
+                }else if(res.data.code == Status.USER_PERMISSION){
+                  this._popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
+                  console.log(res.data)
                 }
             }).catch(err=>{
                 
               })
           } else{
-            popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            this._popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
             
           }
     
     }
   }
+  _popup = (txt,fun) => {
+    Alert.alert(
+        'Thông báo',
+        txt,
+        [
+          {
+            text: 'Cancel', style: 'cancel'
+          },
+          {text: 'OK', onPress:  () => {navigation.navigate(fun)}}
+        ],
+        {cancelable: false},
+      );
+}
   _UNfolowProject=async()=>{
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
           let token = await getItem('token')
@@ -261,7 +280,7 @@ import { popupOk } from 'config'
             
            return err.response
         })
-        
+        console.log(project,'aaa')
         this.setState({
             project,
             listPartner: project.partner

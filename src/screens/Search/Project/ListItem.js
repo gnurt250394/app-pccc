@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
 import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
 import { toPrice, color } from 'config'
@@ -64,12 +64,25 @@ export default class ListItem extends React.Component {
                 {/* {item.description && <LI label={`Thông tin: ${item.description}`} />} */}
             </View>
     }
-
+    ListEmptyComponent=()=>{
+        return(
+            <View style={style.group}>
+            <Text style={style.notFound}>Không có dữ liệu</Text>
+            </View>
+        )
+    }
     render(){
         return (
             <FlatList
                 data={this.state.data}
+                refreshControl={
+                <RefreshControl
+                    refreshing={this.props.loading}
+                    colors={["#2166A2",'white']}
+                    tintColor="#2166A2"
+                />}
                 renderItem={this.renderItem}
+                ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
         )
     }
@@ -89,5 +102,17 @@ const style = StyleSheet.create({
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
     keyword: {color, textAlign: 'left',},
-    row: {flexDirection: 'row', alignItems: 'center',}
+    row: {flexDirection: 'row', alignItems: 'center',},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    },
+    group:{
+        flex:1,
+        alignItems: 'center',
+        justifyContent:'center',
+        marginTop: 50,
+    }
 })

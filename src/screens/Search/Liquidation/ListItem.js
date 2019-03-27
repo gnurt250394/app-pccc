@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions} from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
 import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
 import { toPrice, color, ellipsis } from 'config'
@@ -61,12 +61,25 @@ export default class ListItem extends React.Component {
                 
             </View>
     }
-
+    ListEmptyComponent=()=>{
+        return(
+            <View style={style.group}>
+            <Text style={style.notFound}>Không có dữ liệu</Text>
+            </View>
+        )
+    }
     render(){
         return (
             <FlatList
                 data={this.state.data}
+                refreshControl={
+                <RefreshControl
+                    refreshing={this.props.loading}
+                    colors={["#2166A2",'white']}
+                    tintColor="#2166A2"
+                />}
                 renderItem={this.renderItem}
+                ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
         )
     }
@@ -90,5 +103,17 @@ const style = StyleSheet.create({
     desc: {},
     boxIcon: {flexDirection: 'row', alignItems: 'center'},
     iconLocation: {width: 15, height: 15, resizeMode: 'contain', marginRight: 5},
-    bottomBox: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10}
+    bottomBox: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    },
+    group:{
+        flex:1,
+        alignItems: 'center',
+        justifyContent:'center',
+        marginTop: 50,
+    }
 })

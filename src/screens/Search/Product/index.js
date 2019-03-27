@@ -39,10 +39,12 @@ class SearchProduct extends React.Component {
                         datas: res.data.data,
                         loading: false
                     })
+                    console.log(res.data,'aaa')
                 }else{
                     this.setState({ loading: false })
                 }
             }).catch(err => {
+                console.log(err.response,'errrr')
                 this.setState({ loading: false })
             })
         })
@@ -51,21 +53,22 @@ class SearchProduct extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                {   this.state.loading ? 
+                {/* {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
                     </View> : null
-                }
-                {
+                } */}
+                {/* {
                     this.state.datas.length == 0 
                         ?
                     !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                        :
+                        : */}
                     <ListItem 
                         data={this.state.datas} 
                         keyword={this.state.keyword}
-                        navigation={this.props.navigation} />
-                }
+                        navigation={this.props.navigation}
+                        loading={this.state.loading} />
+                {/* } */}
             </View>
         )
     }
