@@ -4,18 +4,19 @@ import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import images from "assets/images"
 import {  SigninScreen, DetailContractor } from 'config/screenNames';
-import { getNewProject } from 'config/apis/Project';
+import { getNewProject, listUserFollows } from 'config/apis/Project';
 import Toast from 'react-native-simple-toast';
-import { Status } from 'config/Controller';
+import { Status, removeItem } from 'config/Controller';
 import { connect } from 'react-redux'
 import ListItem from './ListItem';
+import { actionTypes } from 'actions';
 const {width,height}= Dimensions.get('window')
 
  class FolowContractor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listProject:data,
+      listProject:[],
       page:1,
       Threshold:0.1,
       refresing:true
@@ -32,7 +33,7 @@ _nextPage=(router,params)=>()=>{
   _renderItem=({item})=>{
     return(
       <ListItem
-        onPress={this._nextPage(DetailContractor,{id:item.id,name:item.name})}
+        onPress={this._nextPage(DetailContractor,{id:item.id})}
         item={item}
       />
     )
@@ -85,31 +86,28 @@ _nextPage=(router,params)=>()=>{
     );
   }
   getData = async () => {
-        let listProject = await getNewProject({page: this.state.page}).then(res=>{
+        listUserFollows().then(res=>{
           console.log(res.data,'aaaa')
-            return res.data.code == Status.SUCCESS ? res.data.data : []
-        }).catch(err=> {
-            console.log('err: ', err);
-            return []
+          if(res.data.code== Status.SUCCESS){
+            this.setState({ listProject:res.data.data})
+          } else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
+            this.setState({refresing:false})
+          } else if(res.data.code == Status.TOKEN_EXPIRED|| res.data.code == Status.TOKEN_VALID){
+            Toast.show('Phiên đăng nhập hết hạn')
+            navigation.reset(SigninScreen)
+            removeItem('token')
+            this.props.dispatch({type: actionTypes.USER_LOGOUT})
+          }
         })
 
-      this.setState({listProject, refresing: false})
+      
   }
   componentDidMount = () => {
-    // this.getData()
+    this.getData()
   };
   
 }
-const data =[
-    {
-        id:1,
-        name:'abv',
-        status:'abcb',
-        time_start:'2019-02-01 01:01:01',
-        time_start:'2019-02-01 01:01:01',
-        address:'aaa'
-    }
-]
+
 const styles= StyleSheet.create({
     containerList:{
         flex:1,

@@ -10,15 +10,17 @@ import { color, MessageStatus, popupOk } from 'config'
 import TabNotifi from './TabNotifi';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
+import { getItem } from 'config/Controller';
 
 class Notify extends React.Component {
 
     // set status bar
-    componentDidMount() {
+    componentDidMount= async ()=> {
+        
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
-        //   popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+          
         });
     }
     

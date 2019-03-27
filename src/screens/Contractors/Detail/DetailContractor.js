@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text ,StyleSheet,Dimensions,Image,FlatList,ScrollView,Animated} from 'react-native';
 import { Header } from 'components';
-import { fontStyle, color } from 'config/Controller';
+import { fontStyle, color, Status } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
+import { DetailUserFollows } from 'config/apis/Project';
 const {width,height}= Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -15,7 +16,7 @@ class Item extends Component{
                      style={styles.image}
                      resizeMode="contain"
                  />
-                 <View style={{flexWrap:'wrap',flexShink:5}}>
+                 <View style={{flexWrap:'wrap',flexShink:7,paddingRight:2}}>
                  <Text style={styles.txt} >
                     {this.props.name}</Text>
                  </View>  
@@ -27,7 +28,9 @@ export default class DetailContractor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        scrollY: new Animated.Value(0)
+        scrollY: new Animated.Value(0),
+        listFolowUser:[],
+        UserObject:{}
     };
   }
 
@@ -35,7 +38,7 @@ export default class DetailContractor extends Component {
       return(
           <View>
         <View style={styles.containerList}>
-            <Text style={styles.titleList}>{item.name}</Text>
+            <Text style={styles.titleList}>{item.message}</Text>
             <Text style={styles.timeList}>{item.time}</Text>
             
         </View>
@@ -50,6 +53,7 @@ export default class DetailContractor extends Component {
     navigation.pop()
   }
   render() {
+      let {UserObject} = this.state
       const headerHeight = this.state.scrollY.interpolate({
           inputRange:[0,HEADER_MAX_HEGHT-HEADER_MIN_HEGHT],
           outputRange:[HEADER_MAX_HEGHT,HEADER_MIN_HEGHT],
@@ -105,17 +109,17 @@ export default class DetailContractor extends Component {
         )}
         >
        <Animated.View style={[styles.containerPosition,{marginTop}]}>
-            <Text style={styles.txtBold}>abc</Text>
-            <Item source={images.proEmail} name={'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm '}/>
-            <Item source={images.proPhone} name={'aaa'}/>
-            <Item source={images.proLocation} name={'aaa'}/>
-            <Item source={images.proCompany} name={'aaa'}/>
+            <Text style={styles.txtBold}>{UserObject.name}</Text>
+            <Item source={images.proEmail} name={UserObject.email}/>
+            <Item source={images.proPhone} name={UserObject.phone}/>
+            <Item source={images.proLocation} name={UserObject.address}/>
+            <Item source={images.proCompany} name={UserObject.company}/>
           
        </Animated.View>
        <View style={styles.containerFooter}>
             <Text style={styles.txtFooter}>Tin tức nhà thầu</Text>
             <FlatList
-                data={data}
+                data={UserObject.content}
                 keyboardShouldPersistTaps="always"
                 renderItem={this._renderItem}
                 keyExtractor={this._keyExtractor}
@@ -125,89 +129,27 @@ export default class DetailContractor extends Component {
       </View>
     );
   }
+  getData=()=>{
+      if(this.props.navigation.state&& this.props.navigation.state.params.id){
+          console.log(this.props.navigation.state.params.id)
+        DetailUserFollows(this.props.navigation.state.params.id).then(res=>{
+            console.log(res.data,'ddd')
+            if(res.data.code == Status.SUCCESS){
+                this.setState({
+                    UserObject:res.data.data
+                })
+            } else if(res.data.code == Status.TOKEN_EXPIRED){
+
+            }
+        }).catch(err=> console.log(err.response,'eeerrr'))
+      }
+  }
+  componentDidMount = () => {
+    this.getData()
+  };
+  
 }
-const data =[
-    {
-        id:1,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:2,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:3,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:4,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:5,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:6,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:7,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:8,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:9,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:10,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:11,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:12,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:13,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:14,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:15,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm ',
-        time:'Hôm nay 20:03'
-    },
-    {
-        id:16,
-        name:'Nguyễn Văn Nam vừa đăng bán sản phẩm Máy Bơm 111',
-        time:'Hôm nay 20:03'
-    },
-]
+
 const styles = StyleSheet.create({
     header:{
         alignItems: 'flex-start',

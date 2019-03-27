@@ -1,4 +1,5 @@
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage,Alert} from 'react-native'
+import navigation from 'navigation/NavigationService';
 
 export const getItem= async(token)=>{
     let e = await AsyncStorage.getItem(token)
@@ -37,3 +38,16 @@ export const formatNumber =(num)=> {
     Acumin_RPro_0:'Acumin-RPro_0'
 }
 export const color = "#2166A2"
+export const popup = (txt,fun) => {
+    Alert.alert(
+        'Thông báo',
+        txt,
+        [
+          {
+            text: 'Cancel', style: 'cancel'
+          },
+          {text: 'OK', onPress:  () => {navigation.navigate(fun)}}
+        ],
+        {cancelable: false},
+      );
+}

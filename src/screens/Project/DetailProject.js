@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Item from './Item';
 import CustomText from './CustomText';
 import { getListProject, FolowProject, FolowUser, unFolowProject, UnFolowUser } from 'config/apis/Project';
-import { Status, removeItem, formatNumber, getItem } from 'config/Controller';
+import { Status, removeItem, formatNumber, getItem, popup } from 'config/Controller';
 import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen } from 'config/screenNames';
@@ -37,8 +37,8 @@ import { popupOk } from 'config'
   _folowUser= async(item)=>{
       let token = await getItem('token')
       if(token){
-
-      FolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
+console.log(item,'ggg')
+      FolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
               Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
@@ -49,13 +49,13 @@ import { popupOk } from 'config'
           }else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
             Toast.show('Dự án không tồn tại')
           }else if(res.data.code == Status.USER_PERMISSION){
-            popupOk('bạn chưa mua gói OK')
+            popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
           }
       }).catch(err=>{
         
       })
     }else{
-        popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
     }
   }
 
@@ -63,8 +63,8 @@ import { popupOk } from 'config'
   _UnfolowUser= async(item)=>{
     let token = await getItem('token')
     if(token){
-      
-      UnFolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
+      console.log(item,'eee')
+      UnFolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
               Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
           } else if(res.data.code == Status.TOKEN_EXPIRED ||  res.data.code == Status.TOKEN_VALID){
@@ -79,7 +79,7 @@ import { popupOk } from 'config'
         
       })
     }else{
-        popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
     }
   }
 
@@ -87,8 +87,8 @@ import { popupOk } from 'config'
   _check=(item)=>()=>{
     let data = this.state.listPartner
     data.forEach(e=>{
-        if(e.user_id == item.user_id){
-            e.follow = Status.CHECKED
+        if(e.users_id == item.users_id){
+            e.follow = Status.UNCHECKED
             this._folowUser(item)
         }
     })
@@ -98,9 +98,9 @@ import { popupOk } from 'config'
   _uncheck=(item)=>()=>{
     let data = this.state.listPartner
     data.forEach(e=>{
-        if(e.user_id == item.user_id){
-            e.follow = Status.UNCHECKED
-            this._UnfolowUser()
+        if(e.users_id == item.users_id){
+            e.follow = Status.CHECKED
+            this._UnfolowUser(item)
         }
     })
     this.setState({listPartner:data})
@@ -141,32 +141,20 @@ import { popupOk } from 'config'
                 } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
                     Toast.show('Dự án không tồn tại')
                 }else if(res.data.code == Status.USER_PERMISSION){
-                  this._popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
+                  popup('Bạn phải mua gói để sử dụng tính năng này.', HomeScreen)
                   console.log(res.data)
                 }
             }).catch(err=>{
                 
               })
           } else{
-            this._popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
+            popup('Bạn phải đăng nhập để sử dụng tính năng này.', SigninScreen)
             
           }
     
     }
   }
-  _popup = (txt,fun) => {
-    Alert.alert(
-        'Thông báo',
-        txt,
-        [
-          {
-            text: 'Cancel', style: 'cancel'
-          },
-          {text: 'OK', onPress:  () => {navigation.navigate(fun)}}
-        ],
-        {cancelable: false},
-      );
-}
+  
   _UNfolowProject=async()=>{
       if(this.props.navigation.state&& this.props.navigation.state.params.id){
           let token = await getItem('token')

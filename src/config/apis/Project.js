@@ -54,6 +54,16 @@ export const listFollows = async body => {
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.get(constant.LIST_FOLLOW, body)
 }
+export const listUserFollows = async () => {
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.get(constant.List_Investor )
+}
+export const DetailUserFollows = async investor_id  => {
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.get(constant.Investor_Detail + investor_id )
+}
 
 export const listDocuments = async (type, page = 1) => {
     // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document

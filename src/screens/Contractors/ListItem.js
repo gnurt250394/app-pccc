@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet,Dimensions,TouchableOpacity } from 'react-native';
 import images from "assets/images"
 import moment from 'moment';
+import { fontStyle } from 'config/Controller';
 
 const {width} = Dimensions.get('window')
+class Item extends Component{
+    render(){
+        return this.props.name? <View style={styles.Square}>
+                <Image source={this.props.source}
+                     style={styles.image}
+                     resizeMode="contain"
+                 />
+                 <View style={{flexWrap:'wrap',flexShink:5}}>
+                 <Text style={styles.txt} >
+                    {this.props.name}</Text>
+                 </View>  
+             </View>
+        : null
+    }
+}
 export default class ListItem extends Component {
   
   render() {
@@ -12,49 +28,23 @@ export default class ListItem extends Component {
             onPress={this.props.onPress}
              style={styles.container}>
             <View style={styles.containerList}>
-              <View style={styles.Header}>
-                  <Text style={styles.txtHeader}>{this.props.item.name}</Text>
-              </View>
-              {/* <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
-                  source={images.offline}
-                  style={styles.image}
-                 />  Loại dự án: {this.props.item.type_project}</Text>
-              </View> */}
-              <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
-                  source={images.offline}
-                  style={styles.image}
-                 />  Trạng thái dự án: {this.props.item.status}</Text>
-              </View>
-              <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
-                  source={images.offline}
-                  style={styles.image}
-                 />  Thời gian bắt đầu: {moment(this.props.item.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
-              </View>
-              <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
-                  source={images.offline}
-                  style={styles.image}
-                 />  Thời gian kết thúc: {moment(this.props.item.time_end,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
-              </View>
-              <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
-                  source={images.offline}
-                  style={styles.image}
-                 />  Địa điểm: {this.props.item.address}</Text>
-              </View>
+            {/* <Text style={styles.txtBold}>abc</Text> */}
+            <View style={styles.Square}>
+                <Image source={images.ProfileDark}
+                     style={styles.image}
+                     resizeMode="contain"
+                 />
+                 <View style={{flexWrap:'wrap',flexShink:5}}>
+                 <Text style={styles.txtName} >{this.props.item.name} <Image  style={styles.iconNotify} source={this.props.item.status==1?images.dotYellow:null} />
+                 </Text>
+                 </View>  
+             </View>
+            <Item source={images.proEmail} name={this.props.item.email}/>
+            <Item source={images.proPhone} name={this.props.item.phone}/>
+            <Item source={images.proLocation} name={this.props.item.fax}/>
+            <Item source={images.proLocation} name={this.props.item.address}/>
+            <Item source={images.proCompany} name={this.props.item.company}/>
+            <Item source={images.proPosition} name={this.props.item.position}/>
             </View>
             <View style={styles.end}/>
             </TouchableOpacity>
@@ -64,7 +54,13 @@ export default class ListItem extends Component {
 const styles= StyleSheet.create({
     containerList:{
         flex:1,
-        padding: 10,
+        paddingLeft:15,
+        paddingTop:10,
+    },
+    txtName:{
+        fontSize:16,
+        fontFamily: fontStyle.Acumin_bold,
+        color:'#333131'
     },
     txtColor:{
         color:'#333131'
@@ -94,5 +90,26 @@ const styles= StyleSheet.create({
         height:8,
         backgroundColor: '#CCCCCC',
         width
-    }
+    },
+    Square:{
+        flexDirection:'row',
+        marginBottom:10
+    },
+    image:{
+        height:10,
+        width:10,
+        // tintColor:'gray',
+        alignSelf: 'center',
+        marginRight: 8,
+    },
+    txt:{
+        color:'#333131',
+        fontSize:13,
+        // textAlign:'center'
+    },
+    iconNotify: {
+        width: 12, 
+        height: 12, 
+        resizeMode: 'contain',
+    },
 })

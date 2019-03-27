@@ -61,7 +61,7 @@ showList=()=>{
     return (
                 <View style={styles.containerList}>
                 <View style={styles.rowList}>
-                {this.props.item.follow ==0?<TouchableOpacity 
+                {this.props.item.follow ==1?<TouchableOpacity 
                     style={styles.buttonTicker}
                     onPress={this.props.onPressCheck}
                 >

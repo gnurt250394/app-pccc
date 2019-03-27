@@ -19,7 +19,9 @@ const constant ={
     LIST_FOLLOW:'list-object-follows',
     Document:'document',
     Notification:'notification',
-    Data_other:'data-other'
+    Data_other:'data-other',
+    List_Investor:'list-investor',
+    Investor_Detail:'investor-detail/'
 }
 
 export default constant;
