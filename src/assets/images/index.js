@@ -157,4 +157,7 @@ module.exports = {
     proPosition: require('./proPosition.png'),
     proLocation: require('./proLocation.png'),
     groupCamera: require('./groupCamera.png'),
+
+    // home
+    closeSearch: require('./closeSearch.png'),
 }

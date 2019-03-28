@@ -1,19 +1,15 @@
 import React from 'react'
-import { View, TextInput, Image, TouchableOpacity, StatusBar, StyleSheet, AsyncStorage, Text } from 'react-native'
+import { View, StatusBar, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import images from "assets/images"
-import styles from "assets/styles"
-import { signup } from 'config/apis/users'
-import { Footer, ViewMore } from 'components'
-import { ScreenName, color } from 'config'
-import {SearchScreen } from 'config/screenNames'
+import { BaseSearch } from 'components'
+import { color } from 'config'
 import TabsSearch from './TabsSearch'
 
 
 class Search extends React.Component {
 
     state = {
-        keyword: '',
+        keyword: this.props.navigation.getParam('keyword') || "",
         isSearch: false
     }
 
@@ -23,8 +19,6 @@ class Search extends React.Component {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
-        let keyword = this.props.navigation.getParam('keyword') || ""
-        this.setState({keyword})
     }
     
     componentWillUnmount() {
@@ -35,28 +29,11 @@ class Search extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                <View style={style.head}>
-                    <View 
-                        style={style.boxSearch}>
-                        <TouchableOpacity style={style.p8} onPress={this._navTo(SearchScreen)} >
-                            <Image 
-                                style={[styles.icon, style.w15]}
-                                source={images.iconSearch} />
-                        </TouchableOpacity>
-                        <TextInput 
-                            style={[style.flex, style.txtSearch]}
-                            value={this.state.keyword}
-                            returnKeyLabel="Tìm"
-                            onSubmitEditing={this._onSearch}
-                            onChangeText={this.onChangeText('keyword')}
-                            placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                            placeholder="Tìm kiếm" />
-                        
-                    </View >
-                    <Text 
-                        onPress={this._goBack}
-                        style={style.cancel}>Hủy</Text>
-                </View>
+                <BaseSearch 
+                    onSearch={this._onSearch}
+                    onCancel={this._goBack}
+                    ref={val => this.search = val}
+                    keyword={this.state.keyword} />
                 <View style={style.flex}>
                     <TabsSearch screenProps={{ keyword: this.state.keyword, isSearch: this.state.isSearch }} />
                 </View>
@@ -66,7 +43,8 @@ class Search extends React.Component {
     }
 
     _onSearch = () => {
-        this.setState({isSearch: true})
+        let keyword = this.search ? this.search.getValue() : ''
+        this.setState({isSearch: true, keyword})
     }
 
     onChangeText = key => val => {
@@ -88,12 +66,5 @@ class Search extends React.Component {
 export default connect()(Search)
 
 const style = StyleSheet.create({
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
-    txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    w15: { width: 15},
-    p8: {padding: 8},
     flex: {flex: 1},
-    cancel: {color: 'white', padding: 10}
 })

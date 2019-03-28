@@ -6,6 +6,7 @@ import ViewMore from './ViewMore'
 import DrawerItem from './DrawerItem'
 import Slide from './Slide'
 import BaseHeader from './BaseHeader'
+import BaseSearch from './BaseSearch'
 import {TextBold,TextItali} from './CustomText';
 
-export  { Btn, Header, Input, ViewMore, BaseInput, DrawerItem, TextBold, TextItali, Slide, BaseHeader }
+export  { Btn, Header, Input, ViewMore, BaseInput, DrawerItem, TextBold, TextItali, Slide, BaseHeader, BaseSearch }
