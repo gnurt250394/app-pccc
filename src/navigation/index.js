@@ -5,7 +5,6 @@ import Register from 'screens/Register'
 import Complete from 'screens/Register/Complete'
 import Confirm from 'screens/Register/Confirm'
 import Signin from 'screens/Signin'
-import CompleteUpdate from 'screens/Signin/CompleteUpdate'
 import UpdateProfile from 'screens/Signin/UpdateProfile'
 import ForgotPassword from 'screens/ForgotPassword'
 import ChangePassword from 'screens/ForgotPassword/ChangePassword'
@@ -59,7 +58,6 @@ const App = createStackNavigator(
     [ScreenName.RegisterScreen]: Register,
     
     [ScreenName.SigninScreen]: Signin,
-    [ScreenName.CompleteUpdateScreen]: CompleteUpdate,
 
     [ScreenName.ForgotPasswordScreen]: ForgotPassword,
     [ScreenName.ChangePasswordScreen]: ChangePassword,

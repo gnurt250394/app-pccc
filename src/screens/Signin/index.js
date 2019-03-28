@@ -5,7 +5,7 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height, width, sreen4_7} from 'config'
 import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
-import { AccessToken, LoginManager  } from 'react-native-fbsdk';
+import { AccessToken, LoginManager, GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
 import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
@@ -139,39 +139,46 @@ class Signin extends React.Component {
 
     _onFacebookLogin = async () => {
         try {
+          this.setState({loading: true})
           const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-          console.log('result: ', result);
           
           if (result.isCancelled)  throw new Error('User cancelled request'); 
           const data = await AccessToken.getCurrentAccessToken();
           
           if (!data) throw new Error('Something went wrong obtaining the users access token'); 
-          const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-          
-          const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-          
-          let provider = firebaseUserCredential.user.toJSON();
-          
-          let body = {
-            name: provider.displayName,
-            token: data.userID,
-            login_type: LoginType.facebook
-          } 
-          
-          this.setState({loading: true})
-          
-          loginSocial(body).then(res => {
-                if(res.data.code == StatusCode.Success){
-                    this._onSwitchToHomePage(res, LoginType.facebook);
-                }else{
+            const callbackProfile = ((err, user) => {
+                if(err || !user){
                     this.setState({loading: false})
-                    popupOk(CodeToMessage[res.data.code])
+                    popupOk("Đăng nhập thất bại");
+                }else{
+                    let body = {
+                        name: user.name,
+                        token: user.id,
+                        login_type: LoginType.facebook
+                    } 
+                    loginSocial(body).then(res => {
+                        if(res.data.code == StatusCode.Success){
+                            this._onSwitchToHomePage(res, LoginType.facebook);
+                        }else{
+                            this.setState({loading: false})
+                            popupOk(CodeToMessage[res.data.code])
+                        }
+                    }).catch(err => {
+                        
+                        this.setState({loading: false})
+                        popupOk("Đăng nhập thất bại");
+                    })
                 }
-          }).catch(err => {
-              
-              this.setState({loading: false})
-              popupOk("Đăng nhập thất bại");
-          })
+                    
+            })
+            const profileRequest = new GraphRequest(
+                '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
+                null,
+                callbackProfile,
+            )
+            // Start the graph request.
+            new GraphRequestManager().addRequest(profileRequest).start();
+          
         } catch (e) {
             
             this.setState({loading: false})
@@ -181,31 +188,24 @@ class Signin extends React.Component {
     _onGoogleLogin =  async () => {
         try {
             this.setState({loading: true}, async () => {
-                console.log(0);
-                await GoogleSignin.configure();
-                console.log(1);
+                await GoogleSignin.configure({
+                    scopes: [
+                        'https://www.googleapis.com/auth/userinfo.profile', 
+                        'https://www.googleapis.com/auth/userinfo.email',
+                        // 'https://www.googleapis.com/auth/user.phonenumbers.read'
+                    ]
+                });
+                // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                console.log(2);
-                // GoogleSignin.signIn().then((data)=> {
-                //     console.log(data, 'data')
-                // }).then((currentUser)=> {
-                //     console.log(currentUser, 'current')
-                // }).catch((error)=> {
-                //     console.log(error, 'error')
-                // })
-                // return
                 const data = await GoogleSignin.signIn();
-                console.log('data: ', data);
                 
-                const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+                let user = data.user || {}
+                console.log('user: ', user);
 
-                const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-                
-                let provider = firebaseUserCredential.user.toJSON();
                 this.setState({loading: true})
                 loginSocial({
-                    name: provider.displayName,
-                    email: provider.providerData[0].email,
+                    name: user.name,
+                    email: user.email,
                     login_type: LoginType.google
                 }).then(res => {
                     
