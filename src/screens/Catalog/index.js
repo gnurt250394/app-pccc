@@ -283,7 +283,7 @@ class Catalog extends React.Component {
     _onSearch = () => {
         this.setState({loading: true}, async () => {
             let keyword = this.search ? this.search.getValue() : ''
-            console.log('keyword: ', keyword);
+            
             let datas = await searchDocuments(this.state.type, keyword).then(res =>{
                 // console.log('res:',this.state.type, res);
                 return res.data.code == StatusCode.Success ? res.data.data : []

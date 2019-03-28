@@ -28,7 +28,7 @@ export default class BaseSearch extends React.PureComponent {
             
                     <TouchableOpacity style={style.p8}  onPress={this.props.onSearch}  >
                         <Image 
-                            style={[styles.icon, style.w15]}
+                            style={[styles.icon, style.w15, style.iconSearch]}
                             source={images.iconSearch} />
                     </TouchableOpacity>
                     
@@ -61,7 +61,7 @@ export default class BaseSearch extends React.PureComponent {
     }
 
     onClear = () => {
-        this.setState({keyword: "", clear: false}, this.props.onSearch)
+        this.setState({keyword: "", clear: false}, this.props.onClear || this.props.onSearch)
     }
 
     onChangeText =  keyword => {
@@ -82,6 +82,7 @@ const style = StyleSheet.create({
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     w15: { width: 15},
     iconClose: {  width: 13, marginTop: -5},
+    iconSearch: {  marginTop: -2},
     p8: {padding: 8},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},

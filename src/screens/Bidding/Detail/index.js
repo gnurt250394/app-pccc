@@ -8,7 +8,9 @@ import { Header } from 'components'
 import { getItem, Status } from 'config/Controller';
 import images from "assets/images"
 import styles from "assets/styles"
-import { SigninScreen } from 'config/screenNames'
+import { SigninScreen, BuyProduct } from 'config/screenNames'
+import moment from 'moment';
+
 class LI extends React.Component {
 
     render(){
@@ -49,7 +51,7 @@ class DetailBidding extends React.Component {
         let { bidding } = this.state
         
         return (
-            <View style={style.flex}>
+            <View style={[style.flex]}>
                 {   this.state.loading ? 
                     <View style={styles.loading}>
                         <ActivityIndicator size="large" color="#0000ff"/>
@@ -59,12 +61,12 @@ class DetailBidding extends React.Component {
                     check={1}
                     title={ellipsis(bidding.name_bidding || "")} onPress={this._goBack}/>
                 
-                <ScrollView>
+                <ScrollView >
                     <Text style={style.name}>{bidding.name_bidding}</Text>
                     <View style={style.rowCalender}>
                         <View style={[style.row, style.calender]}>
                             <Image source={images.calender} style={style.iconCalender}/>
-                            <Text style={style.time}>{bidding.time_start}</Text>
+                            <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY') }</Text>
                         </View>
                         {(!bidding.follow || bidding.follow == Follow.unfollow) && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
@@ -77,42 +79,45 @@ class DetailBidding extends React.Component {
                             <Text style={style.textBtn}>Bỏ theo dõi tin</Text>
                         </TouchableOpacity>}
                     </View>
-                    <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
-                    {bidding.notification_form && <LI label={`Hình thức thông báo: ${bidding.notification_form}`} />}
-                    {bidding.notification_type && <LI label={`Loại thông báo: ${bidding.notification_type}`} />}
+                    <View style={[style.pb10]}>
+                        <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
+                        {bidding.notification_form && <LI label={`Hình thức thông báo: ${bidding.notification_form}`} />}
+                        {bidding.notification_type && <LI label={`Loại thông báo: ${bidding.notification_type}`} />}
 
-                    <Text style={style.h3}>Thông tin chung:</Text>
-                    {bidding.tbmt && <LI label={`Số TBMT: ${bidding.tbmt}`} />}
-                    {bidding.number_khlcnt && <LI label={`Số hiệu KHLCNT: ${bidding.number_khlcnt}`} />}
-                    {bidding.name_khlcnt && <LI label={`Tên KHLCNT: ${bidding.name_khlcnt}`} />}
-                    <LI label={`Lĩnh vực: ${BiddingField(bidding.field)}`} />
-                    {bidding.partner && <LI label={`Bên mời thầu: ${bidding.partner}`} />}
-                    {bidding.name_project && <LI label={`Chủ đầu tư: ${bidding.name_project}`} />}
-                    {bidding.type && <LI label={`Phân loại: ${bidding.type}`} />}
-                    {bidding.source_detail && <LI label={`Chi tiết nguồn vốn: ${bidding.source_detail}`} />}
-                    {bidding.type_contract && <LI label={`Loại hợp đồng: ${bidding.type_contract}`} />}
-                    {bidding.contractor_form && <LI label={`Hình thức lựa chọn nhà thầu: ${bidding.contractor_form}`} />}
-                    {bidding.method_lcnt && <LI label={`Phương thức LCNT: ${bidding.method_lcnt}`} />}
-                    {bidding.perform_contract && <LI label={`Thời gian thực hiện hợp đồng: ${bidding.perform_contract}`} />}
+                        <Text style={style.h3}>Thông tin chung:</Text>
+                        {bidding.tbmt && <LI label={`Số TBMT: ${bidding.tbmt}`} />}
+                        {bidding.number_khlcnt && <LI label={`Số hiệu KHLCNT: ${bidding.number_khlcnt}`} />}
+                        {bidding.name_khlcnt && <LI label={`Tên KHLCNT: ${bidding.name_khlcnt}`} />}
+                        <LI label={`Lĩnh vực: ${BiddingField(bidding.field)}`} />
+                        {bidding.partner && <LI label={`Bên mời thầu: ${bidding.partner}`} />}
+                        {bidding.name_project && <LI label={`Chủ đầu tư: ${bidding.name_project}`} />}
+                        {bidding.type && <LI label={`Phân loại: ${bidding.type}`} />}
+                        {bidding.source_detail && <LI label={`Chi tiết nguồn vốn: ${bidding.source_detail}`} />}
+                        {bidding.type_contract && <LI label={`Loại hợp đồng: ${bidding.type_contract}`} />}
+                        {bidding.contractor_form && <LI label={`Hình thức lựa chọn nhà thầu: ${bidding.contractor_form}`} />}
+                        {bidding.method_lcnt && <LI label={`Phương thức LCNT: ${bidding.method_lcnt}`} />}
+                        {bidding.perform_contract && <LI label={`Thời gian thực hiện hợp đồng: ${bidding.perform_contract}`} />}
 
-                    <Text style={style.h3}>Tham gia dự thầu:</Text>
-                    {/* {bidding.price && <LI label={`Hình thức mời thầu: ${bidding.price}`} />} // chưa rõ */}
-                    {bidding.time_start_hsmt && <LI label={`Thời gian nhận E-HSDT từ ngày: ${bidding.time_start_hsmt}`} />}
-                    {bidding.time_end_hsmt && <LI label={`Đến ngày: ${bidding.time_end_hsmt}`} />}
-                    {bidding.released && <LI label={`Phát hành E-HSMT: ${bidding.released}`} />}
-                    {bidding.address_hsdt && <LI label={`Địa điểm nhận HSDT: ${bidding.address_hsdt}`} />}
-                    {bidding.address_bidding && <LI label={`Địa điểm thực hiện gói thầu: ${bidding.address_bidding}`} />}
+                        <Text style={style.h3}>Tham gia dự thầu:</Text>
+                        {/* {bidding.price && <LI label={`Hình thức mời thầu: ${bidding.price}`} />} // chưa rõ */}
+                        {bidding.time_start_hsmt && <LI label={`Thời gian nhận E-HSDT từ ngày: ${moment(bidding.time_start_hsmt,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY hh:mm')}`} />}
+                        {bidding.time_end_hsmt && <LI label={`Đến ngày: ${bidding.time_end_hsmt}`} />}
+                        {bidding.released && <LI label={`Phát hành E-HSMT: ${bidding.released}`} />}
+                        {bidding.address_hsdt && <LI label={`Địa điểm nhận HSDT: ${bidding.address_hsdt}`} />}
+                        {bidding.address_bidding && <LI label={`Địa điểm thực hiện gói thầu: ${bidding.address_bidding}`} />}
 
-                    <Text style={style.h3}>Mở thầu:</Text>
-                    {bidding.time_open_close && <LI label={`Thời điểm đóng/mở thầu: ${bidding.time_open_close}`} />}
-                    {bidding.address_open_bidding && <LI label={`Địa điểm mở thầu: ${bidding.address_open_bidding}`} />}
-                    {bidding.estimates_bidding && <LI label={`Dự toán gói thầu: ${bidding.estimates_bidding}`} />}
+                        <Text style={style.h3}>Mở thầu:</Text>
+                        {bidding.time_open_close && <LI label={`Thời điểm đóng/mở thầu: ${moment(bidding.time_open_close,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY hh:mm')}`} />}
+                        {bidding.address_open_bidding && <LI label={`Địa điểm mở thầu: ${bidding.address_open_bidding}`} />}
+                        {bidding.estimates_bidding && <LI label={`Dự toán gói thầu: ${bidding.estimates_bidding}`} />}
 
-                    <Text style={style.h3}>Đảm bảo dự thầu:</Text>
-                    {bidding.amount_bidding && <LI label={`Số tiền bảo đảm dự thầu: ${bidding.amount_bidding}`} />}
-                    {bidding.bidding_form && <LI label={`Hình thức bảo đảm dự thầu: ${bidding.bidding_form}`} />}
-                    {bidding.bidding_document && <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />}
-                    {bidding.care && <LI label={`Quan tâm: ${bidding.care}`} />}
+                        <Text style={style.h3}>Đảm bảo dự thầu:</Text>
+                        {bidding.amount_bidding && <LI label={`Số tiền bảo đảm dự thầu: ${bidding.amount_bidding}`} />}
+                        {bidding.bidding_form && <LI label={`Hình thức bảo đảm dự thầu: ${bidding.bidding_form}`} />}
+                        {bidding.bidding_document && <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />}
+                        {bidding.care && <LI label={`Quan tâm: ${bidding.care}`} />}
+                    </View>
+                    
                 </ScrollView>
 
                 
@@ -146,7 +151,7 @@ class DetailBidding extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.USER_PERMISSION:
-                        popupOk('Vui lòng mua gói để sử dụng tính năng này')
+                        popupCancel('Vui lòng mua gói để sử dụng tính năng này', () => this.props.navigation.navigate(BuyProduct))
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
@@ -208,14 +213,14 @@ const style = StyleSheet.create({
     name: { fontSize: 16, padding: 10, paddingBottom: 15, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     h3: { fontSize: 16, padding: 10, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
-    time: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 5},
+    time: { fontSize: 12, textAlign: 'left',color: '#555555', padding: 5},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,},
     keyword: {color, textAlign: 'left',},
     row: {flexDirection: 'row', alignItems: 'flex-start'},
-    calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
+    calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center',alignItems: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
     rowCalender: {flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start'},
-    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap'},
+    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap', paddingRight: 8,},
     btn: {
         width: '40%',
         backgroundColor: color,
@@ -229,5 +234,8 @@ const style = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center'
     },
+    pb10: {
+        paddingBottom: 10
+    }
 })
 
