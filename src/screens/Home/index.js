@@ -1,12 +1,12 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions,Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import styles from "assets/styles"
+import { BaseSearch } from 'components'
 import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen } from 'config/screenNames'
 import { color, toUpperCase, width, popupOk } from 'config'
 import { getItem } from 'config/Controller';
-import navigation from 'navigation/NavigationService';
+// import navigation from 'navigation/NavigationService';
 
 
 class Home extends React.Component {
@@ -30,25 +30,10 @@ class Home extends React.Component {
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
                 <View style= {style.flex}>
-                    <View style={style.head}>
-                        <View 
-                            style={style.boxSearch}>
-                            <TouchableOpacity style={style.p8} onPress={this._navTo(SearchScreen)} >
-                                <Image 
-                                    style={[styles.icon, style.w15]}
-                                    source={images.iconSearch} />
-                            </TouchableOpacity>
-                            <TextInput 
-                                style={[style.flex, style.txtSearch]}
-                                value={this.state.keyword}
-                                returnKeyLabel="Tìm"
-                                onSubmitEditing={this._onSearch}
-                                onChangeText={this.onChangeText('keyword')}
-                                placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                                placeholder="Tìm kiếm" />
-                            
-                        </View >
-                    </View>
+                    <BaseSearch 
+                        onSearch={this._onSearch}
+                        ref={val => this.search = val}
+                        keyword={this.state.keyword} />
 
                     <View style={style.top}>
                         <TouchableOpacity style={[style.btnTop, style.mr20p]} 
@@ -173,7 +158,9 @@ class Home extends React.Component {
     }
 
     _onSearch = () => {
-        if(this.state.keyword.trim() != "") this.props.navigation.navigate(SearchScreen, {keyword: this.state.keyword})
+        let keyword = this.search ? this.search.getValue() : ''
+        console.log('keyword: 1', keyword);
+        if(keyword.trim() != "") this.props.navigation.navigate(SearchScreen, {keyword: keyword})
     }
 
     onChangeText = key => val => {
@@ -205,8 +192,6 @@ class Home extends React.Component {
 export default connect()(Home)
 
 const style = StyleSheet.create({
-    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
     w15: { width: 15},
     w20: { width: 20},
     p8: {padding: 8},

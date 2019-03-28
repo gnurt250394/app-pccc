@@ -2,13 +2,12 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore} from 'config'
-import { Header } from 'components'
+import { BaseSearch } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser  } from 'config/apis/Project'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
-
 
 class Catalog extends React.Component {
     state = {
@@ -45,33 +44,11 @@ class Catalog extends React.Component {
     render(){
         return (
             <View style={style.flex}>
-                <View style={style.head}>
-                   
-                   <TouchableOpacity style={style.p8} 
-                           onPress={this._goBack}  >
-                        <Image 
-                           style={style.iconBack}
-                           source={images.backLight} />
-                   </TouchableOpacity>
-                   <View 
-                       style={style.boxSearch}>
-                      
-                       <TouchableOpacity style={style.p8}  onPress={this._onSearch} >
-                           <Image 
-                               style={[styles.icon, style.w15]}
-                               source={images.iconSearch} />
-                       </TouchableOpacity>
-                       <TextInput 
-                           style={[style.flex, style.txtSearch]}
-                           value={this.state.keyword}
-                           returnKeyLabel="Tìm"
-                           onSubmitEditing={this._onSearch}
-                           onChangeText={this.onChangeText('keyword')}
-                           placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                           placeholder="Tìm kiếm" />
-                       
-                   </View >
-                </View>
+                <BaseSearch 
+                    onSearch={this._onSearch}
+                    ref={val => this.search = val}
+                    goBack={this._goBack}
+                    keyword={this.state.keyword} />
 
                 {
                     this.state.datas.length == 0 
@@ -305,7 +282,9 @@ class Catalog extends React.Component {
 
     _onSearch = () => {
         this.setState({loading: true}, async () => {
-            let datas = await searchDocuments(this.state.type, this.state.keyword).then(res =>{
+            let keyword = this.search ? this.search.getValue() : ''
+            
+            let datas = await searchDocuments(this.state.type, keyword).then(res =>{
                 // console.log('res:',this.state.type, res);
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
