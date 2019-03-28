@@ -1,47 +1,46 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet, TouchableWithoutFeedback,TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { ScreenName, toUpperCase, color } from 'config'
-import { HomeScreen, SigninScreen, RegisterScreen } from 'config/screenNames'
-import navigation from 'navigation/NavigationService';
+import { View, Text,  StyleSheet, ActivityIndicator, } from 'react-native'
+import {  toUpperCase, color } from 'config'
+import { SigninScreen, RegisterScreen } from 'config/screenNames'
 import {withNavigation} from 'react-navigation'
-
+import styles from "assets/styles"
 
 
 class CheckAuth extends React.Component {
     constructor(props){
         super(props);
-        
+        console.log('props: ', props);
         this.state = {
-            modalVisible: true,
-        };
+            loading: props.loading 
+        }
     }
 
-    // set status bar
-    componentDidMount() {
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //   StatusBar.setBarStyle('dark-content');
-        //   StatusBar.setBackgroundColor('#999999');
-        // });
-      }
-    
-    componentWillUnmount() {
-        // this._navListener.remove();
+    componentWillReceiveProps(props){
+        this.setState({loading: props.loading})
     }
+    
     render() {
         return (
                 <View style={style.modal}>
-                    <View style={style.bodyModal}>
-                        <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
-                        <View style={style.footerModal}>
-                            <Text 
-                                onPress={this._navTo(SigninScreen)}
-                                style={[style.btnModal, style.login]}>{toUpperCase("Đăng nhập")}</Text>
-                            <Text 
-                                onPress={this._navTo(RegisterScreen)}
-                                style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}</Text>
+                    {   this.state.loading 
+                            ? 
+                            
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff"/>
+                        </View> 
+                            :
+                        <View style={style.bodyModal}>
+                            <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
+                            <View style={style.footerModal}>
+                                <Text 
+                                    onPress={this._navTo(SigninScreen)}
+                                    style={[style.btnModal, style.login]}>{toUpperCase("Đăng nhập")}</Text>
+                                <Text 
+                                    onPress={this._navTo(RegisterScreen)}
+                                    style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}</Text>
+                            </View>
                         </View>
-                    </View>
+                    }
             </View>
         )
     }

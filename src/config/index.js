@@ -1,5 +1,5 @@
 import {  Alert, Dimensions } from 'react-native'
-import { Switch } from 'react-native-gesture-handler';
+
 export const  { width, height } = Dimensions.get('window')
 
 export const StatusCode = {

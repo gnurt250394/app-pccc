@@ -3,18 +3,17 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator,Refr
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
-import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, smallScreen, height, width, sreen4_7} from 'config'
+import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, CodeToMessage,fonts, defaultStyle, height, width, sreen4_7} from 'config'
 import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager, GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
-import * as firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
 import  { accountKit, getCurrentAccount } from 'config/accountKit'
-
+import { log } from 'config/debug'
 class Signin extends React.Component {
     state = {
         username: '',
@@ -23,7 +22,7 @@ class Signin extends React.Component {
     }
 
     componentWillMount(){
-        LoginManager.logOut()
+        // LoginManager.logOut()
 
         // await GoogleSignin.configure();
         // GoogleSignin.signOut()
@@ -40,87 +39,86 @@ class Signin extends React.Component {
         if(this._navListener) this._navListener.remove();
     }
     // end set status bar
-
+    _showLoading = () => {
+        return  <View style={style.boxLoading}>
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View>
+                </View>
+    }
     render(){
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
             
-            <ScrollView style={style.content}
-            refreshControl={
-                <RefreshControl
-                    refreshing={this.state.loading}
-                    colors={["#2166A2",'white']}
-                    tintColor="#2166A2"
-                />
-            }>
-                {/* {   this.state.loading ? 
-                    <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
-                    </View> : null
-                } */}
-                
-                <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
-                    <Image 
-                            style={styles.close}
-                            source={images.closeBlue} />
-                </TouchableOpacity>
-                
-                <View>
-                    <Image 
-                        style={[styles.logo, style.mb50]}
-                        source={images.titleLogin} />
-                    
-                    <BaseInput 
-                        styleIcon={style.w11}
-                        removeSpace={true}
-                        icon={images.phoneDark}
-                        ref={val => this.username = val}
-                        placeholder="Email/Số điện thoại" />
-
-                    <BaseInput 
-                        icon={images.keyDark}
-                        ref={val => this.password = val}
-                        secureTextEntry={true}
-                        placeholder="Mật khẩu"  />
-                    
-                    <Btn
-                        onPress={this._signin()} 
-                        customStyle={[style.mb8]}
-                        name="Đăng nhập" />
-                    <Btn
-                        onPress={this._navTo(RegisterScreen)}
-                        customStyle={style.register}
-                        textStyle={style.color}
-                        name="Đăng ký" />
-
-                    
-                    <Text 
-                        onPress={this._onForgotPassword}
-                        style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
-                    <View style={style.boxOr}>
-                        <View style={style.line}></View>
-                        <Text style={style.or}> Hoặc </Text>
-                        <View style={style.line}></View>
+            <View style={style.content} >
+               {   this.state.loading 
+                        ? 
+                        this._showLoading()
+                        : 
+                    <View>
+                        <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
+                            <Image 
+                                    style={styles.close}
+                                    source={images.closeBlue} />
+                        </TouchableOpacity>
                         
-                    </View>
-                    
-
-                    <View style={style.social}>
-                        <TouchableOpacity onPress={this._onFacebookLogin}>
+                        <View>
                             <Image 
-                                style={[ style.iconSocial]}
-                                source={images.iconFb} />
-                        </TouchableOpacity>
+                                style={[styles.logo, style.mb50]}
+                                source={images.titleLogin} />
+                            
+                            <BaseInput 
+                                styleIcon={style.w11}
+                                removeSpace={true}
+                                icon={images.phoneDark}
+                                ref={val => this.username = val}
+                                placeholder="Email/Số điện thoại" />
 
-                        <TouchableOpacity onPress={this._onGoogleLogin}>
-                            <Image 
-                                style={[[style.iconSocial, style.w53]]}
-                                source={images.iconGoogle} />
-                        </TouchableOpacity>
+                            <BaseInput 
+                                icon={images.keyDark}
+                                ref={val => this.password = val}
+                                secureTextEntry={true}
+                                placeholder="Mật khẩu"  />
+                            
+                            <Btn
+                                onPress={this._signin()} 
+                                customStyle={[style.mb8]}
+                                name="Đăng nhập" />
+                            <Btn
+                                onPress={this._navTo(RegisterScreen)}
+                                customStyle={style.register}
+                                textStyle={style.color}
+                                name="Đăng ký" />
+
+                            
+                            <Text 
+                                onPress={this._onForgotPassword}
+                                style={[styles.forgot, style.forgot]}>Quên mật khẩu</Text>
+                            <View style={style.boxOr}>
+                                <View style={style.line}></View>
+                                <Text style={style.or}> Hoặc </Text>
+                                <View style={style.line}></View>
+                                
+                            </View>
+                            
+
+                            <View style={style.social}>
+                                <TouchableOpacity onPress={this._onFacebookLogin}>
+                                    <Image 
+                                        style={[ style.iconSocial]}
+                                        source={images.iconFb} />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={this._onGoogleLogin}>
+                                    <Image 
+                                        style={[[style.iconSocial, style.w53]]}
+                                        source={images.iconGoogle} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-                </View>
-                
-            </ScrollView>
+                }
+            </View>
             </TouchableWithoutFeedback>
         )
     }
@@ -139,13 +137,20 @@ class Signin extends React.Component {
 
     _onFacebookLogin = async () => {
         try {
-          this.setState({loading: true})
-          const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-          
-          if (result.isCancelled)  throw new Error('User cancelled request'); 
-          const data = await AccessToken.getCurrentAccessToken();
-          
-          if (!data) throw new Error('Something went wrong obtaining the users access token'); 
+            this.setState({loading: true})
+            await LoginManager.logOut()
+            const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+            if (result.isCancelled)  {
+                this.setState({loading: false})
+                popupOk("Đăng nhập thất bại");
+            }
+            const data = await AccessToken.getCurrentAccessToken();
+            console.warn(3)
+            if (!data) {
+                this.setState({loading: false})
+                popupOk("Đăng nhập thất bại");
+                return
+            } 
             const callbackProfile = ((err, user) => {
                 if(err || !user){
                     this.setState({loading: false})
@@ -178,7 +183,6 @@ class Signin extends React.Component {
             )
             // Start the graph request.
             new GraphRequestManager().addRequest(profileRequest).start();
-          
         } catch (e) {
             
             this.setState({loading: false})
@@ -186,6 +190,7 @@ class Signin extends React.Component {
     }
 
     _onGoogleLogin =  async () => {
+        
         try {
             this.setState({loading: true}, async () => {
                 await GoogleSignin.configure({
@@ -195,12 +200,22 @@ class Signin extends React.Component {
                         // 'https://www.googleapis.com/auth/user.phonenumbers.read'
                     ]
                 });
+                log(1);
+                // await GoogleSignin.hasPlayServices();
+                // log(2);
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
+                log(3);
+                GoogleSignin.signIn((err, data) => {
+                    log('err: ', err);
+                    log('data: ', data);
+                    
+                })
+                return
                 const data = await GoogleSignin.signIn();
                 
                 let user = data.user || {}
-                console.log('user: ', user);
+                console.warn('user: ', user);
 
                 this.setState({loading: true})
                 loginSocial({
@@ -415,6 +430,7 @@ const style = StyleSheet.create({
         fontFamily: fonts.bold,
         color:'#2166A2',
         fontWeight:'bold'
-    }
+    },
+    boxLoading: {flex: 1, backgroundColor: '#999999', position: "relative",}
 })
 

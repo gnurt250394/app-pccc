@@ -8,7 +8,7 @@ import { toUpperCase,  popupOk, StatusCode, CodeToMessage, color } from 'config'
 import  { HomeScreen } from 'config/screenNames'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
-import * as firebase from 'react-native-firebase'
+
 import  { accountKit } from 'config/accountKit'
 
 class UpdateProfile extends React.Component {
