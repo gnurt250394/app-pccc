@@ -1,6 +1,11 @@
 import {  Alert, Dimensions } from 'react-native'
+import { log } from './debug'
+
+export { log }
 
 export const  { width, height } = Dimensions.get('window')
+
+
 
 export const StatusCode = {
     Success: 200,

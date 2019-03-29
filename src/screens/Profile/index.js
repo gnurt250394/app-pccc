@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorag
 import { connect } from 'react-redux'
 import images from "assets/images"
 import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen} from 'config/screenNames'
-import { color, toUpperCase,StatusCode} from 'config'
+import { color, toUpperCase,StatusCode, log} from 'config'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
@@ -24,7 +24,7 @@ class Profile extends React.Component {
     }
   
 
-    async componentDidMount(){
+    async componentWillMount(){
         await this.getInfo()
     }
    
@@ -84,7 +84,7 @@ class Profile extends React.Component {
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        console.log('user: ', user);
+        log('user: ', user);
         
         if(user && user.name ){
             this.setState({

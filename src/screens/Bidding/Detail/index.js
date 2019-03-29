@@ -66,7 +66,7 @@ class DetailBidding extends React.Component {
                     <View style={style.rowCalender}>
                         <View style={[style.row, style.calender]}>
                             <Image source={images.calender} style={style.iconCalender}/>
-                            <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY') }</Text>
+                            <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY') }</Text>
                         </View>
                         {(!bidding.follow || bidding.follow == Follow.unfollow) && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
@@ -79,7 +79,7 @@ class DetailBidding extends React.Component {
                             <Text style={style.textBtn}>Bỏ theo dõi tin</Text>
                         </TouchableOpacity>}
                     </View>
-                    <View style={[style.pb10]}>
+                    <View style={[style.pb10,style.pr10,]}>
                         <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
                         {bidding.notification_form && <LI label={`Hình thức thông báo: ${bidding.notification_form}`} />}
                         {bidding.notification_type && <LI label={`Loại thông báo: ${bidding.notification_type}`} />}
@@ -100,14 +100,14 @@ class DetailBidding extends React.Component {
 
                         <Text style={style.h3}>Tham gia dự thầu:</Text>
                         {/* {bidding.price && <LI label={`Hình thức mời thầu: ${bidding.price}`} />} // chưa rõ */}
-                        {bidding.time_start_hsmt && <LI label={`Thời gian nhận E-HSDT từ ngày: ${moment(bidding.time_start_hsmt,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY hh:mm')}`} />}
+                        {bidding.time_start_hsmt && <LI label={`Thời gian nhận E-HSDT từ ngày: ${moment(bidding.time_start_hsmt,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY HH:mm')}`} />}
                         {bidding.time_end_hsmt && <LI label={`Đến ngày: ${bidding.time_end_hsmt}`} />}
                         {bidding.released && <LI label={`Phát hành E-HSMT: ${bidding.released}`} />}
                         {bidding.address_hsdt && <LI label={`Địa điểm nhận HSDT: ${bidding.address_hsdt}`} />}
                         {bidding.address_bidding && <LI label={`Địa điểm thực hiện gói thầu: ${bidding.address_bidding}`} />}
 
                         <Text style={style.h3}>Mở thầu:</Text>
-                        {bidding.time_open_close && <LI label={`Thời điểm đóng/mở thầu: ${moment(bidding.time_open_close,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY hh:mm')}`} />}
+                        {bidding.time_open_close && <LI label={`Thời điểm đóng/mở thầu: ${moment(bidding.time_open_close,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY HH:mm')}`} />}
                         {bidding.address_open_bidding && <LI label={`Địa điểm mở thầu: ${bidding.address_open_bidding}`} />}
                         {bidding.estimates_bidding && <LI label={`Dự toán gói thầu: ${bidding.estimates_bidding}`} />}
 
@@ -151,7 +151,7 @@ class DetailBidding extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.USER_PERMISSION:
-                        popupCancel('Vui lòng mua gói để sử dụng tính năng này', () => this.props.navigation.navigate(BuyProduct))
+                        popupCancel('Vui lòng mua gói để sử dụng tính năng này', () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
                         break;
                     case Status.SUCCESS:
                         popupOk('Theo dõi thành công.')
@@ -209,18 +209,24 @@ const style = StyleSheet.create({
     flex: {flex: 1},
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
-    dot: {width: 6,  resizeMode: 'contain', margin: 10, marginTop: 5},
+    dot: {
+        width: 6, 
+        height: 6, 
+        marginLeft: 10,
+        marginRight: 10, 
+        marginTop: 5
+    },
     name: { fontSize: 16, padding: 10, paddingBottom: 15, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     h3: { fontSize: 16, padding: 10, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
     time: { fontSize: 12, textAlign: 'left',color: '#555555', padding: 5},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
-    iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,},
+    iconCalender: {width: 15, height: 15, resizeMode: 'stretch', margin: 5,tintColor:'#2166A2',},
     keyword: {color, textAlign: 'left',},
     row: {flexDirection: 'row', alignItems: 'flex-start'},
-    calender: {width: '45%',  borderWidth: 1, borderColor: '#ddd',  borderRadius: 5, justifyContent: 'center',alignItems: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
+    calender: {width: '45%',  borderWidth: 1, borderColor: '#999',  borderRadius: 5, justifyContent: 'center',alignItems: 'center', marginLeft: 10, marginBottom: 5, padding: 5,},
     rowCalender: {flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start'},
-    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap', paddingRight: 8,},
+    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap', paddingBottom: 8},
     btn: {
         width: '40%',
         backgroundColor: color,
@@ -236,6 +242,9 @@ const style = StyleSheet.create({
     },
     pb10: {
         paddingBottom: 10
+    },
+    pr10: {
+        paddingRight: 6
     }
 })
 

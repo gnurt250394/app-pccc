@@ -21,14 +21,9 @@ class Signin extends React.Component {
         loading: false
     }
 
-    componentWillMount(){
-        LoginManager.logOut()
-
-        // await GoogleSignin.configure();
-        // GoogleSignin.signOut()
-    }
     // set status bar
     componentDidMount() {
+        LoginManager.logOut()
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('dark-content');
           StatusBar.setBackgroundColor('#fff');
@@ -138,21 +133,16 @@ class Signin extends React.Component {
     _onFacebookLogin = async () => {
         try {
             this.setState({loading: true})
-            log(1);
             const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(user => {
-                log('fb login user: ', user);
                 return user
             }).catch(err =>{
-                log('fb login err: ', err);
                 return {}
             })
-            log('fb result: ', result);
             if (result.isCancelled)  {
                 this.setState({loading: false})
                 popupOk("Đăng nhập thất bại");
             }
             const data = await AccessToken.getCurrentAccessToken();
-            log('fb data: ', data);
             if (!data) {
                 this.setState({loading: false})
                 popupOk("Đăng nhập thất bại");
@@ -169,7 +159,6 @@ class Signin extends React.Component {
                         login_type: LoginType.facebook
                     } 
                     loginSocial(body).then(res => {
-                        log('fb res: ', res);
                         if(res.data.code == StatusCode.Success){
                             this._onSwitchToHomePage(res, LoginType.facebook);
                         }else{
@@ -177,7 +166,6 @@ class Signin extends React.Component {
                             popupOk(CodeToMessage[res.data.code])
                         }
                     }).catch(err => {
-                        log('fb err: ', err);
                         
                         this.setState({loading: false})
                         popupOk("Đăng nhập thất bại");
@@ -202,7 +190,6 @@ class Signin extends React.Component {
         
         try {
             this.setState({loading: true}, async () => {
-                log('gg login');
                 await GoogleSignin.configure({
                     scopes: [
                         'https://www.googleapis.com/auth/userinfo.profile', 
@@ -212,10 +199,7 @@ class Signin extends React.Component {
                 });
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                log('gg logout');
                 let data = await  GoogleSignin.signIn()
-                log('gg data: ', data);
-                // return
                 if(!data){
                     this.setState({loading: false})
                     popupOk("Đăng nhập thất bại");
@@ -228,8 +212,6 @@ class Signin extends React.Component {
                     email: user.email,
                     login_type: LoginType.google
                 }).then(res => {
-                    log('gg res: ', res);
-                    
                     if(res.data.code == StatusCode.Success){
                         this._onSwitchToHomePage(res);
                     }else{
@@ -237,7 +219,6 @@ class Signin extends React.Component {
                         popupOk(CodeToMessage[res.data.code])
                     }
                 }).catch(err => {
-                    log('gg err: ', err);
                     this.setState({loading: false})
                     popupOk("Đăng nhập thất bại");
                 })
@@ -364,7 +345,7 @@ class Signin extends React.Component {
                                         popupOk(CodeToMessage[res.data.code])
                                     }
                                 }).catch(err => {
-                                    console.log('err: ', err);
+                                    // console.log('err: ', err);
                                     popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
                                 })
                             }

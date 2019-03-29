@@ -1,13 +1,14 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle} from 'config'
+import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log} from 'config'
 import images from "assets/images"
-import { listDocuments, addFolow, searchDocuments } from 'config/apis/Project'
+import { listDocuments, addFolow, searchDocuments, UnFolowUser } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import { BaseSearch } from 'components'
+import Toast from 'react-native-simple-toast';
 
 class Video extends React.Component {
     state = {
@@ -129,17 +130,17 @@ class Video extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Theo dõi thành công.')
+                        Toast.show('Theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.follow)
                         break;
                 
                     default:
-                        popupOk('Theo dõi thất bại.')
+                        Toast.show('Theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
                 console.log('err: ', err);
-                popupOk('Theo dõi thất bại.')
+                Toast.show('Theo dõi thất bại.')
             })
         }
     }
@@ -160,17 +161,17 @@ class Video extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Bỏ theo dõi thành công.')
+                        Toast.show('Bỏ theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.unfollow)
                         break;
                 
                     default:
-                        popupOk('Bỏ theo dõi thất bại.')
+                        Toast.show('Bỏ theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
-                popupOk('Bỏ theo dõi thất bại.')
+                // console.log('err: ', err);
+                Toast.show('Bỏ theo dõi thất bại.')
             })
         }
     }
