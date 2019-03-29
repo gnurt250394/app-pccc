@@ -7,7 +7,7 @@ import {  popupOk, color, CodeToMessage, StatusCode } from 'config'
 import  { accountKit } from 'config/accountKit'
 import  { ForgotPasswordScreen  } from 'config/screenNames'
 import {  checkPhoneOrEmail } from 'config/apis/users'
-import * as firebase from 'react-native-firebase'
+
 
 class CheckPhone extends React.Component {
     state = {

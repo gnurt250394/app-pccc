@@ -16,6 +16,7 @@ class Profile extends React.Component {
        user: this.props.users || {},
        token: this.props.token|| '',
        image: null,
+       loading: true
    }
 
     edit = () => {
@@ -24,15 +25,12 @@ class Profile extends React.Component {
   
 
     async componentDidMount(){
-        console.log('1')
         await this.getInfo()
     }
    
 
     render(){
         let {user,token,image} = this.state
-        console.log('2')
-        console.log(token,'token')
         return (
             token 
                 ?
@@ -78,7 +76,7 @@ class Profile extends React.Component {
                     style={style.btnLogout}>{toUpperCase('Đăng xuất')}</Text>
             </View>
                 : 
-            <CheckAuth />
+            <CheckAuth loading={this.state.loading} />
 
         )
     }
@@ -86,19 +84,19 @@ class Profile extends React.Component {
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        console.log(user,'tttt')
+        console.log('user: ', user);
+        
         if(user && user.name ){
             this.setState({
                 user: user,
                 token: token,
-                image: user.image ? user.image.full_path : null
+                image: user.image ? user.image.full_path : null,
+                loading: false
             })
-            return
-        } 
-        // else{
-        //     navigation.reset(CheckAuthScreen)
-        //     return
-        // }
+        } else{
+            this.setState({loading: false})
+        }
+        return
     }
 
     _logout =  () => {

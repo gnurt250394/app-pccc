@@ -11,6 +11,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "build": "cd android && gradlew assembleRelease",
+    "cleanup": "cd android && gradlew clean",
     "dev": "react-native run-android"
   },
   "dependencies": {
@@ -25,7 +26,7 @@
     "react-native-fetch-blob": "^0.10.8",
     "react-native-firebase": "^5.2.2",
     "react-native-gesture-handler": "^1.0.14",
-    "react-native-google-signin": "^1.1.0",
+    "react-native-google-signin": "^1.2.1",
     "react-native-image-picker": "^0.28.0",
     "react-native-simple-toast": "0.0.8",
     "react-native-swiper": "^1.5.14",
@@ -39,7 +40,9 @@
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
-    "react-test-renderer": "16.6.3"
+    "react-test-renderer": "16.6.3",
+    "reactotron-react-native": "^3.2.1",
+    "reactotron-redux": "^3.1.0"
   },
   "jest": {
     "preset": "react-native"
