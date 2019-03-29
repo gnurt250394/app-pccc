@@ -66,7 +66,7 @@ class SearchProduct extends React.Component {
                     <ListItem 
                         datas={this.state.datas} 
                         keyword={this.state.keyword}
-                        navigation={this.props.screenProps ? this.props.screenProps.navigation : this.props.navigation}
+                        navigation={this.props.screenProps.navigation}
                         loading={this.state.loading} />
                 {/* } */}
             </View>

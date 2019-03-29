@@ -70,7 +70,7 @@ class SearchLiquidation extends React.Component {
                         datas={this.state.datas} 
                         loading={this.state.loading}
                         keyword={this.state.keyword}
-                        navigation={this.props.navigation} />
+                        navigation={this.props.screenProps.navigation} />
                 {/* } */}
             </View>
         )
