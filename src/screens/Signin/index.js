@@ -22,7 +22,7 @@ class Signin extends React.Component {
     }
 
     componentWillMount(){
-        // LoginManager.logOut()
+        LoginManager.logOut()
 
         // await GoogleSignin.configure();
         // GoogleSignin.signOut()
@@ -138,14 +138,21 @@ class Signin extends React.Component {
     _onFacebookLogin = async () => {
         try {
             this.setState({loading: true})
-            await LoginManager.logOut()
-            const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+            log(1);
+            const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(user => {
+                log('fb login user: ', user);
+                return user
+            }).catch(err =>{
+                log('fb login err: ', err);
+                return {}
+            })
+            log('fb result: ', result);
             if (result.isCancelled)  {
                 this.setState({loading: false})
                 popupOk("Đăng nhập thất bại");
             }
             const data = await AccessToken.getCurrentAccessToken();
-            console.warn(3)
+            log('fb data: ', data);
             if (!data) {
                 this.setState({loading: false})
                 popupOk("Đăng nhập thất bại");
@@ -162,6 +169,7 @@ class Signin extends React.Component {
                         login_type: LoginType.facebook
                     } 
                     loginSocial(body).then(res => {
+                        log('fb res: ', res);
                         if(res.data.code == StatusCode.Success){
                             this._onSwitchToHomePage(res, LoginType.facebook);
                         }else{
@@ -169,6 +177,7 @@ class Signin extends React.Component {
                             popupOk(CodeToMessage[res.data.code])
                         }
                     }).catch(err => {
+                        log('fb err: ', err);
                         
                         this.setState({loading: false})
                         popupOk("Đăng nhập thất bại");
@@ -193,6 +202,7 @@ class Signin extends React.Component {
         
         try {
             this.setState({loading: true}, async () => {
+                log('gg login');
                 await GoogleSignin.configure({
                     scopes: [
                         'https://www.googleapis.com/auth/userinfo.profile', 
@@ -200,29 +210,25 @@ class Signin extends React.Component {
                         // 'https://www.googleapis.com/auth/user.phonenumbers.read'
                     ]
                 });
-                log(1);
-                // await GoogleSignin.hasPlayServices();
-                // log(2);
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                log(3);
-                GoogleSignin.signIn((err, data) => {
-                    log('err: ', err);
-                    log('data: ', data);
-                    
-                })
-                return
-                const data = await GoogleSignin.signIn();
-                
-                let user = data.user || {}
-                console.warn('user: ', user);
+                log('gg logout');
+                let data = await  GoogleSignin.signIn()
+                log('gg data: ', data);
+                // return
+                if(!data){
+                    this.setState({loading: false})
+                    popupOk("Đăng nhập thất bại");
+                    return
+                }
+                let user = data && data.user || {}
 
-                this.setState({loading: true})
                 loginSocial({
                     name: user.name,
                     email: user.email,
                     login_type: LoginType.google
                 }).then(res => {
+                    log('gg res: ', res);
                     
                     if(res.data.code == StatusCode.Success){
                         this._onSwitchToHomePage(res);
@@ -231,7 +237,7 @@ class Signin extends React.Component {
                         popupOk(CodeToMessage[res.data.code])
                     }
                 }).catch(err => {
-                    console.log('err: ', err);
+                    log('gg err: ', err);
                     this.setState({loading: false})
                     popupOk("Đăng nhập thất bại");
                 })
