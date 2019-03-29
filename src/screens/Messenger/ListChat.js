@@ -11,15 +11,16 @@ import { color, MessageStatus, popupOk } from 'config'
 
 class ListChat extends React.Component {
     state = {
-        keyword: ""
+        keyword: "",
+        loading: true
     }
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
-          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+         popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
         });
     }
     
@@ -31,7 +32,7 @@ class ListChat extends React.Component {
     render(){
         return (
             <View style={{}}>
-                <ScrollView>
+               { !this.state.loading && <ScrollView>
                      <View style={style.head}>
                         <View 
                             style={style.boxSearch}>
@@ -56,7 +57,7 @@ class ListChat extends React.Component {
                         data={datas}
                         renderItem={this.renderItem}
                         keyExtractor={(item, index) => index.toString()} />
-                </ScrollView>
+                </ScrollView>}
             </View>
         )
     }
