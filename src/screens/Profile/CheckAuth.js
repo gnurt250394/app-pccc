@@ -9,7 +9,6 @@ import styles from "assets/styles"
 class CheckAuth extends React.Component {
     constructor(props){
         super(props);
-        console.log('props: ', props);
         this.state = {
             loading: props.loading 
         }

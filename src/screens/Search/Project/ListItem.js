@@ -21,15 +21,19 @@ export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: this.props.data || [],
+            datas: this.props.datas || [],
             keyword: this.props.keyword || '' ,
+            keyword: this.props.loading || true ,
         }
-        
     }
-    toggleLike = (index) => () => {
-        let data = [...this.state.data];
-        data[index].like = !data[index].like
-        this.setState({data});
+
+    componentWillReceiveProps(props){
+        
+        if(props.datas && props.datas.length > 0){
+            this.setState({datas: props.datas})
+        }
+        this.setState({loading: props.loading})
+
     }
 
     _showName = name => {
@@ -74,7 +78,7 @@ export default class ListItem extends React.Component {
     render(){
         return (
             <FlatList
-                data={this.state.data}
+                data={this.state.datas}
                 refreshControl={
                 <RefreshControl
                     refreshing={this.props.loading}

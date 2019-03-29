@@ -27,7 +27,6 @@ class SearchBidding extends React.Component {
 
     loadData = () => {
         let keyword = this.props.screenProps ? this.props.screenProps.keyword : this.ste
-        console.log('Focus Bidding: ', keyword);
         if(keyword != "")
         this.setState({loading: true, keyword: keyword}, async () => {
             let params = toParams({
@@ -64,10 +63,10 @@ class SearchBidding extends React.Component {
                     !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                         : */}
                     <ListItem 
-                        data={this.state.datas} 
+                        datas={this.state.datas} 
                         loading={this.state.loading}
                         keyword={this.state.keyword}
-                        navigation={this.props.navigation} />
+                        navigation={this.props.screenProps.navigation} />
                 {/* } */}
             </View>
         )

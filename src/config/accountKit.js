@@ -1,6 +1,5 @@
 import RNAccountKit from 'react-native-facebook-account-kit'
 
-
 export const  accountKit = (phone = "") => {
     RNAccountKit.configure({
         responseType: 'code',
@@ -20,6 +19,11 @@ export const  getCurrentAccount = async (phone = "") => {
         defaultCountry: 'VN',
     })
 
-    let Actoken = await RNAccountKit.loginWithPhone().then((res) => res.token).catch(err => false)
-    return Actoken
+    await RNAccountKit.loginWithPhone().then((res) => res.token).catch(err => false)
+    let phoneNumber;
+    let account = await RNAccountKit.getCurrentAccount()
+    if(account && account.phoneNumber){
+        phoneNumber = '0'+account.phoneNumber.number
+    }
+    return phoneNumber
 }

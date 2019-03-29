@@ -324,37 +324,32 @@ class Signin extends React.Component {
                 text: 'Cancel', style: 'cancel',onPress:()=>{this.setState({loading:false})}
               },
               {text: 'OK', onPress: async () => {
-                let Actoken = await getCurrentAccount()
-                if(Actoken){
-                    let phone = await accountkitInfo(Actoken)
-                    if(phone){
-                        // call api check phone
-                        checkPhoneOrEmail({phone: phone}).then(res => {
-                            if(res.data.code != StatusCode.Success  || res.data == ""){
-                                this.setState({loading: false})
-                                popupOk(CodeToMessage[res.data.code])
-                            }else{
+                let phone = await getCurrentAccount()
+                if(phone){
+                    checkPhoneOrEmail({phone: phone}).then(res => {
+                        if(res.data.code != StatusCode.Success  || res.data == ""){
+                            this.setState({loading: false})
+                            popupOk(CodeToMessage[res.data.code])
+                        }else{
 
-                                // call api update phone
-                                updateUser({phone: phone}, userToken).then(res => {
-                                    this.setState({loading: false})
-                                    if(res.data.code == StatusCode.Success){
-                                        AsyncStorage.setItem('token', userToken)
-                                        navigation.reset(HomeScreen)
-                                    }else{
-                                        popupOk(CodeToMessage[res.data.code])
-                                    }
-                                }).catch(err => {
-                                    // console.log('err: ', err);
-                                    popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                                })
-                            }
-                        })
-                        
-                    }else{
+                            // call api update phone
+                            updateUser({phone: phone}, userToken).then(res => {
+                                this.setState({loading: false})
+                                if(res.data.code == StatusCode.Success){
+                                    AsyncStorage.setItem('token', userToken)
+                                    navigation.reset(HomeScreen)
+                                }else{
+                                    popupOk(CodeToMessage[res.data.code])
+                                }
+                            }).catch(err => {
+                                popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                            })
+                        }
+                    }).catch(err => {
                         this.setState({loading: false})
                         popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                    }
+                    })
+                    
                 }else{
                     this.setState({loading: false})
                     popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
