@@ -106,7 +106,7 @@ class ListBidding extends React.Component {
     }
 
     _formatTimeAction = time => {
-        return moment(time,'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')
+        return moment(time,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY')
     }
 
     renderItem = ({item, index}) => {
@@ -115,14 +115,14 @@ class ListBidding extends React.Component {
                     onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <Text style={style.name}>{item.name || item.name_bidding}</Text>
-                <View style={[style.row, style.calender]}>
+                {/* <View style={[style.row, style.calender]}>
                     <Image source={images.calender} style={style.iconCalender}/>
                     <Text style={style.time}>{this._formatTimeAction(item.time_action || item.time)}</Text>
-                </View>
+                </View> */}
                 {/* {item.version && <LI label={`Phiên bản: ${item.version}`} />} */}
                 {/* {item.price && <LI label={`Giá trị: ${toPrice(item.price)}`} />}
-                {item.phase && <LI label={`Giai đoạn: ${item.phase}`} />}
-                {item.tbmt && <LI label={`Số TBMT: ${item.tbmt}`} />} */}
+                {item.phase && <LI label={`Giai đoạn: ${item.phase}`} />} */}
+                <LI label={`Số TBMT: ${item.code || item.number_tbmt }`} />
                 {item.partner && <LI label={`Bên mời thầu: ${item.partner}`} />}
                 {/* {item.address && <LI label={`Địa điểm: ${item.address}`} />} */}
                 {item.project_code && <LI label={`Mã dự án: ${item.project_code}`} />}
@@ -203,8 +203,14 @@ const style = StyleSheet.create({
         borderBottomWidth: 0,
     },
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10},
-    dot: {width: 6,  resizeMode: 'contain', margin: 10, marginTop: 5},
+    box: { flex: 1, borderBottomWidth: 8, borderBottomColor: '#ddd',padding: 10},
+    dot: {
+        width: 6, 
+        height: 6, 
+        marginLeft: 10,
+        marginRight: 10, 
+        marginTop: 5
+    },
     name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left', color: '#333333', fontWeight: 'bold',},
     txt: { fontSize: 14, textAlign: 'left',color: '#555555', padding: 10},
     time: { fontSize: 12, textAlign: 'left',color: '#555555', padding: 5},
@@ -218,7 +224,21 @@ const style = StyleSheet.create({
         marginRight:5
     },
     keyword: {color, textAlign: 'left',},
-    row: {flexDirection: 'row', alignItems: 'flex-start'},
-    calender: {width: '45%', alignSelf: 'flex-start', borderWidth: 1, borderColor: '#ddd', alignContent: 'center',alignItems: 'center', borderRadius: 5, justifyContent: 'center', marginLeft: 10, marginBottom: 5,},
-    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap'}
+    row: {
+        flexDirection: 'row', 
+        alignItems: 'flex-start', 
+    },
+    calender: {
+        width: '45%', 
+        alignSelf: 'flex-start', 
+        borderWidth: 1, 
+        borderColor: '#555555', 
+        alignContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5, 
+        justifyContent: 'center', 
+        marginLeft: 10, 
+        //  marginBottom: 5,
+    },
+    label: {color: '#555555', fontSize: 14, flex: 1, flexWrap: 'wrap', paddingBottom: 8, paddingRight: 10}
 })
