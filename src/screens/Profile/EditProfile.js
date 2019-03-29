@@ -15,7 +15,7 @@ class InputItem extends React.Component {
     render() {
         return <View style={style.mb5}>
                 <Image 
-                    style={style.icon}
+                    style={[style.icon, this.props.styleIcon || {}]}
                     source={this.props.icon} />
                 <Input 
                     onChangeText={this.props.onChangeText}
@@ -34,7 +34,7 @@ class GenderItem extends React.Component {
     render() {
         return <View style={style.mb5}>
                 <Image 
-                    style={style.icon}
+                    style={[style.icon, style.w20]}
                     source={images.pGender} />
                 <TouchableOpacity onPress={this.props.onSelectMale}>
                     <View style={style.row}>
@@ -143,6 +143,7 @@ class EditProfile extends React.Component {
                         placeholder="Họ và tên"/>
                     <InputItem icon={images.pPhone} 
                         value={phone}
+                        styleIcon={style.iconPhone}
                         editable={false}
                         placeholder="Số điện thoại"/>
                     <InputItem icon={images.pEmail} 
@@ -156,10 +157,12 @@ class EditProfile extends React.Component {
                         gender={this.state.gender}/>
                     <InputItem icon={images.pLocation} 
                         value={address}
+                        styleIcon={style.iconLocation}
                         onChangeText={this.onChangeText('address')}
                         placeholder="Địa chỉ"/>
                     <InputItem icon={images.pCompany} 
                         value={company}
+                        styleIcon={style.iconLocation}
                         onChangeText={this.onChangeText('company')}
                         placeholder="Tên công ty"/>
                     <InputItem icon={images.pThue} 
@@ -273,7 +276,18 @@ const mapStateToProps = (state) =>{
 export default connect(mapStateToProps)(EditProfile)
 
 const style = StyleSheet.create({
-    icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 5,},
+    icon: {
+        width: 18, 
+        resizeMode: 'contain', 
+        marginLeft: 10, 
+        marginRight: 10,
+        marginTop: 0
+    },
+    w26: { width: 26},
+    w20: { width: 20},
+    iconPhone: { width: 15, marginLeft: 12, marginRight: 12},
+    iconGender: { width: 20, marginLeft: 9, marginRight: 9},
+    iconLocation: { width: 15, marginLeft: 12, marginRight: 12},
     iconBack: {height: 15, resizeMode: 'contain' },
     textDone: {textAlign: 'right', color: '#fff', fontSize: 18, padding: 8},
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},

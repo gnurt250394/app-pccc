@@ -11,7 +11,7 @@ class ListItem extends React.Component {
     render() {
       return this.props.name ? <View style={{ marginBottom: 2, flexDirection: 'row'}}>
                 <Image 
-                    style={style.icon}
+                    style={[style.icon, this.props.styleIcon || {}]}
                     source={this.props.icon} />
                 <Text style={style.label}>{this.props.name}</Text>
             </View> : <View style={{ marginBottom: 2, flexDirection: 'row'}}>
@@ -65,11 +65,11 @@ class ViewProfile extends React.Component {
                     <Text style={style.name}>{user.name}</Text>
                 </View>
                 <View style={style.mt30}>
-                    <ListItem icon={images.pPhone} label={""} name={user.phone} />
+                    <ListItem icon={images.pPhone} label={""} name={user.phone} styleIcon={style.iconPhone} />
                     <ListItem icon={images.pEmail} label={"Cập nhật Email"} name={user.email} />
-                    <ListItem icon={images.pGender} label={"Cập nhật giới tính"} name={ShowGender(user.gender)} />
-                    <ListItem icon={images.pLocation} label={"Cập nhật địa chỉ"} name={user.address} />
-                    <ListItem icon={images.pCompany} label={"Cập nhật tên công ty"} name={user.company} />
+                    <ListItem icon={images.pGender} label={"Cập nhật giới tính"} name={ShowGender(user.gender)} styleIcon={style.iconGender}/>
+                    <ListItem icon={images.pLocation} label={"Cập nhật địa chỉ"} name={user.address} styleIcon={style.iconLocation} />
+                    <ListItem icon={images.pCompany} label={"Cập nhật tên công ty"} name={user.company} styleIcon={style.iconLocation}/>
                     <ListItem icon={images.pThue} label={"Cập nhật mã số thuế"} name={user.tax_code} />
                 </View>
             </View>
@@ -113,10 +113,29 @@ const mapStateToProps = (state) =>{
 export default connect(mapStateToProps)(ViewProfile)
 
 const style = StyleSheet.create({
-    icon: {width: 26, resizeMode: 'contain', marginLeft: 10, marginRight: 10,marginTop: -5},
+    icon: {
+        width: 18, 
+        resizeMode: 'contain', 
+        marginLeft: 10, 
+        marginRight: 10,
+        marginTop: 0
+    },
+    w26: { width: 26},
+    iconPhone: { width: 15, marginLeft: 12, marginRight: 12},
+    iconGender: { width: 20, marginLeft: 9, marginRight: 9},
+    iconLocation: { width: 15, marginLeft: 12, marginRight: 12},
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
-    label: {color: '#555555', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#CCCCCC',borderBottomWidth:0.5},
+    label: {
+        color: '#555555', 
+        fontSize: 14, 
+        flex: 1, 
+        paddingTop: 5,
+        paddingBottom: 10,
+        borderBottomColor:'#CCCCCC',
+        borderBottomWidth:0.5,
+        // borderWidth: 1,
+    },
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
