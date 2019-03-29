@@ -25,7 +25,7 @@ class Profile extends React.Component {
   
 
     async componentWillMount(){
-        await this.getInfo()
+        this.getInfo()
     }
     async componentDidMount(){
         // log('componentDidMount: ',);
