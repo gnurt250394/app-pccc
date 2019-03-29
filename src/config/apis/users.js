@@ -1,6 +1,7 @@
 import axios from 'axios'
 import constant from './constant';
 import { getItem } from 'config/Controller';
+
 let instance = axios.create({
     baseURL:constant.BASEURL,
     timeout: constant.SERVER_TIMEOUT,
@@ -66,10 +67,8 @@ export const updateAvatar = async (image) => {
 export const accountkitInfo = token => {
     
     return fetch(`https://graph.accountkit.com/v1.3/me/?access_token=${token}`).then(res => res.json()).then(res => {
-        console.log('accountkit Info: ', res);
         return "0"+res.phone.national_number
     }).catch(err => {
-        console.log('err: ', err);
         return false
     })
 }

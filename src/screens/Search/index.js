@@ -35,7 +35,7 @@ class Search extends React.Component {
                     ref={val => this.search = val}
                     keyword={this.state.keyword} />
                 <View style={style.flex}>
-                    <TabsSearch screenProps={{ keyword: this.state.keyword, isSearch: this.state.isSearch }} />
+                    <TabsSearch screenProps={{ keyword: this.state.keyword, isSearch: this.state.isSearch, navigation: this.props.navigation }} />
                 </View>
             
             </View>

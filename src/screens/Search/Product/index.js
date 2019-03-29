@@ -2,7 +2,7 @@ import React from 'react'
 import { View,  ActivityIndicator, StyleSheet, AsyncStorage, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { search } from 'config/apis/bidding'
-import {  StatusCode, toParams } from 'config'
+import {  StatusCode, toParams, log } from 'config'
 import ListItem from './ListItem'
 class SearchProduct extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class SearchProduct extends React.Component {
 
     loadData = () => {
         let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-        console.log('Focus Product: ', keyword);
+        log('Focus Product: ', keyword);
         if(keyword != "")
         this.setState({loading: true, keyword: keyword}, async () => {
             let params = toParams({
@@ -39,12 +39,12 @@ class SearchProduct extends React.Component {
                         datas: res.data.data,
                         loading: false
                     })
-                    console.log(res.data,'aaa')
+                    // log(res.data,'aaa')
                 }else{
                     this.setState({ loading: false })
                 }
             }).catch(err => {
-                console.log(err.response,'errrr')
+                // log(err.response,'errrr')
                 this.setState({ loading: false })
             })
         })
@@ -64,9 +64,9 @@ class SearchProduct extends React.Component {
                     !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                         : */}
                     <ListItem 
-                        data={this.state.datas} 
+                        datas={this.state.datas} 
                         keyword={this.state.keyword}
-                        navigation={this.props.navigation}
+                        navigation={this.props.screenProps.navigation}
                         loading={this.state.loading} />
                 {/* } */}
             </View>

@@ -3,7 +3,7 @@ import { View,  StatusBar, StyleSheet, TouchableOpacity, ScrollView, ActivityInd
 import { connect } from 'react-redux'
 import { detailBidding } from 'config/apis/bidding'
 import { addFolow } from 'config/apis/Project'
-import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow } from 'config'
+import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow, log } from 'config'
 import { Header } from 'components'
 import { getItem, Status } from 'config/Controller';
 import images from "assets/images"
@@ -33,7 +33,7 @@ class DetailBidding extends React.Component {
     token = null
     // set status bar
     async componentDidMount() {
-        
+        log(1111111111111111111)
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -48,7 +48,7 @@ class DetailBidding extends React.Component {
     }
 
     render(){
-        let { bidding } = this.state
+        let bidding = this.state.bidding || {}
         
         return (
             <View style={[style.flex]}>
@@ -68,12 +68,12 @@ class DetailBidding extends React.Component {
                             <Image source={images.calender} style={style.iconCalender}/>
                             <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY') }</Text>
                         </View>
-                        {(!bidding.follow || bidding.follow == Follow.unfollow) && <TouchableOpacity
+                        {bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={style.textBtn}>Theo dõi tin đấu thầu</Text>
                         </TouchableOpacity>}
-                        {(bidding.follow && bidding.follow == Follow.follow) && <TouchableOpacity
+                        {bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
                             onPress={this.onUnFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={style.textBtn}>Bỏ theo dõi tin</Text>
@@ -127,9 +127,10 @@ class DetailBidding extends React.Component {
 
     getData = async () => {
         let bidding = await detailBidding(this.state.bidding_id).then(res => {
+            log('res: ', res);
             return res.data.code == Status.SUCCESS ? res.data.data : null
         }).catch(err => {
-            console.log('err: ', err);
+            log('err: ', err);
             return null
         })
 

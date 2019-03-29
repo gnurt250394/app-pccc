@@ -25,7 +25,11 @@ class Profile extends React.Component {
   
 
     async componentWillMount(){
-        await this.getInfo()
+        this.getInfo()
+    }
+    async componentDidMount(){
+        // log('componentDidMount: ',);
+        
     }
    
 
@@ -84,7 +88,6 @@ class Profile extends React.Component {
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        log('user: ', user);
         
         if(user && user.name ){
             this.setState({
