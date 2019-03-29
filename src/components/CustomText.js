@@ -7,7 +7,7 @@ export const TextBold =(props)=> {
     return (
         <Text 
             style={[{
-                fontFamily:''
+
             },props.style]}
         >
             {props.value}
@@ -21,7 +21,7 @@ export const TextItalic =(props)=> {
     return (
         <Text 
             style={[{
-                fontFamily:''
+
             },props.style]}
         >
             {props.value}

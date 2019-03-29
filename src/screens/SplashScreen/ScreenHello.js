@@ -11,8 +11,7 @@ import {connect} from 'react-redux'
 import { fontStyle } from 'config/Controller';
 
 const {width,height} =Dimensions.get('window')
-console.log('width: ', width);
-console.log('height: ', height);
+
  class ScreenHello extends Component {
 
     nextHome=()=>{
