@@ -3,7 +3,7 @@ import { View,  StatusBar, StyleSheet, TouchableOpacity, ScrollView, ActivityInd
 import { connect } from 'react-redux'
 import { detailBidding } from 'config/apis/bidding'
 import { addFolow } from 'config/apis/Project'
-import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow } from 'config'
+import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow, log } from 'config'
 import { Header } from 'components'
 import { getItem, Status } from 'config/Controller';
 import images from "assets/images"
@@ -127,9 +127,10 @@ class DetailBidding extends React.Component {
 
     getData = async () => {
         let bidding = await detailBidding(this.state.bidding_id).then(res => {
+            log('res: ', res);
             return res.data.code == Status.SUCCESS ? res.data.data : null
         }).catch(err => {
-            console.log('err: ', err);
+            log('err: ', err);
             return null
         })
 
