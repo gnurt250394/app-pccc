@@ -33,7 +33,7 @@ class DetailBidding extends React.Component {
     token = null
     // set status bar
     async componentDidMount() {
-        
+        log(1111111111111111111)
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -48,7 +48,7 @@ class DetailBidding extends React.Component {
     }
 
     render(){
-        let { bidding } = this.state
+        let bidding = this.state.bidding || {}
         
         return (
             <View style={[style.flex]}>
@@ -68,12 +68,12 @@ class DetailBidding extends React.Component {
                             <Image source={images.calender} style={style.iconCalender}/>
                             <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY') }</Text>
                         </View>
-                        {(!bidding.follow || bidding.follow == Follow.unfollow) && <TouchableOpacity
+                        {bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={style.textBtn}>Theo dõi tin đấu thầu</Text>
                         </TouchableOpacity>}
-                        {(bidding.follow && bidding.follow == Follow.follow) && <TouchableOpacity
+                        {bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
                             onPress={this.onUnFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={style.textBtn}>Bỏ theo dõi tin</Text>

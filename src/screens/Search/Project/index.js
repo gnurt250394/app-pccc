@@ -65,7 +65,7 @@ class SearchProject extends React.Component {
                     !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                         : */}
                     <ListItem 
-                        data={this.state.datas} 
+                        datas={this.state.datas} 
                         loading={this.state.loading}
                         keyword={this.state.keyword}
                         navigation={this.props.navigation} />

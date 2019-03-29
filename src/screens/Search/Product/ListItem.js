@@ -1,23 +1,28 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet,RefreshControl} from 'react-native'
 import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
-import { toPrice, color } from 'config'
-const {width,height} = Dimensions.get('screen')
+import { toPrice, color, log } from 'config'
+
 export default class ListItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: this.props.data || [],
+            datas: this.props.datas || [],
             keyword: this.props.keyword || '' ,
+            keyword: this.props.loading || true ,
         }
+    }
+
+    componentWillReceiveProps(props){
         
+        if(props.datas && props.datas.length > 0){
+            this.setState({datas: props.datas})
+        }
+        this.setState({loading: props.loading})
+
     }
-    toggleLike = (index) => () => {
-        let data = [...this.state.data];
-        data[index].like = !data[index].like
-        this.setState({data});
-    }
+
 
     _showName = name => {
         let keyword = this.state.keyword || "";
@@ -39,7 +44,7 @@ export default class ListItem extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
-                    <Image source={item.image && item.image != "" ? {uri: item.image} : images.logo } style={style.image}/>
+                    <Image source={item.link && item.link != "" ? {uri: item.link} : images.logo } style={style.image}/>
                 </TouchableOpacity>
                 {/* {this._showName(item.name)} */}
                 <Text style={style.name}>{item.name}</Text>
@@ -64,7 +69,7 @@ export default class ListItem extends React.Component {
                     colors={["#2166A2",'white']}
                     tintColor="#2166A2"
                 />}
-                data={this.state.data}
+                data={this.state.datas}
                 renderItem={this.renderItem}
                 ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
