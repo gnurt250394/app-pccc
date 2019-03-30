@@ -1,11 +1,11 @@
-import {  Alert, Dimensions } from 'react-native'
+import {  Alert, Dimensions, Platform } from 'react-native'
 import { log } from './debug'
 
 export { log }
 
 export const  { width, height } = Dimensions.get('window')
 
-
+export const isIos = Platform.OS === 'ios' ? true : false
 
 export const StatusCode = {
     Success: 200,
