@@ -1,10 +1,10 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log, toParams} from 'config'
+import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log, isIos} from 'config'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
-import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
+import YouTube, { YouTubeStandaloneAndroid, YouTubeStandaloneIOS } from 'react-native-youtube'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import { BaseSearch } from 'components'
@@ -188,15 +188,21 @@ class Video extends React.Component {
     }
 
     playvideo = id => () => {
-        YouTubeStandaloneAndroid.playVideo({
-            apiKey: youtube.apiKey,     // Your YouTube Developer API Key
-            videoId: id,     // YouTube video ID
-            autoplay: true,             // Autoplay the video
-            fullscreen: true,
-            startTime: 120,             // Starting point of video (in seconds)
-          })
+        if(isIos)
+            YouTubeStandaloneIOS.playVideo(id)
             .then(() => console.log('Standalone Player Exited'))
             .catch(errorMessage => console.error(errorMessage))
+      
+        else
+            YouTubeStandaloneAndroid.playVideo({
+                apiKey: youtube.apiKey,     // Your YouTube Developer API Key
+                videoId: id,     // YouTube video ID
+                autoplay: true,             // Autoplay the video
+                fullscreen: true,
+                startTime: 120,             // Starting point of video (in seconds)
+            })
+                .then(() => console.log('Standalone Player Exited'))
+                .catch(errorMessage => console.error(errorMessage))
     }
 
     _onSearch = () => {
