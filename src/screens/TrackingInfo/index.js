@@ -1,9 +1,9 @@
 import React from 'react'
 import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width,height, StatusCode, sreen4_7} from 'config'
+import {  color, width,} from 'config'
 import { Header } from 'components'
-import {  ListBiddingScreen, InfoProject, FolowContractor } from 'config/screenNames'
+import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen } from 'config/screenNames'
 import images from "assets/images"
 
 class TrackingInfo extends React.Component {
@@ -41,7 +41,7 @@ class TrackingInfo extends React.Component {
                <View style={style.content}>
                         <View style={style.row}>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(InfoProject, {type: 'tracking'})} 
+                                onPress={this._navTo(InfoProject, {follow: true})} 
                                 >
                                 <Image 
                                     style={style.imgStreet}
@@ -52,7 +52,7 @@ class TrackingInfo extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(ListBiddingScreen, {type: 'tracking'})} 
+                                onPress={this._navTo(ListBiddingScreen, {follow: true})} 
                                 >
                                 <View  style={style.box2} >
                                     <Image 
@@ -74,7 +74,7 @@ class TrackingInfo extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(FolowContractor)} 
+                                // onPress={this._navTo(FolowContractor)} 
                                 >
                                 <View  style={style.box2} >
                                     <Image 
@@ -88,8 +88,7 @@ class TrackingInfo extends React.Component {
                         
                         <View style={[style.mt0, style.row3]}>
                             <TouchableOpacity style={style.box3} 
-                            // onPress={this._navTo(SearchScreen)} 
-                            >
+                                onPress={this._navTo(VideoScreen, {follow: true})} >
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.video} />
@@ -97,8 +96,7 @@ class TrackingInfo extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
-                            //  onPress={this._navTo(SearchScreen)}
-                            >
+                                onPress={this._navTo(CatalogScreen, {type: 'catalog', follow: true})} >
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.catalog} />
@@ -106,8 +104,7 @@ class TrackingInfo extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
-                                // onPress={this._navTo(SearchScreen)} 
-                                >
+                                onPress={this._navTo(CatalogScreen, {type: 'document', follow: true})} >
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.tailieu} />

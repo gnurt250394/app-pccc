@@ -25,6 +25,7 @@ class ListBidding extends React.Component {
     state = {
         datas: [],
         type: this.props.navigation.getParam('type'),
+        follow: this.props.navigation.getParam('follow') || false,
         loading: true,
         refreshing: false,
         datas: [],
@@ -47,15 +48,12 @@ class ListBidding extends React.Component {
     }
 
     /**
-     * check thêm phần chuyển từ màn tracking qua => param type: tracking
+     * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
 
     render(){
         return (
             <View style={style.flex}>
-                {/* <Header
-                    check={1}
-                    title={this.state.type && this.state.type == 'tracking' ? "Theo dõi đấu thầu" : "Thông tin đấu thầu"} onPress={this._goBack}/> */}
                     <BaseSearch 
                         onSearch={this._onSearch}
                         onClear={this.getData}
@@ -145,9 +143,8 @@ class ListBidding extends React.Component {
 
     getData = async () => {
         // lần đầu chạy cả componentDidMount =>  handleLoadmore
-        let type = this.state.type,
-            datas = [];
-        if(type && type == 'tracking'){
+        let datas = [];
+        if(this.state.follow){
             datas = await listFollows(this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {

@@ -1,9 +1,9 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log} from 'config'
+import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log, toParams} from 'config'
 import images from "assets/images"
-import { listDocuments, addFolow, searchDocuments, UnFolowUser } from 'config/apis/Project'
+import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid} from 'react-native-youtube'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
@@ -17,7 +17,8 @@ class Video extends React.Component {
         datas: [],
         page: 1,
         threshold: 0.1,
-        refreshing: false
+        refreshing: false,
+        follow: this.props.navigation.getParam('follow') || false,
     }
     // set status bar
     async componentDidMount() {
@@ -77,13 +78,23 @@ class Video extends React.Component {
     }
 
     getData = async () => {
-        let datas = await listDocuments('video', this.state.page).then(res => {
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
-        console.log(datas);
+        let datas = [];
+        if(this.state.follow){
+
+            datas = await listDocumentFollows('video', this.state.page).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                return []
+            })
+        }else{
+            datas = await listDocuments('video', this.state.page).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
+            })
+        }
+        
         if(datas.length == 0){
             this.setState({ loading: false, refreshing: false, threshold: 0 })
         }else{

@@ -13,16 +13,17 @@ import { log, width } from 'config'
   constructor(props) {
     super(props);
     this.state = {
-      listProject:[],
-      page:1,
-      Threshold:0.1,
-      refresing:true,
-      keyword:''
+        listProject:[],
+        page:1,
+        Threshold:0.1,
+        refresing:true,
+        keyword:'',
+        follow: this.props.navigation.getParam('follow') || false,
     };
   }
 
     /**
-     * check thêm phần chuyển từ màn tracking qua => param type: tracking
+     * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
 
     _nextPage=(router,params)=>()=>{

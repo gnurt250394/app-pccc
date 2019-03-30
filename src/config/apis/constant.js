@@ -21,7 +21,8 @@ const constant ={
     Notification:'notification',
     Data_other:'data-other',
     List_Investor:'list-investor',
-    Investor_Detail:'investor-detail/'
+    Investor_Detail:'investor-detail',
+    LIST_FOLLOW_DOCUMMENT: 'list-document-follow',
 }
 
 export default constant;
