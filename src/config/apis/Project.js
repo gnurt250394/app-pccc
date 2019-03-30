@@ -49,10 +49,10 @@ export const UnFolowUser = async(body)=>{
 }
 
 
-export const listFollows = async body => {
+export const listFollows = async params => {
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.LIST_FOLLOW, body)
+        return instance.get(constant.LIST_FOLLOW + params)
 }
 export const listUserFollows = async () => {
     let token = await getItem('token')

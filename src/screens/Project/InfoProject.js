@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { View,StyleSheet,FlatList,TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View,StyleSheet,FlatList,TouchableOpacity,ActivityIndicator, Text } from 'react-native';
 import { BaseSearch } from 'components';
 import navigation from 'navigation/NavigationService';
 import { DetailProject } from 'config/screenNames';
-import { getNewProject, searchProject } from 'config/apis/Project';
+import { getNewProject, searchProject, listFollows } from 'config/apis/Project';
 import Toast from 'react-native-simple-toast';
 import { Status, color } from 'config/Controller';
 import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
-import { log, width } from 'config'
+import { log, width, toParams } from 'config'
  class InfoProject extends Component {
   constructor(props) {
     super(props);
@@ -88,24 +88,47 @@ import { log, width } from 'config'
             goBack={this._goBack}
             keyword={this.state.keyword} />
 
-            <FlatList
-                data={this.state.listProject}
-                renderItem={this._renderItem}
-                keyExtractor={this._keyExtractor}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={this.state.Threshold}
-                ListFooterComponent={this.ListFooterComponent}
-            />
+            {
+                this.state.listProject.length == 0 
+                    ?
+                !this.state.refresing && <Text style={styles.notFound}>Không có dữ liệu</Text>
+                    :
+                <FlatList
+                    data={this.state.listProject}
+                    renderItem={this._renderItem}
+                    keyExtractor={this._keyExtractor}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={this.state.Threshold}
+                    ListFooterComponent={this.ListFooterComponent}
+                />
+            }
+
+            
         </View>
         );
     }
     getData = async () => {
         // check thêm api follow khi chuyển từ màn tracking qua
-        let listProject = await getNewProject({page: this.state.page}).then(res=>{
-            return res.data.code == Status.SUCCESS ? res.data.data : []
-        }).catch(err=> {
-            return []
-        })
+        let listProject = [];
+        if(this.state.follow){
+            let params = toParams({
+                page: this.state.page,
+                type: 'project'
+            })
+            listProject = await listFollows(params).then(res=>{
+                log('res: ', res);
+                return res.data.code == Status.SUCCESS ? res.data.data : []
+            }).catch(err=> {
+                log('err: ', err);
+                return []
+            })
+        }else{
+            listProject = await getNewProject({page: this.state.page}).then(res=>{
+                return res.data.code == Status.SUCCESS ? res.data.data : []
+            }).catch(err=> {
+                return []
+            })
+        }
 
         this.setState({listProject, refresing: false})
     }
@@ -166,8 +189,14 @@ const styles= StyleSheet.create({
       width:18, 
       resizeMode: 'contain', 
       paddingLeft: 10,
-  },
-  head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
-  boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
+    },
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
+    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    }
 })
 export default connect()(InfoProject)
