@@ -56,7 +56,7 @@ export default class ListItem extends Component {
                  />  Địa điểm: {this.props.item.address}</Text>
               </View>
             </View>
-            <View style={styles.end}/>
+            {this.props.index < this.props.count - 1 && <View style={styles.end}/>}
             </TouchableOpacity>
         )
   }

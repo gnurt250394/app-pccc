@@ -33,7 +33,6 @@ class DetailBidding extends React.Component {
     token = null
     // set status bar
     async componentDidMount() {
-        log(1111111111111111111)
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -147,6 +146,7 @@ class DetailBidding extends React.Component {
             popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
             addFolow({bidding_id , table: Follow.table_bidding}).then(res => {
+                log('res: ', res);
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))

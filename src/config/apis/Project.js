@@ -49,10 +49,10 @@ export const UnFolowUser = async(body)=>{
 }
 
 
-export const listFollows = async body => {
+export const listFollows = async params => {
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.LIST_FOLLOW, body)
+        return instance.get(constant.LIST_FOLLOW + params)
 }
 export const listUserFollows = async () => {
     let token = await getItem('token')
@@ -77,4 +77,10 @@ export const searchDocuments = async (type, keyword = '', page = 1) => {
 export const searchProject = async ( keyword = '', page = 1) => {
     // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
     return instance.get(constant.SEARCH ,{params:{table:'news_projects',keyword:keyword,page:page}})
+}
+
+export const listDocumentFollows = async (type, page = 1) => {
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.LIST_FOLLOW_DOCUMMENT + `?type=${type}&page=${page}`)
 }

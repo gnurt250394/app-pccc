@@ -1,13 +1,14 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore} from 'config'
+import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore, log} from 'config'
 import { BaseSearch } from 'components'
 import images from "assets/images"
-import { listDocuments, addFolow, searchDocuments, UnFolowUser  } from 'config/apis/Project'
+import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows  } from 'config/apis/Project'
 import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
+import Toast from 'react-native-simple-toast';
 
 class Catalog extends React.Component {
     state = {
@@ -16,6 +17,7 @@ class Catalog extends React.Component {
         keyword: '',
         maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
+        follow: this.props.navigation.getParam('follow') || false,
         datas: [],
         backup: [],
         page: 1,
@@ -42,6 +44,7 @@ class Catalog extends React.Component {
      */
 
     render(){
+        let count = this.state.datas.length
         return (
             <View style={style.flex}>
                 <BaseSearch 
@@ -57,7 +60,7 @@ class Catalog extends React.Component {
                         :
                     <FlatList
                         data={this.state.datas}
-                        renderItem={this.renderItem}
+                        renderItem={this.renderItem(count)}
                         keyExtractor={(item, index) => index.toString()} 
                         refreshing={this.state.refreshing}
                         onRefresh={this.handleRefresh}
@@ -81,9 +84,7 @@ class Catalog extends React.Component {
         return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
-    renderItem = ({item, index}) => {
-        
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
         
                 { this.showImage(item.link) }
@@ -207,17 +208,17 @@ class Catalog extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Theo dõi thành công.')
+                        Toast.show('Theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.follow)
                         break;
                 
                     default:
-                        popupOk('Theo dõi thất bại.')
+                        Toast.show('Theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
                 console.log('err: ', err);
-                popupOk('Theo dõi thất bại.')
+                Toast.show('Theo dõi thất bại.')
             })
         }
     }
@@ -238,17 +239,17 @@ class Catalog extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Bỏ theo dõi thành công.')
+                        Toast.show('Bỏ theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.unfollow)
                         break;
                 
                     default:
-                        popupOk('Bỏ theo dõi thất bại.')
+                        Toast.show('Bỏ theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
                 console.log('err: ', err);
-                popupOk('Bỏ theo dõi thất bại.')
+                Toast.show('Bỏ theo dõi thất bại.')
             })
         }
     }
@@ -319,12 +320,23 @@ class Catalog extends React.Component {
     }
 
     getData = async () => {
-        let datas = await listDocuments(this.state.type, this.state.page).then(res => {
-            return res.data.code == StatusCode.Success ? res.data.data : []
-        }).catch(err => {
-            console.log('err: ', err);
-            return []
-        })
+        let datas = [];
+        if(this.state.follow){
+            datas = await listDocumentFollows(this.state.type, this.state.page).then(res => {
+                log('res: ', res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                return []
+            })
+        }else{
+            datas = await listDocuments(this.state.type, this.state.page).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                console.log('err: ', err);
+                return []
+            })
+        }
+
         this.formatData(datas)
     }
 

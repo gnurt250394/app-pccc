@@ -1,7 +1,7 @@
 import React from 'react'
 import { View,  StatusBar, StyleSheet, Text, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, StatusCode, toParams, toPrice} from 'config'
+import {  color, StatusCode, toParams, log} from 'config'
 import { Header, BaseSearch } from 'components'
 import { listBiddings, search } from 'config/apis/bidding'
 import { listFollows } from 'config/apis/Project'
@@ -25,6 +25,7 @@ class ListBidding extends React.Component {
     state = {
         datas: [],
         type: this.props.navigation.getParam('type'),
+        follow: this.props.navigation.getParam('follow') || false,
         loading: true,
         refreshing: false,
         datas: [],
@@ -47,15 +48,13 @@ class ListBidding extends React.Component {
     }
 
     /**
-     * check thêm phần chuyển từ màn tracking qua => param type: tracking
+     * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
 
     render(){
+        let count = this.state.datas.length
         return (
             <View style={style.flex}>
-                {/* <Header
-                    check={1}
-                    title={this.state.type && this.state.type == 'tracking' ? "Theo dõi đấu thầu" : "Thông tin đấu thầu"} onPress={this._goBack}/> */}
                     <BaseSearch 
                         onSearch={this._onSearch}
                         onClear={this.getData}
@@ -70,7 +69,7 @@ class ListBidding extends React.Component {
                             :
                         <FlatList
                             data={this.state.datas}
-                            renderItem={this.renderItem}
+                            renderItem={this.renderItem(count)}
                             keyExtractor={(item, index) => index.toString()} 
                             refreshing={this.state.refreshing}
                             onRefresh={this.handleRefresh}
@@ -109,8 +108,7 @@ class ListBidding extends React.Component {
         return moment(time,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY')
     }
 
-    renderItem = ({item, index}) => {
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
                     onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
@@ -145,13 +143,16 @@ class ListBidding extends React.Component {
 
     getData = async () => {
         // lần đầu chạy cả componentDidMount =>  handleLoadmore
-        let type = this.state.type,
-            datas = [];
-        if(type && type == 'tracking'){
-            datas = await listFollows(this.state.page).then(res => {
+        let datas = [];
+        
+        if(this.state.follow){
+            let params = toParams({
+                page: this.state.page,
+                type: 'bidding'
+            })
+            datas = await listFollows(params).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                // console.log('err: ', err);
                 return []
             })
         }else{

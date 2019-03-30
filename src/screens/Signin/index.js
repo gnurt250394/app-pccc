@@ -265,25 +265,19 @@ class Signin extends React.Component {
 
     _onForgotPassword = async () => {
         this.setState({loading: true}, async () => {
-            let Actoken = await getCurrentAccount();
-            if(Actoken){
-                let phone = await accountkitInfo(Actoken)
-                this.setState({loading: false})
+            let phone = await getCurrentAccount();
+            
+            if(phone){
+                // call api check phone
+                checkPhoneOrEmail({phone: phone}).then(res => {
+                    this.setState({loading: false})
+                    if(res.data != "" && res.data.code == StatusCode.PhoneExists ){
+                        this.props.navigation.navigate(ForgotPasswordScreen, {token: res.data.token})
+                    }else{
 
-                if(phone){
-                    // call api check phone
-                    checkPhoneOrEmail({phone: phone}).then(res => {
-                        if(res.data != "" && res.data.code == StatusCode.PhoneExists ){
-                            this.props.navigation.navigate(ForgotPasswordScreen, {token: res.data.token})
-                        }else{
-
-                           popupOk("Số điện thoại chưa được sử dụng.")
-                        }
-                    })
-                    
-                }else{
-                    popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
-                }
+                        popupOk("Số điện thoại chưa được sử dụng.")
+                    }
+                })
                 
             }else{
                 this.setState({loading: false})
