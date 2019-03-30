@@ -244,7 +244,7 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
-    iconPlay: {position: 'absolute', top: 48, left: '46%', width: 60, resizeMode: 'contain'},
+    iconPlay: {position: 'absolute', top: 48, left: '45%', width: 60, resizeMode: 'contain'},
     posR: {position: 'relative'},
     iconBack: {
         height: 18,
