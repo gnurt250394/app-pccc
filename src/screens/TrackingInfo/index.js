@@ -1,7 +1,7 @@
 import React from 'react'
 import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width,} from 'config'
+import {  color, width, popupOk} from 'config'
 import { Header } from 'components'
 import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen } from 'config/screenNames'
 import images from "assets/images"
@@ -65,7 +65,8 @@ class TrackingInfo extends React.Component {
                         
                         <View style={style.row}>
                             <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(ListBiddingScreen)} 
+                                // onPress={this._navTo(ListBiddingScreen)} 
+                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                                 >
                                 <Image 
                                     style={style.imgStreet}
@@ -75,6 +76,7 @@ class TrackingInfo extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
                                 // onPress={this._navTo(FolowContractor)} 
+                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                                 >
                                 <View  style={style.box2} >
                                     <Image 
