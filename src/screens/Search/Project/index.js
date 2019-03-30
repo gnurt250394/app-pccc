@@ -27,27 +27,26 @@ class SearchProject extends React.Component {
 
     loadData = () => {
         let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-        console.log('forcus Project: ', keyword);
 
         if(keyword != "")
-        this.setState({loading: true, keyword: keyword}, async () => {
-            let params = toParams({
-                table: 'news_projects',
-                keyword: keyword
-            })
-            search(params).then(res => {
-                if(res.data.code == StatusCode.Success){
-                    this.setState({
-                        datas: res.data.data,
-                        loading: false
-                    })
-                }else{
+            this.setState({loading: true, keyword: keyword}, async () => {
+                let params = toParams({
+                    table: 'news_projects',
+                    keyword: keyword
+                })
+                search(params).then(res => {
+                    if(res.data.code == StatusCode.Success){
+                        this.setState({
+                            datas: res.data.data,
+                            loading: false
+                        })
+                    }else{
+                        this.setState({ loading: false })
+                    }
+                }).catch(err => {
                     this.setState({ loading: false })
-                }
-            }).catch(err => {
-                this.setState({ loading: false })
+                })
             })
-        })
     }
     
 

@@ -29,11 +29,13 @@ import { log, width, toParams } from 'config'
     _nextPage=(router,params)=>()=>{
         navigation.navigate(router,params)
     }
-    _renderItem=({item})=>{
+    _renderItem = count => ({item, index}) => {
         return(
             <ListItem
                 onPress={this._nextPage(DetailProject,{id:item.id,name:item.name})}
                 item={item}
+                count={count}
+                index={index}
             />
         )
     }
@@ -77,6 +79,7 @@ import { log, width, toParams } from 'config'
     }
 
     render() {
+        let count = this.state.listProject.length
         return (
         <View style={styles.container}>
             <BaseSearch 
@@ -93,7 +96,7 @@ import { log, width, toParams } from 'config'
                     :
                 <FlatList
                     data={this.state.listProject}
-                    renderItem={this._renderItem}
+                    renderItem={this._renderItem(count)}
                     keyExtractor={this._keyExtractor}
                     onEndReached={this.onEndReached}
                     onEndReachedThreshold={this.state.Threshold}

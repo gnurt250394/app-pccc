@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
 import images from "assets/images"
-import { ProductDetailScreen } from 'config/screenNames'
+import { DetailProject } from 'config/screenNames'
 import { toPrice, color } from 'config'
 const {width} = Dimensions.get('screen')
 
@@ -53,8 +53,11 @@ export default class ListItem extends React.Component {
             </Text>
         )
     }
-    renderItem = ({item, index}) => {
-        return <View style={style.box}>
+    renderItem = count => ({item, index}) => {
+        return <TouchableOpacity 
+                    onPress={this._navTo(DetailProject,{id:item.id,name:item.name})}
+                    style={index == count -1 ? [style.box, style.btw0] : style.box}>
+
                 {item.name && <Text style={style.name}>{item.name}</Text>}
                 {item.version && <LI label={`Phiên bản: ${item.version}`} />}
                 {item.price && <LI label={`Giá trị: ${toPrice(item.price)}`} />}
@@ -66,7 +69,7 @@ export default class ListItem extends React.Component {
                 {item.time_start && <LI label={`Ngày đăng tin: ${item.time_start}`} />}
                 {item.time_end && <LI label={`Ngày kết thúc: ${item.time_end}`} />}
                 {/* {item.description && <LI label={`Thông tin: ${item.description}`} />} */}
-            </View>
+            </TouchableOpacity>
     }
     ListEmptyComponent=()=>{
         return(
@@ -76,6 +79,7 @@ export default class ListItem extends React.Component {
         )
     }
     render(){
+        let count = this.state.datas.length
         return (
             <FlatList
                 data={this.state.datas}
@@ -85,7 +89,7 @@ export default class ListItem extends React.Component {
                     colors={["#2166A2",'white']}
                     tintColor="#2166A2"
                 />}
-                renderItem={this.renderItem}
+                renderItem={this.renderItem(count)}
                 ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
         )
@@ -118,5 +122,8 @@ const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent:'center',
         marginTop: 50,
-    }
+    },
+    btw0: {
+        borderBottomWidth: 0,
+    },
 })

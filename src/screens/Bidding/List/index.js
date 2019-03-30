@@ -52,6 +52,7 @@ class ListBidding extends React.Component {
      */
 
     render(){
+        let count = this.state.datas.length
         return (
             <View style={style.flex}>
                     <BaseSearch 
@@ -68,7 +69,7 @@ class ListBidding extends React.Component {
                             :
                         <FlatList
                             data={this.state.datas}
-                            renderItem={this.renderItem}
+                            renderItem={this.renderItem(count)}
                             keyExtractor={(item, index) => index.toString()} 
                             refreshing={this.state.refreshing}
                             onRefresh={this.handleRefresh}
@@ -107,8 +108,7 @@ class ListBidding extends React.Component {
         return moment(time,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY')
     }
 
-    renderItem = ({item, index}) => {
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
                     onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>

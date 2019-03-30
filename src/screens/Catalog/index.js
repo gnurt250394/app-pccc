@@ -44,6 +44,7 @@ class Catalog extends React.Component {
      */
 
     render(){
+        let count = this.state.datas.length
         return (
             <View style={style.flex}>
                 <BaseSearch 
@@ -59,7 +60,7 @@ class Catalog extends React.Component {
                         :
                     <FlatList
                         data={this.state.datas}
-                        renderItem={this.renderItem}
+                        renderItem={this.renderItem(count)}
                         keyExtractor={(item, index) => index.toString()} 
                         refreshing={this.state.refreshing}
                         onRefresh={this.handleRefresh}
@@ -83,9 +84,7 @@ class Catalog extends React.Component {
         return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
-    renderItem = ({item, index}) => {
-        
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
         
                 { this.showImage(item.link) }

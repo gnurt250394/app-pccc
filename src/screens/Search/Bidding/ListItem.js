@@ -55,8 +55,7 @@ export default class ListItem extends React.Component {
             </Text>
         )
     }
-    renderItem = ({item, index}) => {
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
                     onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
@@ -84,6 +83,7 @@ export default class ListItem extends React.Component {
         )
     }
     render(){
+        let count = this.state.datas.length
         return (
             <FlatList
                 data={this.state.datas}
@@ -93,7 +93,7 @@ export default class ListItem extends React.Component {
                     colors={["#2166A2",'white']}
                     tintColor="#2166A2"
                 />}
-                renderItem={this.renderItem}
+                renderItem={this.renderItem(count)}
                 ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />
         )

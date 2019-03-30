@@ -37,7 +37,7 @@ class Video extends React.Component {
     }
 
     render(){
-        
+        let count = this.state.datas.length
         return (
             <View style={style.flex}>
                 <BaseSearch 
@@ -60,7 +60,7 @@ class Video extends React.Component {
                         onEndReached={this.handleLoadmore}
                         onEndReachedThreshold={this.state.threshold}
                         ListFooterComponent={this.ListFooterComponent} 
-                        renderItem={this.renderItem}/>
+                        renderItem={this.renderItem(count)}/>
                 }
             </View>
         )
@@ -107,8 +107,8 @@ class Video extends React.Component {
         
     }
 
-    renderItem = ({item, index}) => {
-        let count = this.state.datas.length
+    renderItem = count => ({item, index}) => {
+        
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <TouchableOpacity onPress={this.playvideo(item.link)} style={style.posR} >
                     <Image style={style.image} source={{uri: youtube.thumbnail(item.link)}}/>
