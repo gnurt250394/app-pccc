@@ -1,7 +1,7 @@
 import React from 'react'
 import { View,  StatusBar, StyleSheet, Text, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, StatusCode, toParams, toPrice} from 'config'
+import {  color, StatusCode, toParams, log} from 'config'
 import { Header, BaseSearch } from 'components'
 import { listBiddings, search } from 'config/apis/bidding'
 import { listFollows } from 'config/apis/Project'
@@ -144,11 +144,15 @@ class ListBidding extends React.Component {
     getData = async () => {
         // lần đầu chạy cả componentDidMount =>  handleLoadmore
         let datas = [];
+        
         if(this.state.follow){
-            datas = await listFollows(this.state.page).then(res => {
+            let params = toParams({
+                page: this.state.page,
+                type: 'bidding'
+            })
+            datas = await listFollows(params).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                // console.log('err: ', err);
                 return []
             })
         }else{

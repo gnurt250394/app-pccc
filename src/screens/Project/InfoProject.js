@@ -68,12 +68,10 @@ import { log, width, toParams } from 'config'
     onChangeText = key => val => {
         this.setState({[key]: val})
     }
-    _onSearch=()=>{
+    _onSearch = () => {
         searchProject(this.state.keyword,this.state.page).then(res=>{
-            log(res.data,'ddd')
             if(res.data.code == Status.SUCCESS){
-            log(res.data,'ddd')
-            this.setState({listProject:res.data.data})
+                this.setState({listProject:res.data.data})
             }
         })
     }
@@ -82,11 +80,11 @@ import { log, width, toParams } from 'config'
         return (
         <View style={styles.container}>
             <BaseSearch 
-            onSearch={this._onSearch}
-            onClear={this.getData}
-            ref={val => this.search = val}
-            goBack={this._goBack}
-            keyword={this.state.keyword} />
+                onSearch={this._onSearch}
+                onClear={this.getData}
+                ref={val => this.search = val}
+                goBack={this._goBack}
+                keyword={this.state.keyword} />
 
             {
                 this.state.listProject.length == 0 
