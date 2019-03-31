@@ -84,7 +84,7 @@ class DetailBidding extends React.Component {
                         {bidding.notification_type && <LI label={`Loại thông báo: ${bidding.notification_type}`} />}
 
                         <Text style={style.h3}>Thông tin chung:</Text>
-                        {bidding.tbmt && <LI label={`Số TBMT: ${bidding.tbmt}`} />}
+                        {bidding.number_tbmt && <LI label={`Số TBMT: ${bidding.number_tbmt}`} />}
                         {bidding.number_khlcnt && <LI label={`Số hiệu KHLCNT: ${bidding.number_khlcnt}`} />}
                         {bidding.name_khlcnt && <LI label={`Tên KHLCNT: ${bidding.name_khlcnt}`} />}
                         <LI label={`Lĩnh vực: ${BiddingField(bidding.field)}`} />

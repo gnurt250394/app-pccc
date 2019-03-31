@@ -1,93 +1,120 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage,  ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen} from 'config/screenNames'
+import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen, RegisterScreen} from 'config/screenNames'
 import { color, toUpperCase,StatusCode, log} from 'config'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem} from 'config/Controller';
-import CheckAuth from './CheckAuth';
 
 class Profile extends React.Component {
    state={
        user: this.props.users || {},
        token: this.props.token|| '',
        image: null,
-       loading: true
+       loading: true,
    }
 
     edit = () => {
         this.props.navigation.navigate(EditProfileScreen)
     }
-  
-
-    async componentWillMount(){
-        this.getInfo()
-    }
-    async componentDidMount(){
-        // log('componentDidMount: ',);
-        
+    async componentDidMount() {
+        // phải check đoạn này vì đang dùng tabs
+        this.props.navigation.addListener('willFocus', () => this.getInfo())
     }
    
 
     render(){
-        let {user,token,image} = this.state
+        
         return (
-            token 
-                ?
             <View style={style.flex}>
-                <ScrollView >
-                    <View style={style.head}>
-                        <Text style={style.title}> Cá nhân </Text>
-                    </View>
-
-                    <TouchableOpacity 
-                        onPress={this._navTo(ViewProfileScreen, {user: this.state.user, image: this.state.image, update: this.getInfo})}
-                        style={style.boxUser}>
-                        <Image 
-                            style={style.avatar}
-                            source={image?{uri:image}:images.userBlue} />
-                        <View style={style.user}>
-                            <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
-                            <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
-                        </View>
-                        <Image 
-                            style={style.icon}
-                            source={images.next} />
-                    </TouchableOpacity>
-                    <View style={style.mt20}>
-                        <NavItem 
-                            title='Gói dịch vụ' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pService} />
-                        <NavItem 
-                            title='Shop của tôi' 
-                            onPress={this._navTo(ShopScreen)}
-                            icon={images.pShop} />
+                {   this.state.loading 
+                    ? 
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" color="#0000ff"/>
+                    </View> 
+                    :
+                    this.renderView()
                         
-                        <NavItem 
-                            title='Thay đổi mật khẩu' 
-                            onPress={this._navTo(ChangePasswordScreen)}
-                            icon={images.pChangePass} />
-                    </View>
-                </ScrollView>
-
-                <Text 
-                    onPress={this._logout}
-                    style={style.btnLogout}>{toUpperCase('Đăng xuất')}</Text>
+                }
             </View>
-                : 
-            <CheckAuth loading={this.state.loading} />
-
         )
     }
+
+    renderView = () => {
+        let {user,token,image, loading} = this.state
+        if(!loading && token){
+            return (
+                <View style={style.flex}>
+                    <ScrollView >
+                        <View style={style.head}>
+                            <Text style={style.title}> Cá nhân </Text>
+                        </View>
+
+                        <TouchableOpacity 
+                            onPress={this._navTo(ViewProfileScreen, {user: this.state.user, image: this.state.image, update: this.getInfo})}
+                            style={style.boxUser}>
+                            <Image 
+                                style={style.avatar}
+                                source={image?{uri:image}:images.userBlue} />
+                            <View style={style.user}>
+                                <Text style={style.name}>{user&& user.name ? user.name : ""}</Text>
+                                <Text style={style.email}>{user && user.email ? user.email : ""}</Text>
+                            </View>
+                            <Image 
+                                style={style.icon}
+                                source={images.next} />
+                        </TouchableOpacity>
+                        <View style={style.mt20}>
+                            <NavItem 
+                                title='Gói dịch vụ' 
+                                onPress={this._navTo(ChangePasswordScreen)}
+                                icon={images.pService} />
+                            <NavItem 
+                                title='Shop của tôi' 
+                                onPress={this._navTo(ShopScreen)}
+                                icon={images.pShop} />
+                            
+                            <NavItem 
+                                title='Thay đổi mật khẩu' 
+                                onPress={this._navTo(ChangePasswordScreen)}
+                                icon={images.pChangePass} />
+                        </View>
+                    </ScrollView>
+
+                    <Text 
+                        onPress={this._logout}
+                        style={style.btnLogout}>{toUpperCase('Đăng xuất')}</Text>
+
+                </View>
+            )
+        }else{
+            return (
+                <View style={style.modal}>
+                    <View style={style.bodyModal}>
+                        <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
+                        <View style={style.footerModal}>
+                            <Text 
+                                onPress={this._navTo(SigninScreen)}
+                                style={[style.btnModal, style.login]}>{toUpperCase("Đăng nhập")}</Text>
+                            <Text 
+                                onPress={this._navTo(RegisterScreen)}
+                                style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}</Text>
+                        </View>
+                    </View>
+                </View>
+            )
+        }
+    }
+ 
 
     getInfo = async () => {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
+        log('user: ', user);
         
         if(user && user.name ){
             this.setState({
@@ -135,5 +162,12 @@ const style = StyleSheet.create({
     avatar: {width: 70, height: 70, alignSelf: 'center',borderRadius: 35, },
     boxUser: { padding: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     mt20: { marginTop: 20},
-    flex: {flex: 1}
+    flex: {flex: 1},
+    modal: {backgroundColor: '#999999', justifyContent: 'center', flex: 1, },
+    bodyModal: {width: '80%', alignSelf: 'center', backgroundColor: 'white',  flexDirection: 'column', borderRadius: 8,},
+    headModal: {textAlign: 'center', padding: 10, color: '#333333',  fontWeight: 'bold', fontSize: 18},
+    footerModal: {flexDirection: 'row', borderWidth: 1, borderColor: color, borderBottomLeftRadius: 8, borderBottomRightRadius: 8,},
+    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8},
+    register: {color: color, backgroundColor: 'white', borderBottomLeftRadius: 0},
+    login: {borderBottomRightRadius: 0},
 })

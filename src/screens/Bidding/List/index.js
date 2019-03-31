@@ -68,6 +68,7 @@ class ListBidding extends React.Component {
                         !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                             :
                         <FlatList
+                            // ref='bidding'
                             data={this.state.datas}
                             renderItem={this.renderItem(count)}
                             keyExtractor={(item, index) => index.toString()} 
@@ -84,23 +85,18 @@ class ListBidding extends React.Component {
 
     _onSearch = () => {
         let keyword = this.search ? this.search.getValue() : ''
-        this.setState({loading: true}, async () => {
+        // phải set lại state cho page: onEndReached đã += 1 cho page
+        this.setState({loading: true, page: 1}, async () => {
             let params = toParams({
                 table: 'news_biddings',
                 keyword: keyword
             })
-            search(params).then(res => {
-                if(res.data.code == StatusCode.Success){
-                    this.setState({
-                        datas: res.data.data,
-                        loading: false
-                    })
-                }else{
-                    this.setState({ loading: false })
-                }
+            let datas = await search(params).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                this.setState({ loading: false })
+                return []
             })
+            this.setState({ datas, loading: false , refreshing: false })
         })
     }
 
@@ -138,13 +134,14 @@ class ListBidding extends React.Component {
     }
 
     ListFooterComponent = () => {
+        log('ListFooterComponent: ', this.state.loading);
         return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     getData = async () => {
         // lần đầu chạy cả componentDidMount =>  handleLoadmore
         let datas = [];
-        
+        // log(this.state.follow);
         if(this.state.follow){
             let params = toParams({
                 page: this.state.page,
@@ -157,18 +154,19 @@ class ListBidding extends React.Component {
             })
         }else{
             datas = await listBiddings(this.state.page).then(res => {
+                // log('res: ', res);
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 // console.log('err: ', err);
                 return []
             })
         }
-
+        log(datas);
         if(datas.length == 0){
             this.setState({
                 loading: false,
                 refreshing: false,
-                threshold: 0
+                threshold: 0,
             })
         }else{
             if(this.state.page == 1){
