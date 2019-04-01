@@ -55,12 +55,18 @@ class ListBidding extends React.Component {
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
-                    <BaseSearch 
+                    {this.state.follow?
+                    <Header
+                    check={1}
+                    onPress={this._goBack}
+                    title={"Theo dõi đấu thầu"}
+                    />
+                    :<BaseSearch 
                         onSearch={this._onSearch}
                         onClear={this.getData}
                         ref={val => this.search = val}
                         goBack={this._goBack}
-                        keyword={this.state.keyword} />
+                        keyword={this.state.keyword} />}
 
                     {
                         this.state.datas.length == 0 

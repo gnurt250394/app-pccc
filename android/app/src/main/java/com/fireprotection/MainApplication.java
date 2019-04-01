@@ -9,7 +9,6 @@ import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.imagepicker.ImagePickerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import io.underscope.react.fbak.RNAccountKitPackage;
@@ -30,7 +29,6 @@ import com.facebook.appevents.AppEventsLogger;
 // camera
 import com.imagepicker.ImagePickerPackage;
 
-import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -56,8 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
           new ImagePickerPackage(),
 
           // firebase
-          new RNFirebasePackage(),
-          new RNFirebaseAuthPackage(),
           new RNGoogleSigninPackage(),
 
           // fast image

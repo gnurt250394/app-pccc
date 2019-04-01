@@ -9,6 +9,7 @@ import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import { BaseSearch } from 'components'
 import Toast from 'react-native-simple-toast';
+import { Header } from 'components';
 
 class Video extends React.Component {
     state = {
@@ -40,11 +41,18 @@ class Video extends React.Component {
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
+                {this.state.follow?
+                 <Header
+                 check={1}
+                 onPress={this._goBack}
+                 title={"Video theo dõi"}
+                 />
+                 :
                 <BaseSearch
                     onSearch={this._onSearch}
                     ref={val => this.search = val}
                     goBack={this._goBack}
-                    keyword={this.state.keyword} />
+                    keyword={this.state.keyword} />}
 
 
                 {
@@ -86,6 +94,7 @@ class Video extends React.Component {
             }).catch(err => {
                 return []
             })
+            console.log(datas,'1')
         }else{
             datas = await listDocuments('video', this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
@@ -93,6 +102,7 @@ class Video extends React.Component {
                 console.log('err: ', err);
                 return []
             })
+            console.log(datas,'2')
         }
         
         if(datas.length == 0){
@@ -129,7 +139,6 @@ class Video extends React.Component {
                     </TouchableOpacity>}
                 </View>
             </View>
-        </View>
     }
 
     onFollow = (document_id, index) => () => {
