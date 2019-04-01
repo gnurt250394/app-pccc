@@ -145,7 +145,7 @@ console.log(item,'ggg')
                 } else if(res.data.code == Status.PROJECT_ID_NOT_FOUND){
                     Toast.show('Dự án không tồn tại')
                 }else if(res.data.code == Status.USER_PERMISSION){
-                  popup('Bạn phải mua gói để sử dụng tính năng này.',null, HomeScreen)
+                  popup('Bạn phải mua gói để sử dụng tính năng này.',null, popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
                   console.log(res.data)
                 }
             }).catch(err=>{

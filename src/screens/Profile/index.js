@@ -9,6 +9,8 @@ import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem} from 'config/Controller';
+import { popupCancel } from 'config';
+import { popupOk } from 'config';
 
 class Profile extends React.Component {
    state={
@@ -71,11 +73,11 @@ class Profile extends React.Component {
                         <View style={style.mt20}>
                             <NavItem 
                                 title='Gói dịch vụ' 
-                                onPress={this._navTo(ChangePasswordScreen)}
+                                onPress={()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 icon={images.pService} />
                             <NavItem 
                                 title='Shop của tôi' 
-                                onPress={this._navTo(ShopScreen)}
+                                onPress={()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 icon={images.pShop} />
                             
                             <NavItem 
@@ -115,6 +117,7 @@ class Profile extends React.Component {
         let token = await getItem('token')
         let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
         log('user: ', user);
+        console.log(token,'token')
         
         if(user && user.name ){
             this.setState({

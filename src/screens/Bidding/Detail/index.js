@@ -133,7 +133,7 @@ class DetailBidding extends React.Component {
             log('err: ', err);
             return null
         })
-
+console.log(bidding,'ddding')
         if(!bidding || (bidding && !bidding.id)){
             popupOk("Không tìm thấy dữ liệu.", this._goBack)
             this.setState({loading: false})

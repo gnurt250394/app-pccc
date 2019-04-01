@@ -72,13 +72,15 @@ import { Header } from 'components';
         this.setState({[key]: val})
     }
     _onSearch = () => {
-        searchProject(this.state.keyword,this.state.page).then(res=>{
-            console.log(res.data)
+        let keyword = this.search ? this.search.getValue() : ''
+        searchProject(keyword,this.state.page).then(res=>{
             if(res.data.code == Status.SUCCESS){
                 this.setState({listProject:res.data.data})
             } else if(res.data.code == Status.NO_CONTENT){
                 this.setState({listProject:[]})
             }
+        }).catch(err =>{
+            console.log(err.response,'err')
         })
     }
 
