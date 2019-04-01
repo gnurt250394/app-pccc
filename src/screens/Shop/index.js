@@ -5,10 +5,11 @@ import { Slide, ViewMore, BaseHeader,Header } from 'components'
 import { ViewAllProductScreen, HomeScreen } from 'config/screenNames'
 import ListItem from './ListItem'
 import TabShop from './TabShop';
-import { popupOk } from 'config';
+import { popupCancel } from 'config';
+import navigation from 'navigation/NavigationService';
 class Shop extends React.Component {
    componentDidMount = () => {
-    // popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', this.props.navigation.navigate(HomeScreen))
+    popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
    };
    
     render(){
@@ -43,29 +44,3 @@ const styles = StyleSheet.create({
     mb8: {marginBottom: 8}
 })
 
-let data = [
-    {
-        id: 1,
-        name: 'Bình chữa cháy 1',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 2,
-        name: 'Bình chữa cháy 2',
-        price: "liên hệ",
-        like: true
-    },
-    {
-        id: 3,
-        name: 'Bình chữa cháy 3',
-        price: 220000,
-        like: false
-    },
-    {
-        id: 4,
-        name: 'Bình chữa cháy 4',
-        price: 220000,
-        like: false
-    },
-]

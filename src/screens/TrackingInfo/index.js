@@ -3,7 +3,7 @@ import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleShee
 import { connect } from 'react-redux'
 import {  color, width, popupOk} from 'config'
 import { Header } from 'components'
-import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen } from 'config/screenNames'
+import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen, FolowContractor } from 'config/screenNames'
 import images from "assets/images"
 
 class TrackingInfo extends React.Component {
@@ -75,8 +75,8 @@ class TrackingInfo extends React.Component {
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
-                                // onPress={this._navTo(FolowContractor)} 
-                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
+                                onPress={this._navTo(FolowContractor)} 
+                                // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                                 >
                                 <View  style={style.box2} >
                                     <Image 
@@ -98,7 +98,7 @@ class TrackingInfo extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
-                                onPress={this._navTo(CatalogScreen, {type: 'catalog', follow: true})} >
+                                onPress={this._navTo(CatalogScreen, {type: 'catalog', follow: true,name:"Catalog theo dõi"})} >
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.catalog} />
@@ -106,7 +106,7 @@ class TrackingInfo extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
-                                onPress={this._navTo(CatalogScreen, {type: 'document', follow: true})} >
+                                onPress={this._navTo(CatalogScreen, {type: 'document', follow: true,name:"Tài liệu theo dõi"})} >
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.tailieu} />

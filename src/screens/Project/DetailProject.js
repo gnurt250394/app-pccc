@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Item from './Item';
 import CustomText from './CustomText';
 import { getListProject, FolowProject, FolowUser, unFolowProject, UnFolowUser } from 'config/apis/Project';
-import { Status, removeItem, formatNumber, getItem, popup } from 'config/Controller';
+import { Status, removeItem, formatNumber, getItem, popup, fontStyle } from 'config/Controller';
 import Toast from 'react-native-simple-toast';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen } from 'config/screenNames';
@@ -38,11 +38,12 @@ import { popupOk } from 'config'
       let token = await getItem('token')
       if(token){
 console.log(item,'ggg')
-      FolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
+      FolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
+        console.log(res.data,'sssss')
           if(res.data.code == Status.SUCCESS){
             let data = this.state.listPartner
             data.forEach(e=>{
-                if(e.users_id == item.users_id){
+                if(e.user_id == item.user_id){
                     e.follow = Status.UNCHECKED
                 }
             })
@@ -72,11 +73,11 @@ console.log(item,'ggg')
     let token = await getItem('token')
     if(token){
       console.log(item,'eee')
-      UnFolowUser({investor_id:item.users_id,table:'UserInvestor'}).then(res=>{
+      UnFolowUser({investor_id:item.user_id,table:'UserInvestor'}).then(res=>{
           if(res.data.code == Status.SUCCESS){
             let data = this.state.listPartner
               data.forEach(e=>{
-            if(e.users_id == item.users_id){
+            if(e.user_id == item.user_id){
             e.follow = Status.CHECKED
           }
           })
@@ -213,10 +214,10 @@ console.log(item,'ggg')
         </View>
         {project.follow&& project.follow== Status.UNCHECKED? 
         <TouchableOpacity
-          style={styles.folow}
+          style={styles.unFolow}
           onPress={this._UNfolowProject}
           >
-            <Text style={styles.txtButton}>Bỏ theo dõi</Text>
+            <Text style={styles.txtButtonUnFolow}>Bỏ theo dõi</Text>
         </TouchableOpacity>
         :
         <TouchableOpacity style={styles.folow}
@@ -287,53 +288,7 @@ console.log(item,'ggg')
   
 }
 
-const data = [
-    {
-        id: 30,
-        name: "Đào Cư Hà",
-        phone: "84 24 33532855, 33530129",
-        fax: null,
-        email:'abcajkdasf@gmail.com',
-        position:'Giám đốc',
-        sub:'trung cư',
-        address: "157 Ba La",
-        company: "Công Ty CP Xây Dựng & Thương Mại Phú Cường Công Ty CP Xây Dựng & Thương Mại Phú Cường "
-      },
-    {
-        id: 31,
-        name: "Đào Cư Hà",
-        phone: "84 24 33532855, 33530129",
-        fax: null,
-        email:'abcajkdasf@gmail.com',
-        position:'Giám đốc',
-        sub:'trung cư',
-        address: "157 Ba La",
-        company: "Công Ty CP Xây Dựng & Thương Mại Phú Cường"
-      },
-    {
-        id: 32,
-        name: "Đào Cư Hà",
-        phone: "84 24 33532855, 33530129",
-        fax: null,
-        email:'abcajkdasf@gmail.com',
-        position:'Giám đốc',
-        sub:'trung cư',
-        address: "157 Ba La",
-        company: "Công Ty CP Xây Dựng & Thương Mại Phú Cường"
-      },
-    {
-        id: 33,
-        name: "Đào Cư Hà",
-        phone: "84 24 33532855, 33530129",
-        fax: null,
-        email:'abcajkdasf@gmail.com',
-        position:'Giám đốc',
-        sub:'trung cư',
-        address: "157 Ba La",
-        company: "Công Ty CP Xây Dựng & Thương Mại Phú Cường"
-      },
-     
-]
+
 const styles= StyleSheet.create({
     container:{
         flex:1,
@@ -347,8 +302,13 @@ const styles= StyleSheet.create({
         marginRight:5
     },
     txtButton:{
-        color:'#FFFFFF'
+        color:'#FFFFFF',
+        fontFamily:fontStyle.Acumin_RPro_0
     },
+    txtButtonUnFolow:{
+      color:'#2166A2',
+      fontFamily:fontStyle.Acumin_RPro_0
+  },
     txtHeader:{
         color:'#333333',
         fontSize:16,
@@ -395,6 +355,18 @@ const styles= StyleSheet.create({
         justifyContent: 'center',
         backgroundColor:'#2166A2'
     },
+    unFolow:{
+      height:40,
+     //  width:width/2.5,
+     paddingHorizontal:35,
+     marginLeft: 15,
+     borderRadius: 5,
+     alignItems: 'center',
+     justifyContent: 'center',
+     backgroundColor:'#FFFFFF',
+     borderColor:'#2166A2',
+     borderWidth:1,
+ },
     image:{
         height:8,
         width:8,
