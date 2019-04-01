@@ -158,6 +158,7 @@ class ListBidding extends React.Component {
             }).catch(err => {
                 return []
             })
+            console.log(datas,'1')
         }else{
             datas = await listBiddings(this.state.page).then(res => {
                 // log('res: ', res);
@@ -166,6 +167,7 @@ class ListBidding extends React.Component {
                 // console.log('err: ', err);
                 return []
             })
+            console.log(datas,'2')
         }
         log(datas);
         if(datas.length == 0){
@@ -176,7 +178,7 @@ class ListBidding extends React.Component {
             })
         }else{
             if(this.state.page == 1){
-                this.setState({ datas, loading: true, refreshing: false  })
+                this.setState({ datas, loading: true, refreshing: false,threshold:0.1  })
             }else{
                 this.setState({ datas: [...this.state.datas, ...datas], loading: true, refreshing: false})
             }

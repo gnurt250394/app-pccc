@@ -9,9 +9,9 @@ let instance = axios.create({
 
 
 export const listBiddings = async page => {
-    // let token = await getItem('token')
-    // instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-    return instance.get(constant.NEW_BIDDING + '?page=' + page)
+    let token = await getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.NEW_BIDDING ,{params:{page:page}})
 }
 
 export const detailBidding = async id => {

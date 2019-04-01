@@ -30,7 +30,7 @@ export default class ItemList extends Component {
         <View style={{flex:1}}>
       <TouchableOpacity style={styles.container}>
         <Image 
-            source={{uri:this.props.item.image.full_path}}
+            source={this.props.item.image&&this.props.item.image.full_path?{uri:this.props.item.image.full_path}:images.logo}
             style={styles.image}
         />
         <View style={styles.containerTxt}>
