@@ -51,22 +51,7 @@ _keyExtractor=(item,index)=>{
 }
 
 const data =[
-    {
-        id:1,
-        name:'ấcd'
-    },
-    {
-        id:2,
-        name:'ấcd'
-    },
-    {
-        id:3,
-        name:'ấcd'
-    },
-    {
-        id:4,
-        name:'ấcd'
-    },
+    
 ]
 const styles = StyleSheet.create({
     container:{

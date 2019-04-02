@@ -9,6 +9,7 @@ import { getItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
 import Toast from 'react-native-simple-toast';
+import { Header } from 'components';
 
 class Catalog extends React.Component {
     state = {
@@ -42,16 +43,31 @@ class Catalog extends React.Component {
     /**
      * param type: document | catalog
      */
-
+    showTitle=()=>{
+        txt=''
+        if(this.props.navigation.state&&this.props.navigation.state.params.name){
+            txt = this.props.navigation.state.params.name
+        } else{
+            txt= ' '
+        }
+        return txt
+    }
     render(){
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
-                <BaseSearch 
+               {this.state.follow?
+                 <Header
+                 check={1}
+                 onPress={this._goBack}
+                 title={this.showTitle()}
+                 />
+                 :
+                <BaseSearch
                     onSearch={this._onSearch}
                     ref={val => this.search = val}
                     goBack={this._goBack}
-                    keyword={this.state.keyword} />
+                    keyword={this.state.keyword} />}
 
                 {
                     this.state.datas.length == 0 

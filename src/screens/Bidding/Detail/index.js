@@ -2,14 +2,15 @@ import React from 'react'
 import { View,  StatusBar, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { detailBidding } from 'config/apis/bidding'
-import { addFolow } from 'config/apis/Project'
+import { addFolow, UnFolowUser } from 'config/apis/Project'
 import {  color, ellipsis, popupOk, BiddingField, popupCancel, Follow, log } from 'config'
 import { Header } from 'components'
-import { getItem, Status } from 'config/Controller';
+import { getItem, Status, fontStyle } from 'config/Controller';
 import images from "assets/images"
 import styles from "assets/styles"
 import { SigninScreen, BuyProduct } from 'config/screenNames'
 import moment from 'moment';
+import SimpleToast from 'react-native-simple-toast';
 
 class LI extends React.Component {
 
@@ -74,8 +75,8 @@ class DetailBidding extends React.Component {
                         </TouchableOpacity>}
                         {bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
                             onPress={this.onUnFollow(bidding.id)}
-                            style={[style.row, style.calender, style.btn]}>
-                            <Text style={style.textBtn}>Bỏ theo dõi tin</Text>
+                            style={[style.row, style.calender, style.btnUnFolow]}>
+                            <Text style={style.textBtnUnFolow}>Bỏ theo dõi tin</Text>
                         </TouchableOpacity>}
                     </View>
                     <View style={[style.pb10,style.pr10,]}>
@@ -113,7 +114,7 @@ class DetailBidding extends React.Component {
                         <Text style={style.h3}>Đảm bảo dự thầu:</Text>
                         {bidding.amount_bidding && <LI label={`Số tiền bảo đảm dự thầu: ${bidding.amount_bidding}`} />}
                         {bidding.bidding_form && <LI label={`Hình thức bảo đảm dự thầu: ${bidding.bidding_form}`} />}
-                        {bidding.bidding_document && <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />}
+                        {bidding.bidding_document? <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />:null}
                         {bidding.care && <LI label={`Quan tâm: ${bidding.care}`} />}
                     </View>
                     
@@ -132,7 +133,7 @@ class DetailBidding extends React.Component {
             log('err: ', err);
             return null
         })
-
+console.log(bidding,'ddding')
         if(!bidding || (bidding && !bidding.id)){
             popupOk("Không tìm thấy dữ liệu.", this._goBack)
             this.setState({loading: false})
@@ -155,17 +156,17 @@ class DetailBidding extends React.Component {
                         popupCancel('Vui lòng mua gói để sử dụng tính năng này', () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Theo dõi thành công.')
-                        this.setState({bidding: {...bidding, follow: Follow.follow}})
+                        SimpleToast.show('Theo dõi thành công.')
+                        this.setState({bidding: {...this.state.bidding, follow: Follow.follow}})
                         break;
                 
                     default:
-                        popupOk('Theo dõi thất bại.')
+                        SimpleToast.show('Theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
                 console.log('err: ', err);
-                popupOk('Theo dõi thất bại.')
+                SimpleToast.show('Theo dõi thất bại.')
             })
         }
     }
@@ -180,16 +181,16 @@ class DetailBidding extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        popupOk('Bỏ theo dõi thành công.')
-                        this.setState({bidding: {...bidding, follow: Follow.unfollow}})
+                        SimpleToast.show('Bỏ theo dõi thành công.')
+                        this.setState({bidding: {...this.state.bidding, follow: Follow.unfollow}})
                         break;
                     default:
-                        popupOk('Bỏ theo dõi thất bại.')
+                        SimpleToast.show('Bỏ theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
                 console.log('err: ', err);
-                popupOk('Bỏ theo dõi thất bại.')
+                SimpleToast.show('Bỏ theo dõi thất bại.')
             })
         }
     }
@@ -236,10 +237,26 @@ const style = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 0,
     },
+    btnUnFolow: {
+        width: '40%',
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor:color
+    },
     textBtn: {
         color: 'white',
-        fontSize: 12,
-        textAlign: 'center'
+        fontSize: 13,
+        textAlign: 'center',
+        fontFamily:fontStyle.Acumin_RPro_0
+    },
+    textBtnUnFolow: {
+        color: color,
+        fontSize: 13,
+        textAlign: 'center',
+        fontFamily:fontStyle.Acumin_RPro_0
     },
     pb10: {
         paddingBottom: 10

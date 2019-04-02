@@ -76,7 +76,9 @@ export const searchDocuments = async (type, keyword = '', page = 1) => {
 }
 export const searchProject = async ( keyword = '', page = 1) => {
     // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
-    return instance.get(constant.SEARCH ,{params:{table:'news_projects',keyword:keyword,page:page}})
+    let token = await getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.SEARCH +`?table=news_projects&keyword=${keyword}&page=${page}`)
 }
 
 export const listDocumentFollows = async (type, page = 1) => {

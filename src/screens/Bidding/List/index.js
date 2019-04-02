@@ -55,12 +55,18 @@ class ListBidding extends React.Component {
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
-                    <BaseSearch 
+                    {this.state.follow?
+                    <Header
+                    check={1}
+                    onPress={this._goBack}
+                    title={"Theo dõi đấu thầu"}
+                    />
+                    :<BaseSearch 
                         onSearch={this._onSearch}
                         onClear={this.getData}
                         ref={val => this.search = val}
                         goBack={this._goBack}
-                        keyword={this.state.keyword} />
+                        keyword={this.state.keyword} />}
 
                     {
                         this.state.datas.length == 0 
@@ -152,6 +158,7 @@ class ListBidding extends React.Component {
             }).catch(err => {
                 return []
             })
+            console.log(datas,'1')
         }else{
             datas = await listBiddings(this.state.page).then(res => {
                 // log('res: ', res);
@@ -160,6 +167,7 @@ class ListBidding extends React.Component {
                 // console.log('err: ', err);
                 return []
             })
+            console.log(datas,'2')
         }
         log(datas);
         if(datas.length == 0){
@@ -170,7 +178,7 @@ class ListBidding extends React.Component {
             })
         }else{
             if(this.state.page == 1){
-                this.setState({ datas, loading: true, refreshing: false  })
+                this.setState({ datas, loading: true, refreshing: false,threshold:0.1  })
             }else{
                 this.setState({ datas: [...this.state.datas, ...datas], loading: true, refreshing: false})
             }

@@ -206,7 +206,7 @@ class EditProfile extends React.Component {
         })
     }
 
-    _onSuccess = () => {
+    _onSuccess = async() => {
         if(this.state.name&&this.state.name.trim().length < 2){
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if(!validateName(this.state.name)){
@@ -228,7 +228,7 @@ class EditProfile extends React.Component {
                 data.email = this.state.email; // check để ko bị trùng email cũ
             }
 
-            updateAvatar(this.state.image).then(res=>{
+           await updateAvatar(this.state.image).then(res=>{
                 if(res.data.code== Status.SUCCESS){
                     console.log(res.data,'image')
                     
@@ -245,7 +245,7 @@ class EditProfile extends React.Component {
                 
             })
             console.log(12, data);
-            updateUser(data).then(res => {
+           await updateUser(data).then(res => {
                 if(res.data.code == Status.SUCCESS){
                     this.props.dispatch({type: actionTypes.USER_UPDATE, data: res.data.data})
                     navigation.pop()

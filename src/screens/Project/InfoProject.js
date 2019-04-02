@@ -9,6 +9,7 @@ import { Status, color } from 'config/Controller';
 import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
 import { log, width, toParams } from 'config'
+import { Header } from 'components';
  class InfoProject extends Component {
   constructor(props) {
     super(props);
@@ -71,10 +72,15 @@ import { log, width, toParams } from 'config'
         this.setState({[key]: val})
     }
     _onSearch = () => {
-        searchProject(this.state.keyword,this.state.page).then(res=>{
+        let keyword = this.search ? this.search.getValue() : ''
+        searchProject(keyword,this.state.page).then(res=>{
             if(res.data.code == Status.SUCCESS){
                 this.setState({listProject:res.data.data})
+            } else if(res.data.code == Status.NO_CONTENT){
+                this.setState({listProject:[]})
             }
+        }).catch(err =>{
+            console.log(err.response,'err')
         })
     }
 
@@ -82,12 +88,19 @@ import { log, width, toParams } from 'config'
         let count = this.state.listProject.length
         return (
         <View style={styles.container}>
+            {this.state.follow ?
+            <Header
+            check={1}
+            onPress={this._goBack}
+            title={"Theo dõi dự án"}
+            />
+            :
             <BaseSearch 
                 onSearch={this._onSearch}
                 onClear={this.getData}
                 ref={val => this.search = val}
                 goBack={this._goBack}
-                keyword={this.state.keyword} />
+                keyword={this.state.keyword} />}
 
             {
                 this.state.listProject.length == 0 
