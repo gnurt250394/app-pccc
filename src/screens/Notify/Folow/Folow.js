@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View, Text,FlatList ,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import ItemList from './ItemList';
-import { getListNotifi } from 'config/apis/Notifi';
+import { getListNotifi, ReviewNotifi } from 'config/apis/Notifi';
 import { Status, removeItem, popup, getItem } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
 import { actionTypes } from 'actions'
 import { SigninScreen } from 'config/screenNames';
+import navigation from 'navigation/NavigationService';
 class Folow extends Component {
   constructor(props) {
     super(props);
@@ -17,11 +18,33 @@ class Folow extends Component {
         listFolow:[]
     };
   }
-
+_reViewNotifi=(item)=>()=>{
+    ReviewNotifi(item.id).then(res=>{
+        console.log(res.data,'hhh')
+        console.log(this.state.listFolow,'l')
+        if(res.data.code == Status.SUCCESS){
+            let list = this.state.listFolow
+            list.forEach(e=>{
+                if(e.id == item.id){
+                    e.status = 1
+                }
+            })
+            this.setState({listFolow:list})
+            
+        }else if(res.data.code == Status.DELETE_ID_NOT_FOUND){
+            SimpleToast.show("Thông báo không tồn tại")
+        } else if(res.data.code == Status.TOKEN_EXPIRED){
+            removeItem('token')
+        navigation.reset(SigninScreen)
+        this.props.dispatch({type: actionTypes.USER_LOGOUT})
+        }
+    }).catch(err=>{console.log(err,'err')})
+}
   _renderItem=({item})=>{
     return(
         <ItemList
             item={item}
+            onPress={this._reViewNotifi(item)}
         />
     )
 }
@@ -57,6 +80,7 @@ render() {
      <FlatList
          data={this.state.listFolow}
          renderItem={this._renderItem}
+         extraData={this.state}
          keyExtractor={this._keyExtractor}
          onEndReached={this.onEndReached}
          onEndReachedThreshold={this.state.Thresold}
@@ -92,43 +116,7 @@ render() {
   };
   
 }
-const data =[
-    {
-        id:1,
-        name:'Gói thông tin đấu thầu của bạn sẽ hết hạn vào ngày mùng 5/5/2019',
-        time:'hôm nay 20:10',
-        status:1,
-        image:'https://ttol.vietnamnetjsc.vn/images/2018/05/25/13/40/net-cuoi-be-gai-5-1527053440031984418330.jpg'
-    },
-    {
-        id:2,
-        name:'Gói thông tin đấu thầu của bạn sẽ hết hạn vào ngày mùng 5/5/2019',
-        time:'hôm nay 20:10',
-        status:1,
-        image:'http://vuanhiepanh.com/files/news/thumb/hinh-hoa.jpg'
-    },
-    {
-        id:3,
-        name:'Gói thông tin đấu thầu của bạn sẽ hết hạn vào ngày mùng 5/5/2019',
-        time:'hôm nay 20:10',
-        status:0,
-        image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    },
-    {
-        id:4,
-        name:'Gói thông tin đấu thầu của bạn sẽ hết hạn vào ngày mùng 5/5/2019',
-        time:'hôm nay 20:10',
-        status:0,
-        image:'https://ttol.vietnamnetjsc.vn/images/2018/05/25/13/40/net-cuoi-be-gai-9-1527053440039156820618.jpg'
-    },
-    {
-        id:5,
-        name:'Gói thông tin đấu thầu của bạn sẽ hết hạn vào ngày mùng 5/5/2019',
-        time:'hôm nay 20:10',
-        status:0,
-        image:'https://znews-photo.zadn.vn/w860/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-    },
-]
+
 
 
 export default connect()(Folow)

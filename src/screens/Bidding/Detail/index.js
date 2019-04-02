@@ -114,7 +114,7 @@ class DetailBidding extends React.Component {
                         <Text style={style.h3}>Đảm bảo dự thầu:</Text>
                         {bidding.amount_bidding && <LI label={`Số tiền bảo đảm dự thầu: ${bidding.amount_bidding}`} />}
                         {bidding.bidding_form && <LI label={`Hình thức bảo đảm dự thầu: ${bidding.bidding_form}`} />}
-                        {bidding.bidding_document && <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />}
+                        {bidding.bidding_document? <LI label={`Hồ sơ mời thầu: ${bidding.bidding_document}`} />:null}
                         {bidding.care && <LI label={`Quan tâm: ${bidding.care}`} />}
                     </View>
                     

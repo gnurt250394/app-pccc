@@ -20,11 +20,11 @@ export const postNotifi = async(page)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.post(constant.Notification,{params:{page:page}})
 }
-// export const FolowProject = async(body)=>{
-//     let token = await getItem('token')
-//         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-//         return instance.post(constant.NEW_PROJECT,{body,table:'UserProject'})
-// }
+export const ReviewNotifi = async(notification_id)=>{
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.post(constant.Notification +`/${notification_id}`)
+}
 // export const FolowUser = async(body)=>{
 //     let token = await getItem('token')
 //         instance.defaults.headers.common['Authorization'] = "Bearer " + token;

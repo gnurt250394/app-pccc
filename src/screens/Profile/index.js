@@ -6,6 +6,7 @@ import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen
 import { color, toUpperCase,StatusCode, log} from 'config'
 import NavItem from './NavItem'
 import { actionTypes } from 'actions'
+import FastImage from 'react-native-fast-image'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
 import { getItem} from 'config/Controller';
@@ -59,7 +60,7 @@ class Profile extends React.Component {
                         <TouchableOpacity 
                             onPress={this._navTo(ViewProfileScreen, {user: this.state.user, image: this.state.image, update: this.getInfo})}
                             style={style.boxUser}>
-                            <Image 
+                            <FastImage 
                                 style={style.avatar}
                                 source={image?{uri:image}:images.userBlue} />
                             <View style={style.user}>
