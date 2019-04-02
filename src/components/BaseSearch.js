@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet, View , Image, TextInput} from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, View , Image, TextInput,SafeAreaView} from 'react-native'
 import styles from "assets/styles" 
 import images from "assets/images" 
 import {  color } from 'config'
@@ -16,6 +16,7 @@ export default class BaseSearch extends React.PureComponent {
 
     render(){
         return (
+            <SafeAreaView style={style.head}>
             <View style={style.head}>
                    
                 {this.props.goBack && <TouchableOpacity style={style.p8}  onPress={this.props.goBack}  >
@@ -52,7 +53,7 @@ export default class BaseSearch extends React.PureComponent {
                     onPress={this.props.onCancel}
                     style={style.cancel}>Hủy</Text>}
             </View>
-            
+            </SafeAreaView>
         )
     }
 

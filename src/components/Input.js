@@ -27,6 +27,6 @@ const style = StyleSheet.create({
         flex: 1,
         opacity: 0.8,
     },
-    inputView: {flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: '#CCCCCC', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
+    inputView: {flexDirection: "row", borderBottomWidth: 0.5,height:37, borderBottomColor: '#CCCCCC', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
     w12: {width: 12}
 })

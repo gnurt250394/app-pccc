@@ -6,9 +6,28 @@ target 'fireProtection' do
   # use_frameworks!
 
   # Pods for fireProtection
+  rn_path = '../node_modules/react-native'
+  pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"
+  pod 'React', path: rn_path, subspecs: [
+    'Core',
+    'RCTActionSheet',
+    'RCTAnimation',
+    'RCTGeolocation',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTNetwork',
+    'RCTSettings',
+    'RCTText',
+    'RCTVibration',
+    'RCTWebSocket'
+  ]
 
 	pod 'XCDYouTubeKit', '~> 2.5'
 	pod 'GoogleSignIn'
+
+  pod 'react-native-youtube', :path => '../node_modules/react-native-youtube'
+  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
+
 
   target 'fireProtectionTests' do
     inherit! :search_paths
@@ -29,3 +48,25 @@ target 'fireProtection-tvOS' do
   end
 
 end
+
+swift4 = ['Charts']
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if swift4.include?(target.name)
+        config.build_settings['SWIFT_VERSION'] = '4.1'
+      end
+    end
+
+    if target.name == "React"
+      target.remove_from_project
+    end
+
+    if target.name == "yoga"
+      target.remove_from_project
+    end
+  end
+end
+
+install! 'cocoapods',
+         :deterministic_uuids => false
