@@ -40,7 +40,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FacebookAppID</key>
 	<string>409220322985074</string>
 	<key>FacebookDisplayName</key>
@@ -60,8 +60,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Cho phép quyền sử dụng địa chỉ để cập nhật vị trí hiện tại của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Cho phép quyền sử dụng địa chỉ để cập nhật vị trí hiện tại của bạn</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cho phép quyền này để bạn có thể thay đổi ảnh đại diện từ thư viện ảnh</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Acumin-BdItPro_0.otf</string>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, TextInput, FlatList, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log, isIos} from 'config'
+import { color, StatusCode, youtube, popupOk, popupCancel, Follow, defaultStyle, log, isIos } from 'config'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
 import YouTube, { YouTubeStandaloneAndroid, YouTubeStandaloneIOS } from 'react-native-youtube'
@@ -36,7 +36,7 @@ class Video extends React.Component {
         this._navListener.remove();
     }
 
-    render(){
+    render() {
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
@@ -52,15 +52,15 @@ class Video extends React.Component {
                         ?
                         !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                         :
-                    <FlatList
-                        data={this.state.datas}
-                        keyExtractor={(item, index) => index.toString()} 
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.handleRefresh}
-                        onEndReached={this.handleLoadmore}
-                        onEndReachedThreshold={this.state.threshold}
-                        ListFooterComponent={this.ListFooterComponent} 
-                        renderItem={this.renderItem(count)}/>
+                        <FlatList
+                            data={this.state.datas}
+                            keyExtractor={(item, index) => index.toString()}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.handleRefresh}
+                            onEndReached={this.handleLoadmore}
+                            onEndReachedThreshold={this.state.threshold}
+                            ListFooterComponent={this.ListFooterComponent}
+                            renderItem={this.renderItem(count)} />
                 }
             </View>
         )
@@ -79,14 +79,14 @@ class Video extends React.Component {
 
     getData = async () => {
         let datas = [];
-        if(this.state.follow){
+        if (this.state.follow) {
 
             datas = await listDocumentFollows('video', this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []
             })
-        }else{
+        } else {
             datas = await listDocuments('video', this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
@@ -94,8 +94,8 @@ class Video extends React.Component {
                 return []
             })
         }
-        
-        if(datas.length == 0){
+
+        if (datas.length == 0) {
             this.setState({ loading: false, refreshing: false, threshold: 0 })
         } else {
             if (this.state.page == 1) {
@@ -107,27 +107,26 @@ class Video extends React.Component {
 
     }
 
-    renderItem = count => ({item, index}) => {
-        
-        return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
-                <TouchableOpacity onPress={this.playvideo(item.link)} style={style.posR} >
-                    <Image style={style.image} source={{uri: youtube.thumbnail(item.link)}}/>
-                    <Image style={style.iconPlay} source={images.playVideo}/>
-                </TouchableOpacity>
-                <Text style={style.name}>{item.name}</Text>
-                <View style={style.row}>
-                    <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
-                    {item.follow == Follow.unfollow && <TouchableOpacity
-                        onPress={this.onFollow(item.id, index)}
-                        style={style.btn}>
-                        <Text style={style.textBtn}>Theo dõi video</Text>
-                    </TouchableOpacity>}
-                    {item.follow == Follow.follow && <TouchableOpacity
-                        onPress={this.onUnFollow(item.id, index)}
-                        style={style.btn}>
-                        <Text style={style.textBtn}>Bỏ theo dõi</Text>
-                    </TouchableOpacity>}
-                </View>
+    renderItem = count => ({ item, index }) => {
+
+        return <View style={index == count - 1 ? [style.box, style.btw0] : style.box}>
+            <TouchableOpacity onPress={this.playvideo(item.link)} style={style.posR} >
+                <Image style={style.image} source={{ uri: youtube.thumbnail(item.link) }} />
+                <Image style={style.iconPlay} source={images.playVideo} />
+            </TouchableOpacity>
+            <Text style={style.name}>{item.name}</Text>
+            <View style={style.row}>
+                <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}` : ""}</Text>
+                {item.follow == Follow.unfollow && <TouchableOpacity
+                    onPress={this.onFollow(item.id, index)}
+                    style={style.btn}>
+                    <Text style={style.textBtn}>Theo dõi video</Text>
+                </TouchableOpacity>}
+                {item.follow == Follow.follow && <TouchableOpacity
+                    onPress={this.onUnFollow(item.id, index)}
+                    style={style.btn}>
+                    <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                </TouchableOpacity>}
             </View>
         </View>
     }
@@ -189,11 +188,11 @@ class Video extends React.Component {
     }
 
     playvideo = id => () => {
-        if(isIos)
+        if (isIos)
             YouTubeStandaloneIOS.playVideo(id)
-            .then(() => console.log('Standalone Player Exited'))
-            .catch(errorMessage => console.error(errorMessage))
-      
+                .then(() => console.log('Standalone Player Exited'))
+                .catch(errorMessage => console.error(errorMessage))
+
         else
             YouTubeStandaloneAndroid.playVideo({
                 apiKey: youtube.apiKey,     // Your YouTube Developer API Key
@@ -237,16 +236,16 @@ class Video extends React.Component {
 export default connect()(Video)
 
 const style = StyleSheet.create({
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
-    txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    w15: { width: 15},
-    p8: {padding: 8},
-    flex: {flex: 1},
-    cancel: {color: 'white', padding: 10},
-    iconPlay: {position: 'absolute', top: 48, left: '45%', width: 60, resizeMode: 'contain'},
-    posR: {position: 'relative'},
+    heading: { justifyContent: 'space-between', padding: 10, alignContent: 'center' },
+    boxSearch: { flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10, },
+    head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10, },
+    txtSearch: { color: "rgba(255, 255, 255, 0.6)" },
+    w15: { width: 15 },
+    p8: { padding: 8 },
+    flex: { flex: 1 },
+    cancel: { color: 'white', padding: 10 },
+    iconPlay: { position: 'absolute', top: 48, left: '45%', width: 60, resizeMode: 'contain' },
+    posR: { position: 'relative' },
     iconBack: {
         height: 18,
         width: 18,

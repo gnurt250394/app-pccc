@@ -16,7 +16,7 @@ export default class ItemList extends Component {
           return {
             color:'#555555',
             fontWeight: 'normal',
-            fontFamily:fontStyle.Acumin_ItPro_0
+            fontFamily:  fontStyle.Acumin_ItPro_0
         }
       }else{
           return {

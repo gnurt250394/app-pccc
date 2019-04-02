@@ -1,4 +1,4 @@
-import {AsyncStorage,Alert} from 'react-native'
+import {AsyncStorage,Alert, Platform} from 'react-native'
 import navigation from 'navigation/NavigationService';
 
 export const getItem= async(token)=>{
@@ -28,14 +28,14 @@ export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
   }
   export const fontStyle = {
-    SemiBoldItalic:'Montserrat-SemiBoldItalic',
-    bold:'Montserrat-ExtraBold',
-    Montserrat_SemiBold:'Montserrat-SemiBold',
-    Montserrat_Regular:'Montserrat-Regular',
-    Acumin_bold:'Acumin-BdPro_0',
-    Acumin_thin:'Acumin-BdItPro_0',
-    Acumin_ItPro_0:'Acumin-ItPro_0',
-    Acumin_RPro_0:'Acumin-RPro_0'
+    SemiBoldItalic: Platform.OS === "android" ? 'Montserrat-SemiBoldItalic': null,
+    bold: Platform.OS === "android" ? 'Montserrat-ExtraBold': null,
+    Montserrat_SemiBold: Platform.OS === "android" ? 'Montserrat-SemiBold': null,
+    Montserrat_Regular: Platform.OS === "android" ?'Montserrat-Regular': null,
+    Acumin_bold: Platform.OS === "android" ?'Acumin-BdPro_0' : null,
+    Acumin_thin: Platform.OS === "android" ?'Acumin-BdItPro_0': null,
+    Acumin_ItPro_0:Platform.OS === "android" ? 'Acumin-ItPro_0': null,
+    Acumin_RPro_0:Platform.OS === "android" ?'Acumin-RPro_0': null
 }
 export const color = "#2166A2"
 export const popup = (txt,onPress,fun) => {
