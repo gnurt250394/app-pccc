@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet,StatusBar } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet,StatusBar,Platform,SafeAreaView } from 'react-native'
 import images from "assets/images"
 import styles from "assets/styles" 
 import { color } from 'config'
@@ -9,10 +9,11 @@ import { fontStyle } from 'config/Controller';
 export default class Header extends React.Component {
     render(){
         return (
+            <SafeAreaView style={style.container}>
             <View style={ [style.content,{...this.props.style}]} >
-            <StatusBar
+            {/* <StatusBar
                 barStyle="light-content" 
-                backgroundColor={color} />
+                backgroundColor={color} /> */}
             {   this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                     <Image 
                         style={style.icon}
@@ -26,6 +27,7 @@ export default class Header extends React.Component {
                 <Text style={ style.title}>{this.props.title}</Text>
                 <View style={style.view}/>
             </View>
+            </SafeAreaView>
         )
     }
 }
@@ -36,8 +38,12 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: color,
         height:47,
+        // flex:1,
         alignItems:'center',
         alignContent: 'center',
+    },
+    container:{
+        backgroundColor: color,
     },
     icon: {
         height: 16,

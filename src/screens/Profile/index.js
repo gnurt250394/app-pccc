@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage,  ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView,AsyncStorage,  ActivityIndicator ,SafeAreaView} from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import {ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen, RegisterScreen} from 'config/screenNames'
@@ -53,10 +53,11 @@ class Profile extends React.Component {
             return (
                 <View style={style.flex}>
                     <ScrollView >
+                        <SafeAreaView style={style.SafeAreaView}> 
                         <View style={style.head}>
                             <Text style={style.title}> Cá nhân </Text>
                         </View>
-
+                        </SafeAreaView>
                         <TouchableOpacity 
                             onPress={this._navTo(ViewProfileScreen, {user: this.state.user, image: this.state.image, update: this.getInfo})}
                             style={style.boxUser}>
@@ -154,6 +155,7 @@ const mapStateToProps = (state) =>{
 export default connect(mapStateToProps)(Profile)
 
 const style = StyleSheet.create({
+    SafeAreaView:{backgroundColor:color},
     icon: {width: 10, resizeMode: 'contain', },
     iconNext: {width: 10, resizeMode: 'contain', marginLeft: 10, marginRight: 10},
     label: {color: '#585858', fontSize: 16, flex: 1, paddingTop: 5},

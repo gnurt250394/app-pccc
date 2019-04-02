@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView,AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView,AsyncStorage ,SafeAreaView} from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { updateUser, updateAvatar, getInfoAcount } from 'config/apis/users'
@@ -101,6 +101,7 @@ class EditProfile extends React.Component {
         return (
             <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
             <ScrollView >
+                <SafeAreaView style={style.SafeAreaView}>
                 <View style={style.header}>
                     {   this.state.loading ? 
                         <View style={styles.loading}>
@@ -117,6 +118,7 @@ class EditProfile extends React.Component {
                         <Text style={style.textDone}>Xong</Text>
                     </TouchableOpacity>
                 </View>
+                </SafeAreaView>
                     <TouchableOpacity onPress={this._onUploadImage}
                     style={style.boxUser}>
                         <FastImage 
@@ -276,6 +278,9 @@ const mapStateToProps = (state) =>{
 export default connect(mapStateToProps)(EditProfile)
 
 const style = StyleSheet.create({
+    SafeAreaView:{
+        backgroundColor:color
+    },
     icon: {
         width: 18, 
         resizeMode: 'contain', 

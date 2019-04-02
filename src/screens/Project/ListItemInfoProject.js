@@ -24,36 +24,32 @@ export default class ListItem extends Component {
                  />  Loại dự án: {this.props.item.type_project}</Text>
               </View> */}
               <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
+              <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Trạng thái dự án: {this.props.item.status}</Text>
+                 /> 
+                 <Text style={styles.txtColor}>Trạng thái dự án: {this.props.item.status}</Text>
               </View>
               <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
+              <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Thời gian bắt đầu: {moment(this.props.item.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
+                 /> 
+                 <Text style={styles.txtColor}>Thời gian bắt đầu: {moment(this.props.item.time_start,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
               </View>
               <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
+              <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Thời gian kết thúc: {moment(this.props.item.time_end,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
+                 /> 
+                 <Text style={styles.txtColor}>Thời gian kết thúc: {moment(this.props.item.time_end,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')}</Text>
               </View>
               <View style={styles.row}>
-                 
-                 <Text style={styles.txtColor}>
-                 <Image
+              <Image
                   source={images.offline}
                   style={styles.image}
-                 />  Địa điểm: {this.props.item.address}</Text>
+                 /> 
+                 <Text style={styles.txtColor}>Địa điểm: {this.props.item.address}</Text>
               </View>
             </View>
             {this.props.index < this.props.count - 1 && <View style={styles.end}/>}
@@ -73,11 +69,12 @@ const styles= StyleSheet.create({
         flex:1,
     },
     image:{
-        height:5,
-        width:5,
+        width: 6, 
+        height: 6, 
+        marginLeft: 10,
+        marginRight: 10, 
+        marginTop: 5,
         tintColor:'gray',
-        alignSelf: 'center',
-        marginRight: 8,
     },
     txtHeader:{
         fontWeight:'600',
@@ -86,7 +83,8 @@ const styles= StyleSheet.create({
     },
     row:{
         flexDirection:'row',
-        marginBottom:5
+        marginBottom:5,
+        alignItems:'flex-start'
     },Header:{
         marginBottom:15
     },

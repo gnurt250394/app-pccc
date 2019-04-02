@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text ,StyleSheet,Dimensions,Image,FlatList,ScrollView,Animated} from 'react-native';
+import { View, Text ,StyleSheet,Dimensions,Image,FlatList,ScrollView,Animated,SafeAreaView} from 'react-native';
 import { Header } from 'components';
 import { fontStyle, color, Status } from 'config/Controller';
 import images from 'assets/images'
@@ -61,7 +61,7 @@ export default class DetailContractor extends Component {
       })
       const marginTop = this.state.scrollY.interpolate({
           inputRange:[0,HEADER_MAX_HEGHT-HEADER_MIN_HEGHT],
-          outputRange:[HEADER_MAX_HEGHT-100,HEADER_MAX_HEGHT+20],
+          outputRange:[HEADER_MAX_HEGHT-120,HEADER_MAX_HEGHT+5],
           extrapolate:'clamp'
       })
       const zIndex = this.state.scrollY.interpolate({
@@ -71,7 +71,7 @@ export default class DetailContractor extends Component {
       })
     return (
       <View style={styles.container}>
-        
+        <SafeAreaView>
         <Animated.View
         style={[styles.header,{
             height:headerHeight,
@@ -87,7 +87,7 @@ export default class DetailContractor extends Component {
             onPress={this._goBack}
             title={"Thông tin nhà thầu"}
         />
-        <Animated.View
+        {/* <Animated.View
         style={[styles.header,{
             height:headerHeight,
             zIndex
@@ -100,7 +100,8 @@ export default class DetailContractor extends Component {
             title={"Thông tin nhà thầu"}
         />
 
-        </Animated.View>
+        </Animated.View> */}
+        </SafeAreaView>
         <ScrollView 
         style={{flex:1}}
         scrollEventThrottle={15}
@@ -188,7 +189,10 @@ const styles = StyleSheet.create({
         // position:'absolute',
         // top: 55,
         // height:height/4,
-       
+        shadowColor:'#999999',
+        shadowOffset:{width:1,height:1},
+        shadowOpacity:0.7,
+        shadowRadius:10,
         elevation:4,
         width:width-20,
         borderRadius: 10,

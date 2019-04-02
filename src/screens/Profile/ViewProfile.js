@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet,Dimensions } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet,Dimensions ,SafeAreaView} from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import {  ShowGender, color,StatusCode  } from 'config'
@@ -10,7 +10,7 @@ import { getItem, removeItem, Status } from 'config/Controller';
 const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
     render() {
-      return this.props.name ? <View style={{ marginBottom: 2, flexDirection: 'row'}}>
+      return this.props.name ? <View style={{  flexDirection: 'row'}}>
                 <Image 
                     style={[style.icon, this.props.styleIcon || {}]}
                     source={this.props.icon} />
@@ -46,6 +46,7 @@ class ViewProfile extends React.Component {
         let {user,image} = this.state
         return (
             <View >
+                <SafeAreaView style={style.SafeAreaView}>
                 <View style={style.header}>
                     <TouchableOpacity style={style.p10} onPress={this._goBack}>
                         <Image 
@@ -59,6 +60,7 @@ class ViewProfile extends React.Component {
                             source={images.edit} />
                     </TouchableOpacity>
                 </View>
+                </SafeAreaView>
                 <View style={style.boxUser}>
                     <FastImage 
                         style={style.avatar}
@@ -114,15 +116,18 @@ const mapStateToProps = (state) =>{
 export default connect(mapStateToProps)(ViewProfile)
 
 const style = StyleSheet.create({
+    SafeAreaView:{
+        backgroundColor:color
+    },
     icon: {
-        width: 18, 
+        width: 15, 
         resizeMode: 'contain', 
         marginLeft: 10, 
         marginRight: 10,
         marginTop: 0
     },
     w26: { width: 26},
-    iconPhone: { width: 15, marginLeft: 12, marginRight: 12},
+    iconPhone: { width: 13, marginLeft: 12, marginRight: 12},
     iconGender: { width: 20, marginLeft: 9, marginRight: 9},
     iconLocation: { width: 15, marginLeft: 12, marginRight: 12},
     iconBack: {height: 15, resizeMode: 'contain' },
@@ -131,10 +136,11 @@ const style = StyleSheet.create({
         color: '#555555', 
         fontSize: 14, 
         flex: 1, 
-        paddingTop: 5,
-        paddingBottom: 10,
-        borderBottomColor:'#CCCCCC',
-        borderBottomWidth:0.5,
+        paddingTop: 8,
+        paddingBottom: 5,
+        height:40,
+        borderBottomColor:'#333333',
+        borderBottomWidth:1,
         // borderWidth: 1,
     },
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
@@ -150,5 +156,5 @@ const style = StyleSheet.create({
         alignSelf:'flex-end',
         backgroundColor:'#F1F1F1'
     },
-    sub: {color: '#BBBBBB', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#CCCCCC',borderBottomWidth:0.5},
+    sub: {color: '#BBBBBB', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#333333',borderBottomWidth:1},
 })

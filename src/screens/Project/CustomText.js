@@ -11,11 +11,11 @@ export default class CustomText extends Component {
   render() {
     return (
         this.props.name?<View style={styles.row}>
-               <Text style={styles.txt}>
-               <Image
+                <Image
                 source={images.offline}
                 style={styles.image}
-               />  {this.props.value}: {this.props.name}</Text>
+               /> 
+               <Text style={styles.txt}>{this.props.value}: {this.props.name}</Text>
             </View>: null
         
     );
@@ -24,16 +24,19 @@ export default class CustomText extends Component {
 const styles = StyleSheet.create({
     row:{
         flexDirection:'row',
-        marginBottom:9
+        marginBottom:9,
+        alignItems:'flex-start'
     },
     txt:{
       color:'#333131'
     },
     image:{
-        height:6,
-        width:6,
-        tintColor:'gray',
-        alignSelf: 'center',
-        marginRight: 8,
+      width: 6, 
+      height: 6, 
+      marginLeft: 10,
+      marginRight: 10, 
+      marginTop: 5,
+      tintColor:'gray',
+  
     },
 })
