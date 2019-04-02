@@ -5,6 +5,7 @@ import images from "assets/images"
 import {  ShowGender, color,StatusCode  } from 'config'
 import { EditProfileScreen } from 'config/screenNames'
 import { getInfoAcount } from 'config/apis/users';
+import FastImage from 'react-native-fast-image'
 import { getItem, removeItem, Status } from 'config/Controller';
 const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
@@ -59,7 +60,7 @@ class ViewProfile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={style.boxUser}>
-                    <Image 
+                    <FastImage 
                         style={style.avatar}
                         source={image?{uri:image}:images.userBlue} />
                     <Text style={style.name}>{user.name}</Text>
