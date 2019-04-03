@@ -26,6 +26,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2033F6F631344CAABC0DC2AC /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D8111B4C92467483A4AA6E /* libRNImagePicker.a */; };
+		226B64A42254675500EAB250 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2251293522536E69003823B0 /* libRNFetchBlob.a */; };
 		2270C96A22533A6B00FF9A6C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2270C96622533A6A00FF9A6C /* Bolts.framework */; };
 		2270C96B22533A6B00FF9A6C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2270C96722533A6A00FF9A6C /* FBSDKCoreKit.framework */; };
 		2270C96C22533A6B00FF9A6C /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2270C96822533A6A00FF9A6C /* FBSDKLoginKit.framework */; };
@@ -446,6 +447,7 @@
 		1DC8008139564DFAA86F0936 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		1E76078FB907441CBE4CE99A /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../assets/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
 		2251290722536E68003823B0 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		226B64D22254689700EAB250 /* fireProtection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fireProtection.entitlements; path = fireProtection/fireProtection.entitlements; sourceTree = "<group>"; };
 		2270C96622533A6A00FF9A6C /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		2270C96722533A6A00FF9A6C /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		2270C96822533A6A00FF9A6C /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -516,6 +518,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				226B64A42254675500EAB250 /* libRNFetchBlob.a in Frameworks */,
 				2270C9AF22533B1300FF9A6C /* libRNAccountKit.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -654,6 +657,7 @@
 		13B07FAE1A68108700A75B9A /* fireProtection */ = {
 			isa = PBXGroup;
 			children = (
+				226B64D22254689700EAB250 /* fireProtection.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1013,6 +1017,14 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = RUQ4M6N2M4;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1803,9 +1815,10 @@
 			baseConfigurationReference = C3FB93CED095A2E830327DBD /* Pods-fireProtection.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = fireProtection/fireProtection.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RUQ4M6N2M4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -1839,8 +1852,9 @@
 			baseConfigurationReference = 9D124E56D4D1AC56F9FF32A2 /* Pods-fireProtection.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = fireProtection/fireProtection.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RUQ4M6N2M4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
