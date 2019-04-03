@@ -5,6 +5,7 @@ import styles from "assets/styles"
 import { color } from 'config'
 import navigation from 'navigation/NavigationService';
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 export default class Header extends React.Component {
     render(){
@@ -24,7 +25,7 @@ export default class Header extends React.Component {
 
             
             }
-                <Text style={ style.title}>{this.props.title}</Text>
+                <Text style={[ style.title,fontStyles.Acumin_bold]}>{this.props.title}</Text>
                 <View style={style.view}/>
             </View>
             </SafeAreaView>
@@ -51,7 +52,7 @@ const style = StyleSheet.create({
         resizeMode: 'contain', 
     },
     title: {
-        fontFamily: fontStyle.Acumin_bold,
+        // fontFamily: fontStyle.Acumin_bold,
         flex: 1, 
         fontSize: 18, 
         color: '#fff', 

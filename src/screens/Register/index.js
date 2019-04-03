@@ -11,6 +11,7 @@ import  { SigninScreen, HomeScreen, } from 'config/screenNames'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 class Register extends React.Component {
     state = {
@@ -47,7 +48,7 @@ class Register extends React.Component {
                             source={images.closeBlue} />
                 </TouchableOpacity> */}
 
-                <Text style={style.title}>{toUpperCase('Đăng ký')}</Text>
+                <Text style={[style.title,fontStyles.bold]}>{toUpperCase('Đăng ký')}</Text>
                 <View style={style.h70p}>
                     <BaseInput 
                         icon={images.userDark}
@@ -59,6 +60,7 @@ class Register extends React.Component {
                         styleIcon={style.h15}
                         icon={images.phoneDark}
                         removeSpace={true}
+                        customStyle={{paddingBottom:5}}
                         ref={val => this.phone = val}
                         onBlur={this._checkPhone}
                         keyboardType='numeric'
@@ -238,10 +240,10 @@ export default connect()(Register)
 const style = StyleSheet.create({
     btn: {marginTop:  40, marginBottom: 50},
     boxForgot: {width: '50%', alignSelf: 'center',},
-    h15: {height: 15},
+    h15: {height: 15,marginBottom:4},
     h70p: {height: '70%'},
     title: {color: color, fontSize:  height < smallScreen ? 16 : 22,fontWeight: '500', marginBottom: '10%', textAlign: 'center',
-    fontFamily: fontStyle.bold,
+    // fontFamily: fontStyles.bold,
 },
     flex: {flex: 1},
     btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},

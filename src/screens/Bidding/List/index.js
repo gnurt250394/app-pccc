@@ -112,7 +112,7 @@ class ListBidding extends React.Component {
 
     renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
-                    onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id})}
+                    onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id,follow:this.state.follow})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <Text style={style.name}>{item.name || item.name_bidding}</Text>
                 {/* <View style={[style.row, style.calender]}>

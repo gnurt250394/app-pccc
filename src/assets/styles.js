@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { color, defaultStyle, width, height, sreen4_7 } from 'config'
 import {  fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 
 export default styles = StyleSheet.create({
@@ -37,7 +38,7 @@ export default styles = StyleSheet.create({
         fontSize: defaultStyle.fontSize,
         color: 'white',
         fontWeight:'500',
-        fontFamily: fontStyle.bold,
+        // fontFamily: fontStyles.bold,
     },
     textSignup: {
         alignSelf: 'center',

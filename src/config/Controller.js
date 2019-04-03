@@ -44,9 +44,9 @@ export const popup = (txt,onPress,fun) => {
         txt,
         [
           {
-            text: 'Cancel', style: 'cancel',onPress:onPress?() => {navigation.navigate(onPress)}:null
+            text: 'Cancel', style: 'cancel',onPress: onPress ? onPress : () => null
           },
-          {text: 'OK', onPress:  () => {navigation.navigate(fun)}}
+          {text: 'OK', onPress: fun ? fun : () => null}
         ],
         {cancelable: false},
       );

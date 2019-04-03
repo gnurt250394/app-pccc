@@ -14,6 +14,7 @@ import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
 import  { accountKit, getCurrentAccount } from 'config/accountKit'
 import { log } from 'config/debug'
+import { fontStyles } from 'config/fontStyles';
 class Signin extends React.Component {
     state = {
         username: '',
@@ -81,7 +82,7 @@ class Signin extends React.Component {
                                 name="Đăng nhập" />
                             <Btn
                                 onPress={this._navTo(RegisterScreen)}
-                                customStyle={style.register}
+                                customStyle={[style.register,fontStyles.bold]}
                                 textStyle={style.color}
                                 name="Đăng ký" />
 
@@ -145,7 +146,7 @@ class Signin extends React.Component {
             const data = await AccessToken.getCurrentAccessToken();
             if (!data) {
                 this.setState({loading: false})
-                popupOk("Đăng nhập thất bại");
+                // popupOk("Đăng nhập thất bại");
                 return
             } 
             const callbackProfile = ((err, user) => {
@@ -281,7 +282,7 @@ class Signin extends React.Component {
                 
             }else{
                 this.setState({loading: false})
-                popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+                // popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
             }
         })
         
@@ -375,7 +376,9 @@ const style = StyleSheet.create({
         alignItems: 'center'},
     forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5, fontSize: defaultStyle.fontSize},
     social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
-    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,fontFamily:fonts.bold},
+    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,
+    // fontFamily:fontStyles.bold
+},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {
@@ -392,21 +395,21 @@ const style = StyleSheet.create({
     mt8: {marginTop: 8},
     mb50: {marginBottom: 35},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
-    textTitle1:{
-        alignSelf:'center',
-        fontSize:19,
-        fontFamily: fonts.bold,
-        color:'#2166A2',
-        fontWeight:'bold'
-    },
-    textTitle2:{
-        alignSelf:'center',
-        fontSize:22,
-        marginBottom:50,
-        fontFamily: fonts.bold,
-        color:'#2166A2',
-        fontWeight:'bold'
-    },
+    // textTitle1:{
+    //     alignSelf:'center',
+    //     fontSize:19,
+    //     // fontFamily: fontStyles.bold,
+    //     color:'#2166A2',
+    //     fontWeight:'bold'
+    // },
+    // textTitle2:{
+    //     alignSelf:'center',
+    //     fontSize:22,
+    //     marginBottom:50,
+    //     fontFamily: fontStyles.bold,
+    //     color:'#2166A2',
+    //     fontWeight:'bold'
+    // },
     boxLoading: {flex: 1, backgroundColor: '#999999', position: "relative",}
 })
 

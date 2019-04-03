@@ -101,12 +101,16 @@ class Profile extends React.Component {
                     <View style={style.bodyModal}>
                         <Text style={style.headModal}>Yêu cầu đăng nhập</Text>
                         <View style={style.footerModal}>
+                        <View style={[style.groupTxt,{backgroundColor:color,borderBottomLeftRadius: 8}]}>
                             <Text 
                                 onPress={this._navTo(SigninScreen)}
-                                style={[style.btnModal, style.login]}>{toUpperCase("Đăng nhập")}</Text>
+                                style={[style.btnModal]}>{toUpperCase("Đăng nhập")}</Text>
+                                </View>
+                                <View style={[style.groupTxt,{backgroundColor:'#FFFFFF',borderBottomRightRadius: 8,}]}> 
                             <Text 
                                 onPress={this._navTo(RegisterScreen)}
                                 style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}</Text>
+                                </View>
                         </View>
                     </View>
                 </View>
@@ -170,10 +174,18 @@ const style = StyleSheet.create({
     mt20: { marginTop: 20},
     flex: {flex: 1},
     modal: {backgroundColor: '#999999', justifyContent: 'center', flex: 1, },
-    bodyModal: {width: '80%', alignSelf: 'center', backgroundColor: 'white',  flexDirection: 'column', borderRadius: 8,},
+    bodyModal: {width: '80%', alignSelf: 'center', backgroundColor: '#FFFFFF',  flexDirection: 'column', borderRadius: 8,},
     headModal: {textAlign: 'center', padding: 10, color: '#333333',  fontWeight: 'bold', fontSize: 18},
     footerModal: {flexDirection: 'row', borderWidth: 1, borderColor: color, borderBottomLeftRadius: 8, borderBottomRightRadius: 8,},
-    btnModal: {padding: 10, fontSize: 16, fontWeight: '400', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', borderBottomLeftRadius: 5, borderBottomRightRadius: 8},
-    register: {color: color, backgroundColor: 'white', borderBottomLeftRadius: 0},
-    login: {borderBottomRightRadius: 0},
+    btnModal: { fontSize: 16, fontWeight: '400',height:'100%',width:'100%', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center',},
+    register: {color: color, backgroundColor: 'white'},
+    groupTxt:{
+        flex:1,
+        width:'100%',
+        height:'100%',
+        padding: 10,
+        height:39,
+        
+    }
+    // login: {borderBottomRightRadius: 0},
 })

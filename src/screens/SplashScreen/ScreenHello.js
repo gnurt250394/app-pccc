@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,Dimensions,ScrollView,StatusBar,AsyncStorage } from 'react-native';
+import { View, Text,Image,StyleSheet,Dimensions,ScrollView,StatusBar,AsyncStorage ,SafeAreaView} from 'react-native';
 import {StackActions,NavigationActions} from 'react-navigation'
 import Swiper from 'react-native-swiper'
 import images from "assets/images"
@@ -9,6 +9,7 @@ import { Btn } from 'components'
 import navigation from 'navigation/NavigationService';
 import {connect} from 'react-redux'
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 const {width,height} =Dimensions.get('window')
 
@@ -46,14 +47,28 @@ const {width,height} =Dimensions.get('window')
         
         return (
             <ScrollView>
-                <View >
+                <SafeAreaView style={{flex:1}}>
+                <View style={{flex:1}}>
                     <Swiper  autoplay={true}
                         dotColor="#E5F4FC"
                         activeDotColor="#80C9F0"
                         style={styles.slide}
                         autoplayTimeout={3}
+                        containerStyle={{width}}
                         height={height/2} >
-                        <View style={styles.swiper}>
+                        {data.map(item=>{
+                            return(
+                                <View 
+                                key={`${item.id}`}
+                                style={styles.swiper}>
+                            <Image source={item.image}
+                                style={styles.image}
+                                resizeMode="contain"/>
+                            <Text style={[styles.txt,fontStyles.Montserrat_SemiBold]}>{item.name}</Text>
+                        </View>
+                            )
+                        })}
+                        {/* <View style={styles.swiper}>
                             <Image source={images.splashSearch}
                                 style={styles.image}
                                 resizeMode="contain"/>
@@ -70,13 +85,13 @@ const {width,height} =Dimensions.get('window')
                                 style={styles.image}
                                 resizeMode="contain"/>
                             <Text style={styles.txt} >THÔNG TIN HỮU ÍCH</Text>
-                        </View>
+                        </View> */}
                     </Swiper>
                     <View style={styles.container}>
 
                     <Btn
                         onPress={this.nextHome} 
-                        customStyle={styles.mb8}
+                        customStyle={[styles.mb8,fontStyles.bold]}
                         name="Bắt đầu ngay" />
 
                     <View style={styles.boxOr}>
@@ -100,13 +115,30 @@ const {width,height} =Dimensions.get('window')
                     
                     </View>
                 </View>
+                </SafeAreaView>
             </ScrollView>
         );
     }
    
     
 }
-
+const data = [
+    {
+        id:1,
+        name:'TÌM KIẾM NHANH',
+        image:images.splashSearch
+    },
+    {
+        id:2,
+        name:'KẾT NỐI MUA BÁN',
+        image:images.splashBuy
+    },
+    {
+        id:1,
+        name:'THÔNG TIN HỮU ÍCH',
+        image:images.splashInfo
+    },
+]
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -123,7 +155,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         // fontWeight: '500',
         marginTop: 10,
-        fontFamily: fontStyle.Montserrat_SemiBold,
+        // fontFamily: fontStyles.Montserrat_SemiBold,
     },
     btn:{
         alignItems:'center',
@@ -141,7 +173,8 @@ const styles = StyleSheet.create({
     },
     swiper:{
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        flex:1
     },
     slide: {flex:1,marginTop:40},
     OR:{
@@ -160,8 +193,8 @@ const styles = StyleSheet.create({
         color: '#80C9F0'},
     mb8: {
         marginBottom: 20, 
-        marginTop: -20,
-        fontFamily:fonts.bold
+        // marginTop: -20,
+        // fontFamily:fontStyles.bold
     },
     mt5: {
         marginBottom: 5
