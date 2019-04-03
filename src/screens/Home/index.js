@@ -6,6 +6,7 @@ import { BaseSearch } from 'components'
 import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen } from 'config/screenNames'
 import { color, toUpperCase, width, popupOk } from 'config'
 import { getItem } from 'config/Controller';
+import { popupCancel } from 'config';
 // import navigation from 'navigation/NavigationService';
 
 
@@ -44,7 +45,10 @@ class Home extends React.Component {
                                 <Text style={style.textTop}>Thông tin theo dõi</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[style.btnTop]} 
-                            onPress={this._navTo(ShopScreen)} 
+                            onPress={
+                                // this._navTo(ShopScreen)
+                                () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
+                            } 
                             >
                             <Image 
                                 style={style.iconTop}
@@ -175,7 +179,7 @@ class Home extends React.Component {
         }else{
             let token = await getItem('token')
             if(token) this.props.navigation.navigate(screen, params)
-            else  popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+            else popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }
         
         

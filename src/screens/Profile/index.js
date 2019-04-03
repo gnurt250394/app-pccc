@@ -37,7 +37,7 @@ class Profile extends React.Component {
                 {   this.state.loading 
                     ? 
                     <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
+                        <ActivityIndicator size="large" color="#2166A2"/>
                     </View> 
                     :
                     this.renderView()
