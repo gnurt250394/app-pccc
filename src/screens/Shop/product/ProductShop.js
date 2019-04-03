@@ -6,6 +6,7 @@ import { Status, removeItem, formatNumber, showPopup } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen, BuyProduct } from 'config/screenNames';
 import { height } from 'config';
+import { popupCancel } from 'config';
 export default class ProductShop extends Component {
   constructor(props) {
     super(props);
@@ -22,27 +23,25 @@ export default class ProductShop extends Component {
         if(res.data.code== Status.SUCCESS){
             this.setState({
                 ListProduct:res.data.data,
-                loadMore:true
             })
         } else if(res.data.code== Status.NO_CONTENT){
             this.setState({
                 ListProduct:[],
-                loadMore:false,
-                Threshold:0
             })
         } else if(res.data.code == Status.TOKEN_EXPIRED){
             navigation.reset(SigninScreen)
             removeItem('token')
         } else if(res.data.code == Status.TOKEN_VALID){
-            navigation.reset(SigninScreen)
-            removeItem('token')
+            popupCancel('Bạn phải đăng nhập để xử dụng tính năng này',()=>navigation.navigate(SigninScreen))
         }
+    }).catch(err=>{
+        console.log(err.response,'err')
     })
   }
   showTitle=(item)=>{
     let name=''
-    if(item.product_name&& item.product_name.length > 50 ){
-          name= item.product_name.substring(0, 49) + "..." 
+    if(item.product_name&& item.product_name.length > 20 ){
+          name= item.product_name.substring(0, 19) + "..." 
     } else{
      name= item.product_name 
     }
@@ -68,7 +67,6 @@ _addItem=()=>{
           );
     } else{
         // this.setState({ListProduct:[{id:10,full_path:'',price:100000000,product_name:'bình cứu hỏa 123'},...this.state.ListProduct]})
-        console.log(this.state.ListProduct,'liiisst')
         navigation.navigate(BuyProduct)
     }
    
@@ -129,7 +127,7 @@ _addItem=()=>{
     );
   }
   componentDidMount = () => {
-    // this.getDetail()
+    this.getDetail()
   };
   
 }
@@ -153,14 +151,7 @@ const data = [
         product_name:'Bình chữa cháy ',
         price:'100000'
     },
-    {
-        id:4,
-        full_path:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
-        product_name:'Bình chữa cháy abc bca abc asdf à asdf we sdfa',
-        price:'100000'
-    },
-   
-   
+    
     {
         add:true
     }
@@ -194,22 +185,22 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
-        maxWidth:'31%',
+        maxWidth:'30%',
         padding: 10,
         margin: 5,
         elevation:2,
         flex:1,
-        height:height/3
     },
     containerAdd:{
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
-        maxWidth:'31%',
-        padding: 10,
+        maxWidth:'30%',
+        paddingVertical: 50,
+        // paddingHorizontal:3,
+        flex:1,
         margin: 5,
         elevation:2,
-        height:height/3,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -217,10 +208,6 @@ const styles = StyleSheet.create({
         color:'#2166A2',
         marginTop: 13,
         fontSize:12,
-        justifyContent:'flex-end',
-        position:'absolute',
-        bottom:8,
-        left:4
     },
     txtAdd:{
         color:'#2166A2',

@@ -9,7 +9,7 @@ import { popupCancel } from 'config';
 import navigation from 'navigation/NavigationService';
 class Shop extends React.Component {
    componentDidMount = () => {
-    popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
+    // popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
    };
    
     render(){
