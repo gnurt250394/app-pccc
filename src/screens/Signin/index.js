@@ -7,7 +7,7 @@ import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, Co
 import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager, GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
@@ -15,6 +15,7 @@ import { saveItem } from 'config/Controller';
 import  { accountKit, getCurrentAccount } from 'config/accountKit'
 import { log } from 'config/debug'
 import { fontStyles } from 'config/fontStyles';
+import Loading from 'components/loading';
 class Signin extends React.Component {
     state = {
         username: '',
@@ -47,10 +48,10 @@ class Signin extends React.Component {
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
             
             <View style={style.content} >
-               {   this.state.loading 
+               {/* {   this.state.loading 
                         ? 
                         this._showLoading()
-                        : 
+                        :  */}
                     <View>
                         <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
                             <Image 
@@ -113,7 +114,10 @@ class Signin extends React.Component {
                             </View>
                         </View>
                     </View>
-                }
+                    <Loading
+                    visible={this.state.loading}
+                    />
+                {/* } */}
             </View>
             </TouchableWithoutFeedback>
         )
@@ -200,10 +204,12 @@ class Signin extends React.Component {
                 });
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                let data = await  GoogleSignin.signIn()
+                let data = await  GoogleSignin.signIn().then(res=>console.log(res,'res')).catch(err=>console.log(err,'errr'))
+                console.log(data,'data')
+               
                 if(!data){
-                    this.setState({loading: false})
-                    popupOk("Đăng nhập thất bại");
+                    this.setState({loading: false}) 
+                    // popupOk("Đăng nhập thất bại");
                     return
                 }
                 let user = data && data.user || {}
@@ -221,15 +227,32 @@ class Signin extends React.Component {
                     }
                 }).catch(err => {
                     this.setState({loading: false})
+                    console.log(err,'eeee')
                     popupOk("Đăng nhập thất bại");
                 })
             })
             
             
-        } catch (e) {
+        } catch (error) {
             
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+                this.setState({loading: false})
+                console.log(error,'SIGN_IN_CANCELLED')
+              } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (f.e. sign in) is in progress already
+                this.setState({loading: false})
+                console.log(error,'IN_PROGRESS')
+              } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+                this.setState({loading: false})
+                console.log(error,'PLAY_SERVICES_NOT_AVAILABLE')
+              } else {
+                // some other error happened
+                this.setState({loading: false})
+                console.log(error,'else')
+              }
             
-            this.setState({loading: false})
         }
     }
 

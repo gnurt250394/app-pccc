@@ -135,7 +135,7 @@ const style = StyleSheet.create({
         width:15
     },
     iconPhone: { width: 10, },
-    // iconGender: { width: 17, },
+    iconGender: { width: 17, },
     // iconLocation: { width: 15, },
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
