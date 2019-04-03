@@ -145,7 +145,7 @@ class Signin extends React.Component {
             })
             if (result.isCancelled)  {
                 this.setState({loading: false})
-                popupOk("Đăng nhập thất bại");
+                // popupOk("Đăng nhập thất bại");
             }
             const data = await AccessToken.getCurrentAccessToken();
             if (!data) {
@@ -156,7 +156,7 @@ class Signin extends React.Component {
             const callbackProfile = ((err, user) => {
                 if(err || !user){
                     this.setState({loading: false})
-                    popupOk("Đăng nhập thất bại");
+                    // popupOk("Đăng nhập thất bại");
                 }else{
                     let body = {
                         name: user.name,
@@ -173,7 +173,7 @@ class Signin extends React.Component {
                     }).catch(err => {
                         
                         this.setState({loading: false})
-                        popupOk("Đăng nhập thất bại");
+                        // popupOk("Đăng nhập thất bại");
                     })
                 }
                     
@@ -204,32 +204,37 @@ class Signin extends React.Component {
                 });
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                let data = await  GoogleSignin.signIn().then(res=>console.log(res,'res')).catch(err=>console.log(err,'errr'))
+                 await  GoogleSignin.signIn().then(data=>{
+                    if(!data){
+                        this.setState({loading: false}) 
+                        // popupOk("Đăng nhập thất bại");
+                        return
+                    }
+                    let user = data && data.user || {}
+    
+                    loginSocial({
+                        name: user.name,
+                        email: user.email,
+                        login_type: LoginType.google
+                    }).then(res => {
+                        if(res.data.code == StatusCode.Success){
+                            this.setState({loading: false})
+                            this._onSwitchToHomePage(res);
+                        }else{
+                            this.setState({loading: false})
+                            popupOk(CodeToMessage[res.data.code])
+                        }
+                    }).catch(err => {
+                        this.setState({loading: false})
+                        console.log(err,'eeee')
+                        popupOk("Đăng nhập thất bại");
+                    })
+                    }).catch(err=>{
+                        this.setState({loading:false})
+                    })
                 console.log(data,'data')
                
-                if(!data){
-                    this.setState({loading: false}) 
-                    // popupOk("Đăng nhập thất bại");
-                    return
-                }
-                let user = data && data.user || {}
-
-                loginSocial({
-                    name: user.name,
-                    email: user.email,
-                    login_type: LoginType.google
-                }).then(res => {
-                    if(res.data.code == StatusCode.Success){
-                        this._onSwitchToHomePage(res);
-                    }else{
-                        this.setState({loading: false})
-                        popupOk(CodeToMessage[res.data.code])
-                    }
-                }).catch(err => {
-                    this.setState({loading: false})
-                    console.log(err,'eeee')
-                    popupOk("Đăng nhập thất bại");
-                })
+                
             })
             
             
