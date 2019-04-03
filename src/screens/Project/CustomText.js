@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         alignItems:'flex-start'
     },
     txt:{
-      color:'#333131'
+      color:'#333131',
+      fontSize:12
     },
     image:{
       width: 6, 

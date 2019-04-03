@@ -30,11 +30,12 @@ const {width,height}= Dimensions.get('window')
 _nextPage=(router,params)=>()=>{
     navigation.navigate(router,params)
 }
-  _renderItem=({item})=>{
+  _renderItem=({item,index})=>{
     return(
       <ListItem
         onPress={this._nextPage(DetailContractor,{id:item.id})}
         item={item}
+        index={index}
       />
     )
   }

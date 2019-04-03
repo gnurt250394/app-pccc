@@ -16,7 +16,7 @@ export default class BaseSearch extends React.PureComponent {
 
     render(){
         return (
-            <SafeAreaView style={style.head}>
+            <SafeAreaView style={style.SafeAreaView}>
             <View style={style.head}>
                    
                 {this.props.goBack && <TouchableOpacity style={style.p8}  onPress={this.props.goBack}  >
@@ -88,6 +88,7 @@ const style = StyleSheet.create({
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
     posR: {position: 'relative'},
+    SafeAreaView:{backgroundColor:color},
     iconBack: {
         height: 18,
         width:18, 

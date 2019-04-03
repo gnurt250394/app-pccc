@@ -21,7 +21,7 @@ export default class Item extends PureComponent {
         </View>
         <Text style={[styles.txt,{color:this.props.name?'#2166A2':'#999999'}]}>{this.props.name?this.props.name:this.props.subName}</Text>
       </View>
-      <View style={styles.end}/>
+      <View style={[styles.end,{...this.props.style}]}/>
       </TouchableOpacity>
       )} else {
         return(
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     },
     txtInput:{
         height:38,
-        textAlign:'right'
-
+        textAlign:'right',
+        paddingRight:6
     }
 })

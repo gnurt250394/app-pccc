@@ -6,6 +6,7 @@ import { getLiquidation } from 'config/apis/myShop';
 import { Status, removeItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
+import { popupCancel } from 'config';
     moment.locale('vn')
 export default class LiquidationShop extends Component {
 
@@ -96,6 +97,9 @@ _loadMore=()=>{
         })
     }
 }
+_nextPage=()=>{
+    navigation.navigate()
+}
   render() {
     return (
       <View style={styles.container}>
@@ -107,6 +111,15 @@ _loadMore=()=>{
             onEndReached={this._loadMore}
             onEndReachedThreshold={this.state.Thresold}
        />
+       <TouchableOpacity style={styles.btnAdd}
+       onPress={this._nextPage}
+       >
+           <Image
+           source={images.shopAdd}
+           style={styles.add}
+           resizeMode="contain"
+           />
+       </TouchableOpacity>
       </View>
     );
   }
@@ -127,9 +140,10 @@ _loadMore=()=>{
             navigation.reset(SigninScreen)
             removeItem('token')
         } else if(res.data.code == Status.TOKEN_VALID){
-            navigation.reset(SigninScreen)
-            removeItem('token')
+            popupCancel('Bạn phải đăng nhập để xử dụng tính năng này',()=>navigation.navigate(SigninScreen))
           }
+      }).catch(err=>{
+          console.log(err.response,'err')
       })
   }
   componentDidMount = () => {
@@ -138,45 +152,26 @@ _loadMore=()=>{
   
 }
 
-const data = [
-    {
-        id:1,
-        image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
-        name:'Bình chữa cháy ',
-        description:'ssss',
-        price:'100000',
-        location:'Hà nội'
-    },
-    {
-        id:2,
-        image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
-        name:'Bình chữa cháy ',
-        description:'ssss',
-        price:'100000',
-        location:'Hà nội'
-    },
-    {
-        id:3,
-        image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
-        name:'Bình chữa cháy ',
-        description:'aaaa',
-        price:'100000',
-        location:'Hà nội'
-    },
-    {
-        id:4,
-        image:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
-        name:'Bình chữa cháy abc bca abc asdf à asdf we sdfa',
-        description:'abc',
-        price:'100000',
-        location:'Hà nội'
-    },
-    
-]
+
 const styles = StyleSheet.create({
     container:{
         flex:1,
         // padding: 10,
+    },
+    add:{
+        width:25,
+        tintColor:'#FFFFFF'
+    },
+    btnAdd:{
+        height:50,
+        width:50,
+        borderRadius:25,
+        backgroundColor:'#2166A2',
+        position:'absolute',
+        bottom:10,
+        alignItems:'center',
+        justifyContent:'center',
+        right:10
     },
     end:{
         height:1,
