@@ -21,7 +21,7 @@ export default class DropDown extends PureComponent {
           <TouchableOpacity
           style={{marginBottom:3}}
               onPress={this.props.onPress}>
-                <Text style={[{color:'#0082C0'},FontStyle.bold]}>{this.props.nameOnPress}</Text>
+                <Text style={[{color:'#0082C0'}]}>{this.props.nameOnPress}</Text>
               </TouchableOpacity>
               :
               <View/>

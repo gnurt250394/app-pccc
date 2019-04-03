@@ -160,4 +160,5 @@ module.exports = {
 
     // home
     closeSearch: require('./closeSearch.png'),
+    loading:require('./loading.gif')
 }

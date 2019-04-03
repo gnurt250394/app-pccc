@@ -33,8 +33,9 @@ import { Header } from 'components';
     _renderItem = count => ({item, index}) => {
         return(
             <ListItem
-                onPress={this._nextPage(DetailProject,{id:item.id,name:item.name})}
+                onPress={this._nextPage(DetailProject,{id:item.id,name:item.name,follow:this.state.follow})}
                 item={item}
+                follow={this.state.follow}
                 count={count}
                 index={index}
             />

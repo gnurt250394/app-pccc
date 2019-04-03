@@ -10,6 +10,7 @@ import { SigninScreen } from 'config/screenNames'
 import { BaseSearch } from 'components'
 import Toast from 'react-native-simple-toast';
 import { Header } from 'components';
+import moment from 'moment';
 
 class Video extends React.Component {
     state = {
@@ -116,7 +117,10 @@ class Video extends React.Component {
         }
 
     }
-
+    _formatDate=(date)=>{
+       let newDate= moment(date,'YYYY-MM-DD hh:mm:ss').format('DD/MM/YYYY')
+       return newDate
+    }
     renderItem = count => ({item, index}) => {
         
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
@@ -126,7 +130,7 @@ class Video extends React.Component {
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
-                    <Text style={style.time}>{item.date && item.date != "" ? `Ngày đăng: ${item.date}`: ""}</Text>
+                    <Text style={style.time}>{item.created_at && item.created_at.date != "" ? `Ngày đăng: ${this._formatDate(item.created_at.date)}`: ""}</Text>
                     {item.follow == Follow.unfollow && <TouchableOpacity
                         onPress={this.onFollow(item.id, index)}
                         style={style.btn}>

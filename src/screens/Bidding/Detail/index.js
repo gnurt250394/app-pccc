@@ -11,6 +11,7 @@ import styles from "assets/styles"
 import { SigninScreen, BuyProduct } from 'config/screenNames'
 import moment from 'moment';
 import SimpleToast from 'react-native-simple-toast';
+import { fontStyles } from 'config/fontStyles';
 
 class LI extends React.Component {
 
@@ -29,7 +30,8 @@ class DetailBidding extends React.Component {
     state = {
         loading: true,
         bidding_id: this.props.navigation.getParam('bidding_id'),
-        bidding: {}
+        bidding: {},
+        follow: this.props.navigation.getParam('follow') || false,
     }
     token = null
     // set status bar
@@ -49,7 +51,7 @@ class DetailBidding extends React.Component {
 
     render(){
         let bidding = this.state.bidding || {}
-        
+        let {follow} = this.state
         return (
             <View style={[style.flex]}>
                 {   this.state.loading ? 
@@ -68,16 +70,16 @@ class DetailBidding extends React.Component {
                             <Image source={images.calender} style={style.iconCalender}/>
                             <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY') }</Text>
                         </View>
-                        {bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
+                        {!follow && (bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
-                            <Text style={style.textBtn}>Theo dõi tin đấu thầu</Text>
-                        </TouchableOpacity>}
-                        {bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
+                            <Text style={[style.textBtn,fontStyles.Acumin_RPro_0]}>Theo dõi tin đấu thầu</Text>
+                        </TouchableOpacity>)}
+                        {!follow && (bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
                             onPress={this.onUnFollow(bidding.id)}
                             style={[style.row, style.calender, style.btnUnFolow]}>
-                            <Text style={style.textBtnUnFolow}>Bỏ theo dõi tin</Text>
-                        </TouchableOpacity>}
+                            <Text style={[style.textBtnUnFolow,fontStyles.Acumin_RPro_0]}>Bỏ theo dõi tin</Text>
+                        </TouchableOpacity>)}
                     </View>
                     <View style={[style.pb10,style.pr10,]}>
                         <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>
@@ -250,13 +252,13 @@ const style = StyleSheet.create({
         color: 'white',
         fontSize: 13,
         textAlign: 'center',
-        fontFamily:fontStyle.Acumin_RPro_0
+        // fontFamily:fontStyles.Acumin_RPro_0
     },
     textBtnUnFolow: {
         color: color,
         fontSize: 13,
         textAlign: 'center',
-        fontFamily:fontStyle.Acumin_RPro_0
+        // fontFamily:fontStyles.Acumin_RPro_0
     },
     pb10: {
         paddingBottom: 10

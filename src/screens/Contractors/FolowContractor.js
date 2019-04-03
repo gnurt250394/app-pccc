@@ -73,7 +73,7 @@ _nextPage=(router,params)=>()=>{
         <Header
             check={1}
             onPress={this._goBack}
-            title={"Thông tin dự án"}
+            title={"Theo dõi nhà thầu"}
         />
         <FlatList
             data={this.state.listProject}

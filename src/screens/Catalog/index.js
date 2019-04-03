@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput ,Linking,Platform} from 'react-native'
 import { connect } from 'react-redux'
 import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore, log} from 'config'
 import { BaseSearch } from 'components'
@@ -102,8 +102,9 @@ class Catalog extends React.Component {
     }
 
     renderItem = count => ({item, index}) => {
+        console.log(item,'item')
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
-        
+
                 { this.showImage(item.link) }
                 
                 <View style={style.right}>
@@ -276,24 +277,35 @@ class Catalog extends React.Component {
         let filename = /[^\/]*$/.exec(link)[0]
         let dirs = RNFetchBlob.fs.dirs
         filePath = `${dirs.DownloadDir}/${filename}`
-
-        RNFetchBlob.config({
-            path: filePath,
-            addAndroidDownloads : {
-                useDownloadManager : true,
-                notification : true,
-                mime : MIME[ext],
-                description : 'Tải file thành công bởi Siêu thị vật liệu xây dựng.'
-            }
-        })
-        .fetch('GET', link)
-        .then((res) => {
-            res.path()
-            popupOk('Tải xuống hoàn tất.')
-        })
-        .catch((errorMessage, statusCode) => {
-            popupOk('Tải xuống hoàn tất.')
-        })
+        if(Platform.OS == 'android'){
+            RNFetchBlob.config({
+                path: filePath,
+                addAndroidDownloads : {
+                    useDownloadManager : true,
+                    notification : true,
+                    mime : MIME[ext],
+                    description : 'Tải file thành công bởi Siêu thị vật liệu xây dựng.'
+                },
+                
+            })
+            .fetch('GET', link)
+            .then((res) => {
+                res.path()
+                console.log(res,'res')
+                console.log(res.path(),'path')
+                popupOk('Tải xuống hoàn tất.')
+            })
+            .catch((errorMessage, statusCode) => {
+                console.log(errorMessage,'errr')
+                console.log(statusCode,'status')
+                popupOk('Lỗi khi tải xuống.')
+            })
+        } else{
+            RNFetchBlob.config({
+                IOSBackgroundTask:true
+            })
+        }
+        
     }
 
     _onSearch = () => {

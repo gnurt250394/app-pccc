@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
 import images from 'assets/images'
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 const {width} = Dimensions.get('window')
 export default class ItemList extends Component {
@@ -34,8 +35,8 @@ export default class ItemList extends Component {
             style={styles.image}
         />
         <View style={styles.containerTxt}>
-            <Text style={[styles.txt,styles.edited]}>{this.props.item.message}</Text>
-            <Text style={styles.time}>{this.props.item.time}</Text>
+            <Text style={[styles.txt,styles.edited,fontStyles.Acumin_ItPro_0]}>{this.props.item.message}</Text>
+            <Text style={[styles.time,fontStyles.Acumin_thin]}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>
     :
@@ -47,8 +48,8 @@ export default class ItemList extends Component {
             style={styles.image}
         />
         <View style={styles.containerTxt}>
-            <Text style={[styles.txt,styles.unEdited]}>{this.props.item.message}</Text>
-            <Text style={styles.time}>{this.props.item.time}</Text>
+            <Text style={[styles.txt,styles.unEdited,fontStyles.Acumin_bold]}>{this.props.item.message}</Text>
+            <Text style={[styles.time,fontStyles.Acumin_thin]}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>}
       <View style={styles.end} />
@@ -66,11 +67,11 @@ const styles = StyleSheet.create({
     edited:{
       color:'#555555',
       fontWeight: 'normal',
-      fontFamily:fontStyle.Acumin_ItPro_0
+      // fontFamily:fontStyles.Acumin_ItPro_0
     },
     unEdited:{
       color:'#333333',
-      fontFamily:fontStyle.Acumin_bold
+      // fontFamily:fontStyles.Acumin_bold
     },
     image:{
         height:40,
@@ -82,11 +83,11 @@ const styles = StyleSheet.create({
     txt:{
         marginBottom: 12,
         marginTop: 5,
-        fontFamily:fontStyle.Acumin_bold ,
+        // fontFamily:fontStyles.Acumin_bold ,
     },
     time:{
         color:'#CCCCCC',
-        fontFamily:fontStyle.Acumin_thin,
+        // fontFamily:fontStyles.Acumin_thin,
         fontSize:12
     },
     containerTxt:{

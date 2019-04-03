@@ -12,21 +12,23 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen } from 'config/screenNames';
 import moment from 'moment';
 import { popupOk } from 'config'
+import { fontStyles } from 'config/fontStyles';
 
 class DetailProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
       project: {},
-      listPartner: []
+      listPartner: [],
+      folow: this.props.navigation.getParam('follow') || false,
     };
   }
 
 
   showTitle = () => {
     let name = ''
-    if (this.props.navigation.state && this.props.navigation.state.params.name && this.props.navigation.state.params.name.length > 30) {
-      name = this.props.navigation.state.params.name.substring(0, 29) + "..."
+    if (this.props.navigation.state && this.props.navigation.state.params.name && this.props.navigation.state.params.name.length > 20) {
+      name = this.props.navigation.state.params.name.substring(0, 19) + "..."
     } else {
       name = this.props.navigation.state.params.name || 'Chi tiết dự án'
     }
@@ -58,13 +60,13 @@ class DetailProject extends Component {
         } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         } else if (res.data.code == Status.USER_PERMISSION) {
-          popup('Bạn phải mua gói để sử dụng tính năng này.', null, HomeScreen)
+          popup('Bạn phải mua gói để sử dụng tính năng này.', null, ()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
     }
   }
 
@@ -95,7 +97,7 @@ class DetailProject extends Component {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
     }
   }
 
@@ -145,7 +147,7 @@ class DetailProject extends Component {
           } else if (res.data.code == Status.PROJECT_ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           } else if (res.data.code == Status.USER_PERMISSION) {
-            popup('Bạn phải mua gói để sử dụng tính năng này.', null, popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+            popup('Bạn phải mua gói để sử dụng tính năng này.', null,()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
             console.log(res.data)
           }
         }).catch(err => {
@@ -153,7 +155,7 @@ class DetailProject extends Component {
           console.log(err.response)
         })
       } else {
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, ()=>navigation.navigate(SigninScreen))
 
       }
 
@@ -192,7 +194,7 @@ class DetailProject extends Component {
     }
   }
   render() {
-    let { project, listPartner } = this.state
+    let { project, listPartner,folow } = this.state
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -212,19 +214,19 @@ class DetailProject extends Component {
                 />
                 <Text style={styles.time}>{moment(project.time, 'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
               </View>
-              {project.follow && project.follow == Status.UNCHECKED ?
+              {!folow && (project.follow && project.follow == Status.UNCHECKED ?
                 <TouchableOpacity
                   style={styles.unFolow}
                   onPress={this._UNfolowProject}
                 >
-                  <Text style={styles.txtButtonUnFolow}>Bỏ theo dõi</Text>
+                  <Text style={[styles.txtButtonUnFolow,fontStyles.Acumin_RPro_0]}>Bỏ theo dõi</Text>
                 </TouchableOpacity>
                 :
                 <TouchableOpacity style={styles.folow}
                   onPress={this._folowProject}
                 >
-                  <Text style={styles.txtButton}>Theo dõi dự án</Text>
-                </TouchableOpacity>
+                  <Text style={[styles.txtButton,fontStyles.Acumin_RPro_0]}>Theo dõi dự án</Text>
+                </TouchableOpacity>)
               }
             </View>
             <CustomText value={"Giá trị"} name={formatNumber(project.value) + " " + "đ"} />
@@ -308,13 +310,13 @@ const styles = StyleSheet.create({
   },
   txtButton: {
     color: '#FFFFFF',
-    fontSize:12,
-    fontFamily: fontStyle.Acumin_RPro_0
+    fontSize: 12,
+    // fontFamily: fontStyles.Acumin_RPro_0
   },
   txtButtonUnFolow: {
     color: '#2166A2',
-    fontSize:12,
-    fontFamily: fontStyle.Acumin_RPro_0
+    fontSize: 12,
+    // fontFamily: fontStyles.Acumin_RPro_0
   },
   txtHeader: {
     color: '#333333',

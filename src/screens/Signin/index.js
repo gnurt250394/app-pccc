@@ -7,13 +7,15 @@ import { color, popupOk, validatePhone, validateEmail, StatusCode, LoginType, Co
 import { login, loginSocial, checkPhoneOrEmail, updateUser, accountkitInfo   } from 'config/apis/users'
 import { AccessToken, LoginManager, GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 import { Btn, BaseInput } from 'components'
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
 import  { accountKit, getCurrentAccount } from 'config/accountKit'
 import { log } from 'config/debug'
+import { fontStyles } from 'config/fontStyles';
+import Loading from 'components/loading';
 class Signin extends React.Component {
     state = {
         username: '',
@@ -46,10 +48,10 @@ class Signin extends React.Component {
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
             
             <View style={style.content} >
-               {   this.state.loading 
+               {/* {   this.state.loading 
                         ? 
                         this._showLoading()
-                        : 
+                        :  */}
                     <View>
                         <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
                             <Image 
@@ -81,7 +83,7 @@ class Signin extends React.Component {
                                 name="Đăng nhập" />
                             <Btn
                                 onPress={this._navTo(RegisterScreen)}
-                                customStyle={style.register}
+                                customStyle={[style.register,fontStyles.bold]}
                                 textStyle={style.color}
                                 name="Đăng ký" />
 
@@ -112,7 +114,10 @@ class Signin extends React.Component {
                             </View>
                         </View>
                     </View>
-                }
+                    <Loading
+                    visible={this.state.loading}
+                    />
+                {/* } */}
             </View>
             </TouchableWithoutFeedback>
         )
@@ -140,18 +145,18 @@ class Signin extends React.Component {
             })
             if (result.isCancelled)  {
                 this.setState({loading: false})
-                popupOk("Đăng nhập thất bại");
+                // popupOk("Đăng nhập thất bại");
             }
             const data = await AccessToken.getCurrentAccessToken();
             if (!data) {
                 this.setState({loading: false})
-                popupOk("Đăng nhập thất bại");
+                // popupOk("Đăng nhập thất bại");
                 return
             } 
             const callbackProfile = ((err, user) => {
                 if(err || !user){
                     this.setState({loading: false})
-                    popupOk("Đăng nhập thất bại");
+                    // popupOk("Đăng nhập thất bại");
                 }else{
                     let body = {
                         name: user.name,
@@ -168,7 +173,7 @@ class Signin extends React.Component {
                     }).catch(err => {
                         
                         this.setState({loading: false})
-                        popupOk("Đăng nhập thất bại");
+                        // popupOk("Đăng nhập thất bại");
                     })
                 }
                     
@@ -199,36 +204,60 @@ class Signin extends React.Component {
                 });
                 // view more scopes: https://developers.google.com/people/api/rest/v1/people/get
                 await GoogleSignin.signOut() // allow user choose account
-                let data = await  GoogleSignin.signIn()
-                if(!data){
-                    this.setState({loading: false})
-                    popupOk("Đăng nhập thất bại");
-                    return
-                }
-                let user = data && data.user || {}
-
-                loginSocial({
-                    name: user.name,
-                    email: user.email,
-                    login_type: LoginType.google
-                }).then(res => {
-                    if(res.data.code == StatusCode.Success){
-                        this._onSwitchToHomePage(res);
-                    }else{
-                        this.setState({loading: false})
-                        popupOk(CodeToMessage[res.data.code])
+                 await  GoogleSignin.signIn().then(data=>{
+                    if(!data){
+                        this.setState({loading: false}) 
+                        // popupOk("Đăng nhập thất bại");
+                        return
                     }
-                }).catch(err => {
-                    this.setState({loading: false})
-                    popupOk("Đăng nhập thất bại");
-                })
+                    let user = data && data.user || {}
+    
+                    loginSocial({
+                        name: user.name,
+                        email: user.email,
+                        login_type: LoginType.google
+                    }).then(res => {
+                        if(res.data.code == StatusCode.Success){
+                            this.setState({loading: false})
+                            this._onSwitchToHomePage(res);
+                        }else{
+                            this.setState({loading: false})
+                            popupOk(CodeToMessage[res.data.code])
+                        }
+                    }).catch(err => {
+                        this.setState({loading: false})
+                        console.log(err,'eeee')
+                        popupOk("Đăng nhập thất bại");
+                    })
+                    }).catch(err=>{
+                        this.setState({loading:false})
+                    })
+                console.log(data,'data')
+               
+                
             })
             
             
-        } catch (e) {
+        } catch (error) {
             
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+                this.setState({loading: false})
+                console.log(error,'SIGN_IN_CANCELLED')
+              } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (f.e. sign in) is in progress already
+                this.setState({loading: false})
+                console.log(error,'IN_PROGRESS')
+              } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+                this.setState({loading: false})
+                console.log(error,'PLAY_SERVICES_NOT_AVAILABLE')
+              } else {
+                // some other error happened
+                this.setState({loading: false})
+                console.log(error,'else')
+              }
             
-            this.setState({loading: false})
         }
     }
 
@@ -281,7 +310,7 @@ class Signin extends React.Component {
                 
             }else{
                 this.setState({loading: false})
-                popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
+                // popupOk("Không thể lấy lại mật khẩu, vui lòng thử lại sau.")
             }
         })
         
@@ -375,7 +404,9 @@ const style = StyleSheet.create({
         alignItems: 'center'},
     forgot: {width: '50%', alignSelf: 'center',color, fontWeight: 'bold',marginBottom:5, fontSize: defaultStyle.fontSize},
     social: {flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', width: '45%'},
-    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,fontFamily:fonts.bold},
+    register: {marginTop: 0, backgroundColor: '#fff', borderWidth: 0.6, borderColor: color,
+    // fontFamily:fontStyles.bold
+},
     color: {color},
     content: {flex: 1, flexDirection: 'column'},
     iconSocial: {
@@ -392,21 +423,21 @@ const style = StyleSheet.create({
     mt8: {marginTop: 8},
     mb50: {marginBottom: 35},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
-    textTitle1:{
-        alignSelf:'center',
-        fontSize:19,
-        fontFamily: fonts.bold,
-        color:'#2166A2',
-        fontWeight:'bold'
-    },
-    textTitle2:{
-        alignSelf:'center',
-        fontSize:22,
-        marginBottom:50,
-        fontFamily: fonts.bold,
-        color:'#2166A2',
-        fontWeight:'bold'
-    },
+    // textTitle1:{
+    //     alignSelf:'center',
+    //     fontSize:19,
+    //     // fontFamily: fontStyles.bold,
+    //     color:'#2166A2',
+    //     fontWeight:'bold'
+    // },
+    // textTitle2:{
+    //     alignSelf:'center',
+    //     fontSize:22,
+    //     marginBottom:50,
+    //     fontFamily: fontStyles.bold,
+    //     color:'#2166A2',
+    //     fontWeight:'bold'
+    // },
     boxLoading: {flex: 1, backgroundColor: '#999999', position: "relative",}
 })
 

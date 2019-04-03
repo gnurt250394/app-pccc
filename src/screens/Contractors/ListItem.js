@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'rea
 import images from "assets/images"
 import moment from 'moment';
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 const { width } = Dimensions.get('window')
 class Item extends Component {
@@ -37,7 +38,7 @@ export default class ListItem extends Component {
                             resizeMode="contain"
                         />
                         <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-                            <Text style={styles.txtName} >{this.props.item.name} <Image style={styles.iconNotify} source={this.props.item.status == 1 ? images.dotYellow : null} />
+                            <Text style={[styles.txtName,fontStyles.Acumin_bold]} >{this.props.item.name} <Image style={styles.iconNotify} source={this.props.item.status == 1 ? images.dotYellow : null} />
                             </Text>
                         </View>
                     </View>
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     },
     txtName: {
         fontSize: 16,
-        fontFamily: fontStyle.Acumin_bold,
+        // fontFamily: fontStyles.Acumin_bold,
         color: '#333131'
     },
     txtColor: {

@@ -14,12 +14,16 @@ class ListItem extends React.Component {
                 <Image 
                     style={[style.icon, this.props.styleIcon || {}]}
                     source={this.props.icon} />
-                <Text style={style.label}>{this.props.name}</Text>
+                    <View style={style.label}>
+                <Text style={style.txtLabel}>{this.props.name}</Text>
+                </View>
             </View> : <View style={{ marginBottom: 2, flexDirection: 'row'}}>
                 <Image 
                     style={style.icon}
                     source={this.props.icon} />
-                <Text style={style.sub}>{this.props.label}</Text>
+                    <View style={style.sub}>
+                <Text style={style.txtSub}>{this.props.label}</Text>
+                </View>
             </View>
     };
 }
@@ -69,7 +73,7 @@ class ViewProfile extends React.Component {
                 </View>
                 <View style={style.mt30}>
                     <ListItem icon={images.pPhone} label={""} name={user.phone} styleIcon={style.iconPhone} />
-                    <ListItem icon={images.pEmail} label={"Cập nhật Email"} name={user.email} />
+                    <ListItem icon={images.pEmail} label={"Cập nhật Email"} name={user.email} styleIcon={style.iconGender} />
                     <ListItem icon={images.pGender} label={"Cập nhật giới tính"} name={ShowGender(user.gender)} styleIcon={style.iconGender}/>
                     <ListItem icon={images.pLocation} label={"Cập nhật địa chỉ"} name={user.address} styleIcon={style.iconLocation} />
                     <ListItem icon={images.pCompany} label={"Cập nhật tên công ty"} name={user.company} styleIcon={style.iconLocation}/>
@@ -120,29 +124,22 @@ const style = StyleSheet.create({
         backgroundColor:color
     },
     icon: {
-        width: 15, 
+        width: 12, 
         resizeMode: 'contain', 
         marginLeft: 10, 
         marginRight: 10,
-        marginTop: 0
+        marginTop: 8
     },
     w26: { width: 26},
-    iconPhone: { width: 13, marginLeft: 12, marginRight: 12},
-    iconGender: { width: 20, marginLeft: 9, marginRight: 9},
-    iconLocation: { width: 15, marginLeft: 12, marginRight: 12},
+    iconEmail:{
+        width:15
+    },
+    iconPhone: { width: 10, },
+    iconGender: { width: 17, },
+    // iconLocation: { width: 15, },
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
-    label: {
-        color: '#555555', 
-        fontSize: 14, 
-        flex: 1, 
-        paddingTop: 8,
-        paddingBottom: 5,
-        height:40,
-        borderBottomColor:'#333333',
-        borderBottomWidth:1,
-        // borderWidth: 1,
-    },
+    
     title: {color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: "bold", flex: 1  },
     boxUser: { padding: 10, flexDirection: 'column', alignItems: 'center', borderBottomWidth: 5, borderBottomColor: '#F1F1F1',},
     header: {backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
@@ -156,5 +153,30 @@ const style = StyleSheet.create({
         alignSelf:'flex-end',
         backgroundColor:'#F1F1F1'
     },
-    sub: {color: '#BBBBBB', fontSize: 14, flex: 1, paddingTop: 10,borderBottomColor:'#333333',borderBottomWidth:1},
+    label: {
+        flex: 1, 
+        paddingBottom: 5,
+        height:40,
+        borderBottomColor:'#333333',
+        borderBottomWidth:0.4,
+        justifyContent:'flex-end',
+    },
+    sub: {
+        flex: 1, 
+        borderBottomColor:'#333333',
+        borderBottomWidth:0.4,
+        paddingBottom: 5,
+        justifyContent:'flex-end',
+        height:40,
+    },
+    txtSub:{
+        color: '#555555', 
+        fontSize: 14, 
+        marginLeft:7
+    },
+    txtLabel:{
+        color: '#555555', 
+        fontSize: 14, 
+        marginLeft:7
+    }
 })

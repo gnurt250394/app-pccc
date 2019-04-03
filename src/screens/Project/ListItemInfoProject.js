@@ -12,8 +12,9 @@ export default class ListItem extends Component {
             onPress={this.props.onPress}
              style={styles.container}>
             <View style={styles.containerList}>
-              <View style={styles.Header}>
-                  <Text style={styles.txtHeader}>{this.props.item.name}</Text>
+              <View style={styles.Header}> 
+                  <Text style={styles.txtHeader}>{this.props.item.name}  {this.props.follow && <Image  style={styles.iconNotify} source={images.dotYellow} />}
+                   </Text>
               </View>
               {/* <View style={styles.row}>
                  
@@ -61,6 +62,11 @@ const styles= StyleSheet.create({
     containerList:{
         flex:1,
         padding: 10,
+    },
+    iconNotify: {
+        width: 12, 
+        height: 12, 
+        resizeMode: 'contain',
     },
     txtColor:{
         color:'#333131'
