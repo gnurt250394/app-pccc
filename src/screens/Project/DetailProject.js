@@ -66,7 +66,7 @@ class DetailProject extends Component {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
     }
   }
 
@@ -97,7 +97,7 @@ class DetailProject extends Component {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
     }
   }
 
@@ -155,7 +155,7 @@ class DetailProject extends Component {
           console.log(err.response)
         })
       } else {
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, SigninScreen)
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, ()=>navigation.navigate(SigninScreen))
 
       }
 
