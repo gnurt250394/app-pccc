@@ -3,13 +3,13 @@ import { TextInput, StyleSheet } from 'react-native'
 import { color, defaultStyle } from 'config'
 
 export default class Input extends React.Component {
-    render(){
+    render() {
         return (
-            <TextInput 
+            <TextInput
                 placeholder={this.props.placeholder || "Enter something"}
                 placeholderTextColor={this.props.placeholderTextColor || "#95989A"}
-                keyboardType={this.props.keyboardType || "default" }
-                secureTextEntry={this.props.secureTextEntry }
+                keyboardType={this.props.keyboardType || "default"}
+                secureTextEntry={this.props.secureTextEntry}
                 onChangeText={this.props.onChangeText}
                 editable={this.props.editable}
                 value={this.props.value}
@@ -27,6 +27,16 @@ const style = StyleSheet.create({
         flex: 1,
         opacity: 0.8,
     },
-    inputView: {flexDirection: "row", borderBottomWidth: 0.5,height:37, borderBottomColor: '#CCCCCC', width:'80%', alignSelf: 'center', alignItems: 'center', marginBottom: 15, paddingBottom: 0},
-    w12: {width: 12}
+    inputView: {
+        flexDirection: "row",
+        borderBottomWidth: 0.5,
+        height: 37,
+        borderBottomColor: '#CCCCCC',
+        width: '80%',
+        alignSelf: 'center',
+        alignItems: 'center',
+        marginBottom: 8,
+        paddingBottom: 0
+    },
+    w12: { width: 12 }
 })

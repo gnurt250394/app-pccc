@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Dimensions} from  'react-native'
+import {Dimensions,Platform} from  'react-native'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBiddingScreen } from "config/screenNames"
 import { color } from 'config'
@@ -37,7 +37,7 @@ const TabNotifi = createMaterialTopTabNavigator({
               fontSize: 14,
               fontWeight: '500',
               // textTransform: 'none'
-              fontFamily: fontStyle.Acumin_bold
+              fontFamily: fontStyle.Acumin_bold 
             },
             tabStyle: {
               width: width/2,

@@ -58,7 +58,8 @@ class TrackingInfo extends React.Component {
                                     <Image 
                                         style={style.imgStreet}
                                         source={images.trackingDT} />
-                                    <Text style={[style.text]}>Thông tin đấu thầu</Text> 
+                                    <Text style={[style.text]}>Thông tin đấu thầu   <Image  style={style.iconNotify} source={images.dotYellow} />
+                                    </Text> 
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -71,7 +72,8 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgStreet}
                                     source={images.trackingSP} />
-                                <Text style={style.text}>Sản phẩm</Text> 
+                                <Text style={style.text}>Sản phẩm  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                </Text> 
                                 
                             </TouchableOpacity>
                             <TouchableOpacity style={style.box2} 
@@ -94,7 +96,8 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.video} />
-                                <Text style={style.textB3}>Video</Text> 
+                                <Text style={style.textB3}>Video  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                </Text> 
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
@@ -102,7 +105,8 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.catalog} />
-                                <Text style={style.textB3}>Catalog</Text> 
+                                <Text style={style.textB3}>Catalog  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                </Text> 
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
@@ -110,7 +114,8 @@ class TrackingInfo extends React.Component {
                                 <Image 
                                     style={style.imgBox3}
                                     source={images.tailieu} />
-                                <Text style={style.textB3}>Tài liệu</Text> 
+                                <Text style={style.textB3}>Tài liệu  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                </Text> 
                             </TouchableOpacity>
                             
                         </View>

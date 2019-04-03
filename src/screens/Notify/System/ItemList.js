@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text,Image,StyleSheet,TouchableOpacity,Dimensions ,Platform} from 'react-native';
 import images from 'assets/images'
 import { fontStyle } from 'config/Controller';
+import { fontStyles } from 'config/fontStyles';
 
 const {width} = Dimensions.get('window')
 export default class ItemList extends Component {
@@ -16,12 +17,13 @@ export default class ItemList extends Component {
           return {
             color:'#555555',
             fontWeight: 'normal',
-            fontFamily:  fontStyle.Acumin_ItPro_0
+            fontFamily:  fontStyles.Acumin_ItPro_0
         }
       }else{
           return {
               color:'#333333',
-              fontFamily:fontStyle.Acumin_bold
+              fontWeight: Platform.OS =='android'? 'normal': 'bold',
+              fontFamily:fontStyles.Acumin_bold
             }
       }
   }
@@ -36,7 +38,7 @@ export default class ItemList extends Component {
         />
         <View style={styles.containerTxt}>
             <Text style={[styles.txt,this.checColor()]}>{this.props.item.message}</Text>
-            <Text style={styles.time}>{this.props.item.time}</Text>
+            <Text style={[styles.time,fontStyles.Acumin_thin]}>{this.props.item.time}</Text>
         </View>
       </TouchableOpacity>
       <View style={styles.end} />
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     },
     time:{
         color:'#CCCCCC',
-        fontFamily:fontStyle.Acumin_thin ,
+        // fontFamily:fontStyles.Acumin_thin ,
         fontSize:12
     },
     containerTxt:{

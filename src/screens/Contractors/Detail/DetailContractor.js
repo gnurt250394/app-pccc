@@ -5,6 +5,7 @@ import { fontStyle, color, Status } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
 import { DetailUserFollows } from 'config/apis/Project';
+import { fontStyles } from 'config/fontStyles';
 const { width, height } = Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -38,8 +39,8 @@ export default class DetailContractor extends Component {
         return (
             <View>
                 <View style={styles.containerList}>
-                    <Text style={styles.titleList}>{item.message}</Text>
-                    <Text style={styles.timeList}>{item.time}</Text>
+                    <Text style={[styles.titleList,fontStyles.Acumin_RPro_0]}>{item.message}</Text>
+                    <Text style={[styles.timeList,fontStyles.Acumin_ItPro_0]}>{item.time}</Text>
 
                 </View>
                 <View style={styles.end} />
@@ -110,7 +111,7 @@ export default class DetailContractor extends Component {
                     )}
                 >
                     <Animated.View style={[styles.containerPosition, { marginTop }]}>
-                        <Text style={styles.txtBold}>{UserObject.name}</Text>
+                        <Text style={[styles.txtBold,fontStyles.Acumin_bold]}>{UserObject.name}</Text>
                         <Item source={images.proEmail} name={UserObject.email} />
                         <Item source={images.proPhone} name={UserObject.phone} />
                         <Item source={images.proLocation} name={UserObject.address} />
@@ -118,7 +119,7 @@ export default class DetailContractor extends Component {
 
                     </Animated.View>
                     <View style={styles.containerFooter}>
-                        <Text style={styles.txtFooter}>Tin tức nhà thầu</Text>
+                        <Text style={[styles.txtFooter,fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
                         <FlatList
                             data={UserObject.content}
                             keyboardShouldPersistTaps="always"
@@ -170,10 +171,10 @@ const styles = StyleSheet.create({
     },
     titleList: {
         color: '#333333',
-        fontFamily: fontStyle.Acumin_RPro_0,
+        // fontFamily: fontStyles.Acumin_RPro_0,
     },
     timeList: {
-        fontFamily: fontStyle.Acumin_ItPro_0,
+        // fontFamily: fontStyles.Acumin_ItPro_0,
         fontSize: 11,
         color: '#999999',
         marginTop: 5
@@ -202,13 +203,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     txtBold: {
-        fontFamily: fontStyle.Acumin_bold,
+        // fontFamily: fontStyles.Acumin_bold,
         color: '#333333',
         marginBottom: 8,
         fontSize: 16
     },
     txtFooter: {
-        fontFamily: fontStyle.Acumin_bold,
+        // fontFamily: fontStyles.Acumin_bold,
         color: '#333333',
         marginBottom: 4,
         fontSize: 16,

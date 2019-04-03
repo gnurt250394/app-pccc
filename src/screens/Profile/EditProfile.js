@@ -151,6 +151,7 @@ class EditProfile extends React.Component {
                     <InputItem icon={images.pEmail} 
                         keyboardType='email-address'
                         value={email}
+                        styleIcon={style.iconEmail}
                         onChangeText={this.onChangeText('email')}
                         placeholder="Email của bạn"/>
                     <GenderItem 
@@ -282,17 +283,18 @@ const style = StyleSheet.create({
         backgroundColor:color
     },
     icon: {
-        width: 18, 
+        width: 14, 
         resizeMode: 'contain', 
         marginLeft: 10, 
         marginRight: 10,
         marginTop: 0
     },
     w26: { width: 26},
-    w20: { width: 20},
-    iconPhone: { width: 15, marginLeft: 12, marginRight: 12},
-    iconGender: { width: 20, marginLeft: 9, marginRight: 9},
-    iconLocation: { width: 15, marginLeft: 12, marginRight: 12},
+    w20: { width: 20,marginTop:4},
+    iconEmail:{marginTop:5,width:16},
+    iconPhone: { width: 12 },
+    iconGender: { width: 20 },
+    iconLocation: { width: 15},
     iconBack: {height: 15, resizeMode: 'contain' },
     textDone: {textAlign: 'right', color: '#fff', fontSize: 18, padding: 8},
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center'},
