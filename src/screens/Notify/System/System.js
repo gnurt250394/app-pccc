@@ -97,7 +97,7 @@ ListFooterComponent=()=>{
     let token =await getItem('token')
     if(!token){
         this.setState({refresing:false,Thresold:0})
-        popup('Bạn phải đăng nhập để xử dụng tính năng này',HomeScreen,SigninScreen)
+        popup('Bạn phải đăng nhập để xử dụng tính năng này',()=>navigation.navigate(HomeScreen),()=>navigation.navigate(SigninScreen))
    } else{
     this.getData()
    } 
