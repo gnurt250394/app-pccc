@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView, AsyncStorage, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { updateUser, updateAvatar, getInfoAcount } from 'config/apis/users'
+import { updateUser, updateAvatar, getInfoAcount, updateProfile } from 'config/apis/users'
 import { Input } from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
@@ -221,12 +221,15 @@ class EditProfile extends React.Component {
                 gender: this.state.gender,
                 company: this.state.company,
                 address: this.state.address,
-                tax_code: this.state.tax_code,
+                
             }
-
+console.log(data,'param')
             if (this.state.email && this.state.email != this.user.email) {
-
+                
                 data.email = this.state.email; // check để ko bị trùng email cũ
+            }
+            if(this.state.tax_code && this.state.tax_code != this.user.tax_code){
+                data.tax_code= this.state.tax_code
             }
 
             await updateAvatar(this.state.image).then(res => {
@@ -245,7 +248,7 @@ class EditProfile extends React.Component {
 
             })
 
-            await updateUser(data).then(res => {
+            await updateProfile(data).then(res => {
                 console.log(res.data,'errr')
                 if (res.data.code == Status.SUCCESS) {
                     this.props.dispatch({ type: actionTypes.USER_UPDATE, data: res.data.data })
