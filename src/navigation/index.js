@@ -45,11 +45,11 @@ import ListCategory from "screens/Shop/product/ListCategory";
 import FolowContractor from "screens/Contractors/FolowContractor";
 import DetailContractor from "screens/Contractors/Detail/DetailContractor";
 
-const MyDrawerNavigator = createDrawerNavigator({
-  Tabs: TabsHome
- },{
-   contentComponent:(props)=><Drawer {...props}/>
- });
+// const MyDrawerNavigator = createDrawerNavigator({
+//   Tabs: TabsHome
+//  },{
+//    contentComponent:(props)=><Drawer {...props}/>
+//  });
  
 const App = createStackNavigator(
   {
@@ -68,7 +68,7 @@ const App = createStackNavigator(
     [ScreenName.ProfileScreen]: Profile,
 
     [ScreenName.ConfirmScreen]: Confirm,
-    [ScreenName.HomeScreen]: MyDrawerNavigator,
+    [ScreenName.HomeScreen]: TabsHome,
     [ScreenName.CartScreen]: Cart,
     [ScreenName.ProductDetailScreen]: ProductDetail,
     [ScreenName.CheckAuthScreen]: CheckAuth,

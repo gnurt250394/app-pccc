@@ -17,7 +17,7 @@ class ListItem extends Component{
         : null
     }
 }
-export default class Item extends Component {
+export default class Item extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet,RefreshContro
 import images from "assets/images"
 import { ProductDetailScreen } from 'config/screenNames'
 import { toPrice, color, log } from 'config'
+import { fontStyles } from 'config/fontStyles';
 
 export default class ListItem extends React.Component {
     constructor(props){
@@ -41,13 +42,22 @@ export default class ListItem extends React.Component {
             </Text>
         )
     }
+    SubName=(item)=>{
+        let name=''
+        if(item&& item.length > 24 ){
+              name= item.substring(0, 23) + "..." 
+        } else{
+         name= item 
+        }
+      return name 
+    }
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
-                    <Image source={item.link && item.link != "" ? {uri: item.link} : images.logo } style={style.image}/>
+                    <Image source={item.image && item.image.full_path!= "" &&(''+item.image.full_path).toLowerCase().includes('jpeg'||'png'||'jpg') ? {uri: item.image.full_path} : images.logo } style={style.image}/>
                 </TouchableOpacity>
                 {/* {this._showName(item.name)} */}
-                <Text style={style.name}>{item.name}</Text>
+                <Text style={[style.name,fontStyles.Acumin_bold]}>{this.SubName(item.name)}</Text>
                 <Text style={style.price}>{toPrice(item.price)}</Text>
             </View>
     }
@@ -67,7 +77,6 @@ export default class ListItem extends React.Component {
                 <RefreshControl
                     refreshing={this.props.loading}
                     colors={["#2166A2",'white']}
-                    tintColor="#2166A2"
                 />}
                 data={this.state.datas}
                 renderItem={this.renderItem}
@@ -86,9 +95,9 @@ const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderWidth: 1, borderColor: '#ddd', margin: 5, borderRadius: 10, maxWidth: '31%'},
     image: {width: 90,  height: 90, resizeMode: 'contain', margin: 10,},
-    name: { fontSize: 15, padding: 10, textAlign: 'left',color: '#707070'},
+    name: { fontSize: 14, padding: 10, textAlign: 'left',color: '#333333'},
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
-    price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
+    price: { fontSize: 12, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
     keyword: {color, textAlign: 'left',},
     notFound: {

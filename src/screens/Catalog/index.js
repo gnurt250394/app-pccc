@@ -29,15 +29,15 @@ class Catalog extends React.Component {
     async componentDidMount() {
         await this.getData()
         this.token = await getItem('token')
-        this._navListener = this.props.navigation.addListener('didFocus', async () => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
+        //     StatusBar.setBarStyle('light-content');
+        //     StatusBar.setBackgroundColor(color);
+        // });
         
     }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     /**
@@ -102,7 +102,7 @@ class Catalog extends React.Component {
     }
 
     renderItem = count => ({item, index}) => {
-        console.log(item,'item')
+        
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
 
                 { this.showImage(item.link) }
@@ -235,7 +235,7 @@ class Catalog extends React.Component {
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 Toast.show('Theo dõi thất bại.')
             })
         }
@@ -266,7 +266,7 @@ class Catalog extends React.Component {
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 Toast.show('Bỏ theo dõi thất bại.')
             })
         }
@@ -291,13 +291,13 @@ class Catalog extends React.Component {
             .fetch('GET', link)
             .then((res) => {
                 res.path()
-                console.log(res,'res')
-                console.log(res.path(),'path')
+                
+                
                 popupOk('Tải xuống hoàn tất.')
             })
             .catch((errorMessage, statusCode) => {
-                console.log(errorMessage,'errr')
-                console.log(statusCode,'status')
+                
+                
                 popupOk('Lỗi khi tải xuống.')
             })
         } else{
@@ -327,7 +327,7 @@ class Catalog extends React.Component {
                 loading: false,
                 refreshing: false,
                 threshold: 0,
-                datas
+                // datas
             })
         }else{
             let backup = [...datas]
@@ -336,10 +336,11 @@ class Catalog extends React.Component {
                 let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
                 return {...e, description: description.value, showMore: description.showMore, showLess: false}
             })
+           
             if(this.state.page == 1){
-                this.setState({ datas, backup, loading: false, refreshing: false  })
+                this.setState({ datas, backup, loading: true, refreshing: false , threshold:0.1})
             }else{
-                this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], loading: true, refreshing: false})
+                this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup],  refreshing: false})
             }
         }
         
@@ -360,7 +361,7 @@ class Catalog extends React.Component {
                 return []
             })
         }
-
+        console.log(datas,'ss')
         this.formatData(datas)
     }
 

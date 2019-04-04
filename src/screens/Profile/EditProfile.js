@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image'
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import { removeItem, Status } from 'config/Controller';
+import SimpleToast from 'react-native-simple-toast';
 class InputItem extends React.Component {
     render() {
         return <View style={style.mb5}>
@@ -83,15 +84,15 @@ class EditProfile extends React.Component {
     // set status bar
     componentDidMount() {
 
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //     StatusBar.setBarStyle('light-content');
+        //     StatusBar.setBackgroundColor(color);
+        // });
     }
 
 
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     // end set status bar
@@ -224,28 +225,28 @@ class EditProfile extends React.Component {
             }
 
             if (this.state.email && this.state.email != this.user.email) {
-                console.log(22);
+
                 data.email = this.state.email; // check để ko bị trùng email cũ
             }
 
             await updateAvatar(this.state.image).then(res => {
                 if (res.data.code == Status.SUCCESS) {
-                    console.log(res.data, 'image')
-
+                    console.log('ok')
                 } else if (res.data.code == Status.TOKEN_EXPIRED) {
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     removeItem('token')
 
                 } else {
-                    console.log(res, 'eeeee')
+
                 }
             }).catch(err => {
-                console.log(err, 'err')
+
 
             })
-            console.log(12, data);
+
             await updateUser(data).then(res => {
+                console.log(res.data,'errr')
                 if (res.data.code == Status.SUCCESS) {
                     this.props.dispatch({ type: actionTypes.USER_UPDATE, data: res.data.data })
                     navigation.pop()
@@ -255,7 +256,7 @@ class EditProfile extends React.Component {
                     navigation.reset(SigninScreen)
                     removeItem('token')
                 } else {
-                    console.log(res.data, 'else')
+
                     popupOk(CodeToMessage[res.data.code])
                 }
             }).catch(err => {
@@ -280,23 +281,25 @@ const style = StyleSheet.create({
         backgroundColor: color
     },
     icon: {
-        width: 12,
+        width: 15,
+        height: 15,
         resizeMode: 'contain',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 0
+        marginBottom: 8,
+        alignSelf: 'center'
     },
     w26: { width: 26 },
     w20: { width: 20, marginTop: 4 },
-    iconEmail: { marginTop: 5, width: 16 },
-    iconPhone: { width: 10 },
-    iconGender: { width: 17 },
+    // iconEmail: { marginTop: 5, width: 16 },
+    // iconPhone: { width: 10 },
+    // iconGender: { width: 17 },
     // iconLocation: { width: 15},
     iconBack: { height: 15, resizeMode: 'contain' },
     textDone: { textAlign: 'right', color: '#fff', fontSize: 18, padding: 8 },
-    row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center' },
+    row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center', marginTop: 8 },
     header: { backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    gender: { fontSize: 14, color: '#555555', paddingLeft: 10 },
+    gender: { fontSize: 14, color: '#555555', paddingLeft: 10, marginBottom: 8 },
     avatar: { height: 70, width: 70, borderRadius: 35 },
     boxUser: { alignItems: 'center', height: 70, width: 70, borderRadius: 35, justifyContent: 'center', alignSelf: 'center', marginTop: 10 },
     p10: { padding: 10 },

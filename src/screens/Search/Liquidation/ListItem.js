@@ -48,18 +48,18 @@ export default class ListItem extends React.Component {
                 </TouchableOpacity>
                 <View style={style.flex}>
                     {this._showName(item.name)}
-                    <Text style={style.desc}>{ellipsis(item.desc, 80)}</Text>
+                    <Text style={style.desc}>{ellipsis(item.description, 80)}</Text>
                     <View style={style.bottomBox}>
                         <View style={style.boxIcon}>
                             <Image source={images.sLocation} style={style.iconLocation}/>
-                            <Text style={style.location}>Ha Noi</Text>
+                            <Text style={style.location}>{item.address}</Text>
                         </View>
                         <View style={style.boxIcon}>
                             <Image source={images.sDolla} style={style.iconLocation}/>
                             <Text style={style.location}>{toPrice(item.price)}</Text>
                         </View>
                         
-                        <Text style={style.desc}>{"10 phut truoc"}</Text>
+                        <Text style={style.desc}>{item.time}</Text>
                     </View>
                     
                 </View>

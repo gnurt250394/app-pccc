@@ -18,8 +18,8 @@ class ListChat extends React.Component {
     // set status bar
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
         });
     }

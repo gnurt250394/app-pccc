@@ -11,10 +11,10 @@ export default class SplashScreen extends Component {
     }
   
     componentDidMount = async()=>{
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor('#179ECE');
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //     StatusBar.setBarStyle('light-content');
+        //     StatusBar.setBackgroundColor('#179ECE');
+        // });
 
         let token = await AsyncStorage.getItem('token')
         let Remember = await AsyncStorage.getItem('Remember')
@@ -37,14 +37,14 @@ export default class SplashScreen extends Component {
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
     }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     render() {

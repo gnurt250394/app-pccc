@@ -27,15 +27,15 @@ class Video extends React.Component {
         await this.getData()
         this.token = await getItem('token')
 
-        this._navListener = this.props.navigation.addListener('didFocus', async () => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
+        //     StatusBar.setBarStyle('light-content');
+        //     StatusBar.setBackgroundColor(color);
+        // });
 
     }
 
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     render(){

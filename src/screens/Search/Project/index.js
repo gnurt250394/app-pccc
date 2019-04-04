@@ -27,7 +27,7 @@ class SearchProject extends React.Component {
 
     loadData = () => {
         let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-
+        console.log('111')
         if(keyword != "")
             this.setState({loading: true, keyword: keyword}, async () => {
                 let params = toParams({
@@ -35,6 +35,7 @@ class SearchProject extends React.Component {
                     keyword: keyword
                 })
                 search(params).then(res => {
+                    console.log('res: Project', res);
                     if(res.data.code == StatusCode.Success){
                         this.setState({
                             datas: res.data.data,
@@ -44,6 +45,8 @@ class SearchProject extends React.Component {
                         this.setState({ loading: false })
                     }
                 }).catch(err => {
+                    console.log('err Project: ', err.response);
+                    
                     this.setState({ loading: false })
                 })
             })

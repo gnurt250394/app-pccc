@@ -19,6 +19,8 @@ export const detailBidding = async id => {
 }
 
 export const search = async params => {
+    let token = await getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.get(constant.SEARCH + params)
 }
 

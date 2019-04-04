@@ -14,6 +14,7 @@ class ChangePassword extends React.Component {
         password: '',
         oldPassword: '',
         rePassword: '',
+        loading:false
     }
     
     render(){

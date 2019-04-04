@@ -34,6 +34,7 @@ class SearchBidding extends React.Component {
                 keyword: keyword
             })
             search(params).then(res => {
+                console.log('res: BIDDING', res);
                 if(res.data.code == StatusCode.Success){
                     this.setState({
                         datas: res.data.data,
@@ -43,6 +44,8 @@ class SearchBidding extends React.Component {
                     this.setState({ loading: false })
                 }
             }).catch(err => {
+                console.log('err: BIDDING', err.response);
+                
                 this.setState({ loading: false })
             })
         })

@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet,ActivityIndicator, Image, AsyncStorage } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet, ActivityIndicator, Image, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import styles from "assets/styles" 
+import styles from "assets/styles"
 import { signup, checkPhoneOrEmail } from 'config/apis/users'
-import { BaseInput, Btn} from 'components'
+import { BaseInput, Btn } from 'components'
 import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color, defaultStyle, height, smallScreen } from 'config'
-import  { accountKit } from 'config/accountKit'
-import  { SigninScreen, HomeScreen, } from 'config/screenNames'
+import { accountKit } from 'config/accountKit'
+import { SigninScreen, HomeScreen, } from 'config/screenNames'
 import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { fontStyle } from 'config/Controller';
@@ -22,82 +22,82 @@ class Register extends React.Component {
     }
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
-        });
-      }
-    
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('dark-content');
+        //   StatusBar.setBackgroundColor('#fff');
+        // });
+    }
+
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
     // end set status bar
 
-    render(){
+    render() {
         return (
-            <TouchableWithoutFeedback style= {style.flex} onPress={this._dismiss}>
-            <View style={styles.content}>
-                {   this.state.loading ? 
-                    <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
-                    </View> : null
-                }
-                {/* <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
+            <TouchableWithoutFeedback style={style.flex} onPress={this._dismiss}>
+                <View style={styles.content}>
+                    {this.state.loading ?
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </View> : null
+                    }
+                    {/* <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
                     <Image 
                             style={styles.close}
                             source={images.closeBlue} />
                 </TouchableOpacity> */}
 
-                <Text style={[style.title,fontStyles.bold]}>{toUpperCase('Đăng ký')}</Text>
-                <View style={style.h70p}>
-                    <BaseInput 
-                        icon={images.userDark}
-                        value={this.state.name}
-                        onBlur={this._removeSpage}
-                        ref={val => this.name = val}
-                        placeholder="Họ và tên" />
-                    <BaseInput 
-                        styleIcon={style.h15}
-                        icon={images.phoneDark}
-                        removeSpace={true}
-                        customStyle={{paddingBottom:5}}
-                        ref={val => this.phone = val}
-                        onBlur={this._checkPhone}
-                        keyboardType='numeric'
-                        maxLength={10}
-                        placeholder="Số điện thoại" />
-                    <BaseInput 
-                        icon={images.emailDark}
-                        removeSpace={true}
-                        ref={val => this.email = val}
-                        onBlur={this._checkEmail}
-                        keyboardType='email-address'
-                        placeholder="Email" />
+                    <Text style={[style.title, fontStyles.bold]}>{toUpperCase('Đăng ký')}</Text>
+                    <View style={style.h70p}>
+                        <BaseInput
+                            icon={images.userDark}
+                            value={this.state.name}
+                            onBlur={this._removeSpage}
+                            ref={val => this.name = val}
+                            placeholder="Họ và tên" />
+                        <BaseInput
+                            styleIcon={style.h15}
+                            icon={images.phoneDark}
+                            removeSpace={true}
+                            customStyle={{ paddingBottom: 5 }}
+                            ref={val => this.phone = val}
+                            onBlur={this._checkPhone}
+                            keyboardType='numeric'
+                            maxLength={10}
+                            placeholder="Số điện thoại" />
+                        <BaseInput
+                            icon={images.emailDark}
+                            removeSpace={true}
+                            ref={val => this.email = val}
+                            onBlur={this._checkEmail}
+                            keyboardType='email-address'
+                            placeholder="Email" />
 
-                    <BaseInput 
-                        icon={images.keyDark}
-                        ref={val => this.password = val}
-                        secureTextEntry={true}
-                        placeholder="Mật khẩu"  />
-                    <BaseInput 
-                        icon={images.keyDark}
-                        ref={val => this.rePassword = val}
-                        secureTextEntry={true}
-                        placeholder="Nhập lại mật khẩu" />
-                    
-                    <Btn 
-                        customStyle={style.btn}
-                        onPress={this._onSuccess()}
-                        name="Bước tiếp theo" />
+                        <BaseInput
+                            icon={images.keyDark}
+                            ref={val => this.password = val}
+                            secureTextEntry={true}
+                            placeholder="Mật khẩu" />
+                        <BaseInput
+                            icon={images.keyDark}
+                            ref={val => this.rePassword = val}
+                            secureTextEntry={true}
+                            placeholder="Nhập lại mật khẩu" />
 
-                    <TouchableOpacity 
-                        style={style.boxForgot}
-                        onPress={this._navTo(SigninScreen)}>
-                        <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
-                    </TouchableOpacity>
+                        <Btn
+                            customStyle={style.btn}
+                            onPress={this._onSuccess()}
+                            name="Bước tiếp theo" />
+
+                        <TouchableOpacity
+                            style={style.boxForgot}
+                            onPress={this._navTo(SigninScreen)}>
+                            <Text style={styles.forgot}>Tôi đã có tài khoản</Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
-                
-            </View>
             </TouchableWithoutFeedback>
         )
     }
@@ -116,120 +116,120 @@ class Register extends React.Component {
 
     _removeSpage = () => {
         let name = this.name.getValue();
-            name = name.trim();
-        this.setState({name: name})
+        name = name.trim();
+        this.setState({ name: name })
     }
 
     _checkEmail = () => {
         let email = this.email.getValue();
-        if(email == "") return;
+        if (email == "") return;
         try {
-            this.setState({loading: true}, () => {
-                checkPhoneOrEmail({email: email}).then(res => {
-                    if(res.data.code != StatusCode.Success  || res.data == ""){
-                        this.setState({allowEmail: false, loading: false})
+            this.setState({ loading: true }, () => {
+                checkPhoneOrEmail({ email: email }).then(res => {
+                    if (res.data.code != StatusCode.Success || res.data == "") {
+                        this.setState({ allowEmail: false, loading: false })
                         popupOk(CodeToMessage[res.data.code])
-                    }else{
-                        this.setState({allowEmail: true, loading: false})
+                    } else {
+                        this.setState({ allowEmail: true, loading: false })
                     }
                 }).catch(err => {
                     console.log('err: ', err);
-                    this.setState({allowEmail: false, loading: false})
+                    this.setState({ allowEmail: false, loading: false })
                 })
             })
         } catch (error) {
             console.log('error: ', error);
-            this.setState({allowEmail: false})
+            this.setState({ allowEmail: false })
         }
-       
+
     }
 
 
 
     _checkPhone = () => {
         let phone = this.phone.getValue();
-        if(phone == "") return;
+        if (phone == "") return;
         try {
-            this.setState({loading: true}, () => {
-                checkPhoneOrEmail({phone: phone}).then(res => {
+            this.setState({ loading: true }, () => {
+                checkPhoneOrEmail({ phone: phone }).then(res => {
                     console.log('res: ', res);
-                    if(res.data.code != StatusCode.Success || res.data == ""){
-                        this.setState({allowPhone: false, loading: false})
+                    if (res.data.code != StatusCode.Success || res.data == "") {
+                        this.setState({ allowPhone: false, loading: false })
                         popupOk(CodeToMessage[res.data.code])
-                    }else{
-                        this.setState({allowPhone: true, loading: false})
+                    } else {
+                        this.setState({ allowPhone: true, loading: false })
                     }
-        
+
                 }).catch(err => {
                     console.log('err: ', err);
-                    this.setState({allowPhone: false, loading: false})
+                    this.setState({ allowPhone: false, loading: false })
                 })
             })
-            
+
         } catch (error) {
             console.log('error: ', error);
-            this.setState({allowPhone: false})
-            
+            this.setState({ allowPhone: false })
+
         }
     }
-    
-    
+
+
     _onSuccess = () => async () => {
-        let name = this.name.getValue(),
-            phone = this.phone.getValue(),
+        let name = this.name.getValue()
+        let phone = this.phone.getValue(),
             email = this.email.getValue(),
             password = this.password.getValue(),
             rePassword = this.rePassword.getValue();
 
         let allowEmail = this.state.allowEmail;
-        if(email.trim() == "") allowEmail = true;
+        if (email.trim() == "") allowEmail = true;
 
-        if(name.trim().length < 2){
+        if (name.trim().length < 2) {
             popupOk('Họ và tên phải từ 2 ký tự')
-        } else if(!validateName(name)){
+        } else if (!validateName(name)) {
             popupOk('Họ và tên không được dùng ký tự đặc biệt')
-        }else if(phone.trim().length != 10){
+        } else if (phone.trim().length != 10) {
             popupOk('Số điện thoại không đúng')
-        }else if(email.trim() != "" && !validateEmail(email)){
+        } else if (email.trim() != "" && !validateEmail(email)) {
             popupOk('Email không đúng')
-        }else if(password.trim().length < 6){
+        } else if (password.trim().length < 6) {
             popupOk('Mật khẩu phải từ 6 ký tự')
-        }else if(password != rePassword){
+        } else if (password != rePassword) {
             popupOk('Mật khẩu nhập lại không đúng')
-        }else {
-           
+        } else {
+
             // // call api
-            if(this.state.allowPhone && allowEmail){
+            if (this.state.allowPhone && allowEmail) {
                 let RNAccountKit = accountKit(phone);
                 RNAccountKit.loginWithPhone()
-                .then((token) => {
-                    if(token && token.code){
+                    .then((token) => {
+                        if (token && token.code) {
                             signup({
                                 name: name,
                                 phone: phone.replace(/\+84/, "0"),
                                 email: email,
                                 password: password,
                             }).then(res => {
-                            if(res.data.code == StatusCode.Success){
-                                AsyncStorage.setItem('token',res.data.token)
-                                navigation.reset(HomeScreen)
-                            }else{
-                                popupOk(CodeToMessage[res.data.code])
-                            }
-                            
-                        }).catch(err => {
-                            console.log('err: ', err);
-                            popupOk("Đăng ký thất bại")
-                        })
-                    }else {
-                        popupOk('Đăng ký thất bại')
-                    }
-                })
-            }else if(!this.state.allowPhone){
+                                if (res.data.code == StatusCode.Success) {
+                                    AsyncStorage.setItem('token', res.data.token)
+                                    navigation.reset(HomeScreen)
+                                } else {
+                                    popupOk(CodeToMessage[res.data.code])
+                                }
+
+                            }).catch(err => {
+                                console.log('err: ', err);
+                                popupOk("Đăng ký thất bại")
+                            })
+                        } else {
+                            // popupOk('Đăng ký thất bại')
+                        }
+                    })
+            } else if (!this.state.allowPhone) {
                 popupOk('Số điện thoại đã được sử dụng')
-            }else if(!allowEmail){
+            } else if (!allowEmail) {
                 popupOk('Email đã được sử dụng')
-            }else{
+            } else {
                 popupOk('Email & Số điện thoại đã được sử dụng')
             }
         }
@@ -238,13 +238,14 @@ class Register extends React.Component {
 export default connect()(Register)
 
 const style = StyleSheet.create({
-    btn: {marginTop:  40, marginBottom: 50},
-    boxForgot: {width: '50%', alignSelf: 'center',},
-    h15: {height: 15,marginBottom:4},
-    h70p: {height: '70%'},
-    title: {color: color, fontSize:  height < smallScreen ? 16 : 22,fontWeight: '500', marginBottom: '10%', textAlign: 'center',
-    // fontFamily: fontStyles.bold,
-},
-    flex: {flex: 1},
-    btnClose: {position: 'absolute', top: 0, right: 10, padding: 20,},
+    btn: { marginTop: 40, marginBottom: 50 },
+    boxForgot: { width: '50%', alignSelf: 'center', },
+    h15: { height: 15, marginBottom: 4 },
+    h70p: { height: '70%' },
+    title: {
+        color: color, fontSize: height < smallScreen ? 16 : 22, fontWeight: '500', marginBottom: '10%', textAlign: 'center',
+        // fontFamily: fontStyles.bold,
+    },
+    flex: { flex: 1 },
+    btnClose: { position: 'absolute', top: 0, right: 10, padding: 20, },
 })

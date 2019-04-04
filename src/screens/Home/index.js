@@ -17,14 +17,14 @@ class Home extends React.Component {
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
       }
     
     componentWillUnmount() {
-        if(this._navListener) this._navListener.remove();
+        // if(this._navListener) this._navListener.remove();
     }
 
     render(){

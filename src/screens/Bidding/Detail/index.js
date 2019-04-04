@@ -36,17 +36,17 @@ class DetailBidding extends React.Component {
     token = null
     // set status bar
     async componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
 
         await this.getData()
         this.token = await getItem('token')
     }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
 
     render(){
@@ -129,13 +129,11 @@ class DetailBidding extends React.Component {
 
     getData = async () => {
         let bidding = await detailBidding(this.state.bidding_id).then(res => {
-            log('res: ', res);
             return res.data.code == Status.SUCCESS ? res.data.data : null
         }).catch(err => {
-            log('err: ', err);
             return null
         })
-console.log(bidding,'ddding')
+
         if(!bidding || (bidding && !bidding.id)){
             popupOk("Không tìm thấy dữ liệu.", this._goBack)
             this.setState({loading: false})
@@ -167,7 +165,7 @@ console.log(bidding,'ddding')
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 SimpleToast.show('Theo dõi thất bại.')
             })
         }
@@ -191,7 +189,7 @@ console.log(bidding,'ddding')
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                
                 SimpleToast.show('Bỏ theo dõi thất bại.')
             })
         }
