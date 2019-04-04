@@ -10,16 +10,18 @@ import { getItem, removeItem, Status } from 'config/Controller';
 const {height,width} =Dimensions.get('window')
 class ListItem extends React.Component {
     render() {
-      return this.props.name ? <View style={{  flexDirection: 'row'}}>
+      return this.props.name ? <View style={{  flexDirection: 'row',justifyContent:'space-between'}}>
                 <Image 
+                resizeMode="contain"
                     style={[style.icon, this.props.styleIcon || {}]}
                     source={this.props.icon} />
                     <View style={style.label}>
                 <Text style={style.txtLabel}>{this.props.name}</Text>
                 </View>
-            </View> : <View style={{ marginBottom: 2, flexDirection: 'row'}}>
+            </View> : <View style={{ marginBottom: 2, flexDirection: 'row',justifyContent:'space-between'}}>
                 <Image 
                     style={style.icon}
+                    resizeMode="contain"
                     source={this.props.icon} />
                     <View style={style.sub}>
                 <Text style={style.txtSub}>{this.props.label}</Text>
@@ -35,14 +37,14 @@ class ViewProfile extends React.Component {
   
         // set status bar
     componentDidMount =()=> {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
     // end set status bar
   
@@ -85,7 +87,6 @@ class ViewProfile extends React.Component {
 
     getInfo = async () => {
         let token = await getItem('token')
-        
         let user = await getInfoAcount(token).then( res=> {
             return res.data.code == StatusCode.Success ? res.data.data : null
         }).catch(err => {
@@ -124,19 +125,17 @@ const style = StyleSheet.create({
         backgroundColor:color
     },
     icon: {
-        width: 12, 
-        resizeMode: 'contain', 
+        width: 15, 
+        height:15,
         marginLeft: 10, 
-        marginRight: 10,
-        marginTop: 8
+        alignSelf:'center',
+        marginTop:13
     },
     w26: { width: 26},
-    iconEmail:{
-        width:15
-    },
-    iconPhone: { width: 10, },
-    iconGender: { width: 17, },
-    // iconLocation: { width: 15, },
+    // iconEmail:{  width:12},
+    // iconPhone: { height: 15, },
+    // iconGender: { width: 17,marginRight:4 },
+    // iconLocation: { width: 12,marginRight:8 },
     iconBack: {height: 15, resizeMode: 'contain' },
     iconEdit: {height: 18, resizeMode: 'contain' },
     
@@ -157,6 +156,7 @@ const style = StyleSheet.create({
         flex: 1, 
         paddingBottom: 5,
         height:40,
+        marginLeft:15,
         borderBottomColor:'#333333',
         borderBottomWidth:0.4,
         justifyContent:'flex-end',
@@ -166,6 +166,7 @@ const style = StyleSheet.create({
         borderBottomColor:'#333333',
         borderBottomWidth:0.4,
         paddingBottom: 5,
+        marginLeft:15,
         justifyContent:'flex-end',
         height:40,
     },

@@ -10,7 +10,6 @@ export default class Loading extends Component {
                         visible={this.props.visible}
                         transparent={true}
                         animationType={'slide'}
-                        animated={true}
                   >
                         <View style={styles.container}>
                         <View style={styles.groupModal}>

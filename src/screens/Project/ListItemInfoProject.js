@@ -4,7 +4,7 @@ import images from "assets/images"
 import moment from 'moment';
 
 const {width} = Dimensions.get('window')
-export default class ListItem extends Component {
+export default class ListItem extends React.PureComponent {
   
   render() {
         return(

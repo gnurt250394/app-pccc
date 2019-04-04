@@ -30,10 +30,11 @@ class SearchProduct extends React.Component {
         if(keyword != "")
         this.setState({loading: true, keyword: keyword}, async () => {
             let params = toParams({
-                table: 'news_projects',
+                table: 'sell_products',
                 keyword: keyword
             })
             search(params).then(res => {
+                console.log('res: Product', res);
                 if(res.data.code == StatusCode.Success){
                     this.setState({
                         datas: res.data.data,
@@ -44,7 +45,7 @@ class SearchProduct extends React.Component {
                     this.setState({ loading: false })
                 }
             }).catch(err => {
-                // log(err.response,'errrr')
+                console.log(err.response,'errrrProduct')
                 this.setState({ loading: false })
             })
         })

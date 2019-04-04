@@ -121,20 +121,32 @@ class Profile extends React.Component {
 
     getInfo = async () => {
         let token = await getItem('token')
-        let user = await getInfoAcount().then( res=> res.data.code == StatusCode.Success ? res.data.data : null).catch(err => null)
-        log('user: ', user);
+        if(token){
+            this.setState({loading:false})
+        }else {
+            this.setState({loading:true})
+        }
+         await getInfoAcount().then( res=> {
+            console.log(res.data,'res')
+            if(res.data.code == StatusCode.Success ){
+                this.setState({
+                    user: res.data.data,
+                    token: token,
+                    image: res.data.data.image ? res.data.data.image.full_path : null,
+                    loading: false
+                })
+            }
+            this.setState({loading:false})
+        }).catch(err => null)
+        // log('user: ', user);
         console.log(token,'token')
         
-        if(user && user.name ){
-            this.setState({
-                user: user,
-                token: token,
-                image: user.image ? user.image.full_path : null,
-                loading: false
-            })
-        } else{
-            this.setState({loading: false})
-        }
+        // console.log(user,'aaa')
+        // if(user && user.name ){
+            
+        // } else{
+        //     this.setState({loading: false})
+        // }
         return
     }
 

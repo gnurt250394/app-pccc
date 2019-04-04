@@ -24,7 +24,7 @@ export const loginSocial = body => {
 export const updateUser = async ( body, t) => {
     let token = t ? t : await getItem('token')
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-    return instance.put(constant.USER, body)
+    return instance.put(constant.UPDATE_PHONE, body)
 }
 export const changePassword =async ( body) => {
     let token =await getItem('token')

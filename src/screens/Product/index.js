@@ -25,14 +25,14 @@ class ProductDetail extends React.Component {
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
+        // });
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
     render(){
         return (

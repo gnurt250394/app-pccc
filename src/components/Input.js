@@ -30,11 +30,11 @@ const style = StyleSheet.create({
     inputView: {
         flexDirection: "row",
         borderBottomWidth: 0.5,
-        height: 37,
+        height: 35,
         borderBottomColor: '#CCCCCC',
         width: '80%',
         alignSelf: 'center',
-        alignItems: 'center',
+        // alignItems: 'baseline',
         marginBottom: 8,
         paddingBottom: 0
     },

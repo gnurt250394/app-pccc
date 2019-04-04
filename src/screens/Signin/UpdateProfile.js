@@ -26,14 +26,14 @@ class UpdateProfile extends React.Component {
     }
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('dark-content');
+        //   StatusBar.setBackgroundColor('#fff');
+        // });
       }
     
     componentWillUnmount() {
-        this._navListener.remove();
+        // this._navListener.remove();
     }
     // end set status bar
 
@@ -126,9 +126,11 @@ class UpdateProfile extends React.Component {
                             }
                         }).catch(err => {
                             popupOk("Cập nhật thông tin thất bại")
+                            console.log('errr')
                         })
                     }else {
                         popupOk('Cập nhật thông tin thất bại')
+                        console.log('else')
                     }
                 })
                 });

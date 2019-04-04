@@ -31,11 +31,12 @@ class SearchLiquidation extends React.Component {
         if(keyword != "")
         this.setState({loading: true, keyword: keyword}, async () => {
             let params = toParams({
-                table: 'sell_products',
+                table: 'posts',
                 type: 1,
                 keyword: keyword
             })
             search(params).then(res => {
+                console.log('res: LIQUIDATION', res);
                 if(res.data.code == StatusCode.Success){
                     this.setState({
                         datas: res.data.data,
@@ -45,7 +46,7 @@ class SearchLiquidation extends React.Component {
                     this.setState({ loading: false })
                 }
             }).catch(err => {
-                console.log('err: ', err);
+                console.log('err: LIQUIDATION ', err.response);
                 this.setState({ loading: false })
             })
         })

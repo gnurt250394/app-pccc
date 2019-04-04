@@ -26,32 +26,32 @@ class Signin extends React.Component {
     // set status bar
     componentDidMount() {
         LoginManager.logOut()
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
-        });
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //   StatusBar.setBarStyle('dark-content');
+        //   StatusBar.setBackgroundColor('#fff');
+        // });
       }
     
     componentWillUnmount() {
-        if(this._navListener) this._navListener.remove();
+        // if(this._navListener) this._navListener.remove();
     }
     // end set status bar
     _showLoading = () => {
         return  <View style={style.boxLoading}>
                     <View style={styles.loading}>
-                        <ActivityIndicator size="large" color="#0000ff"/>
+                        <ActivityIndicator size="large" color="#2166A2"/>
                     </View>
                 </View>
     }
     render(){
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
-            
+            <ScrollView>
             <View style={style.content} >
-               {/* {   this.state.loading 
+               {   this.state.loading 
                         ? 
                         this._showLoading()
-                        :  */}
+                        : 
                     <View>
                         <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
                             <Image 
@@ -114,11 +114,12 @@ class Signin extends React.Component {
                             </View>
                         </View>
                     </View>
-                    <Loading
+                    /* <Loading
                     visible={this.state.loading}
-                    />
-                {/* } */}
+                    /> */
+                }
             </View>
+            </ScrollView>
             </TouchableWithoutFeedback>
         )
     }
@@ -164,6 +165,7 @@ class Signin extends React.Component {
                         login_type: LoginType.facebook
                     } 
                     loginSocial(body).then(res => {
+                        console.log('res: fb', res);
                         if(res.data.code == StatusCode.Success){
                             this._onSwitchToHomePage(res, LoginType.facebook);
                         }else{
@@ -209,7 +211,7 @@ class Signin extends React.Component {
                         this.setState({loading: false}) 
                         // popupOk("Đăng nhập thất bại");
                         return
-                    }
+                    } 
                     let user = data && data.user || {}
     
                     loginSocial({
@@ -219,6 +221,7 @@ class Signin extends React.Component {
                     }).then(res => {
                         if(res.data.code == StatusCode.Success){
                             this.setState({loading: false})
+                            console.log(res.data,'gg')
                             this._onSwitchToHomePage(res);
                         }else{
                             this.setState({loading: false})
@@ -349,15 +352,17 @@ class Signin extends React.Component {
               {text: 'OK', onPress: async () => {
                 let phone = await getCurrentAccount()
                 if(phone){
-                    checkPhoneOrEmail({phone: phone}).then(res => {
-                        if(res.data.code != StatusCode.Success  || res.data == ""){
-                            this.setState({loading: false})
-                            popupOk(CodeToMessage[res.data.code])
-                        }else{
+                    // checkPhoneOrEmail({phone: phone}).then(res => {
+                        // if(res.data.code != StatusCode.Success  || res.data == ""){
+                        //     this.setState({loading: false})
+                        //     popupOk(CodeToMessage[res.data.code])
+                        // }else{
 
                             // call api update phone
+                            console.log(userToken,'ttooott')
                             updateUser({phone: phone}, userToken).then(res => {
                                 this.setState({loading: false})
+                                console.log(res.data,'dddd')
                                 if(res.data.code == StatusCode.Success){
                                     AsyncStorage.setItem('token', userToken)
                                     navigation.reset(HomeScreen)
@@ -366,16 +371,19 @@ class Signin extends React.Component {
                                 }
                             }).catch(err => {
                                 popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                                console.log('err')
                             })
-                        }
-                    }).catch(err => {
-                        this.setState({loading: false})
-                        popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                    })
+                        // }
+                    // }).catch(err => {
+                    //     this.setState({loading: false})
+                    //     popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                    //     console.log('err2')
+                    // })
                     
                 }else{
                     this.setState({loading: false})
-                    popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                    // popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
+                    console.log('err3')
                 }
                 
               }},

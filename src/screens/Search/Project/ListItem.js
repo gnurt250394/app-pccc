@@ -3,9 +3,10 @@ import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,R
 import images from "assets/images"
 import { DetailProject } from 'config/screenNames'
 import { toPrice, color } from 'config'
+import { fontStyles } from 'config/fontStyles';
 const {width} = Dimensions.get('screen')
 
-class LI extends React.Component {
+class LI extends React.PureComponent {
 
     render(){
         return (
@@ -17,7 +18,7 @@ class LI extends React.Component {
     }
 }
 
-export default class ListItem extends React.Component {
+export default class ListItem extends React.PureComponent {
     constructor(props){
         super(props);
         this.state = {
@@ -58,16 +59,16 @@ export default class ListItem extends React.Component {
                     onPress={this._navTo(DetailProject,{id:item.id,name:item.name})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
 
-                {item.name && <Text style={style.name}>{item.name}</Text>}
+                {item.name && <Text style={[style.name,fontStyles.Acumin_bold]}>{item.name}</Text>}
                 {item.version && <LI label={`Phiên bản: ${item.version}`} />}
                 {item.price && <LI label={`Giá trị: ${toPrice(item.price)}`} />}
                 {item.phase && <LI label={`Giai đoạn: ${item.phase}`} />}
-                {item.tbmt && <LI label={`Số TBMT: ${item.tbmt}`} />}
-                {item.partner && <LI label={`Bên mời thầu: ${item.partner}`} />}
+                {/* {item.tbmt && <LI label={`Số TBMT: ${item.tbmt}`} />} */}
+                {/* {item.partner && <LI label={`Bên mời thầu: ${item.partner}`} />} */}
                 {item.address && <LI label={`Địa điểm: ${item.address}`} />}
                 {item.project_code && <LI label={`Mã dự án: ${item.project_code}`} />}
                 {item.time_start && <LI label={`Ngày đăng tin: ${item.time_start}`} />}
-                {item.time_end && <LI label={`Ngày kết thúc: ${item.time_end}`} />}
+                {/* {item.time_end && <LI label={`Ngày kết thúc: ${item.time_end}`} />} */}
                 {/* {item.description && <LI label={`Thông tin: ${item.description}`} />} */}
             </TouchableOpacity>
     }
@@ -105,7 +106,7 @@ const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     box: { flex: 1, borderBottomWidth: 5, borderBottomColor: '#ddd',padding: 10, },
     dot: {width: 6,  resizeMode: 'contain', margin: 10,},
-    name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left',color: '#707070', color: '#333333', fontWeight: 'bold',},
+    name: { fontSize: 16, padding: 10, paddingTop: 0, textAlign: 'left', color: '#333333'},
     txt: { fontSize: 14, textAlign: 'left',color: '#707070', padding: 10},
     price: { fontSize: 13, padding: 10, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
