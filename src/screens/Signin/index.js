@@ -364,7 +364,7 @@ class Signin extends React.Component {
                                 this.setState({loading: false})
                                 console.log(res.data,'dddd')
                                 if(res.data.code == StatusCode.Success){
-                                    AsyncStorage.setItem('token', userToken)
+                                    AsyncStorage.setItem('token', res.data.token)
                                     navigation.reset(HomeScreen)
                                 }else{
                                     popupOk(CodeToMessage[res.data.code])
