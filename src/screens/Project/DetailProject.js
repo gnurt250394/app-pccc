@@ -223,7 +223,7 @@ class DetailProject extends Component {
                 />
                 <Text style={styles.time}>{moment(project.time, 'YYYY-MM-DD hh:mm:ss').format('hh:mm - DD/MM/YYYY')}</Text>
               </View>
-              {!folow && (project.follow && project.follow == Status.UNCHECKED ?
+              {project.follow && project.follow == Status.UNCHECKED ?
                 <TouchableOpacity
                   style={styles.unFolow}
                   onPress={this._UNfolowProject}
@@ -235,7 +235,7 @@ class DetailProject extends Component {
                   onPress={this._folowProject}
                 >
                   <Text style={[styles.txtButton, fontStyles.Acumin_RPro_0]}>Theo dõi dự án</Text>
-                </TouchableOpacity>)
+                </TouchableOpacity>
               }
             </View>
             <CustomText value={"Giá trị"} name={formatNumber(project.value) + " " + "đ"} />

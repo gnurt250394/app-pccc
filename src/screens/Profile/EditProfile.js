@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView, AsyncStorage, SafeAreaView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView, AsyncStorage, SafeAreaView ,KeyboardAvoidingView} from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { updateUser, updateAvatar, getInfoAcount, updateProfile } from 'config/apis/users'
@@ -12,9 +12,10 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import { removeItem, Status } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
+import { TextInput } from 'react-native-gesture-handler';
 class InputItem extends React.Component {
     render() {
-        return <View style={style.mb5}>
+        return  <View style={style.mb5}>
             <Image
                 style={[style.icon, this.props.styleIcon || {}]}
                 source={this.props.icon} />
@@ -101,12 +102,16 @@ class EditProfile extends React.Component {
         let { image, name, company, email, phone, address, tax_code } = this.state
         return (
             <TouchableWithoutFeedback style={style.flex} onPress={this._dismiss}>
-                <ScrollView >
+                <ScrollView style={{flex:1}}>
+                    <View style={{flex:1}}>
+                    <KeyboardAvoidingView  behavior="padding" 
+                    keyboardVerticalOffset={64}
+                    enabled>
                     <SafeAreaView style={style.SafeAreaView}>
                         <View style={style.header}>
                             {this.state.loading ?
                                 <View style={styles.loading}>
-                                    <ActivityIndicator size="large" color="#0000ff" />
+                                    <ActivityIndicator size="large" color="#2166A2" />
                                 </View> : null
                             }
                             <TouchableOpacity style={style.p10} onPress={this._goBack}>
@@ -120,6 +125,8 @@ class EditProfile extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </SafeAreaView>
+                    
+
                     <TouchableOpacity onPress={this._onUploadImage}
                         style={style.boxUser}>
                         <FastImage
@@ -173,6 +180,12 @@ class EditProfile extends React.Component {
                             value={tax_code}
                             onChangeText={this.onChangeText('tax_code')}
                             placeholder="Mã số thuế" />
+                            <TextInput
+                            style={{height:40,width:150,backgroundColor:'red'}}
+                            placeholder="abc"
+                            />
+                    </View>
+                    </KeyboardAvoidingView>
                     </View>
                 </ScrollView>
             </TouchableWithoutFeedback>

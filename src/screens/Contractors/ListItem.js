@@ -18,7 +18,15 @@ class Item extends Component {
                     {this.props.name}</Text>
             </View>
         </View>
-            : null
+            : <View style={styles.Square}>
+            <Image source={this.props.source}
+                style={styles.image}
+                resizeMode="contain"
+            />
+            <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
+                <Text style={styles.txt} > (Trống)</Text>
+            </View>
+        </View>
     }
 }
 export default class ListItem extends Component {
@@ -44,7 +52,7 @@ export default class ListItem extends Component {
                     </View>
                     <Item source={images.proEmail} name={this.props.item.email} />
                     <Item source={images.proPhone} name={this.props.item.phone} />
-                    <Item source={images.proLocation} name={this.props.item.fax} />
+                    <Item source={images.proFax} name={this.props.item.fax} />
                     <Item source={images.proLocation} name={this.props.item.address} />
                     <Item source={images.proCompany} name={this.props.item.company} />
                     <Item source={images.proPosition} name={this.props.item.position} />

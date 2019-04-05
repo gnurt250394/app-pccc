@@ -277,7 +277,6 @@ class Catalog extends React.Component {
         let filename = /[^\/]*$/.exec(link)[0]
         let dirs = RNFetchBlob.fs.dirs
         filePath = `${dirs.DownloadDir}/${filename}`
-        if(Platform.OS == 'android'){
             RNFetchBlob.config({
                 path: filePath,
                 addAndroidDownloads : {
@@ -290,21 +289,21 @@ class Catalog extends React.Component {
             })
             .fetch('GET', link)
             .then((res) => {
-                res.path()
                 
                 
-                popupOk('Tải xuống hoàn tất.')
+                if (Platform.OS == "ios") {
+                    RNFetchBlob.ios.openDocument(res.data);
+                    }else{
+                      res.path()
+                    }
+                Toast.show('Tải xuống hoàn tất.')
             })
             .catch((errorMessage, statusCode) => {
                 
                 
-                popupOk('Lỗi khi tải xuống.')
+                Toast.show('Lỗi khi tải xuống.')
             })
-        } else{
-            RNFetchBlob.config({
-                IOSBackgroundTask:true
-            })
-        }
+       
         
     }
 
