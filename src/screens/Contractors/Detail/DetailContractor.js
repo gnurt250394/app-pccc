@@ -39,8 +39,8 @@ export default class DetailContractor extends Component {
         return (
             <View>
                 <View style={styles.containerList}>
-                    <Text style={[styles.titleList,fontStyles.Acumin_RPro_0]}>{item.message}</Text>
-                    <Text style={[styles.timeList,fontStyles.Acumin_ItPro_0]}>{item.time}</Text>
+                    <Text style={[styles.titleList, fontStyles.Acumin_RPro_0]}>{item.message}</Text>
+                    <Text style={[styles.timeList, fontStyles.Acumin_ItPro_0]}>{item.time}</Text>
 
                 </View>
                 <View style={styles.end} />
@@ -79,15 +79,15 @@ export default class DetailContractor extends Component {
                             zIndex
                         }]}
                     >
-
+                       
 
                     </Animated.View>
                     <Header
-                        check={1}
-                        // style={styles.header}
-                        onPress={this._goBack}
-                        title={"Thông tin nhà thầu"}
-                    />
+                            check={1}
+                            // style={styles.header}
+                            onPress={this._goBack}
+                            title={"Thông tin nhà thầu"}
+                        />
                     {/* <Animated.View
         style={[styles.header,{
             height:headerHeight,
@@ -111,7 +111,7 @@ export default class DetailContractor extends Component {
                     )}
                 >
                     <Animated.View style={[styles.containerPosition, { marginTop }]}>
-                        <Text style={[styles.txtBold,fontStyles.Acumin_bold]}>{UserObject.name}</Text>
+                        <Text style={[styles.txtBold, fontStyles.Acumin_bold]}>{UserObject.name}</Text>
                         <Item source={images.proEmail} name={UserObject.email} />
                         <Item source={images.proPhone} name={UserObject.phone} />
                         <Item source={images.proLocation} name={UserObject.address} />
@@ -119,7 +119,7 @@ export default class DetailContractor extends Component {
 
                     </Animated.View>
                     <View style={styles.containerFooter}>
-                        <Text style={[styles.txtFooter,fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
+                        <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
                         <FlatList
                             data={UserObject.content}
                             keyboardShouldPersistTaps="always"

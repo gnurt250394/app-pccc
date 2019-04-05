@@ -74,7 +74,7 @@ class FolowContractor extends Component {
     navigation.pop()
   }
   handleRefresh = () => {
-    this.setState({ refresing: true, page: 1 }, this.getData)
+    this.setState({ loading: true, page: 1 }, this.getData)
 }
   render() {
     return (
@@ -89,7 +89,7 @@ class FolowContractor extends Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
           ListEmptyComponent={this._ListEmpty}
-          refreshing={this.state.refresing}
+          refreshing={this.state.loading}
           onRefresh={this.handleRefresh}
         // onEndReached={this.onEndReached}
         // onEndReachedThreshold={this.state.Threshold}
@@ -102,19 +102,19 @@ class FolowContractor extends Component {
     listUserFollows().then(res => {
       console.log(res.data, 'aaaa')
       if (res.data.code == Status.SUCCESS) {
-        this.setState({ listProject: res.data.data })
+        this.setState({ listProject: res.data.data,loading:false })
       } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
-        this.setState({ refresing: false })
+        this.setState({ loading: false })
       } else if (res.data.code == Status.TOKEN_EXPIRED ) {
-        Toast.show(Messages.TOKEN_EXPIRED)
         navigation.reset(SigninScreen)
         removeItem('token')
         this.props.dispatch({ type: actionTypes.USER_LOGOUT })
-      } else if(res.data.code == Status.TOKEN_VALID){
-        popupCancel(Messages.TOKEN_VALID,()=>navigation.navigate(SigninScreen))
+      } else if(res.data.code == Status.NO_CONTENT){
+        this.setState({loading:false})
       }
     }).catch(err=>{
       console.log(err.response)
+      this.setState({loading:false})
     })
 
 

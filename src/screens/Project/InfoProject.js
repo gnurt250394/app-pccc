@@ -145,7 +145,7 @@ class InfoProject extends Component {
             
                 
         }
-        
+        console.log(listProject,'eee')
         if(listProject.length == 0){
            this.setState({loading:false,refreshing:false,Threshold:0})
             console.log('1')

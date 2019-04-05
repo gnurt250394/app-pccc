@@ -70,16 +70,16 @@ class DetailBidding extends React.Component {
                             <Image source={images.calender} style={style.iconCalender}/>
                             <Text style={style.time}>{moment(bidding.time_action,'YYYY-MM-DD hh:mm:ss').format('HH:mm - DD/MM/YYYY') }</Text>
                         </View>
-                        {!follow && (bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
+                        {bidding.follow != undefined && bidding.follow == Follow.unfollow && <TouchableOpacity
                             onPress={this.onFollow(bidding.id)}
                             style={[style.row, style.calender, style.btn]}>
                             <Text style={[style.textBtn,fontStyles.Acumin_RPro_0]}>Theo dõi tin đấu thầu</Text>
-                        </TouchableOpacity>)}
-                        {!follow && (bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
+                        </TouchableOpacity>}
+                        {bidding.follow != undefined && bidding.follow == Follow.follow && <TouchableOpacity
                             onPress={this.onUnFollow(bidding.id)}
                             style={[style.row, style.calender, style.btnUnFolow]}>
                             <Text style={[style.textBtnUnFolow,fontStyles.Acumin_RPro_0]}>Bỏ theo dõi tin</Text>
-                        </TouchableOpacity>)}
+                        </TouchableOpacity>}
                     </View>
                     <View style={[style.pb10,style.pr10,]}>
                         <Text style={style.h3}>Thông tin liên quan đên đấu thầu:</Text>

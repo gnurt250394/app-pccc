@@ -118,7 +118,7 @@ export default styles = StyleSheet.create({
     loading: {
         position: "absolute",
         top: '48%',
-        left: '48%'
+        left: '48%',
     },
     close: {
         width: 15,
