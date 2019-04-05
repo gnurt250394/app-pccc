@@ -29,15 +29,15 @@ class Catalog extends React.Component {
     async componentDidMount() {
         await this.getData()
         this.token = await getItem('token')
-        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
-        //     StatusBar.setBarStyle('light-content');
-        //     StatusBar.setBackgroundColor(color);
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor(color);
+        });
         
     }
     
     componentWillUnmount() {
-        // this._navListener.remove();
+        this._navListener.remove();
     }
 
     /**
@@ -393,7 +393,7 @@ const style = StyleSheet.create({
     w15: { width: 15},
     p8: {padding: 8},
     pr10: {paddingRight: 10},
-    flex: {flex: 1},
+    flex: {flex: 1,backgroundColor:'#CCCCCC'},
     cancel: {color: 'white', padding: 10},
     box: {
         width: '100%',
@@ -402,7 +402,8 @@ const style = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 5,
         paddingLeft: 5,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        backgroundColor:'#FFFFFF'
     },
     image: {
         width: 100,
@@ -430,6 +431,7 @@ const style = StyleSheet.create({
     },
     btw0: {
         borderBottomWidth: 0,
+        backgroundColor:'#FFFFFF'
     },
     textBtn: {
         color,

@@ -36,21 +36,21 @@ class ListBidding extends React.Component {
     // set status bar
     async componentDidMount() {
         await this.getData()
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //   StatusBar.setBarStyle('light-content');
-        //   StatusBar.setBackgroundColor(color);
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor(color);
+        });
     }
 
     
     componentWillUnmount() {
-        // this._navListener.remove();
+        this._navListener.remove();
     }
 
     /**
      * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
-
+    _keyExtractor=(item,index)=> `${item.id || index}`
     render(){
         let count = this.state.datas.length
         return (
@@ -77,7 +77,7 @@ class ListBidding extends React.Component {
                             // ref='bidding'
                             data={this.state.datas}
                             renderItem={this.renderItem(count)}
-                            keyExtractor={(item, index) => index.toString()} 
+                            keyExtractor={this._keyExtractor} 
                             refreshing={this.state.refreshing}
                             onRefresh={this.handleRefresh}
                             onEndReached={this.handleLoadmore}
@@ -199,7 +199,7 @@ class ListBidding extends React.Component {
 export default connect()(ListBidding)
 
 const style = StyleSheet.create({
-    flex: {flex: 1},
+    flex: {flex: 1,backgroundColor:'#CCCCCC'},
     notFound: {
         fontSize: 16,
         fontWeight: 'bold',
@@ -208,9 +208,10 @@ const style = StyleSheet.create({
     },
     btw0: {
         borderBottomWidth: 0,
+        backgroundColor:'#FFFFFF'
     },
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    box: { flex: 1, borderBottomWidth: 8, borderBottomColor: '#ddd',padding: 10},
+    box: { flex: 1, borderBottomWidth: 8, borderBottomColor: '#ddd',padding: 10,backgroundColor:'#FFFFFF'},
     dot: {
         width: 6, 
         height: 6, 
