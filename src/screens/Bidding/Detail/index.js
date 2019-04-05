@@ -36,17 +36,17 @@ class DetailBidding extends React.Component {
     token = null
     // set status bar
     async componentDidMount() {
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //   StatusBar.setBarStyle('light-content');
-        //   StatusBar.setBackgroundColor(color);
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor(color);
+        });
 
         await this.getData()
         this.token = await getItem('token')
     }
     
     componentWillUnmount() {
-        // this._navListener.remove();
+        this._navListener.remove();
     }
 
     render(){

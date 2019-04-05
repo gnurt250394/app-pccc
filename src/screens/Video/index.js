@@ -27,15 +27,15 @@ class Video extends React.Component {
         await this.getData()
         this.token = await getItem('token')
 
-        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
-        //     StatusBar.setBarStyle('light-content');
-        //     StatusBar.setBackgroundColor(color);
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor(color);
+        });
 
     }
 
     componentWillUnmount() {
-        // this._navListener.remove();
+        this._navListener.remove();
     }
 
     render(){
@@ -110,7 +110,7 @@ class Video extends React.Component {
             this.setState({ loading: false, refreshing: false, threshold: 0 })
         } else {
             if (this.state.page == 1) {
-                this.setState({ datas, loading: true, refreshing: false })
+                this.setState({ datas, loading: true, refreshing: false ,threshold:0.1})
             } else {
                 this.setState({ datas: [...this.state.datas, ...datas], loading: true, refreshing: false })
             }
@@ -256,7 +256,7 @@ const style = StyleSheet.create({
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     w15: { width: 15},
     p8: {padding: 8},
-    flex: {flex: 1},
+    flex: {flex: 1,backgroundColor:'#CCCCCC'},
     cancel: {color: 'white', padding: 10},
     iconPlay: {position: 'absolute', top: 48, left: '45%', width: 60, resizeMode: 'contain'},
     posR: {position: 'relative'},
@@ -273,9 +273,11 @@ const style = StyleSheet.create({
         borderBottomWidth: 1,
         marginBottom: 8,
         paddingBottom: 10,
+        backgroundColor:'#FFFFFF'
     },
     btw0: {
         borderBottomWidth: 0,
+        backgroundColor:'#FFFFFF'
     },
     image: {
         width: '100%',

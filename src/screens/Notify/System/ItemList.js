@@ -30,7 +30,9 @@ export default class ItemList extends Component {
   render() {
     return (
         <View style={{flex:1}}>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container}
+      onPress={this.props.onPress}
+      >
         <Image 
             source={this.props.item.image&&this.props.item.image.full_path?{uri:this.props.item.image.full_path}:images.logo}
             style={styles.image}

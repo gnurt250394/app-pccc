@@ -26,14 +26,14 @@ class Signin extends React.Component {
     // set status bar
     componentDidMount() {
         LoginManager.logOut()
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //   StatusBar.setBarStyle('dark-content');
-        //   StatusBar.setBackgroundColor('#fff');
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+          StatusBar.setBarStyle('dark-content');
+          StatusBar.setBackgroundColor('#fff');
+        });
       }
     
     componentWillUnmount() {
-        // if(this._navListener) this._navListener.remove();
+        if(this._navListener) this._navListener.remove();
     }
     // end set status bar
     _showLoading = () => {

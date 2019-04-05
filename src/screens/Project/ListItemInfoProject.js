@@ -4,7 +4,7 @@ import images from "assets/images"
 import moment from 'moment';
 
 const {width} = Dimensions.get('window')
-export default class ListItem extends React.PureComponent {
+export default class ListItem extends Component {
   
   render() {
         return(
@@ -73,6 +73,7 @@ const styles= StyleSheet.create({
     },
     container:{
         flex:1,
+        backgroundColor:'#FFFFFF'
     },
     image:{
         width: 6, 

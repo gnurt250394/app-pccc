@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, ScrollView, FlatList, Alert, RefreshControl } from 'react-native';
 import { Header } from 'components';
 import images from "assets/images"
 import { connect } from 'react-redux'
@@ -20,6 +20,7 @@ class DetailProject extends Component {
     this.state = {
       project: {},
       listPartner: [],
+      loading: true,
       folow: this.props.navigation.getParam('follow') || false,
     };
   }
@@ -60,13 +61,13 @@ class DetailProject extends Component {
         } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         } else if (res.data.code == Status.USER_PERMISSION) {
-          popup('Bạn phải mua gói để sử dụng tính năng này.', null, ()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+          popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
     }
   }
 
@@ -97,7 +98,7 @@ class DetailProject extends Component {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null,()=> navigation.navigate(SigninScreen))
+      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
     }
   }
 
@@ -147,7 +148,7 @@ class DetailProject extends Component {
           } else if (res.data.code == Status.PROJECT_ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           } else if (res.data.code == Status.USER_PERMISSION) {
-            popup('Bạn phải mua gói để sử dụng tính năng này.', null,()=> popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+            popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
             console.log(res.data)
           }
         }).catch(err => {
@@ -155,7 +156,7 @@ class DetailProject extends Component {
           console.log(err.response)
         })
       } else {
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, ()=>navigation.navigate(SigninScreen))
+        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
 
       }
 
@@ -193,8 +194,16 @@ class DetailProject extends Component {
 
     }
   }
+  _refreshControl = () => {
+    return <RefreshControl
+      refreshing={this.state.loading}
+      onRefresh={this._getData}
+      colors={["#2166A2", 'white']}
+      tintColor="#2166A2"
+    />
+  }
   render() {
-    let { project, listPartner,folow } = this.state
+    let { project, listPartner, folow } = this.state
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -202,7 +211,7 @@ class DetailProject extends Component {
           onPress={this._goBack}
           title={this.showTitle()}
         />
-        <ScrollView>
+        <ScrollView refreshControl={this._refreshControl()}>
           <View style={styles.container}>
             <Text style={styles.txtHeader}>{project.name}</Text>
             <View style={styles.dateFolow}>
@@ -219,13 +228,13 @@ class DetailProject extends Component {
                   style={styles.unFolow}
                   onPress={this._UNfolowProject}
                 >
-                  <Text style={[styles.txtButtonUnFolow,fontStyles.Acumin_RPro_0]}>Bỏ theo dõi</Text>
+                  <Text style={[styles.txtButtonUnFolow, fontStyles.Acumin_RPro_0]}>Bỏ theo dõi</Text>
                 </TouchableOpacity>
                 :
                 <TouchableOpacity style={styles.folow}
                   onPress={this._folowProject}
                 >
-                  <Text style={[styles.txtButton,fontStyles.Acumin_RPro_0]}>Theo dõi dự án</Text>
+                  <Text style={[styles.txtButton, fontStyles.Acumin_RPro_0]}>Theo dõi dự án</Text>
                 </TouchableOpacity>)
               }
             </View>
@@ -276,10 +285,16 @@ class DetailProject extends Component {
         return err.response
       })
       console.log(project, 'aaa')
-      this.setState({
-        project,
-        listPartner: project.partner
-      })
+      if (project) {
+        this.setState({
+          project,
+          listPartner: project.partner,
+          loading: false
+        })
+      } else {
+        this.setState({ loading: false })
+      }
+
     }
 
 
