@@ -34,7 +34,7 @@ import DetailBidding from 'screens/Bidding/Detail'
 
 // tttd
 import TrackingInfo from 'screens/TrackingInfo'
-import BuyProduct from "screens/Shop/product/BuyProduct";
+import BuyProduct from "screens/Shop/product/BuyProduct/BuyProduct";
 
 // video
 import Video from 'screens/Video'

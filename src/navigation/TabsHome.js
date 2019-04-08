@@ -62,11 +62,12 @@ export default createBottomTabNavigator(
             w = 17;
             break;
         }
-        return <Image  style={[styles.icon, {width: w}]} source={image} />
+        return <Image resizeMode="contain" style={{width: 17,height:17}} source={image} />
         
       },
       tabBarOptions: {
         activeTintColor: color,
+        inactiveTintColor:'#555555',
         style: {
           paddingBottom: 5,
         },

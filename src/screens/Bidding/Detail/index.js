@@ -29,7 +29,7 @@ class LI extends React.Component {
 class DetailBidding extends React.Component {
     state = {
         loading: true,
-        bidding_id: this.props.navigation.getParam('bidding_id'),
+        bidding_id: this.props.navigation.getParam('id'),
         bidding: {},
         follow: this.props.navigation.getParam('follow') || false,
     }

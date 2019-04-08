@@ -220,7 +220,7 @@ class Catalog extends React.Component {
         if(!this.token){
             popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
-            addFolow({document_id, table: Follow.table_document}).then(res => {
+            addFolow({document_id:document_id, table: Follow.table_document}).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
@@ -290,16 +290,17 @@ class Catalog extends React.Component {
             .fetch('GET', link)
             .then((res) => {
                 
-                
+                console.log(link,'linkok')
                 if (Platform.OS == "ios") {
                     RNFetchBlob.ios.openDocument(res.data);
                     }else{
-                      res.path()
+                        RNFetchBlob.android.actionViewIntent(res.path(),MIME[ext])
+                    //   res.path()
                     }
                 Toast.show('Tải xuống hoàn tất.')
             })
             .catch((errorMessage, statusCode) => {
-                
+                console.log(link,'alink')
                 
                 Toast.show('Lỗi khi tải xuống.')
             })
@@ -359,8 +360,9 @@ class Catalog extends React.Component {
             }).catch(err => {
                 return []
             })
+            console.log(datas,'ss')
         }
-        console.log(datas,'ss')
+        
         this.formatData(datas)
     }
 

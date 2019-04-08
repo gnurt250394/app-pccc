@@ -1,13 +1,15 @@
 import React from 'react'
-import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard,ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { signup, changePassword } from 'config/apis/users'
 import { Header, BaseInput, Btn} from 'components'
 import { ScreenName, popupOk } from 'config'
-import { Status } from 'config/Controller';
+import { Status, removeItem } from 'config/Controller';
 import { CodeToMessage } from 'config';
 import navigation from 'navigation/NavigationService';
+import SimpleToast from 'react-native-simple-toast';
+import { color } from 'config';
 
 class ChangePassword extends React.Component {
     state = {
@@ -46,6 +48,11 @@ class ChangePassword extends React.Component {
                         </View>
                         <Btn name="Hoàn tất" onPress={this._onSuccess} />
                     </View>
+                    {this.state.loading ? <ActivityIndicator
+                    style={style.ActivityIndicator}
+                    size='large'
+                    color={color}
+                    /> : null}
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -68,16 +75,20 @@ class ChangePassword extends React.Component {
     }
 
     _onSuccess = () => {
+        this.setState({loading:true})
         let oldPassword = this.oldPassword ? this.oldPassword.getValue() : "",
             password = this.password ? this.password.getValue() : "",
             rePassword = this.rePassword ? this.rePassword.getValue() : "";
 
         if(oldPassword.trim().length == 0 ){
             popupOk('Mật khẩu hiện tại không đúng')
+            this.setState({loading:false})
         }else if(password.trim().length < 6){
             popupOk('Mật khẩu mới phải từ 6 ký tự')
+            this.setState({loading:false})
         }else if(password != rePassword){
             popupOk('Mật khẩu nhập lại không đúng')
+            this.setState({loading:false})
         }else{
             let params ={
                 old_password: oldPassword,
@@ -88,13 +99,16 @@ class ChangePassword extends React.Component {
                 console.log(res.data,'aaaa')
                 if(res.data.code == Status.SUCCESS){
                     popupOk('Đổi mật khẩu thành công')
+                    this.setState({loading:false})
                     navigation.pop()
                 } else if(res.data.code == Status.TOKEN_EXPIRED){
-                    popupOk('Phiên đăng nhập hết hạn')
-                } else if(res.data.code == Status.TOKEN_VALID){
-                    popupOk('Phiên đăng nhập hết hạn')
-                } else if(res.data.code == Status.PASS_FAIL){
+                    SimpleToast.show('Phiên đăng nhập hết hạn')
+                    this.setState({loading:false})
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                }  else if(res.data.code == Status.PASS_FAIL){
                     popupOk(CodeToMessage[res.data.code])
+                    this.setState({loading:false})
                 }
             })
         }
@@ -104,5 +118,11 @@ export default connect()(ChangePassword)
 
 const style = StyleSheet.create({
     flex: { flex:1},
-    content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40}
+    content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40},
+    ActivityIndicator:{
+        alignSelf:'center',
+        position:'absolute',
+        top:'15%'
+        
+    }
 })

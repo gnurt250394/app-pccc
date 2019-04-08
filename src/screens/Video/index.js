@@ -204,8 +204,10 @@ class Video extends React.Component {
     playvideo = id => () => {
         if(isIos)
             YouTubeStandaloneIOS.playVideo(id)
-            .then(() => console.log('Standalone Player Exited'))
-            .catch(errorMessage => console.error(errorMessage))
+            .then((res) => console.log('Standalone Player Exited',res))
+            .catch(errorMessage => {
+                console.log(errorMessage,'err')
+            })
       
         else
             YouTubeStandaloneAndroid.playVideo({
@@ -258,7 +260,7 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1,backgroundColor:'#CCCCCC'},
     cancel: {color: 'white', padding: 10},
-    iconPlay: {position: 'absolute', top: 48, left: '45%', width: 60, resizeMode: 'contain'},
+    iconPlay: {position: 'absolute', top: 48, left: '44%', width: 60, resizeMode: 'contain'},
     posR: {position: 'relative'},
     iconBack: {
         height: 18,

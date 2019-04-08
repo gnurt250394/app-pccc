@@ -46,8 +46,8 @@ class Home extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={[style.btnTop]} 
                             onPress={
-                                // this._navTo(ShopScreen)
-                                () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
+                                this._navTo(ShopScreen)
+                                // () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
                             } 
                             >
                             <Image 

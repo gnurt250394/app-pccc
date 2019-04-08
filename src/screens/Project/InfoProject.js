@@ -18,7 +18,7 @@ class InfoProject extends Component {
             page: 1,
             Threshold: 0.1,
             refreshing: true,
-            loading:false,
+            loading: false,
             keyword: '',
             follow: this.props.navigation.getParam('follow') || false,
         };
@@ -42,21 +42,22 @@ class InfoProject extends Component {
             />
         )
     }
-    onEndReached = () =>  {
-        console.log(this.state.loading,'lll')
-       this.state.loading ? this.setState( { loading: true, page: this.state.page + 1 } , this.getData) : null}
-    ListFooterComponent = () => {
-        if(this.state.loading){
-            console.log('11')
-            return <ActivityIndicator size={"large"} color="#2166A2"/> 
-       } else{ 
-           console.log('222')
-           return null
-       }
+    onEndReached = () => {
+
+        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
     }
-    
+    ListFooterComponent = () => {
+        if (this.state.loading&& this.state.listProject.length >3) {
+
+            return <ActivityIndicator size={"large"} color="#2166A2" />
+        } else {
+
+            return null
+        }
+    }
+
     handleRefresh = () => {
-        this.setState({ refreshing: true, page: 1 }, this.getData)
+        this.setState({ refreshing: true, page: 1 }, ()=>{this.search.onClear(), this.getData})
     }
     _keyExtractor = (item, index) => {
         return `${item.id || index}`
@@ -68,22 +69,29 @@ class InfoProject extends Component {
         this.setState({ [key]: val })
     }
     _onSearch = () => {
+        this.setState({ refreshing: true })
         let keyword = this.search ? this.search.getValue() : ''
         searchProject(keyword, this.state.page).then(res => {
+            console.log(res.data,'aaa')
             if (res.data.code == Status.SUCCESS) {
-                this.setState({ listProject: [...this.state.listProject,...res.data.data] })
+
+                if (this.state.page == 1) {
+                    this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
+                } else {
+                    this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                }
             } else if (res.data.code == Status.NO_CONTENT) {
-                this.setState({ listProject : [] ,loading:false,Threshold:0 })
+                this.setState({ listProject: [],refreshing:false, loading: false, Threshold: 0 })
             }
         }).catch(err => {
-            
+
         })
     }
-    _ListEmpty=()=>{
+    _ListEmpty = () => {
         return !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
     }
     render() {
-        console.log(this.state.loading,'qqq')
+        console.log(this.search,'search')
         let count = this.state.listProject.length
         return (
             <View style={styles.container}>
@@ -104,19 +112,19 @@ class InfoProject extends Component {
                 {
                     // this.state.listProject.length == 0
                     //     ?
-                        
-                        // :
-                        <FlatList
-                            data={this.state.listProject}
-                            renderItem={this._renderItem(count)}
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.handleRefresh}
-                            keyExtractor={this._keyExtractor}
-                            onEndReached={this.onEndReached}
-                            onEndReachedThreshold={this.state.Threshold}
-                            ListEmptyComponent={this._ListEmpty}
-                            ListFooterComponent={this.ListFooterComponent}
-                        />
+
+                    // :
+                    <FlatList
+                        data={this.state.listProject}
+                        renderItem={this._renderItem(count)}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefresh}
+                        keyExtractor={this._keyExtractor}
+                        onEndReached={this.onEndReached}
+                        onEndReachedThreshold={this.state.Threshold}
+                        ListEmptyComponent={this._ListEmpty}
+                        ListFooterComponent={this.ListFooterComponent}
+                    />
                 }
 
 
@@ -124,6 +132,7 @@ class InfoProject extends Component {
         );
     }
     getData = async () => {
+        // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
         if (this.state.follow) {
@@ -142,19 +151,19 @@ class InfoProject extends Component {
             }).catch(err => {
                 return []
             })
-            
-                
+
+
         }
-        console.log(listProject,'eee')
-        if(listProject.length == 0){
-           this.setState({loading:false,refreshing:false,Threshold:0})
-            console.log('1')
-        }else{
-            if(this.state.page == 1){
-               
-                this.setState({ listProject :listProject, loading: true, refreshing: false,Threshold:0.1  })
-            }else{
-                this.setState({ listProject: [...this.state.listProject, ...listProject],  refreshing: false})
+
+        if (listProject.length == 0) {
+            this.setState({ loading: false, refreshing: false, Threshold: 0 })
+
+        } else {
+            if (this.state.page == 1) {
+
+                this.setState({ listProject: listProject, loading: true, refreshing: false, Threshold: 0.1 })
+            } else {
+                this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
             }
         }
 
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor:'#CCCCCC'
+        backgroundColor: '#CCCCCC'
     },
     image: {
         height: 8,

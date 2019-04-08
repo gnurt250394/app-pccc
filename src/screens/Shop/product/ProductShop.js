@@ -7,6 +7,20 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen, BuyProduct } from 'config/screenNames';
 import { height } from 'config';
 import { popupCancel } from 'config';
+
+class MenuItem extends Component{
+    render(){
+        return(
+            <TouchableOpacity style={styles.btnMenu}>
+                <Image source={this.props.source}
+                style={[styles.imgMenu,{...this.props.style}]}
+                resizeMode="contain"
+                />
+                <Text style={styles.txtMenu}>{this.props.name}</Text>
+            </TouchableOpacity>
+        )
+    }
+}
 export default class ProductShop extends Component {
   constructor(props) {
     super(props);
@@ -71,6 +85,27 @@ _addItem=()=>{
     }
    
 }
+ _checkColor=(item,color)=>{
+     if(item.status == 1){
+        return{
+            color: color
+        } 
+     }else{
+         return{
+             color:'#999999'
+         }
+     }
+ }
+ goDetail=(index)=>()=>{
+     let data = [...this.state.ListProduct]
+     data[index].isShow = true
+     this.setState({ListProduct:data})
+ }
+ _handleMenu=(index)=>()=>{
+    let data = [...this.state.ListProduct]
+    data[index].isShow = false
+    this.setState({ListProduct:data})
+ }
  _renderItem=({item,index})=>{
     if(item.add ==true){
         return (
@@ -85,21 +120,32 @@ _addItem=()=>{
         )
     } else{
         return(
-            <View style={styles.containerList}>
+            <View style={styles.containerList}
+            onStartShouldSetResponderCapture={this._handleMenu(index)}
+            >
                 <Image source={{uri:item.full_path}}
                     style={styles.image}
                     resizeMode="contain"
                 />
-                <TouchableOpacity onPress={this.goDetail}
+                <TouchableOpacity onPress={this.goDetail(index)}
                 style={styles.dots}
                 >
                 <Image source={images.dots}
                     style={styles.imgDots}
                     resizeMode="contain"
                 />
+                
                 </TouchableOpacity>
-                <Text style={styles.txtName}>{this.showTitle(item)}</Text>
-                <Text style={styles.txtPrice}>{formatNumber(item.price)} đ</Text>
+                {item.isShow?<View style={styles.containerMenu}>
+                        <MenuItem name={"Sửa"} style={styles.imgEdit} source={images.edit}/>
+                        <MenuItem name={"Xoá"} source={images.trash}/>
+                    </View>:null}
+                <Text style={[styles.txtName,this._checkColor(item,'#555555')]}>{this.showTitle(item)}</Text>
+                <Text style={[styles.txtPrice,this._checkColor(item,'#2166A2')]}>{formatNumber(item.price)} đ</Text>
+                <Text style={[styles.time,this._checkColor(item,'#DE3232')]}>{item.time}</Text>
+                <View>
+                    
+                </View>
             </View>
         )
     }
@@ -115,11 +161,13 @@ _addItem=()=>{
  
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container}
+      >
        <FlatList
             data={this.state.ListProduct}
             showsVerticalScrollIndicator={false}
             numColumns={3}
+            extraData={this.state}
             renderItem={(this._renderItem)}
             keyExtractor={this._keyExtractor}
        />
@@ -127,7 +175,7 @@ _addItem=()=>{
     );
   }
   componentDidMount = () => {
-    this.getDetail()
+    // this.getDetail()
   };
   
 }
@@ -137,19 +185,25 @@ const data = [
         id:1,
         full_path:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         product_name:'Bình chữa cháy ',
-        price:'100000'
+        price:'100000',
+        time:'conf lại 30 ngày',
+        status:1
     },
     {
         id:2,
         full_path:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         product_name:'Bình chữa cháy ',
-        price:'100000'
+        price:'100000',
+        time:'conf lại 30 ngày',
+        status:1
     },
     {
         id:3,
         full_path:'https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png',
         product_name:'Bình chữa cháy ',
-        price:'100000'
+        price:'100000',
+        time:'conf lại 30 ngày',
+        status:0
     },
     
     {
@@ -160,6 +214,37 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         // padding: 10,
+    },
+    containerMenu:{
+        position:'absolute',
+        right:10,
+        elevation:2,
+        padding:4,
+        borderRadius:5,
+        backgroundColor:'#FFFFFF',
+        // zIndex:1,
+        top: 8,
+        flex:1,
+    },
+    btnMenu:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-around',
+        marginBottom:6
+    },
+    txtMenu:{
+        color:'#333333'
+    },
+    imgEdit:{
+        height:12,
+        width:12,
+        marginLeft:4
+    },
+    imgMenu:{
+        height:14,
+        width:14,
+        marginRight:5,
+        tintColor:'#333333'
     },
     image:{
         height:100,
@@ -188,7 +273,7 @@ const styles = StyleSheet.create({
         maxWidth:'30%',
         padding: 10,
         margin: 5,
-        elevation:2,
+        elevation:1,
         flex:1,
     },
     containerAdd:{
@@ -218,5 +303,9 @@ const styles = StyleSheet.create({
     txtName:{
         marginTop:5,
         fontSize:12
+    },
+    time:{
+        fontSize:12,
+        
     }
 })
