@@ -38,20 +38,21 @@ class Signin extends React.Component {
     // end set status bar
     _showLoading = () => {
         return  <View style={style.boxLoading}>
-                    <View style={styles.loading}>
+                    {/* <View style={styles.loading}> */}
                         <ActivityIndicator size="large" color="#2166A2"/>
-                    </View>
+                    {/* </View> */}
                 </View>
     }
     render(){
         return (
             <TouchableWithoutFeedback style= { style.flex } onPress={this._dismiss}>
-            <ScrollView>
-            <View style={style.content} >
-               {   this.state.loading 
+             {   this.state.loading 
                         ? 
                         this._showLoading()
                         : 
+            <ScrollView>
+            <View style={style.content} >
+              
                     <View>
                         <TouchableOpacity onPress={this._goBack} style={styles.btnClose}>
                             <Image 
@@ -66,6 +67,7 @@ class Signin extends React.Component {
                             
                             <BaseInput 
                                 styleIcon={style.w11}
+                                customStyle={style.txtEmail}
                                 removeSpace={true}
                                 icon={images.phoneDark}
                                 ref={val => this.username = val}
@@ -114,13 +116,10 @@ class Signin extends React.Component {
                             </View>
                         </View>
                     </View>
-                    /* <Loading
-                    visible={this.state.loading}
-                    /> */
-                }
             </View>
             </ScrollView>
-            </TouchableWithoutFeedback>
+                }
+                </TouchableWithoutFeedback>
         )
     }
 
@@ -425,12 +424,15 @@ const style = StyleSheet.create({
         marginBottom: 18,
     },
     flex: { flex:1},
-    w11: { height: 15},
+    w11: { height: 15,marginBottom:5},
     w53: { width: 53},
     mb8: {marginBottom: 8},
     mt8: {marginTop: 8},
     mb50: {marginBottom: 35},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
+    txtEmail:{
+        paddingBottom:7
+    },
     // textTitle1:{
     //     alignSelf:'center',
     //     fontSize:19,
@@ -446,6 +448,6 @@ const style = StyleSheet.create({
     //     color:'#2166A2',
     //     fontWeight:'bold'
     // },
-    boxLoading: {flex: 1, backgroundColor: '#999999', position: "relative",}
+    boxLoading: {flex: 1, backgroundColor: '#999999', alignItems:'center',justifyContent:'center'}
 })
 

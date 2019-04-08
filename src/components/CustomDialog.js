@@ -11,7 +11,9 @@ export default class CustomDialog extends Component {
   render() {
     return (
       <Modal
-      
+      visible={this.props.visible}
+      transparent={true}
+      animationType="fade"
       >
         <Text> textInComponent </Text>
       </Modal>

@@ -204,7 +204,7 @@ class Video extends React.Component {
     playvideo = id => () => {
         if(isIos)
             YouTubeStandaloneIOS.playVideo(id)
-            .then((res) => console.log('Standalone Player Exited',res))
+            .then(() => console.log('Standalone Player Exited'))
             .catch(errorMessage => {
                 console.log(errorMessage,'err')
             })
