@@ -5,6 +5,7 @@ import {  color, width, popupOk} from 'config'
 import { Header } from 'components'
 import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen, FolowContractor } from 'config/screenNames'
 import images from "assets/images"
+import TouchableOpacityCustom from './component';
 
 class TrackingInfo extends React.Component {
     state = {
@@ -40,58 +41,52 @@ class TrackingInfo extends React.Component {
 
                <View style={style.content}>
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(InfoProject, {follow: true})} 
-                                >
-                                <Image 
-                                    style={style.imgStreet}
-                                    source={images.trackingDA} />
-                                <Text style={style.text}>
-                                    Thông tin dự án  <Image  style={style.iconNotify} source={images.dotYellow} />
-                                </Text> 
-                                
-                            </TouchableOpacity>
-                            <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(ListBiddingScreen, {follow: true})} 
-                                >
-                                <View  style={style.box2} >
-                                    <Image 
-                                        style={style.imgStreet}
-                                        source={images.trackingDT} />
-                                    <Text style={[style.text]}>Thông tin đấu thầu   <Image  style={style.iconNotify} source={images.dotYellow} />
-                                    </Text> 
-                                </View>
-                            </TouchableOpacity>
+                        <TouchableOpacityCustom
+                        onPress={this._navTo(InfoProject, {follow: true})}
+                        source={images.trackingDA}
+                        label={'Thông tin dự án'}
+                        />
+                        <TouchableOpacityCustom
+                        onPress={this._navTo(ListBiddingScreen, {follow: true})}
+                        source={images.trackingDT}
+                        label={'Thông tin đấu thầu'}
+                        />
                         </View>
                         
                         <View style={style.row}>
-                            <TouchableOpacity style={style.box2} 
-                                // onPress={this._navTo(ListBiddingScreen)} 
-                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
-                                >
-                                <Image 
-                                    style={style.imgStreet}
-                                    source={images.trackingSP} />
-                                <Text style={style.text}>Sản phẩm  <Image  style={style.iconNotify} source={images.dotYellow} />
-                                </Text> 
-                                
-                            </TouchableOpacity>
-                            <TouchableOpacity style={style.box2} 
-                                onPress={this._navTo(FolowContractor)} 
-                                // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
-                                >
-                                <View  style={style.box2} >
-                                    <Image 
-                                        style={style.imgStreet}
-                                        source={images.trackingNT} />
-                                    <Text style={[style.text]}>Nhà thầu   <Image  style={style.iconNotify} source={images.dotYellow} /></Text> 
-                                </View>
-                            </TouchableOpacity>
+                        <TouchableOpacityCustom
+                         // onPress={this._navTo(ListBiddingScreen)} 
+                         onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
+                        source={images.trackingSP}
+                        label={'Sản phẩm'}
+                        />
+                        <TouchableOpacityCustom
+                       onPress={this._navTo(FolowContractor)} 
+                       // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
+                        source={images.trackingNT}
+                        label={'Nhà thầu'}
+                        />
+                            
                         </View>
 
                         
                         <View style={[style.mt0, style.row3]}>
-                            <TouchableOpacity style={style.box3} 
+                        <TouchableOpacityCustom
+                        onPress={this._navTo(VideoScreen, {follow: true})}
+                        source={images.video}
+                        label={'Video'}
+                        />
+                        <TouchableOpacityCustom
+                       onPress={this._navTo(CatalogScreen, {type: 'catalog', follow: true,name:"Catalog theo dõi"})}
+                        source={images.catalog}
+                        label={'Catalog'}
+                        />
+                        <TouchableOpacityCustom
+                       onPress={this._navTo(CatalogScreen, {type: 'document', follow: true,name:"Tài liệu theo dõi"})}
+                        source={images.tailieu}
+                        label={'Tài liệu'}
+                        />
+                            {/* <TouchableOpacity style={style.box3} 
                                 onPress={this._navTo(VideoScreen, {follow: true})} >
                                 <Image 
                                     style={style.imgBox3}
@@ -116,7 +111,7 @@ class TrackingInfo extends React.Component {
                                     source={images.tailieu} />
                                 <Text style={style.textB3}>Tài liệu  <Image  style={style.iconNotify} source={images.dotYellow} />
                                 </Text> 
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             
                         </View>
                     </View>
@@ -146,7 +141,6 @@ const style = StyleSheet.create({
     box2: {
         flex: 1, 
         height: '100%',
-        resizeMode: 'stretch',
         marginRight: 2, position: 'relative'},
     imgStreet: {
         width: '100%', 
@@ -181,7 +175,7 @@ const style = StyleSheet.create({
         // elevation: 2,
     },
     textB3: { position: 'absolute', top: 8, left: 8, color: "rgba(255, 255, 255, 1)", fontSize: 14, width: '80%' },
-    row: { flex: 1, flexDirection: 'row', width: '100%',  marginTop: 1,},
+    row: { flex: 1, flexDirection: 'row',justifyContent:'space-between',   marginTop: 1,},
     row3: {height: 180, flexDirection: 'row', borderWidth: 1,},
     content: { flexDirection: 'column', justifyContent: 'center', flex: 1},
     mr20p: {marginRight: "15%",},

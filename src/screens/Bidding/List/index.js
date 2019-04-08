@@ -112,7 +112,7 @@ class ListBidding extends React.Component {
 
     renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
-                    onPress={this._navTo(DetailBiddingScreen, {bidding_id: item.id,follow:this.state.follow})}
+                    onPress={this._navTo(DetailBiddingScreen, {id: item.id,follow:this.state.follow})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <Text style={style.name}>{item.name || item.name_bidding}</Text>
                 {/* <View style={[style.row, style.calender]}>
@@ -141,7 +141,7 @@ class ListBidding extends React.Component {
 
     ListFooterComponent = () => {
         log('ListFooterComponent: ', this.state.loading);
-        return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return  this.state.loading&& this.state.datas.length >3 ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     getData = async () => {

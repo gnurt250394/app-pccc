@@ -180,10 +180,7 @@ class EditProfile extends React.Component {
                             value={tax_code}
                             onChangeText={this.onChangeText('tax_code')}
                             placeholder="Mã số thuế" />
-                            <TextInput
-                            style={{height:40,width:150,backgroundColor:'red'}}
-                            placeholder="abc"
-                            />
+                           
                     </View>
                     </KeyboardAvoidingView>
                     </View>
@@ -302,20 +299,20 @@ const style = StyleSheet.create({
         resizeMode: 'contain',
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 8,
+        // marginBottom: 6,
         alignSelf: 'center'
     },
     w26: { width: 26 },
     w20: { width: 20, marginTop: 4 },
-    // iconEmail: { marginTop: 5, width: 16 },
-    // iconPhone: { width: 10 },
-    // iconGender: { width: 17 },
-    // iconLocation: { width: 15},
+    // iconEmail: { marginTop: 5},
+    // iconPhone: { marginTop: 5},
+    // iconGender: { marginTop: 5},
+    // iconLocation: { marginTop: 5},
     iconBack: { height: 15, resizeMode: 'contain' },
     textDone: { textAlign: 'right', color: '#fff', fontSize: 18, padding: 8 },
     row: { marginBottom: 5, flexDirection: 'row', alignItems: 'center', marginTop: 8 },
     header: { backgroundColor: color, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    gender: { fontSize: 14, color: '#555555', paddingLeft: 10, marginBottom: 8 },
+    gender: { fontSize: 14, color: '#555555', paddingLeft: 10, },
     avatar: { height: 70, width: 70, borderRadius: 35 },
     boxUser: { alignItems: 'center', height: 70, width: 70, borderRadius: 35, justifyContent: 'center', alignSelf: 'center', marginTop: 10 },
     p10: { padding: 10 },

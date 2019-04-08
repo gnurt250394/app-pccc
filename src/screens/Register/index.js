@@ -60,7 +60,6 @@ class Register extends React.Component {
                             styleIcon={style.h15}
                             icon={images.phoneDark}
                             removeSpace={true}
-                            customStyle={{ paddingBottom: 5 }}
                             ref={val => this.phone = val}
                             onBlur={this._checkPhone}
                             keyboardType='numeric'

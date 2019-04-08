@@ -55,7 +55,7 @@ class System extends Component {
         this.state.refresing ? this.setState({ refresing: true, page: this.state.page + 1 }, this.getData) : null
     }
     ListFooterComponent = () => {
-        return this.state.refresing ? <ActivityIndicator size="large" color="#2166A2" /> : null
+        return this.state.refresing&& this.state.listSystems.length > 6 ? <ActivityIndicator size="large" color="#2166A2" /> : null
     }
     handleRefress=()=>{
         this.setState({loading:true,page:1},this.getData)
@@ -66,7 +66,7 @@ class System extends Component {
     _ListEmpty=()=> !this.state.loading && <Text style={styles.notFound}>Không có dữ liệu</Text>
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <FlatList
                     data={this.state.listSystems}
                     renderItem={this._renderItem}
@@ -86,10 +86,14 @@ class System extends Component {
             console.log(res.data, 'aaaa')
             console.log(this.state.page, 'page')
             if (res.data.code == Status.SUCCESS) {
-                this.setState({
-                    listSystems: [...this.state.listSystems, ...res.data.data],
-                    loading:false
-                })
+                if(this.state.page == 1){
+                    this.setState({listSystems: res.data.data,loading:false,refresing:true,Thresold:0.1})
+                } else{
+                    this.setState({
+                        listSystems: [...this.state.listSystems, ...res.data.data],loading:false
+                    })
+                }
+                
             } else if (res.data.code == Status.NO_CONTENT) {
                 //  SimpleToast.show("Không có thông báo")
                 this.setState({
@@ -113,11 +117,14 @@ class System extends Component {
     }
     componentDidMount = async () => {
         let token = await getItem('token')
-        if (!token) {
-            this.setState({ refresing: false, Thresold: 0 })
-            popup('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(HomeScreen), () => navigation.navigate(SigninScreen))
-        } else {
+        if (token) {
             this.getData()
+        } else{
+            this.setState({
+                refresing: false,
+                Thresold: 0,
+                loading:false
+            })
         }
 
     };
@@ -130,6 +137,10 @@ const styles= StyleSheet.create({
         textAlign: 'center',
         padding: 20,
       },
+      container:{
+          flex:1,
+          backgroundColor: '#CCCCCC'
+      }
 })
 
 

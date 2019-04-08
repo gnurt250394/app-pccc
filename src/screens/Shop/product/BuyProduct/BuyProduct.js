@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, FlatList, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
-import Item from './Item';
+import Item from '../Item';
 import images from 'assets/images'
 import { chooseImage } from 'config/uploadImage';
 import { ListCategory } from 'config/screenNames';
-import ModalCustom from './Modal';
+import ModalCustom from '../../Component/Modal';
 const { width } = Dimensions.get('window')
 export default class BuyProduct extends Component {
     constructor(props) {

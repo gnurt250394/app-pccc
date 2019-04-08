@@ -25,7 +25,7 @@ export default class ItemList extends Component {
   }
   render() {
     return (
-        <View style={{flex:1}}>
+        <View style={styles.group}>
       {this.props.item.status ==1 ?
       <TouchableOpacity style={styles.container}
       onPress={this.props.onPress}
@@ -59,6 +59,10 @@ export default class ItemList extends Component {
 }
 
 const styles = StyleSheet.create({
+  group:{
+    flex:1,
+    backgroundColor:'#FFFFFF'
+  },
     container:{
         flex:1,
         flexDirection: 'row',

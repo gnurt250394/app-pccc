@@ -5,22 +5,28 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
-import { HomeScreen } from 'config/screenNames'
+import { HomeScreen, SigninScreen } from 'config/screenNames'
 import { color, MessageStatus, popupOk } from 'config'
 import TabNotifi from './TabNotifi';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
-import { getItem } from 'config/Controller';
+import { getItem, popup } from 'config/Controller';
 
 class Notify extends React.Component {
 
     // set status bar
     componentDidMount= async ()=> {
         
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
+        this._navListener = this.props.navigation.addListener('didFocus',async () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
-          
+          let token = await getItem('token')
+        if (!token) {
+            this.setState({ refresing: false, Thresold: 0 })
+            popup('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(HomeScreen), () => navigation.navigate(SigninScreen))
+        } else {
+            return null
+        }
         });
     }
     

@@ -6,7 +6,7 @@ import { getListNotifi, ReviewNotifi } from 'config/apis/Notifi';
 import { Status, removeItem, popup, getItem } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
 import { actionTypes } from 'actions'
-import { SigninScreen } from 'config/screenNames';
+import { SigninScreen, DetailProject, DetailBiddingScreen } from 'config/screenNames';
 import navigation from 'navigation/NavigationService';
 class Folow extends Component {
     constructor(props) {
@@ -19,11 +19,19 @@ class Folow extends Component {
             listFolow: []
         };
     }
+    _checkNavigate=(item)=>{
+        if(item.type == "project"){
+            navigation.navigate(DetailProject,{id:item.common_id})
+        }else if(item.type == "bidding"){
+            navigation.navigate(DetailBiddingScreen,{id:item.common_id})
+        }
+    }
     _reViewNotifi = (item) => () => {
         ReviewNotifi(item.id).then(res => {
             console.log(res.data, 'hhh')
             console.log(this.state.listFolow, 'l')
             if (res.data.code == Status.SUCCESS) {
+                this._checkNavigate(item)
                 let list = this.state.listFolow
                 list.forEach(e => {
                     if (e.id == item.id) {
@@ -54,7 +62,7 @@ class Folow extends Component {
 
     }
     ListFooterComponent = () => {
-       return this.state.refresing ? <ActivityIndicator size="large" color="#2166A2"/>: null
+       return this.state.refresing && this.state.listFolow.length >6 ? <ActivityIndicator size="large" color="#2166A2"/>: null
     }
     handleRefress=()=>{
         this.setState({loading:true,page:1},this.getData)
@@ -65,7 +73,7 @@ class Folow extends Component {
     _ListEmpty=()=> !this.state.loading && <Text style={styles.notFound}>Không có dữ liệu</Text>
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <FlatList
                     data={this.state.listFolow}
                     renderItem={this._renderItem}
@@ -85,7 +93,12 @@ class Folow extends Component {
         getListNotifi({ page: this.state.page, type: '' }).then(res => {
             console.log(res.data, 'folow')
             if (res.data.code == Status.SUCCESS) {
-                this.setState({ listFolow: [...this.state.listFolow, ...res.data.data],loading:false })
+                if(this.state.page ==1 ){
+                    this.setState({ listFolow: res.data.data,loading:false,refreshing:true,Thresold:0.1 })
+                }else{
+                    this.setState({ listFolow: [...this.state.listFolow, ...res.data.data],loading:false })
+                }
+                
             } else if (res.data.code == Status.NO_CONTENT) {
                 this.setState({
                     refresing: false,
@@ -100,13 +113,17 @@ class Folow extends Component {
                 this.props.dispatch({ type: actionTypes.USER_LOGOUT })
             } else {
                 SimpleToast.show("Lỗi hệ thống")
-                this.setState({loading:false})
+                this.setState({
+                    refresing: false,
+                    Thresold: 0,
+                    loading:false
+                })
             }
         })
     }
     componentDidMount = async () => {
         let token = await getItem('token')
-        !token ? this.setState({ refresing: false, Thresold: 0 }) : this.getData()
+        !token ? this.setState({ refresing: false, Thresold: 0,loading:false }) : this.getData()
     };
 
 }
@@ -118,6 +135,10 @@ const styles= StyleSheet.create({
         textAlign: 'center',
         padding: 20,
       },
+      container:{
+          flex:1,
+          backgroundColor:'#CCCCCC'
+      }
 })
 
 export default connect()(Folow)
