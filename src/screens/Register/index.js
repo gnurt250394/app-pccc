@@ -18,13 +18,14 @@ class Register extends React.Component {
         allowPhone: false,
         loading: false,
         allowEmail: true,
-        name: ""
+        name: "",
+        isSuccess: false
     }
     // set status bar
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
-          StatusBar.setBarStyle('dark-content');
-          StatusBar.setBackgroundColor('#fff');
+            StatusBar.setBarStyle('dark-content');
+            StatusBar.setBackgroundColor('#fff');
         });
     }
 
@@ -35,18 +36,20 @@ class Register extends React.Component {
 
     render() {
         return (
+
             <TouchableWithoutFeedback style={style.flex} onPress={this._dismiss}>
+            {this.state.isSuccess?
+                        <View style={style.loading}>
+                            <ActivityIndicator size="large" color="#2166A2" />
+                        </View> : 
+                    
                 <View style={styles.content}>
                     {this.state.loading ?
                         <View style={styles.loading}>
-                            <ActivityIndicator size="large" color="#0000ff" />
+                            <ActivityIndicator size="large" color="#2166A2" />
                         </View> : null
                     }
-                    {/* <TouchableOpacity onPress={this._goBack} style={[style.btnClose]}>
-                    <Image 
-                            style={styles.close}
-                            source={images.closeBlue} />
-                </TouchableOpacity> */}
+                    
 
                     <Text style={[style.title, fontStyles.bold]}>{toUpperCase('Đăng ký')}</Text>
                     <View style={style.h70p}>
@@ -96,7 +99,7 @@ class Register extends React.Component {
                         </TouchableOpacity>
                     </View>
 
-                </View>
+                </View>}
             </TouchableWithoutFeedback>
         )
     }
@@ -174,6 +177,7 @@ class Register extends React.Component {
 
 
     _onSuccess = () => async () => {
+        
         let name = this.name.getValue()
         let phone = this.phone.getValue(),
             email = this.email.getValue(),
@@ -196,7 +200,7 @@ class Register extends React.Component {
         } else if (password != rePassword) {
             popupOk('Mật khẩu nhập lại không đúng')
         } else {
-
+            this.setState({isSuccess:true})
             // // call api
             if (this.state.allowPhone && allowEmail) {
                 let RNAccountKit = accountKit(phone);
@@ -211,16 +215,20 @@ class Register extends React.Component {
                             }).then(res => {
                                 if (res.data.code == StatusCode.Success) {
                                     AsyncStorage.setItem('token', res.data.token)
+                                    this.setState({isSuccess:false})
                                     navigation.reset(HomeScreen)
                                 } else {
+                                    this.setState({isSuccess:false})
                                     popupOk(CodeToMessage[res.data.code])
                                 }
 
                             }).catch(err => {
                                 console.log('err: ', err);
+                                this.setState({isSuccess:false})
                                 popupOk("Đăng ký thất bại")
                             })
                         } else {
+                            this.setState({isSuccess:false})
                             // popupOk('Đăng ký thất bại')
                         }
                     })
@@ -247,4 +255,9 @@ const style = StyleSheet.create({
     },
     flex: { flex: 1 },
     btnClose: { position: 'absolute', top: 0, right: 10, padding: 20, },
+    loading:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center'
+    }
 })
