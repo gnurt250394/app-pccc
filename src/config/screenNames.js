@@ -61,6 +61,12 @@ export const CatalogScreen = "CatalogScreen"
 export const FolowContractor = "FolowContractor"
 export const DetailContractor = "DetailContractor"
 
+// Liquidation
+export const Liquidation = "Liquidation"
+export const ListLiquidation = "ListLiquidation"
+export const DetailLiquidation = "DetailLiquidation"
+
+
 
 
 

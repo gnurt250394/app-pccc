@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator,RefreshControl, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator,Platform, StatusBar, TouchableWithoutFeedback, Keyboard, StyleSheet, AsyncStorage, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -67,7 +67,7 @@ class Signin extends React.Component {
                             
                             <BaseInput 
                                 styleIcon={style.w11}
-                                customStyle={style.txtEmail}
+                                customStyle={{paddingBottom:Platform.OS == "ios"? 7:2}}
                                 removeSpace={true}
                                 icon={images.phoneDark}
                                 ref={val => this.username = val}
@@ -431,7 +431,7 @@ const style = StyleSheet.create({
     mb50: {marginBottom: 35},
     OR:{ height:1, backgroundColor:'#80C9F0',  width: '20%' },
     txtEmail:{
-        paddingBottom:7
+        
     },
     // textTitle1:{
     //     alignSelf:'center',

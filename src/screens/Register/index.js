@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet, ActivityIndicator, Image, AsyncStorage } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StatusBar, Keyboard, StyleSheet, ActivityIndicator, Platform, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -60,7 +60,8 @@ class Register extends React.Component {
                             ref={val => this.name = val}
                             placeholder="Họ và tên" />
                         <BaseInput
-                            styleIcon={style.h15}
+                            styleIcon={[style.h15,{marginBottom:Platform.OS =="ios"?6:4}]}
+                            customStyle={{paddingBottom:Platform.OS =="ios"? 5:0}}
                             icon={images.phoneDark}
                             removeSpace={true}
                             ref={val => this.phone = val}
@@ -247,7 +248,7 @@ export default connect()(Register)
 const style = StyleSheet.create({
     btn: { marginTop: 40, marginBottom: 50 },
     boxForgot: { width: '50%', alignSelf: 'center', },
-    h15: { height: 15, marginBottom: 4 },
+    h15: { height: 15, },
     h70p: { height: '70%' },
     title: {
         color: color, fontSize: height < smallScreen ? 16 : 22, fontWeight: '500', marginBottom: '10%', textAlign: 'center',
@@ -259,5 +260,6 @@ const style = StyleSheet.create({
         flex:1,
         alignItems:'center',
         justifyContent:'center'
-    }
+    },
+    
 })

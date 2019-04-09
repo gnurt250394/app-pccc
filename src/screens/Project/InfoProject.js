@@ -154,14 +154,14 @@ class InfoProject extends Component {
 
 
         }
-
+        console.log(listProject,'sss')
         if (listProject.length == 0) {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
 
         } else {
             if (this.state.page == 1) {
 
-                this.setState({ listProject: listProject, loading: true, refreshing: false, Threshold: 0.1 })
+                this.setState({ listProject, loading: true, refreshing: false, Threshold: 0.1 })
             } else {
                 this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
             }
