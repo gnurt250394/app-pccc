@@ -51,7 +51,7 @@ class ViewProfile extends React.Component {
     render() {
         let { user, image } = this.state
         return (
-            <View >
+            <View style={style.flex}>
                 <SafeAreaView style={style.SafeAreaView}>
                     <View style={style.header}>
                         <TouchableOpacity style={style.p10} onPress={this._goBack}>
@@ -121,6 +121,9 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(ViewProfile)
 
 const style = StyleSheet.create({
+    flex:{
+        flex:1
+    },
     SafeAreaView: {
         backgroundColor: color
     },

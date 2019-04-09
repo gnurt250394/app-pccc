@@ -25,8 +25,8 @@ export const ReviewNotifi = async(notification_id)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.post(constant.Notification +`/${notification_id}`)
 }
-// export const FolowUser = async(body)=>{
-//     let token = await getItem('token')
-//         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-//         return instance.post(constant.NEW_PROJECT,{body,table:'UserInvestor'})
-// }
+export const Count_Notification = async()=>{
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.get(constant.COUNT_NOTIFICATION)
+}

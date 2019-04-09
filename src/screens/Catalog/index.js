@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput ,Linking,Platform} from 'react-native'
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, ActivityIndicator, FlatList, ScrollView, TextInput, Linking, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import {  color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore, log} from 'config'
+import { color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisCheckShowMore, log } from 'config'
 import { BaseSearch } from 'components'
 import images from "assets/images"
-import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows  } from 'config/apis/Project'
-import { getItem, Status } from 'config/Controller';
+import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
+import { getItem, Status, getMimeType } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
 import Toast from 'react-native-simple-toast';
@@ -23,7 +23,7 @@ class Catalog extends React.Component {
         backup: [],
         page: 1,
         threshold: 0.1,
-        
+
     }
     // set status bar
     async componentDidMount() {
@@ -33,9 +33,9 @@ class Catalog extends React.Component {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor(color);
         });
-        
+
     }
-    
+
     componentWillUnmount() {
         this._navListener.remove();
     }
@@ -43,91 +43,91 @@ class Catalog extends React.Component {
     /**
      * param type: document | catalog
      */
-    showTitle=()=>{
-        txt=''
-        if(this.props.navigation.state&&this.props.navigation.state.params.name){
+    showTitle = () => {
+        txt = ''
+        if (this.props.navigation.state && this.props.navigation.state.params.name) {
             txt = this.props.navigation.state.params.name
-        } else{
-            txt= ' '
+        } else {
+            txt = ' '
         }
         return txt
     }
-    render(){
+    render() {
         let count = this.state.datas.length
         return (
             <View style={style.flex}>
-               {this.state.follow?
-                 <Header
-                 check={1}
-                 onPress={this._goBack}
-                 title={this.showTitle()}
-                 />
-                 :
-                <BaseSearch
-                    onSearch={this._onSearch}
-                    ref={val => this.search = val}
-                    goBack={this._goBack}
-                    keyword={this.state.keyword} />}
+                {this.state.follow ?
+                    <Header
+                        check={1}
+                        onPress={this._goBack}
+                        title={this.showTitle()}
+                    />
+                    :
+                    <BaseSearch
+                        onSearch={this._onSearch}
+                        ref={val => this.search = val}
+                        goBack={this._goBack}
+                        keyword={this.state.keyword} />}
 
                 {
-                    this.state.datas.length == 0 
+                    this.state.datas.length == 0
                         ?
-                    !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
+                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
                         :
-                    <FlatList
-                        data={this.state.datas}
-                        renderItem={this.renderItem(count)}
-                        keyExtractor={(item, index) => index.toString()} 
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.handleRefresh}
-                        onEndReached={this.handleLoadmore}
-                        onEndReachedThreshold={this.state.threshold}
-                        ListFooterComponent={this.ListFooterComponent}  />
+                        <FlatList
+                            data={this.state.datas}
+                            renderItem={this.renderItem(count)}
+                            keyExtractor={(item, index) => index.toString()}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.handleRefresh}
+                            onEndReached={this.handleLoadmore}
+                            onEndReachedThreshold={this.state.threshold}
+                            ListFooterComponent={this.ListFooterComponent} />
                 }
             </View>
         )
     }
 
     handleRefresh = () => {
-        this.setState( { refreshing: true, page:  1 }  , this.getData)
+        this.setState({ refreshing: true, page: 1 }, this.getData)
     }
 
     handleLoadmore = () => {
-        this.state.loading ? this.setState( { loading: true, page: this.state.page + 1 } , this.getData) : null
+        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
     }
 
     ListFooterComponent = () => {
         log(this.state.loading);
-        return  this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
-    renderItem = count => ({item, index}) => {
-        
-        return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
+    renderItem = count => ({ item, index }) => {
 
-                { this.showImage(item.link) }
-                
-                <View style={style.right}>
-                    <Text style={style.name}>{item.name}</Text>
-                    { this.showDescription(item, index) }
-                    <View style={style.row}>
+        return <View style={index == count - 1 ? [style.box, style.btw0] : style.box}>
 
-                        <TouchableOpacity onPress={this.onDownload(item.link)}>
-                            <Text style={style.download}>Tải xuống</Text>
-                        </TouchableOpacity>
-                        {item.follow == Follow.unfollow && <TouchableOpacity
-                            onPress={this.onFollow(item.id, index)}
-                            style={style.btn}>
-                            <Text style={style.textBtn}>Theo dõi</Text>
-                        </TouchableOpacity>}
-                        {item.follow == Follow.follow && <TouchableOpacity
-                            onPress={this.onUnFollow(item.id, index)}
-                            style={style.btn}>
-                            <Text style={style.textBtn}>Bỏ theo dõi</Text>
-                        </TouchableOpacity>}
-                    </View>
+            {this.showImage(item.link)}
+
+            <View style={style.right}>
+                <Text style={style.name}>{item.name}</Text>
+                {this.showDescription(item, index)}
+                <View style={style.row}>
+
+                    <TouchableOpacity onPress={this.onDownload(item.link)}>
+                        <Text style={style.download}>Tải xuống</Text>
+                    </TouchableOpacity>
+                    {item.follow == Follow.unfollow && <TouchableOpacity
+                        onPress={this.onFollow(item.id, index)}
+                        style={style.btn}>
+                        <Text style={style.textBtn}>Theo dõi</Text>
+                    </TouchableOpacity>}
+                    {item.follow == Follow.follow && <TouchableOpacity
+                        onPress={this.onUnFollow(item.id, index)}
+                        style={style.btn}>
+                        <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                    </TouchableOpacity>}
                 </View>
             </View>
+        </View>
     }
 
     _showMore = index => () => {
@@ -136,7 +136,7 @@ class Catalog extends React.Component {
         datas[index].description = backup[index].description
         datas[index].showMore = backup[index].showMore
         datas[index].showLess = true
-        this.setState({datas})
+        this.setState({ datas })
     }
 
     _showLess = index => () => {
@@ -145,11 +145,11 @@ class Catalog extends React.Component {
         datas[index].description = description.value
         datas[index].showMore = description.showMore
         datas[index].showLess = false
-        this.setState({datas})
+        this.setState({ datas })
     }
 
     showDescription = (item, index) => {
-        if(!item.showMore){
+        if (!item.showMore) {
             return (
                 <View>
                     <Text style={style.description}>{item.description}</Text>
@@ -158,19 +158,19 @@ class Catalog extends React.Component {
                     </TouchableOpacity>}
                 </View>
             )
-        }else{
-            
+        } else {
+
             return (
                 <View style={style.boxDesc}>
                     <Text style={style.description}>{item.description}</Text>
                     <TouchableOpacity onPress={this._showMore(index)} style={[style.p8, style.pr10]}>
                         <Image source={images.moreThan} style={style.iconMore} />
                     </TouchableOpacity>
-                    
+
                 </View>
             )
         }
-        
+
     }
 
     showImage = link => {
@@ -181,8 +181,8 @@ class Catalog extends React.Component {
             case 'jpeg':
             case 'gif':
             case 'png':
-                source = {uri: link}
-                uri= true
+                source = { uri: link }
+                uri = true
                 break;
 
             case 'doc':
@@ -206,21 +206,21 @@ class Catalog extends React.Component {
             case 'xlr':
                 source = images.excel
                 break;
-        
+
             default:
                 source = this.state.type == 'catalog' ? images.pdf : images.document
                 break;
         }
-        return <Image  
-                    style={[style.image, uri ? style.uri : {}]}
-                    source={source} />
+        return <Image
+            style={[style.image, uri ? style.uri : {}]}
+            source={source} />
     }
 
     onFollow = (document_id, index) => () => {
-        if(!this.token){
+        if (!this.token) {
             popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
-        }else{
-            addFolow({document_id:document_id, table: Follow.table_document}).then(res => {
+        } else {
+            addFolow({ document_id: document_id, table: Follow.table_document }).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
@@ -229,13 +229,13 @@ class Catalog extends React.Component {
                         Toast.show('Theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.follow)
                         break;
-                
+
                     default:
                         Toast.show('Theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
-                
+
                 Toast.show('Theo dõi thất bại.')
             })
         }
@@ -244,14 +244,14 @@ class Catalog extends React.Component {
     changeButtonFollow = (index, status) => {
         let datas = [...this.state.datas]
         datas[index].follow = status
-        this.setState({datas})
+        this.setState({ datas })
     }
 
     onUnFollow = (document_id, index) => () => {
-        if(!this.token){
+        if (!this.token) {
             popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
-        }else{
-            UnFolowUser({document_id, table: Follow.table_document}).then(res => {
+        } else {
+            UnFolowUser({ document_id, table: Follow.table_document }).then(res => {
                 switch (res.data.code) {
                     case Status.TOKEN_EXPIRED:
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
@@ -260,117 +260,136 @@ class Catalog extends React.Component {
                         Toast.show('Bỏ theo dõi thành công.')
                         this.changeButtonFollow(index, Follow.unfollow)
                         break;
-                
+
                     default:
                         Toast.show('Bỏ theo dõi thất bại.')
                         break;
                 }
             }).catch(err => {
-                
+
                 Toast.show('Bỏ theo dõi thất bại.')
             })
         }
     }
 
-    onDownload = link  => () => {
-        let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
-        let filename = /[^\/]*$/.exec(link)[0]
-        let dirs = RNFetchBlob.fs.dirs
-        filePath = `${dirs.DownloadDir}/${filename}`
-            RNFetchBlob.config({
-                path: filePath,
-                addAndroidDownloads : {
-                    useDownloadManager : true,
-                    notification : true,
-                    mime : MIME[ext],
-                    description : 'Tải file thành công bởi Siêu thị vật liệu xây dựng.'
-                },
+    onDownload = link => () => {
+        Linking.canOpenURL(link)
+    .then((supported) => {
+      if (!supported) {
+        console.log("Can't handle url: " + link);
+      } else {
+         Linking.openURL(link);
+      }
+    })
+    .catch((err) => console.log('An error occurred', err.response));
+        // let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+        // let filename = /[^\/]*$/.exec(link)[0]
+        // // let dirs = RNFetchBlob.fs.dirs
+        // // filePath = `${dirs.DownloadDir}/${filename}`
+        // let dirs = RNFetchBlob.fs.dirs
+        // let filePath = `${dirs.DownloadDir}/${filename}.${ext}`
+        // RNFetchBlob.config({
+        //     path: filePath,
+        //     addAndroidDownloads: {
+        //         useDownloadManager: true,
+        //         notification: true,
+        //         mime: getMimeType(ext),
+        //         description: 'Tải file thành công bởi Siêu thị vật liệu xây dựng.'
+        //     },
+
+        // })
+        //     .fetch('GET', link,{
+        //         'Cache-Control': 'no-store'
+        //     })
+        //     .then((res) => {
+        //         RNFetchBlob.fs.exists(resp.path())
+        //             .then((exist) => {
+        //                 console.log(`file ${exist ? '' : 'not'} exists`)
+        //             })
+        //             .catch(() => { console.log('err while checking') });
+        //         console.log(link, 'linkok')
+        //         if (Platform.OS == "ios") {
+        //             RNFetchBlob.ios.openDocument(res.path());
+        //             Toast.show('Tải xuống hoàn tất.')
+        //         } else {
+        //             RNFetchBlob.android.actionViewIntent(res.path(), getMimeType(ext));
+        //             //   res.path()
+        //             Toast.show('Tải xuống hoàn tất.')
+        //         }
                 
-            })
-            .fetch('GET', link)
-            .then((res) => {
-                
-                console.log(link,'linkok')
-                if (Platform.OS == "ios") {
-                    RNFetchBlob.ios.openDocument(res.data);
-                    }else{
-                        RNFetchBlob.android.actionViewIntent(res.path(),MIME[ext])
-                    //   res.path()
-                    }
-                Toast.show('Tải xuống hoàn tất.')
-            })
-            .catch((errorMessage, statusCode) => {
-                console.log(link,'alink')
-                
-                Toast.show('Lỗi khi tải xuống.')
-            })
-       
-        
+        //     })
+        //     .catch((errorMessage, statusCode) => {
+        //         console.log(link, 'alink')
+
+        //         Toast.show('Lỗi khi tải xuống.')
+        //     })
+
+
     }
 
     _onSearch = () => {
-        this.setState({loading: true}, async () => {
+        this.setState({ loading: true }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
-            
-            let datas = await searchDocuments(this.state.type, keyword).then(res =>{
+
+            let datas = await searchDocuments(this.state.type, keyword).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []
             })
-           this.formatData(datas)
+            this.formatData(datas)
         })
     }
 
     formatData = datas => {
-        if(datas.length == 0){
+        if (datas.length == 0) {
             this.setState({
                 loading: false,
                 refreshing: false,
                 threshold: 0,
                 // datas
             })
-        }else{
+        } else {
             let backup = [...datas]
-        
+
             datas = datas.map(e => {
                 let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
-                return {...e, description: description.value, showMore: description.showMore, showLess: false}
+                return { ...e, description: description.value, showMore: description.showMore, showLess: false }
             })
-           
-            if(this.state.page == 1){
-                this.setState({ datas, backup, loading: true, refreshing: false , threshold:0.1})
-            }else{
-                this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup],  refreshing: false})
+
+            if (this.state.page == 1) {
+                this.setState({ datas, backup, loading: true, refreshing: false, threshold: 0.1 })
+            } else {
+                this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], refreshing: false })
             }
         }
-        
+
     }
 
     getData = async () => {
         let datas = [];
-        if(this.state.follow){
+        if (this.state.follow) {
             datas = await listDocumentFollows(this.state.type, this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []
             })
-        }else{
+        } else {
             datas = await listDocuments(this.state.type, this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []
             })
-            console.log(datas,'ss')
+            console.log(datas, 'ss')
         }
-        
+
         this.formatData(datas)
     }
 
     onChangeText = key => val => {
-        this.setState({[key]: val})
+        this.setState({ [key]: val })
     }
 
-    _navTo = (screen, params = {} ) => () => {
+    _navTo = (screen, params = {}) => () => {
         this.props.navigation.navigate(screen, params)
     }
 
@@ -387,15 +406,15 @@ class Catalog extends React.Component {
 export default connect()(Catalog)
 
 const style = StyleSheet.create({
-    heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
-    txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
-    w15: { width: 15},
-    p8: {padding: 8},
-    pr10: {paddingRight: 10},
-    flex: {flex: 1,backgroundColor:'#CCCCCC'},
-    cancel: {color: 'white', padding: 10},
+    heading: { justifyContent: 'space-between', padding: 10, alignContent: 'center' },
+    boxSearch: { flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10, },
+    head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10, },
+    txtSearch: { color: "rgba(255, 255, 255, 0.6)" },
+    w15: { width: 15 },
+    p8: { padding: 8 },
+    pr10: { paddingRight: 10 },
+    flex: { flex: 1, backgroundColor: '#CCCCCC' },
+    cancel: { color: 'white', padding: 10 },
     box: {
         width: '100%',
         borderBottomColor: '#ccc',
@@ -404,7 +423,7 @@ const style = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 5,
         flexDirection: 'row',
-        backgroundColor:'#FFFFFF'
+        backgroundColor: '#FFFFFF'
     },
     image: {
         width: 100,
@@ -432,7 +451,7 @@ const style = StyleSheet.create({
     },
     btw0: {
         borderBottomWidth: 0,
-        backgroundColor:'#FFFFFF'
+        backgroundColor: '#FFFFFF'
     },
     textBtn: {
         color,
@@ -490,8 +509,8 @@ const style = StyleSheet.create({
     },
     iconBack: {
         height: 18,
-        width:18, 
-        resizeMode: 'contain', 
+        width: 18,
+        resizeMode: 'contain',
         paddingLeft: 10,
     },
 })

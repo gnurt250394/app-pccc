@@ -9,6 +9,7 @@ import Home from 'screens/Home'
 import ListChat from 'screens/Messenger/ListChat'
 import Notify from 'screens/Notify'
 import { color } from 'config'
+import Icon from "screens/Notify/Icon";
 
 export default createBottomTabNavigator(
   {
@@ -25,9 +26,15 @@ export default createBottomTabNavigator(
       }),
     },
     [NotifyScreen]: { 
-      screen: Notify,
+      screen:(props)=> <Notify {...props}/>,
       navigationOptions: () => ({
         title: 'Thông báo',
+        tabBarIcon: ({ focused }) => {  
+          // You can return any component that you like here! 
+          // We usually create an icon component rendering some svg        
+          return <Icon  source={focused ? images.notify : images.notifyDark }/>;       
+       }
+     
       }),
     },
     [ProfileScreen]: { 

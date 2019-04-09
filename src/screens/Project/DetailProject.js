@@ -20,6 +20,8 @@ class DetailProject extends Component {
     this.state = {
       project: {},
       listPartner: [],
+      id: this.props.navigation.getParam('id') || '',
+      title: this.props.navigation.getParam('name') || '',
       loading: true,
       folow: this.props.navigation.getParam('follow') || false,
     };
@@ -28,10 +30,10 @@ class DetailProject extends Component {
 
   showTitle = () => {
     let name = ''
-    if (this.props.navigation.state && this.props.navigation.state.params.name && this.props.navigation.state.params.name.length > 20) {
-      name = this.props.navigation.state.params.name.substring(0, 19) + "..."
+    if (this.state.title && this.state.title.length > 20) {
+      name = this.state.title.substring(0, 19) + "..."
     } else {
-      name = this.props.navigation.state.params.name || 'Chi tiết dự án'
+      name = this.state.title || 'Chi tiết dự án'
     }
     return name
   }
@@ -128,18 +130,18 @@ class DetailProject extends Component {
     navigation.pop()
   }
   _folowProject = async () => {
-    if (this.props.navigation.state && this.props.navigation.state.params.id) {
+    if (this.state.id) {
       let token = await getItem('token')
       if (token) {
         FolowProject({
-          project_id: this.props.navigation.state.params.id,
+          project_id: this.state.id,
           table: 'UserProject',
         }).then(res => {
           console.log(res.data, 'hhh')
           if (res.data.code == Status.SUCCESS) {
             this.state.project.follow = Status.UNCHECKED
             this.setState({})
-            Toast.show('Bạn đã theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+            Toast.show('Bạn đã theo dõi dự án ' + this.state.title + ' thành công')
           } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.navigate(SigninScreen)
@@ -164,16 +166,16 @@ class DetailProject extends Component {
   }
 
   _UNfolowProject = async () => {
-    if (this.props.navigation.state && this.props.navigation.state.params.id) {
+    if (this.state.id) {
       let token = await getItem('token')
       if (token) {
         unFolowProject({
-          project_id: this.props.navigation.state.params.id,
+          project_id: this.state.id,
           table: 'UserProject'
         }).then(res => {
 
           if (res.data.code == Status.SUCCESS) {
-            Toast.show('Bạn đã bỏ theo dõi dự án ' + this.props.navigation.state.params.name + ' thành công')
+            Toast.show('Bạn đã bỏ theo dõi dự án ' + this.state.title + ' thành công')
             this.state.project.follow = Status.CHECKED
             this.setState({})
           } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
@@ -273,10 +275,10 @@ class DetailProject extends Component {
   _getData = async () => {
 
 
-    if (this.props.navigation.state && this.props.navigation.state.params.id) {
+    if (this.state.id) {
 
-
-      let project = await getListProject(this.props.navigation.state.params.id).then(res => {
+      console.log(this.state.id)
+      let project = await getListProject(this.state.id).then(res => {
 
 
         return res.data.code == Status.SUCCESS ? res.data.data : []

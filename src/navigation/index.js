@@ -44,6 +44,9 @@ import Catalog from 'screens/Catalog'
 import ListCategory from "screens/Shop/product/ListCategory";
 import FolowContractor from "screens/Contractors/FolowContractor";
 import DetailContractor from "screens/Contractors/Detail/DetailContractor";
+import Liquidation from "screens/Liquidation/Liquidation";
+import ListLiquidation from "screens/Liquidation/ListLiquidation/ListLiquidation";
+import DetailLiquidation from "screens/Liquidation/Detail/DetailLiquidation";
 
 // const MyDrawerNavigator = createDrawerNavigator({
 //   Tabs: TabsHome
@@ -104,7 +107,10 @@ const App = createStackNavigator(
     // Catalog
     [ScreenName.CatalogScreen]: Catalog,
 
-    
+    // Liquidation
+    [ScreenName.Liquidation] : Liquidation,
+    [ScreenName.ListLiquidation]: ListLiquidation,
+    [ScreenName.DetailLiquidation]:DetailLiquidation,
 
     //FolowContractor
     [ScreenName.FolowContractor]: FolowContractor,

@@ -12,6 +12,7 @@ import { getInfoAcount } from 'config/apis/users';
 import { getItem } from 'config/Controller';
 import { popupCancel } from 'config';
 import { popupOk } from 'config';
+import { fontStyles } from 'config/fontStyles';
 
 class Profile extends React.Component {
     state = {
@@ -107,18 +108,20 @@ class Profile extends React.Component {
                         <Text style={style.txtModal}>Yêu cầu đăng nhập</Text>
                         </View>
                         <View style={style.footerModal}>
-                            <View style={[style.groupTxt, { backgroundColor: color, borderBottomLeftRadius: 8 }]}>
+                            <TouchableOpacity style={[style.groupTxt, { backgroundColor: color, borderBottomLeftRadius: 8 }]}
+                            onPress={this._navTo(SigninScreen)}>
                                 <Text
-                                    onPress={this._navTo(SigninScreen)}
-                                    style={[style.btnModal]}>{toUpperCase("Đăng nhập")}
+                                    
+                                    style={[style.btnModal,fontStyles.Montserrat_SemiBold]}>{toUpperCase("Đăng nhập")}
                                 </Text>
-                            </View>
-                            <View style={[style.groupTxt, { backgroundColor: '#FFFFFF', borderBottomRightRadius: 8, }]}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[style.groupTxt, { backgroundColor: '#FFFFFF', borderBottomRightRadius: 8, }]}
+                            onPress={this._navTo(RegisterScreen)}>
                                 <Text
-                                    onPress={this._navTo(RegisterScreen)}
-                                    style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}
+                                    
+                                    style={[style.btnModal, style.register,fontStyles.Montserrat_SemiBold]}>{toUpperCase("Đăng ký")}
                                 </Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -189,8 +192,8 @@ const style = StyleSheet.create({
     mt20: { marginTop: 20 },
     flex: { flex: 1 },
     modal: { backgroundColor: '#999999', justifyContent: 'center', flex: 1, },
-    bodyModal: { width: '80%',height:82, alignSelf: 'center', backgroundColor: '#FFFFFF', flexDirection: 'column', borderRadius: 8, },
-    headModal: { alignItems:'center',justifyContent:'center', flex:1, padding: 10,height:40 },
+    bodyModal: { width: '80%',height:'14%', alignSelf: 'center', backgroundColor: '#FFFFFF', flexDirection: 'column', borderRadius: 8, },
+    headModal: { alignItems:'center',justifyContent:'center', flex:1,paddingTop:10 },
     txtModal:{
         color: '#333333', 
         fontWeight: 'bold', 
@@ -198,26 +201,25 @@ const style = StyleSheet.create({
         flex:1
     },
     footerModal: {
+        flex:1,
         flexDirection: 'row',
-        borderWidth: 1,
+        alignItems:'flex-end',
         width:'100%',
-        borderColor: color,
-        shadowColor:color,
-        shadowOffset:{width:2,height:2},
-        shadowRadius:8,
         borderBottomLeftRadius: 8,
         borderBottomRightRadius: 8,
-        backgroundColor:color
+        // backgroundColor:color,
+        // borderColor:color,
+        // borderWidth:1
     },
     btnModal: { fontSize: 16, fontWeight: '400', height: '100%', width: '100%', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', },
     register: { color: color, backgroundColor: 'white' },
     groupTxt: {
         flex: 1,
         width: '100%',
-        height: '100%',
         padding: 10,
-        height: 39,
-
+        height: 41,
+        borderTopColor:color,
+        borderTopWidth:1
     }
     // login: {borderBottomRightRadius: 0},
 })
