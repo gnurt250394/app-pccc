@@ -12,6 +12,7 @@ export default class Item extends Component {
                               multiline={this.props.multiline}
                               style={[styles.inputItem,{...this.props.style}]}
                               placeholder={this.props.placeholder}
+                              onChangeText={this.props.onChangeText}
                         />
                   </View>
             )

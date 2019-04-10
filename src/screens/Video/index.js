@@ -202,14 +202,16 @@ class Video extends React.Component {
     }
 
     playvideo = id => () => {
-        if(isIos)
+        console.log(id,'id')
+        if(isIos){
+        
             YouTubeStandaloneIOS.playVideo(id)
             .then(() => console.log('Standalone Player Exited'))
             .catch(errorMessage => {
                 console.log(errorMessage,'err')
             })
       
-        else
+        }else{
             YouTubeStandaloneAndroid.playVideo({
                 apiKey: youtube.apiKey,     // Your YouTube Developer API Key
                 videoId: id,     // YouTube video ID
@@ -218,7 +220,7 @@ class Video extends React.Component {
                 startTime: 120,             // Starting point of video (in seconds)
             })
                 .then(() => console.log('Standalone Player Exited'))
-                .catch(errorMessage => console.error(errorMessage))
+                .catch(errorMessage => console.error(errorMessage))}
     }
 
     _onSearch = () => {
