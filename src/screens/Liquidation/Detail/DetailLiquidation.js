@@ -5,8 +5,16 @@ import images from "assets/images"
 import { fontStyles } from 'config/fontStyles';
 import Button from './Button';
 import navigation from 'navigation/NavigationService';
+import HeaderDetail from './HeaderDetail';
+import BodyDetail from './BodyDetail';
+import FooterDetail from './FooterDetail';
+import { getDetailLiquidation } from 'config/apis/liquidation';
 
 export default class DetailLiquidation extends Component {
+      state={
+            id:this.props.navigation.getParam('id',''),
+            Liquidation:data
+      }
       _nextPage=()=>{
             alert('111')
       }
@@ -14,6 +22,7 @@ export default class DetailLiquidation extends Component {
             navigation.pop()
       }
       render() {
+            const {Liquidation} = this.state
             return (
                   <View style={styles.container}>
                         <Header
@@ -23,23 +32,23 @@ export default class DetailLiquidation extends Component {
                         />
                         <ScrollView>
                         <View style={styles.Group}>
-                              <View style={styles.row}>
-                                    <Image source={images.user} style={styles.image} />
-                                    <View style={styles.containerName}>
-                                          <Text style={styles.txtName}>abc</Text>
-                                          <View style={styles.rowChil}>
-                                                <Image source={images.proLocation}
-                                                      resizeMode="contain"
-                                                      style={styles.Image} />
-                                                <Text style={styles.txtAddress}>ha noi</Text>
-                                          </View>
-                                    </View>
-                              </View>
+                              <HeaderDetail
+                              image={Liquidation.user_image}
+                              name={Liquidation.user_name}
+                              address={Liquidation.user_address}
+                              />
                               <View style={styles.end}/>
-                              <Text >aaa</Text>
-                              <Text>aaa</Text>
-                              <Text>aaa</Text>
-                              
+                              <BodyDetail
+                              title={Liquidation.title}
+                              description={Liquidation.description}
+                              time={Liquidation.time}
+                              />
+                              <View style={styles.end}/>
+                              <FooterDetail
+                              category={Liquidation.category}
+                              address={Liquidation.district + " " + Liquidation.city}
+                              file_attach={Liquidation.file_attach}
+                              />
                         </View>
                         </ScrollView>
                         <Button
@@ -49,92 +58,45 @@ export default class DetailLiquidation extends Component {
                   </View>
             )
       }
+      getDetail = () =>{
+            getDetailLiquidation(this.state.id).then(res=>{
+                  console.log(res.data,'dsdsds')
+            }).catch(err=>{
+                  console.log(err.response,'err')
+            })
+      }
+      componentDidMount() {
+      //   this.getDetail()
+      }
+      
 }
-
+const data = {
+      "title": "Hang thanh ly",
+      "description": "hang con moi",
+      "user_name": "Lê Văn Hoàng",
+      "user_address": "Thành phố Hà Nội",
+      "user_image": "http://pccc.loilv/public/users/IMG-YZBC-09787891779999999.png",
+      "district": "Tỉnh Hà Nam",
+      "city": "Thành phố Hà Nội",
+      "file_attach": [
+        "https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png",
+        "https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png"
+      ],
+      "category": "Trang phục",
+      "time": "1 giờ trước"
+    }
 const styles = StyleSheet.create({
       container: {
             flex: 1,
-      },
-      txtPhone: {
-            color: '#FFFFFF'
-      },
-      txtMsg: {
-            color: '#2166A2'
-      },
-      imgBtnMsg: {
-            height: 24,
-            width: 24,
-            tintColor: '#2166A2',
-            marginRight: 6
-      },
-      imgBtnPhone: {
-            height: 20,
-            width: 20,
-            tintColor: '#FFFFFF',
-            marginRight: 6
-      },
-      btnPhone: {
-            height: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '50%',
-            flexDirection: 'row',
-            backgroundColor: '#2166A2',
-            borderColor: '#2166A2',
-            borderWidth: 1
-      },
-      btnMsg: {
-            height: 40,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '50%',
-            backgroundColor: '#FFFFFF',
-            borderColor: '#2166A2',
-            borderWidth: 1
-      },
-      rowBtn: {
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 0
       },
       Group: {
             flex: 1,
             padding:10
       },
       end: {
-            height: 1,
+            height: 0.6,
             backgroundColor: 'gray',
             width: '100%',
             marginVertical:15
       },
-      image: {
-            height: 50,
-            width: 50,
-            borderRadius: 25
-      },
-      Image: {
-            height: 15,
-            width: 15
-      },
-      txtAddress: {
-            color: '#999999',
-      },
-      txtName: {
-            fontSize: 16,
-            color: '#333333',
-            fontWeight: 'bold',
-      },
-      rowChil: {
-            flexDirection: 'row',
-      },
-      row: {
-            flexDirection: 'row',
-            marginTop: 15
-      },
-      containerName: {
-            flex: 1,
-            justifyContent: 'space-around',
-            marginLeft: 10
-      }
 })

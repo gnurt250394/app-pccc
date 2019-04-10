@@ -100,8 +100,8 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
-                                // onPress={this._navTo(Liquidation)} 
-                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
+                                onPress={this._navTo(Liquidation)} 
+                                // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={style.box3} >
                                     <Image 

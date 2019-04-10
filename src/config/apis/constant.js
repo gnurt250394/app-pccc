@@ -24,7 +24,9 @@ const constant ={
     List_Investor:'list-investor',
     Investor_Detail:'investor-detail/',
     LIST_FOLLOW_DOCUMMENT: 'list-document-follow',
-    COUNT_NOTIFICATION:'count-notification'
+    COUNT_NOTIFICATION:'count-notification',
+    LIST_LIQUIDATION:'new-post',
+    DETAIL_LIQUIDATION: 'new-post/'
 }
 
 export default constant;

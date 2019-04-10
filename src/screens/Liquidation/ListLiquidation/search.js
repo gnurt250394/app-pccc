@@ -4,7 +4,7 @@ import styles from "assets/styles"
 import images from "assets/images" 
 import {  color } from 'config'
 
-export default class BaseSearch extends React.PureComponent {
+export default class Search extends React.PureComponent {
     state = {
         keyword: this.props.keyword || '',
         clear: false
@@ -16,21 +16,16 @@ export default class BaseSearch extends React.PureComponent {
 
     render(){
         return (
-            <SafeAreaView style={style.SafeAreaView}>
-            <View style={[style.head,{...this.props.style}]}>
+            <View style={style.head}>
                    
-                {this.props.goBack && <TouchableOpacity style={style.p8}  onPress={this.props.goBack}  >
-                        <Image 
-                        style={style.iconBack}
-                        source={images.backLight} />
-                </TouchableOpacity>}
+                
 
                 <View style={style.boxSearch}>
             
                     <TouchableOpacity style={style.p8}  onPress={this.props.onSearch}  >
                         <Image 
                             style={[styles.icon, style.w15, style.iconSearch]}
-                            source={images.iconSearch} />
+                            source={images.search} />
                     </TouchableOpacity>
                     
                     <TextInput 
@@ -40,7 +35,7 @@ export default class BaseSearch extends React.PureComponent {
                         onFocus={this.showBtnClose}
                         onSubmitEditing={this.props.onSearch}
                         onChangeText={this.onChangeText}
-                        placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                        placeholderTextColor={color}
                         placeholder="Tìm kiếm" />
                     
                     {this.state.clear && <TouchableOpacity style={style.p8}  onPress={this.onClear}  >
@@ -49,11 +44,8 @@ export default class BaseSearch extends React.PureComponent {
                             source={images.closeSearch} />
                     </TouchableOpacity>}
                 </View >
-                {this.props.onCancel && <Text 
-                    onPress={this.props.onCancel}
-                    style={style.cancel}>Hủy</Text>}
+                
             </View>
-            </SafeAreaView>
         )
     }
 
@@ -78,13 +70,13 @@ export default class BaseSearch extends React.PureComponent {
 
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
-    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 8, backgroundColor: "rgba(0, 0, 0, 0.15)", height: 40, marginLeft: 10, marginRight: 10,},
-    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
+    boxSearch: {flexDirection: 'row', justifyContent: 'space-between', flex: 1, borderRadius: 6,backgroundColor:'#FFFFFF', borderColor:'#8FBEDF',borderWidth:1, height: 40, marginLeft: 10, marginRight: 10,},
+    head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10,},
     txtSearch: {color: "rgba(255, 255, 255, 0.6)"},
     w15: { width: 15},
-    iconClose: {  width: 13, marginTop: -5},
+    iconClose: {  width: 13, marginTop: 0,tintColor:color},
     iconSearch: {  marginTop: -2},
-    p8: {padding: 8},
+    p8: {padding: 8,alignItems:'center',justifyContent:'center'},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
     posR: {position: 'relative'},

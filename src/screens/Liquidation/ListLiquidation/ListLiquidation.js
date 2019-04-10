@@ -5,70 +5,32 @@ import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
 import { Status, removeItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen } from 'config/screenNames';
+import { SigninScreen, DetailLiquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
 import Item from './Item';
 import { Header } from 'components';
+import { getListLiquidation } from 'config/apis/liquidation';
+import Search from './search';
 moment.locale('vn')
 export default class ListLiquidation extends Component {
 
     state = {
         listLiqiudation: [],
-        Thresold: 0.1
+        Thresold: 0.1,
+        page:1,
+        loading:false,
+        refressing:true
     }
-    goDetail = () => {
-
+    goDetail =()=> (item) => {
+        navigation.navigate(DetailLiquidation,{id:item.id})
     }
     _renderItem = ({ item, index }) => {
         return (
             <Item
-                onPress={this.this.goDetail}
+                onPress={this.goDetail(item)}
+                item={item}
             />
-            // <View>
-            // <View style={styles.containerList}>
-            // <View style={styles.Image}>
-            //     <Image source={{uri:item.image}}
-            //         style={styles.image}
-            //         resizeMode="contain"
-            //     />
-            //     </View>
-            //     <TouchableOpacity onPress={this.goDetail}
-            //     style={styles.dots}
-            //     >
-            //     <Image source={images.dots}
-            //         style={styles.imgDots}
-            //         resizeMode="contain"
-            //     />
-            //     </TouchableOpacity>
-            //     <View style={styles.containerText}>
-            //     <Text style={styles.txtName}>{item.name}</Text>
-            //     <Text style={styles.txtPrice}>{item.description}</Text>
-            //     <View style={styles.rowList}>
-            //     <View style={styles.row}>
-            //         <Image source={images.shopLocation}
-            //             style={styles.imgLocation}
-            //             resizeMode="contain"
-            //         />
-            //         <Text>{item.city_id}</Text>
-            //         </View>
-            //         <View style={styles.row}>
-            //         <Image 
-            //             source={images.shopPrice}
-            //             style={styles.imgLocation}
-            //             resizeMode="contain"
-            //         />
-            //         <Text>{item.price}</Text>
-            //         </View>
-            //         <Text style={{marginLeft:10}}>{item.time}</Text>
-
-            //     </View>
-            //     </View>
-
-            // </View>
-            // <View
-            //         style={styles.end}
-            //     />
-            // </View>
+            
 
         )
     }
@@ -76,31 +38,11 @@ export default class ListLiquidation extends Component {
         return `${item.id || index}`
     }
     _renderFooter = () => {
-        if (this.state.loadMore && this.state.listLiqiudation.length >5) {
-            return (
-                <ActivityIndicator
-                    size={"large"}
-                    color={"#2166A2"}
-                />
-            )
-        } else {
-            return null
-        }
+      return this.state.loading && this.state.listLiqiudation.length >5 ? <ActivityIndicator size={"large"} color={"#2166A2"}/> : null
     }
 
     _loadMore = () => {
-        if (!this.state.loadMore) {
-            return null
-        } else {
-            this.setState((preState) => {
-                return {
-                    loadMore: true,
-                    page: preState.page + 1
-                }
-            }, () => {
-                this.getDetail()
-            })
-        }
+        !this.state.loading ? null:this.setState({loading: true,page: this.state.page + 1},this.getLiquidation)
     }
     _nextPage = () => {
         navigation.navigate()
@@ -116,14 +58,21 @@ export default class ListLiquidation extends Component {
             onPress={this._goBack}
             title={'Danh sách tin thanh lý'}
             />
-            <View style={styles.searchGroup}>
+            <Search
+            onSearch={this._onSearch}
+            onClear={this.getData}
+            ref={val => this.search = val}
+            goBack={this._goBack}
+            keyword={this.state.keyword}
+            />
+            {/* <View style={styles.searchGroup}>
                 <Image source={images.search} style={styles.imgSearch}/>
                 <TextInput 
                 placeholderTextColor={"#2166A2"}
                 placeholder="Tìm kiếm"
                 style={styles.inputSearch}
                 />
-            </View>
+            </View> */}
                 
                 <FlatList
                     data={this.state.listLiqiudation}
@@ -146,39 +95,72 @@ export default class ListLiquidation extends Component {
         );
     }
     getLiquidation = () => {
-        getLiquidation(this.state.page).then(res => {
+        let params ={
+            type:'liquidation',
+            page:this.state.page
+        }
+        getListLiquidation(params).then(res => {
+            console.log(res.data,'res')
             if (res.data.code == Status.SUCCESS) {
                 this.setState({
-                    listLiqiudation: res.data.data,
-                    loadMore: true
+                    listLiqiudation: [...this.state.listLiqiudation,...res.data.data],
                 })
             } else if (res.data.code == Status.NO_CONTENT) {
                 this.setState({
-                    listLiqiudation: [],
-                    loadMore: false,
-                    Thresold: 0
+                    Thresold: 0,
+                    loading:false
                 })
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
+                this.setState({Thresold: 0, loading:false})
                 navigation.reset(SigninScreen)
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
+                this.setState({Thresold: 0, loading:false})
                 popupCancel('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
+            this.setState({Thresold: 0, loading:false})
             console.log(err.response, 'err')
         })
     }
     componentDidMount = () => {
-        // this.getLiquidation()
+        this.getLiquidation()
     };
 
 }
+const data= [
+    {
+      "id": 9,
+      "title": "asdsadsadsad",
+      "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
+      "category": "Trang phục",
+      "city": "Thành phố Hà Nội",
+      "time": "59 phút trước"
+    },
+    {
+        "id": 10,
+        "title": "asdsadsadsad",
+        "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
+        "category": "Trang phục",
+        "city": "Thành phố Hà Nội",
+        "time": "59 phút trước"
+      },
+      {
+        "id": 11,
+        "title": "asdsadsadsad",
+        "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
+        "category": "Trang phục",
+        "city": "Thành phố Hà Nội",
+        "time": "59 phút trước"
+      }
 
+  ]
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 10,
+        backgroundColor:'#CCCCCC'
     },
     imgSearch:{
         height:15,
@@ -190,6 +172,7 @@ const styles = StyleSheet.create({
     },
     searchGroup:{
         flexDirection: 'row',
+        backgroundColor:'#FFFFFF',
         justifyContent: 'space-between',
         borderRadius:5,
         height:40,
