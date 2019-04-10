@@ -5,9 +5,9 @@ import images from 'assets/images'
 const { width } = Dimensions.get('window')
 
 export default class ItemFooter extends Component {
-      showImage = link => {
+      showImage = (link) => {
             let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
-            let source, uri;
+            let source, uri
             switch (ext) {
                 case 'jpg':
                 case 'jpeg':
@@ -48,14 +48,11 @@ export default class ItemFooter extends Component {
                 source={source} />
         }
       render() {
-            if (this.props.index >= 2 ) {
+            if (this.props.index >= 2 && this.props.listFile.length != 3) {
                   return (
                         <View style={styles.containerList}>
-                              {/* <Image
-                                    source={{ uri: this.props.item.image }}
-                                    style={styles.imageList}
-                              /> */}
-                              {this.showImage(this.props.item.image)}
+                              
+                              {this.showImage(this.props.item)}
                               <View style={styles.viewOpacity}>
                                     <Text style={styles.txtAdd}>{this.props.listFile.length - 3}++</Text>
                               </View>
@@ -64,11 +61,8 @@ export default class ItemFooter extends Component {
             } else {
                   return (
                         <View style={styles.containerList}>
-                              {/* <Image
-                                    source={{ uri: this.props.item.image }}
-                                    style={styles.imageList}
-                              /> */}
-                              {this.showImage(this.props.item.image)}
+                              
+                              {this.showImage(this.props.item)}
                         </View>
                   )
             }
@@ -95,8 +89,8 @@ const styles = StyleSheet.create({
       containerList: {
             marginVertical: 7,
             marginLeft: 7,
-            height:'30%',
-            width:width/5,
+            height:70,
+            width:80,
             alignItems: 'center',
             justifyContent: 'center',
             borderColor: '#2166A2',

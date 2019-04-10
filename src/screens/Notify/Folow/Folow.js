@@ -40,7 +40,7 @@ class Folow extends Component {
                 })
                 this.setState({ listFolow: list })
 
-            } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
+            } else if (res.data.code == Status.ID_NOT_FOUND) {
                 SimpleToast.show("Thông báo không tồn tại")
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
                 removeItem('token')

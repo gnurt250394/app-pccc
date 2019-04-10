@@ -23,7 +23,7 @@ export const postLiquidation = async(body)=>{
 export const getDetailLiquidation = async(Liquidation_id)=>{
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.DETAIL_LIQUIDATION +`/${Liquidation_id}`)
+        return instance.get(constant.LIST_LIQUIDATION +`/${Liquidation_id}`)
 }
 // export const Count_Notification = async()=>{
 //     let token = await getItem('token')

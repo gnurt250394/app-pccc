@@ -156,6 +156,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-document-picker')
     implementation project(':react-native-fetch-blob')
     implementation project(':react-native-youtube')
     implementation project(':react-native-image-picker')

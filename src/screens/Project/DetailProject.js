@@ -60,7 +60,7 @@ class DetailProject extends Component {
           navigation.reset(SigninScreen)
           removeItem('token')
           this.props.dispatch({ type: actionTypes.USER_LOGOUT })
-        } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
+        } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         } else if (res.data.code == Status.USER_PERMISSION) {
           popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
@@ -93,7 +93,7 @@ class DetailProject extends Component {
           navigation.reset(SigninScreen)
           removeItem('token')
           this.props.dispatch({ type: actionTypes.USER_LOGOUT })
-        } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
+        } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         }
       }).catch(err => {
@@ -183,7 +183,7 @@ class DetailProject extends Component {
             navigation.navigate(SigninScreen)
             removeItem('token')
             this.props.dispatch({ type: actionTypes.USER_LOGOUT })
-          } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
+          } else if (res.data.code == Status.ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           }
         }).catch(err => {

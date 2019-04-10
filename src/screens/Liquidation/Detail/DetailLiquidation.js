@@ -9,11 +9,13 @@ import HeaderDetail from './HeaderDetail';
 import BodyDetail from './BodyDetail';
 import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
+import { Status } from 'config/Controller';
 
 export default class DetailLiquidation extends Component {
       state={
             id:this.props.navigation.getParam('id',''),
-            Liquidation:data
+            Liquidation:{},
+            loading:true
       }
       _nextPage=()=>{
             alert('111')
@@ -30,6 +32,7 @@ export default class DetailLiquidation extends Component {
                               onPress={this._goBack}
                               title={'Chi tiết thanh lý'}
                         />
+                        {this.state.loading?
                         <ScrollView>
                         <View style={styles.Group}>
                               <HeaderDetail
@@ -46,11 +49,12 @@ export default class DetailLiquidation extends Component {
                               <View style={styles.end}/>
                               <FooterDetail
                               category={Liquidation.category}
-                              address={Liquidation.district + " " + Liquidation.city}
+                              address={Liquidation.district + " - " + Liquidation.city}
                               file_attach={Liquidation.file_attach}
                               />
                         </View>
                         </ScrollView>
+                        : null}
                         <Button
                         onPressMsg={this._nextPage}
                         onPressPhone={this._nextPage}
@@ -59,14 +63,20 @@ export default class DetailLiquidation extends Component {
             )
       }
       getDetail = () =>{
+            console.log(this.state.id)
             getDetailLiquidation(this.state.id).then(res=>{
-                  console.log(res.data,'dsdsds')
+                  console.log(res.data)
+                  if(res.data.code == Status.SUCCESS){
+                        this.setState({Liquidation:res.data.data})
+                  }else if(res.data.code == Status.ID_NOT_FOUND){
+                        this.setState({loading:false,Liquidation:{}})
+                  }
             }).catch(err=>{
                   console.log(err.response,'err')
             })
       }
       componentDidMount() {
-      //   this.getDetail()
+        this.getDetail()
       }
       
 }

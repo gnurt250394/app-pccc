@@ -14,7 +14,7 @@ export default class Item extends Component {
                               onPress={this.props.onPress}
                               style={styles.containerList}>
                               <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
-                              <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
+                              <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.category}</Text>
                               <View style={styles.rowList}>
                                     <View style={styles.row}>
                                           <Image source={images.shopLocation}

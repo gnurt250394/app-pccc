@@ -103,7 +103,7 @@ class FolowContractor extends Component {
       console.log(res.data, 'aaaa')
       if (res.data.code == Status.SUCCESS) {
         this.setState({ listProject: res.data.data,loading:false })
-      } else if (res.data.code == Status.DELETE_ID_NOT_FOUND) {
+      } else if (res.data.code == Status.ID_NOT_FOUND) {
         this.setState({ loading: false })
       } else if (res.data.code == Status.TOKEN_EXPIRED ) {
         navigation.reset(SigninScreen)

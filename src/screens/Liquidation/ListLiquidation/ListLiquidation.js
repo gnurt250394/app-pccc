@@ -21,7 +21,8 @@ export default class ListLiquidation extends Component {
         loading:false,
         refressing:true
     }
-    goDetail =()=> (item) => {
+    goDetail =(item)=> () => {
+        console.log(item)
         navigation.navigate(DetailLiquidation,{id:item.id})
     }
     _renderItem = ({ item, index }) => {

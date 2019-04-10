@@ -1,13 +1,56 @@
 import React, { Component } from 'react'
 import { Text, View, Image, StyleSheet,FlatList,Dimensions } from 'react-native'
 import { fontStyles } from 'config/fontStyles';
+import images from 'assets/images'
 const {width,height} = Dimensions.get('window')
 export default class FooterDetail extends Component {
+      showImage = link => {
+            let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+            let source, uri;
+            switch (ext) {
+                case 'jpg':
+                case 'jpeg':
+                case 'gif':
+                case 'png':
+                    source = { uri: link }
+                    uri = true
+                    break;
+    
+                case 'doc':
+                case 'docx':
+                    source = images.document
+                    break;
+                case 'pdf':
+                    source = images.pdf
+                    break;
+                case 'csv':
+                case 'xlsx':
+                case 'xlsm':
+                case 'xlsb':
+                case 'xltx':
+                case 'xltm':
+                case 'xls':
+                case 'xml':
+                case 'xlt':
+                case 'xla':
+                case 'xlw':
+                case 'xlr':
+                    source = images.excel
+                    break;
+    
+                default:
+                    source =  images.pdf 
+                    break;
+            }
+            return <Image
+                style={styles.imageList}
+                source={source} />
+        }
       _renderItem = ({ item, index }) => {
             console.log(item,'item')
             return(
                   <View style={styles.containerList}>
-                  <Image style={styles.imageList} source={{uri:item}} resizeMode="contain"/>
+                  {this.showImage(item)}
                   </View>
             )
      

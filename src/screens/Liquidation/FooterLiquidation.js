@@ -4,6 +4,7 @@ import navigation from 'navigation/NavigationService';
 import images from 'assets/images'
 import ItemFooter from './ItemFooter';
 import { fontStyles } from 'config/fontStyles';
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 const { width } = Dimensions.get('window')
 
 export default class FooterLiquidation extends Component {
@@ -12,7 +13,18 @@ export default class FooterLiquidation extends Component {
       }
 
       _choseFile = ()=>{
-            
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+          },(error,res) => {
+            // Android
+            console.log(res,'res')
+        
+            let data = []
+            if(res){
+                data.push(res.fileName)
+                this.setState({listFile:[...this.state.listFile,...data]})
+            }
+          });
       }
       _listFooter = () => {
             return (
@@ -24,9 +36,7 @@ export default class FooterLiquidation extends Component {
                         style={styles.imageAdd}
                         resizeMode="contain"
                     />
-                    <Text style={styles.txtAdd}
-                    numberOfLines={1}
-                    >Thêm file</Text>
+                    <Text style={styles.txtAdd} numberOfLines={1}>Thêm file</Text>
     
                 </TouchableOpacity>
             )
@@ -41,13 +51,15 @@ export default class FooterLiquidation extends Component {
            )
     
         }
+        _keyExtractor=(item,index)=> `${item||index}`
       render() {
             return (
                   <View style={styles.container}>
                          <Text style={[styles.txtFile,fontStyles.Acumin_RPro_0]}>File đính kèm</Text>
                         <FlatList
-                              data={data.slice(0, 3)}
+                              data={this.state.listFile.slice(0,3)}
                               horizontal={true}
+                              extraData={this.state}
                               ListFooterComponent={this._listFooter}
                               showsHorizontalScrollIndicator={false}
                               renderItem={this._renderItem}
@@ -76,8 +88,8 @@ const styles = StyleSheet.create({
       containerAdd: {
           marginVertical: 7,
           marginLeft: 7,
-          height:'30%',
-          width:width/5,
+          height:70,
+          width:80,
           paddingVertical:10,
           alignItems: 'center',
           justifyContent: 'center',

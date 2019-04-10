@@ -14,10 +14,10 @@ export default class DropDown extends PureComponent {
       <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
       <View style={{flexDirection:'row',marginBottom:3}}>
       <Text style={styles.textLabel}>{this.props.label}</Text>
-      {this.props.checkValidate == 1?null:  <Text style={{color:'red',marginLeft:3}}>*</Text> }
+      {/* {this.props.checkValidate == 1?null:  <Text style={{color:'red',marginLeft:3}}>*</Text> } */}
     
       </View>
-      { this.props.touch ==1?
+      {/* { this.props.touch ==1?
           <TouchableOpacity
           style={{marginBottom:3}}
               onPress={this.props.onPress}>
@@ -25,7 +25,7 @@ export default class DropDown extends PureComponent {
               </TouchableOpacity>
               :
               <View/>
-      }
+      } */}
       </View>
   }
   
@@ -33,7 +33,6 @@ export default class DropDown extends PureComponent {
       <SearchableDropDown
           onItemSelect={this.props.onItemSelect}
           containerStyle={this.props.style}
-          value={this.props.value}
           textInputStyle={styles.editText}
           itemStyle={styles.itemStyle}
           itemTextStyle={{ color: '#222' }}
