@@ -26,6 +26,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2033F6F631344CAABC0DC2AC /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D8111B4C92467483A4AA6E /* libRNImagePicker.a */; };
+		22480C1C225E3F8B0098FAD1 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = 22480C1B225E3F8B0098FAD1 /* YTPlayerView-iframe-player.html */; };
 		224AB6B9225CB2C6000F073A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 224AB6B8225CB2C6000F073A /* GoogleService-Info.plist */; };
 		2270C96A22533A6B00FF9A6C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2270C96622533A6A00FF9A6C /* Bolts.framework */; };
 		2270C96B22533A6B00FF9A6C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2270C96722533A6A00FF9A6C /* FBSDKCoreKit.framework */; };
@@ -439,6 +440,7 @@
 		17EDB81A5C394843B14B01E9 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		1DC8008139564DFAA86F0936 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		1E76078FB907441CBE4CE99A /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../assets/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
+		22480C1B225E3F8B0098FAD1 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "YTPlayerView-iframe-player.html"; path = "../node_modules/react-native-youtube/assets/YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
 		224AB6B8225CB2C6000F073A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		226B64D22254689700EAB250 /* fireProtection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fireProtection.entitlements; path = fireProtection/fireProtection.entitlements; sourceTree = "<group>"; };
 		2270C96622533A6A00FF9A6C /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
@@ -844,6 +846,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				22480C1B225E3F8B0098FAD1 /* YTPlayerView-iframe-player.html */,
 				2270C9B522533D4E00FF9A6C /* AccountKit.framework */,
 				2270C9B422533D4E00FF9A6C /* AccountKitStrings.bundle */,
 				13B07FAE1A68108700A75B9A /* fireProtection */,
@@ -1003,6 +1006,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = RUQ4M6N2M4;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 1;
@@ -1455,6 +1459,7 @@
 				C7FBC64D0F82488EB073D850 /* Acumin-BdItPro_0.otf in Resources */,
 				2EF8C256F3DB45D791617FC2 /* Acumin-BdPro_0.otf in Resources */,
 				8B695B46E6574A82A2872ACC /* Acumin-ItPro_0.otf in Resources */,
+				22480C1C225E3F8B0098FAD1 /* YTPlayerView-iframe-player.html in Resources */,
 				3A52EA0B37734895B9866A9E /* Acumin-RPro_0.otf in Resources */,
 				D8E43C92BD8347D4BC591F75 /* Montserrat-Black.ttf in Resources */,
 				A37B5520D7FD4DB58A8BFA23 /* Montserrat-BlackItalic.ttf in Resources */,
@@ -1791,7 +1796,7 @@
 				CODE_SIGN_ENTITLEMENTS = fireProtection/fireProtection.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RUQ4M6N2M4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -1799,13 +1804,27 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)..\node_modules\neact-native-gesture-handlerios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fbsdkiosRCTFBSDK/**",
-					"$(SRCROOT)..\node_modules\neact-native-facebook-account-kitios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
-					"$(SRCROOT)..\node_modules\neact-native-google-signiniosRNGoogleSignin",
-					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
-					"$(SRCROOT)..\node_modules\neact-native-simple-toastiosLRDRCTSimpleToast",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-gesture-handlerios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-fbsdkiosRCTFBSDK/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-facebook-account-kitios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-fast-imageiosFastImage/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-google-signiniosRNGoogleSignin",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-pickerios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-simple-toastiosLRDRCTSimpleToast",
 				);
 				INFOPLIST_FILE = fireProtection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1828,7 +1847,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = fireProtection/fireProtection.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RUQ4M6N2M4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -1836,13 +1855,27 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)..\node_modules\neact-native-gesture-handlerios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fbsdkiosRCTFBSDK/**",
-					"$(SRCROOT)..\node_modules\neact-native-facebook-account-kitios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
-					"$(SRCROOT)..\node_modules\neact-native-google-signiniosRNGoogleSignin",
-					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
-					"$(SRCROOT)..\node_modules\neact-native-simple-toastiosLRDRCTSimpleToast",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-gesture-handlerios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-fbsdkiosRCTFBSDK/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-facebook-account-kitios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-fast-imageiosFastImage/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-google-signiniosRNGoogleSignin",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-pickerios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-simple-toastiosLRDRCTSimpleToast",
 				);
 				INFOPLIST_FILE = fireProtection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
