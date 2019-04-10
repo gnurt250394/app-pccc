@@ -20,7 +20,7 @@ class InfoProject extends Component {
             refreshing: true,
             loading: false,
             keyword: '',
-            follow: this.props.navigation.getParam('follow') || false,
+            follow: this.props.navigation.getParam('follow',false) ,
         };
     }
 
@@ -91,7 +91,6 @@ class InfoProject extends Component {
         return !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
     }
     render() {
-        console.log(this.search,'search')
         let count = this.state.listProject.length
         return (
             <View style={styles.container}>

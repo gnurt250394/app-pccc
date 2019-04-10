@@ -26,7 +26,6 @@ const constant ={
     LIST_FOLLOW_DOCUMMENT: 'list-document-follow',
     COUNT_NOTIFICATION:'count-notification',
     LIST_LIQUIDATION:'new-post',
-    DETAIL_LIQUIDATION: 'new-post/'
 }
 
 export default constant;

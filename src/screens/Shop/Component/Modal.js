@@ -16,9 +16,6 @@ export default class ModalCustom extends Component {
         this.setState({
             listCountry: this.state.Country.filter(e=> e.parent_id == id)
         })
-        console.log(id,'aaa')
-        console.log(this.state.Country,'aaa')
-        console.log(this.state.listCity,'aaa')
     }
   render() {
     return (

@@ -29,6 +29,8 @@ target 'fireProtection' do
   pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
 
 
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
   target 'fireProtectionTests' do
     inherit! :search_paths
     # Pods for testing
