@@ -12,12 +12,19 @@ let instance = axios.create({
 
 export const getListLiquidation  = async(body,token)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.LIST_LIQUIDATION,{params:body})
+        return instance.get(constant.LIST_LIQUIDATION,body)
 }
 export const postLiquidation = async(body)=>{
+    // let instance = axios.create({
+    //     baseURL:constant.BASEURL,
+    //     timeout: constant.SERVER_TIMEOUT,
+    //     // headers: {
+    //     //     'content-type': "multipart/form-data",
+    //     // }
+    // });
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.post(constant.LIST_LIQUIDATION,{params:body})
+        return instance.post(constant.LIST_LIQUIDATION,body)
 }
 export const getDetailLiquidation = async(Liquidation_id)=>{
     let token = await getItem('token')

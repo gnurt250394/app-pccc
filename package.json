@@ -28,6 +28,7 @@
     "react-native-gesture-handler": "^1.0.14",
     "react-native-google-signin": "^1.2.1",
     "react-native-image-picker": "^0.28.0",
+    "react-native-onesignal": "^3.2.12",
     "react-native-simple-toast": "0.0.8",
     "react-native-swiper": "^1.5.14",
     "react-native-youtube": "^1.1.0",

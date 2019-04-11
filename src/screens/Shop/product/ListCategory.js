@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
-import { View, Text,FlatList,StyleSheet ,Dimensions} from 'react-native';
+import { View, Text,FlatList,StyleSheet ,Dimensions,TouchableOpacity} from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
+import { getOtherData } from 'config/apis/myShop';
 const {width} = Dimensions.get('window')
 export default class ListCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      listCategory:[]
     };
   }
   _goBack=()=>{
     navigation.pop()
 }
-
+_selectList=(item)=>()=>{
+  if(this.props.navigation.state && this.props.navigation.state.params.fun){
+    console.log(item,'item')
+    this.props.navigation.state.params.fun(item.name)
+    navigation.pop()
+  }
+  
+}
 _renderItem=({item})=>{
     return(
-        <View style={styles.containerList}>
+        <TouchableOpacity 
+        onPress={this._selectList(item)}
+        style={styles.containerList}>
             <Text style={{marginLeft:15}}>{item.name}</Text>
             <View style={styles.end}/>
-        </View>
+        </TouchableOpacity>
     )
 }
 _keyExtractor=(item,index)=>{
@@ -33,7 +44,7 @@ _keyExtractor=(item,index)=>{
                 onPress={this._goBack}
             />
       <FlatList
-          data={data}
+          data={this.state.listCategory}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
       />
@@ -41,12 +52,19 @@ _keyExtractor=(item,index)=>{
     );
   }
 
-  getData=()=>{
+  getData = () => {
+    getOtherData({ table: 'categories' }).then(res => {
 
-  }
-  componentDidMount = () => {
+          this.setState({
+                listCategory: res.data.data
+          })
+    }).catch(err => {
+
+    })
+}
+componentDidMount = () => {
     this.getData()
-  };
+};
   
 }
 
