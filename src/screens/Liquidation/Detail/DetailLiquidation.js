@@ -65,7 +65,7 @@ export default class DetailLiquidation extends Component {
       getDetail = () =>{
             
             getDetailLiquidation(this.state.id).then(res=>{
-                  
+                  console.log(res.data,'dadads')
                   if(res.data.code == Status.SUCCESS){
                         this.setState({Liquidation:res.data.data})
                   }else if(res.data.code == Status.ID_NOT_FOUND){

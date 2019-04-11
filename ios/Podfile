@@ -31,6 +31,8 @@ target 'fireProtection' do
 
   pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'fireProtectionTests' do
     inherit! :search_paths
     # Pods for testing

@@ -122,7 +122,7 @@ class Video extends React.Component {
        return newDate
     }
     renderItem = count => ({item, index}) => {
-        
+        console.log(item,'item')
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <TouchableOpacity onPress={this.playvideo(item.link)} style={style.posR} >
                     <Image style={style.image} source={{uri: youtube.thumbnail(item.link)}}/>

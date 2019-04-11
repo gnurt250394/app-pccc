@@ -101,7 +101,7 @@ export default class ListLiquidation extends Component {
             page:this.state.page
         }
         getListLiquidation(params).then(res => {
-            
+            console.log(res.data)
             if (res.data.code == Status.SUCCESS) {
                 this.setState({
                     listLiqiudation: [...this.state.listLiqiudation,...res.data.data],

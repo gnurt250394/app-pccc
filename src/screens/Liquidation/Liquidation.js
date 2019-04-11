@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation, getOtherData } from 'config/apis/myShop';
 import { Status, removeItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen, ListLiquidation, DetailLiquidation } from 'config/screenNames';
+import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
 import { popupCancel } from 'config';
 import { Header } from 'components';
 import Item from './Item';
@@ -32,7 +32,8 @@ export default class Liquidation extends Component {
             location: 'Chọn địa chỉ',
             isVisible: false,
             value: '',
-            listCategory: []
+            listCategory: [],
+            name: 'Chọn danh mục'
       }
 
       _showModal = () => {
@@ -48,6 +49,12 @@ export default class Liquidation extends Component {
       handleAddress = () => (value) => {
             this.setState({ location: value, isVisible: false })
 
+      }
+      handleItem =(value)=>{
+            this.setState({name:value})
+      }
+      showFlatlit = () => {
+            navigation.navigate(ListCategory,{ fun: this.handleItem })
       }
       render() {
             return (
@@ -75,13 +82,16 @@ export default class Liquidation extends Component {
                                           placeholder={"Nhập nội dung"}
                                           style={styles.inputItem}
                                     />
-                                    <DropDown
-                                          onItemSelect={(item) => { }}
-                                          name={'Danh mục cần mua'}
-                                          value={this.state.value}
-                                          ref={ref => this.dropdown = ref}
-                                          items={this.state.listCategory}
-                                    />
+                                     <View keyboardShouldpersist='always' style={styles.containerStyle}>
+                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần mua</Text>
+                                    <TouchableOpacity
+                                          onPress={this.showFlatlit}
+
+                                          style={styles.editText} >
+                                          <Text numberOfLines={1} style={styles.txtBtn}>{this.state.name}</Text>
+                                          <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
+                                    </TouchableOpacity>
+                                    </View>
                                     <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ mua</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
@@ -108,39 +118,36 @@ export default class Liquidation extends Component {
             );
       }
       _nextPage = () => {
-
+            console.log(this.footer, 'foorte')
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
-                  listCategory = this.footer.state.listFile.join(',') || []
-            let params = {
-                  'title': this.state.title,
-                  'description': this.state.decription,
-                  'type': this.state.type,
-                  'category_id[]': listCategory,
-                  'city_id': idCity,
-                  'district_id': idCountry,
-            }
+                  listCategory = `${this.dropdown.state.item.id}` || '',
+                  listFile = this.footer.state.listFile || []
+            let params = new FormData()
+            params.append('title', this.state.title)
+            params.append('description', this.state.decription)
+            params.append('type', this.state.type)
+            params.append('category_id[]', listCategory)
+            params.append('city_id', idCity)
+            params.append('district_id', idCountry)
+            params.append('file[]', listFile)
 
+
+
+
+
+            console.log(params, 'params')
             postLiquidation(params).then(res => {
-                  if(res.data.code == Status.SUCCESS){
+                  console.log(res.data, 'data')
+                  if (res.data.code == Status.SUCCESS) {
                         navigation.pop()
                   }
-            })
-          
-      }
-      getData = () => {
-            getOtherData({ table: 'categories' }).then(res => {
-
-                  this.setState({
-                        listCategory: res.data.data
-                  })
             }).catch(err => {
-
+                  console.log(err, 'err')
             })
+
       }
-      componentDidMount = () => {
-            this.getData()
-      };
+
 }
 
 
@@ -149,12 +156,15 @@ const styles = StyleSheet.create({
             flex: 1,
             // padding: 10,
       },
+      containerStyle:{
+            padding:10
+      },
       btnGroup: {
             padding: 10
       },
       btnDropdown: {
             marginTop: 7,
-            color:'#333333',
+            color: '#333333',
             width: '100%',
             height: 37,
             padding: 10,
@@ -171,7 +181,12 @@ const styles = StyleSheet.create({
             color: '#333333',
             fontWeight: '500',
             fontSize: 15,
-            paddingLeft: 10
+            paddingLeft:10
+      },
+      txtNameTouch: {
+            color: '#333333',
+            fontWeight: '500',
+            fontSize: 15,
       },
       inputItem: {
             height: 100,
@@ -179,5 +194,31 @@ const styles = StyleSheet.create({
       btnLiquidation: {
             width: '95%',
             borderRadius: 5
-      }
+      },
+      editText: {
+            backgroundColor: '#FFFFFF',
+            borderRadius: 5,
+            height: 40,
+            width: '100%',
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 3,
+            marginBottom:5,
+            paddingLeft: 12,
+            borderWidth: 1,
+            borderColor: '#707070',
+      },
+      ticker: {
+            height: 14,
+            width: 14,
+            marginRight: 10,
+            transform: [{ rotate: '180deg' }]
+      },
+
+     
+      txtBtn: {
+            color: '#333333',
+      },
+
 })

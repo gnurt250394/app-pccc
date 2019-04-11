@@ -1,5 +1,14 @@
-apply plugin: "com.android.application"
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal 
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}
 
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+apply plugin: "com.android.application"
 import com.android.build.OutputFile
 // import com.facebook.FacebookSdk;
 
@@ -156,6 +165,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
     compile project(':react-native-document-picker')
     implementation project(':react-native-fetch-blob')
     implementation project(':react-native-youtube')
