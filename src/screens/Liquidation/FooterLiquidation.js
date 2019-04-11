@@ -5,13 +5,11 @@ import images from 'assets/images'
 import ItemFooter from './ItemFooter';
 import { fontStyles } from 'config/fontStyles';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-import { getMimeType } from 'config/Controller';
 const { width } = Dimensions.get('window')
 
 export default class FooterLiquidation extends Component {
       state={
             listFile:[],
-            formData:new FormData()
       }
 
       _choseFile = ()=>{
@@ -22,10 +20,8 @@ export default class FooterLiquidation extends Component {
             
         
             let dataName = []
-            let formData = []
             if(res){
-                dataName.push(res.fileName)
-                formData.push(res.uri)
+                dataName.push({fileName:res.fileName,uri:res.uri})
                 this.setState({listFile:[...this.state.listFile,...dataName]})
             }
           });

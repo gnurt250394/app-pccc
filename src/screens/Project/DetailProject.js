@@ -55,7 +55,7 @@ class DetailProject extends Component {
 
           this.setState({ listPartner: data })
           Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
-        } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
+        } else if (res.data.code == Status.TOKEN_EXPIRED) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
           removeItem('token')
@@ -64,6 +64,8 @@ class DetailProject extends Component {
           Toast.show('Dự án không tồn tại')
         } else if (res.data.code == Status.USER_PERMISSION) {
           popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+        }else if(res.data.code == Status.TOKEN_VALID){
+          popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
@@ -88,13 +90,15 @@ class DetailProject extends Component {
           })
           this.setState({ listPartner: data })
           Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
-        } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
+        } else if (res.data.code == Status.TOKEN_EXPIRED ) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
           removeItem('token')
           this.props.dispatch({ type: actionTypes.USER_LOGOUT })
         } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
+        }else if(res.data.code == Status.TOKEN_VALID){
+          popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
@@ -142,7 +146,7 @@ class DetailProject extends Component {
             this.state.project.follow = Status.UNCHECKED
             this.setState({})
             Toast.show('Bạn đã theo dõi dự án ' + this.state.title + ' thành công')
-          } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
+          } else if (res.data.code == Status.TOKEN_EXPIRED ) {
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.navigate(SigninScreen)
             removeItem('token')
@@ -152,6 +156,8 @@ class DetailProject extends Component {
           } else if (res.data.code == Status.USER_PERMISSION) {
             popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
             console.log(res.data)
+          }else if(res.data.code == Status.TOKEN_VALID){
+            popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
           }
         }).catch(err => {
           Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
@@ -178,13 +184,15 @@ class DetailProject extends Component {
             Toast.show('Bạn đã bỏ theo dõi dự án ' + this.state.title + ' thành công')
             this.state.project.follow = Status.CHECKED
             this.setState({})
-          } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
+          } else if (res.data.code == Status.TOKEN_EXPIRED ) {
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.navigate(SigninScreen)
             removeItem('token')
             this.props.dispatch({ type: actionTypes.USER_LOGOUT })
           } else if (res.data.code == Status.ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
+          }else if(res.data.code == Status.TOKEN_VALID){
+            popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
           }
         }).catch(err => {
           Toast.show('Lỗi hệ thống' + ' ' + err.response.status)

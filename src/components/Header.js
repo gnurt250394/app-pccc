@@ -26,7 +26,11 @@ export default class Header extends React.Component {
             
             }
                 <Text style={[ style.title,fontStyles.Acumin_bold]}>{this.props.title}</Text>
-                <View style={style.view}/>
+                {this.props.finish?<TouchableOpacity 
+                onPress={this.props.onFinish}
+                style={style.view}>
+                <Text style={[style.txtFinish,fontStyles.Acumin_thin]}>Xong</Text>
+                </TouchableOpacity>:null}
             </View>
             </SafeAreaView>
         )
@@ -68,6 +72,11 @@ const style = StyleSheet.create({
         justifyContent:'center'
     },
     view:{
-        flex:1/10
+        flex:1/10,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    txtFinish:{
+        color:"#FFFFFF"
     }
 })

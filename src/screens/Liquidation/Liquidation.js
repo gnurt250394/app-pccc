@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Dimensions,
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation, getOtherData } from 'config/apis/myShop';
-import { Status, removeItem } from 'config/Controller';
+import { Status, removeItem, getMimeType, popup } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
 import { popupCancel } from 'config';
@@ -16,16 +16,18 @@ import CustomDialog from 'components/CustomDialog';
 import Modal from './Modal';
 import { fontStyles } from 'config/fontStyles';
 import DropDown from './Dropdown';
+import SimpleToast from 'react-native-simple-toast';
 moment.locale('vn')
 
 
 export default class Liquidation extends Component {
-
-      state = {
+constructor(props){
+      super(props)
+      this.state = {
             title: '',
             decription: '',
             type: '1',
-            category_id: '',
+            category_id: [],
             city_id: '',
             district_id: '',
             address: '',
@@ -35,6 +37,9 @@ export default class Liquidation extends Component {
             listCategory: [],
             name: 'Chọn danh mục'
       }
+      this.refress = this.props.navigation.getParam('refress','')
+}
+      
 
       _showModal = () => {
             this.setState({ isVisible: true })
@@ -50,8 +55,8 @@ export default class Liquidation extends Component {
             this.setState({ location: value, isVisible: false })
 
       }
-      handleItem =(value)=>{
-            this.setState({name:value})
+      handleItem =(value,id)=>{
+            this.setState({name:value,category_id:id})
       }
       showFlatlit = () => {
             navigation.navigate(ListCategory,{ fun: this.handleItem })
@@ -118,31 +123,40 @@ export default class Liquidation extends Component {
             );
       }
       _nextPage = () => {
-            console.log(this.footer, 'foorte')
+           
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
-                  listCategory = `${this.dropdown.state.item.id}` || '',
                   listFile = this.footer.state.listFile || []
-            let params = new FormData()
-            params.append('title', this.state.title)
-            params.append('description', this.state.decription)
-            params.append('type', this.state.type)
-            params.append('category_id[]', listCategory)
-            params.append('city_id', idCity)
-            params.append('district_id', idCountry)
-            params.append('file[]', listFile)
-
-
-
-
-
+                  
+                  let params = new FormData()
+                  this.state.category_id.forEach(item=>{
+                        params.append('category_id[]', `${item}`)
+                  })
+                  listFile.forEach(item=>{
+                        params.append('file[]',{uri:`${item.uri}`,type:getMimeType(item.fileName),name:`${item.fileName}`},`${item.fileName}`)
+                  })
+                  params.append('title', this.state.title)
+                  params.append('description', this.state.decription)
+                  params.append('type', this.state.type)
+                  params.append('city_id', idCity)
+                  params.append('district_id', idCountry)
             console.log(params, 'params')
             postLiquidation(params).then(res => {
                   console.log(res.data, 'data')
                   if (res.data.code == Status.SUCCESS) {
+                        this.refress()
                         navigation.pop()
+                  }else if(res.data.code == Status.TOKEN_EXPIRED){
+                        SimpleToast.show('Phiên đăng nhập hết hạn')
+                        navigation.reset(SigninScreen)
+                        removeItem('token')
+                  }else if(res.data.code == Status.TOKEN_VALID){
+                        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+                  } else{
+                        SimpleToast.show("Lỗi hệ thống")
                   }
             }).catch(err => {
+                  SimpleToast.show("Server ERROR")
                   console.log(err, 'err')
             })
 
@@ -219,6 +233,7 @@ const styles = StyleSheet.create({
      
       txtBtn: {
             color: '#333333',
+            width:'90%'
       },
 
 })
