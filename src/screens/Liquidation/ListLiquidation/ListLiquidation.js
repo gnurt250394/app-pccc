@@ -46,7 +46,7 @@ export default class ListLiquidation extends Component {
         !this.state.loading ? null:this.setState({loading: true,page: this.state.page + 1},this.getLiquidation)
     }
     _nextPage = () => {
-        navigation.navigate(Liquidation)
+        navigation.navigate(Liquidation,{refress:this.getLiquidation})
     }
     _goBack =() => {
         navigation.pop()
@@ -96,12 +96,13 @@ export default class ListLiquidation extends Component {
         );
     }
     getLiquidation = async () => {
+        console.log('11111')
         let params ={
             type:'liquidation',
             page:this.state.page
         }
         getListLiquidation(params).then(res => {
-            console.log(res.data)
+            console.log(res.data,'aaa')
             if (res.data.code == Status.SUCCESS) {
                 this.setState({
                     listLiqiudation: [...this.state.listLiqiudation,...res.data.data],

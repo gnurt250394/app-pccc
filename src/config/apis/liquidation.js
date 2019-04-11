@@ -12,7 +12,7 @@ let instance = axios.create({
 
 export const getListLiquidation  = async(body,token)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.LIST_LIQUIDATION,body)
+        return instance.get(constant.LIST_LIQUIDATION,{params:body})
 }
 export const postLiquidation = async(body)=>{
     // let instance = axios.create({
