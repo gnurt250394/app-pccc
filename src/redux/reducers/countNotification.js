@@ -3,19 +3,19 @@ import { actionTypes } from  '../actions'
        countNotifi:0
  } 
 
-// const countNotifi =(state = initState, action) => {
-//     switch(action.type){
-//         case actionTypes.COUNT_NOTIFICATION:
-//            return state = {
-//                 ...state,
-//                 countNotifi: action.countNotifi,
-//             }
+const countNotifi =(state = initState, action) => {
+    switch(action.type){
+        case actionTypes.COUNT_NOTIFICATION:
+           return state = {
+                ...state,
+                countNotifi: action.countNotifi,
+            }
        
-//         default :
-//             // something here
-//             state = { ...state }
-//             break
-//     }
-//     return state
-// }
-// export default countNotifi
+        default :
+            // something here
+            state = { ...state }
+            break
+    }
+    return state
+}
+export default countNotifi

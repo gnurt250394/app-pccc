@@ -17,7 +17,7 @@ export default class FooterLiquidation extends Component {
             filetype: [DocumentPickerUtil.allFiles()],
           },(error,res) => {
             // Android
-            console.log(res,'res')
+            
         
             let data = []
             if(res){

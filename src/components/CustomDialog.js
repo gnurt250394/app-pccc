@@ -58,8 +58,9 @@ const styles = StyleSheet.create({
     alignItems: "center" 
   },
   txtHeader:{
-    alignSelf: "center",
+    textAlign: "center",
     color: "#2166A2",
+    marginTop:5,
     fontSize: 19
   },
   position:{
@@ -72,11 +73,10 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: "#FFFFFF",
     width: width -50,
-    borderColor: "green",
-    borderWidth: 2,
+    borderColor: "#2166A2",
+    borderWidth: 0.5,
     borderRadius: 7,
     // display: "flex",
     // position: "absolute",
-    padding: 10
   },
 });

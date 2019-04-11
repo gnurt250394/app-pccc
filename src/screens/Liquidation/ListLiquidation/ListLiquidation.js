@@ -5,7 +5,7 @@ import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
 import { Status, removeItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen, DetailLiquidation } from 'config/screenNames';
+import { SigninScreen, DetailLiquidation, Liquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
 import Item from './Item';
 import { Header } from 'components';
@@ -22,7 +22,7 @@ export default class ListLiquidation extends Component {
         refressing:true
     }
     goDetail =(item)=> () => {
-        console.log(item)
+        
         navigation.navigate(DetailLiquidation,{id:item.id})
     }
     _renderItem = ({ item, index }) => {
@@ -46,7 +46,7 @@ export default class ListLiquidation extends Component {
         !this.state.loading ? null:this.setState({loading: true,page: this.state.page + 1},this.getLiquidation)
     }
     _nextPage = () => {
-        navigation.navigate()
+        navigation.navigate(Liquidation)
     }
     _goBack =() => {
         navigation.pop()
@@ -95,13 +95,13 @@ export default class ListLiquidation extends Component {
             </View>
         );
     }
-    getLiquidation = () => {
+    getLiquidation = async () => {
         let params ={
             type:'liquidation',
             page:this.state.page
         }
         getListLiquidation(params).then(res => {
-            console.log(res.data,'res')
+            
             if (res.data.code == Status.SUCCESS) {
                 this.setState({
                     listLiqiudation: [...this.state.listLiqiudation,...res.data.data],
@@ -121,7 +121,7 @@ export default class ListLiquidation extends Component {
             }
         }).catch(err => {
             this.setState({Thresold: 0, loading:false})
-            console.log(err.response, 'err')
+            
         })
     }
     componentDidMount = () => {

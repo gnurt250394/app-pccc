@@ -47,7 +47,7 @@ export default class FooterDetail extends Component {
                 source={source} />
         }
       _renderItem = ({ item, index }) => {
-            console.log(item,'item')
+            
             return(
                   <View style={styles.containerList}>
                   {this.showImage(item)}
