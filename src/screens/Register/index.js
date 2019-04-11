@@ -60,8 +60,8 @@ class Register extends React.Component {
                             ref={val => this.name = val}
                             placeholder="Họ và tên" />
                         <BaseInput
-                            styleIcon={[style.h15,{marginBottom:Platform.OS =="ios"?6:4}]}
-                            customStyle={{paddingBottom:Platform.OS =="ios"? 5:0}}
+                            styleIcon={[style.h15,{marginBottom:Platform.OS =="ios"?4:4}]}
+                            customStyle={{marginTop:Platform.OS =="ios"? 7:0,marginBottom:Platform.OS =="ios"? 6:0}}
                             icon={images.phoneDark}
                             removeSpace={true}
                             ref={val => this.phone = val}
@@ -72,6 +72,7 @@ class Register extends React.Component {
                         <BaseInput
                             icon={images.emailDark}
                             removeSpace={true}
+                            customStyle={{marginTop:Platform.OS =="ios"? 6:0,marginBottom:Platform.OS =="ios"? 4:0}}
                             ref={val => this.email = val}
                             onBlur={this._checkEmail}
                             keyboardType='email-address'

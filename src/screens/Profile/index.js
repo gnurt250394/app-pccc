@@ -112,14 +112,14 @@ class Profile extends React.Component {
                             onPress={this._navTo(SigninScreen)}>
                                 <Text
                                     
-                                    style={[style.btnModal,fontStyles.Montserrat_SemiBold]}>{toUpperCase("Đăng nhập")}
+                                    style={[style.btnModal]}>{toUpperCase("Đăng nhập")}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[style.groupTxt, { backgroundColor: '#FFFFFF', borderBottomRightRadius: 8, }]}
                             onPress={this._navTo(RegisterScreen)}>
                                 <Text
                                     
-                                    style={[style.btnModal, style.register,fontStyles.Montserrat_SemiBold]}>{toUpperCase("Đăng ký")}
+                                    style={[style.btnModal, style.register]}>{toUpperCase("Đăng ký")}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -192,16 +192,17 @@ const style = StyleSheet.create({
     mt20: { marginTop: 20 },
     flex: { flex: 1 },
     modal: { backgroundColor: '#999999', justifyContent: 'center', flex: 1, },
-    bodyModal: { width: '80%',height:'14%', alignSelf: 'center', backgroundColor: '#FFFFFF', flexDirection: 'column', borderRadius: 8, },
+    bodyModal: { width: '80%',height:'15%', alignSelf: 'center', backgroundColor: '#FFFFFF', flexDirection: 'column', borderRadius: 8, },
     headModal: { alignItems:'center',justifyContent:'center', flex:1,paddingTop:10 },
     txtModal:{
         color: '#333333', 
         fontWeight: 'bold', 
         fontSize: 18 ,
-        flex:1
+        flex:1,
     },
     footerModal: {
         flex:1,
+        height:'100%',
         flexDirection: 'row',
         alignItems:'flex-end',
         width:'100%',
@@ -211,11 +212,12 @@ const style = StyleSheet.create({
         // borderColor:color,
         // borderWidth:1
     },
-    btnModal: { fontSize: 16, fontWeight: '400', height: '100%', width: '100%', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', },
+    btnModal: { fontSize: 16, fontWeight: '500', height: '100%', width: '100%', backgroundColor: color, color: 'white', flex: 1, textAlign: 'center', },
     register: { color: color, backgroundColor: 'white' },
     groupTxt: {
         flex: 1,
         width: '100%',
+        height:'100%',
         padding: 10,
         height: 41,
         borderTopColor:color,

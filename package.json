@@ -20,6 +20,7 @@
     "prop-types": "^15.7.2",
     "react": "16.6.3",
     "react-native": "0.57.8",
+    "react-native-document-picker": "^2.3.0",
     "react-native-facebook-account-kit": "^1.0.2",
     "react-native-fast-image": "^5.1.2",
     "react-native-fbsdk": "^0.8.0",
