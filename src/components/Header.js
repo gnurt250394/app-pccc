@@ -26,10 +26,18 @@ export default class Header extends React.Component {
             
             }
                 <Text style={[ style.title,fontStyles.Acumin_bold]}>{this.props.title}</Text>
-                {this.props.finish?<TouchableOpacity 
+                {this.props.finish == 1?<TouchableOpacity 
                 onPress={this.props.onFinish}
                 style={style.view}>
                 <Text style={[style.txtFinish,fontStyles.Acumin_thin]}>Xong</Text>
+                </TouchableOpacity>:this.props.finish ==2 ?  <TouchableOpacity style={style.btnAdd}
+                    onPress={this.props.onFinish}
+                >
+                    <Image
+                        source={images.liquiAdd}
+                        style={style.add}
+                        resizeMode="contain"
+                    />
                 </TouchableOpacity>:null}
             </View>
             </SafeAreaView>
@@ -72,11 +80,25 @@ const style = StyleSheet.create({
         justifyContent:'center'
     },
     view:{
-        flex:1/10,
+        // flex:1/9,
+        paddingRight:7,
         alignItems:'center',
         justifyContent:'center'
     },
     txtFinish:{
-        color:"#FFFFFF"
-    }
+        color:"#FFFFFF",
+        marginTop:2
+    },
+    btnAdd: {
+        height: 25,
+        width: 25,
+        marginLeft:10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    add: {
+        width: 17,
+        height:17,
+        tintColor: '#FFFFFF'
+    },
 })

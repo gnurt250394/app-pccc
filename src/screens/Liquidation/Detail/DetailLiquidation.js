@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity,ScrollView } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity,ScrollView,Linking } from 'react-native'
 import { Header } from 'components';
 import images from "assets/images"
 import { fontStyles } from 'config/fontStyles';
@@ -9,7 +9,7 @@ import HeaderDetail from './HeaderDetail';
 import BodyDetail from './BodyDetail';
 import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
-import { Status } from 'config/Controller';
+import { Status, callNumber } from 'config/Controller';
 
 export default class DetailLiquidation extends Component {
       state={
@@ -22,6 +22,9 @@ export default class DetailLiquidation extends Component {
       }
       _goBack=()=>{
             navigation.pop()
+      }
+      _CallPhone = (Liquidation)=>() =>{
+            callNumber(Liquidation.user_phone)
       }
       render() {
             const {Liquidation} = this.state
@@ -57,7 +60,7 @@ export default class DetailLiquidation extends Component {
                         : null}
                         <Button
                         onPressMsg={this._nextPage}
-                        onPressPhone={this._nextPage}
+                        onPressPhone={this._CallPhone(Liquidation)}
                         />
                   </View>
             )
@@ -80,21 +83,7 @@ export default class DetailLiquidation extends Component {
       }
       
 }
-const data = {
-      "title": "Hang thanh ly",
-      "description": "hang con moi",
-      "user_name": "Lê Văn Hoàng",
-      "user_address": "Thành phố Hà Nội",
-      "user_image": "http://pccc.loilv/public/users/IMG-YZBC-09787891779999999.png",
-      "district": "Tỉnh Hà Nam",
-      "city": "Thành phố Hà Nội",
-      "file_attach": [
-        "https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png",
-        "https://cdn.vatgia.vn/pictures/thumb/418x418/2017/03/dnl1490670116.png"
-      ],
-      "category": "Trang phục",
-      "time": "1 giờ trước"
-    }
+
 const styles = StyleSheet.create({
       container: {
             flex: 1,

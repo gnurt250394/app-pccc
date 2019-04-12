@@ -18,7 +18,7 @@ export default class FooterLiquidation extends Component {
           },(error,res) => {
             // Android
             
-        
+            console.log(res,'res')
             let dataName = []
             if(res){
                 dataName.push({fileName:res.fileName,uri:res.uri})
@@ -51,7 +51,7 @@ export default class FooterLiquidation extends Component {
            )
     
         }
-        _keyExtractor=(item,index)=> `${item||index}`
+        _keyExtractor=(item,index)=> `${item.fileName||index}`
       render() {
             return (
                   <View style={styles.container}>

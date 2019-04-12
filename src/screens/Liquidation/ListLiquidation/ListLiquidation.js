@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, Dimensions,TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
-import { Status, removeItem } from 'config/Controller';
+import { Status, removeItem, getItem, popup } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, DetailLiquidation, Liquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
@@ -11,19 +11,21 @@ import Item from './Item';
 import { Header } from 'components';
 import { getListLiquidation } from 'config/apis/liquidation';
 import Search from './search';
+import { searchLiquidation } from 'config/apis/Project';
 moment.locale('vn')
 export default class ListLiquidation extends Component {
 
     state = {
         listLiqiudation: [],
         Thresold: 0.1,
-        page:1,
-        loading:false,
-        refressing:true
+        page: 1,
+        loading: false,
+        refreshing: true,
+        keyword: ''
     }
-    goDetail =(item)=> () => {
-        
-        navigation.navigate(DetailLiquidation,{id:item.id})
+    goDetail = (item) => () => {
+
+        navigation.navigate(DetailLiquidation, { id: item.id })
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -31,7 +33,7 @@ export default class ListLiquidation extends Component {
                 onPress={this.goDetail(item)}
                 item={item}
             />
-            
+
 
         )
     }
@@ -39,90 +41,134 @@ export default class ListLiquidation extends Component {
         return `${item.id || index}`
     }
     _renderFooter = () => {
-      return this.state.loading && this.state.listLiqiudation.length >5 ? <ActivityIndicator size={"large"} color={"#2166A2"}/> : null
+        return this.state.loading && this.state.listLiqiudation.length > 5 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
     }
 
     _loadMore = () => {
-        !this.state.loading ? null:this.setState({loading: true,page: this.state.page + 1},this.getLiquidation)
+        !this.state.loading ? null : this.setState({ loading: true, page: this.state.page + 1 }, this.getLiquidation)
     }
-    _nextPage = () => {
-        navigation.navigate(Liquidation,{refress:this.getLiquidation})
+    _nextPage = async () => {
+        let token = await getItem('token')
+        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation }) : popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
     }
-    _goBack =() => {
+    _goBack = () => {
         navigation.pop()
     }
+    _onSearch = () => {
+        this.setState({ loading: true }, async () => {
+            let keyword = this.search ? this.search.getValue() : ''
+            let params = {
+                type: 0,
+                keyword: keyword,
+                page: this.state.page,
+                table:'news_products'
+            }
+            console.log(params,'ssss')
+            let datas = await searchLiquidation(params).then(res => {
+                return res.data.code == Status.SUCCESS ? res.data.data : []
+            }).catch(err => {
+                return err.response
+            })
+            console.log(datas, 'dddd')
+            if (datas.length == 0) {
+                this.setState({
+                    loading: false,
+                    refreshing: false,
+                    threshold: 0,
+                    listLiqiudation:[]
+                })
+            } else {
+
+                if (this.state.page == 1) {
+                    this.setState({ listLiqiudation: datas, loading: true, refreshing: false, threshold: 0.1 })
+                } else {
+                    this.setState({ datas: [...this.state.listLiqiudation, ...datas], refreshing: false })
+                }
+            }
+        })
+    }
+    filter = (value) => {
+        console.log(value, 'value')
+        this.setState({ listLiqiudation: value })
+    }
+    _listEmpty =()=>  !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
+       
+    handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
     render() {
         return (
             <View style={styles.container}>
-            <Header
-            check={1}
-            onPress={this._goBack}
-            title={'Danh sách tin thanh lý'}
-            />
-            <Search
-            onSearch={this._onSearch}
-            onClear={this.getData}
-            ref={val => this.search = val}
-            goBack={this._goBack}
-            keyword={this.state.keyword}
-            />
-            {/* <View style={styles.searchGroup}>
-                <Image source={images.search} style={styles.imgSearch}/>
-                <TextInput 
-                placeholderTextColor={"#2166A2"}
-                placeholder="Tìm kiếm"
-                style={styles.inputSearch}
+                <Header
+                    check={1}
+                    onPress={this._goBack}
+                    finish={2}
+                    onFinish={this._nextPage}
+                    title={'Danh sách tin thanh lý'}
                 />
-            </View> */}
-                
+                <Search
+                    onSearch={this._onSearch}
+                    onClear={this.getLiquidation}
+                    ref={val => this.search = val}
+                    filter={this.filter}
+                    goBack={this._goBack}
+                    keyword={this.state.keyword}
+                />
+
+
                 <FlatList
                     data={this.state.listLiqiudation}
                     renderItem={this._renderItem}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefress}
+                    ListEmptyComponent={this._listEmpty}
                     keyExtractor={this._keyExtractor}
                     ListFooterComponent={this._renderFooter}
                     onEndReached={this._loadMore}
                     onEndReachedThreshold={this.state.Thresold}
                 />
-                <TouchableOpacity style={styles.btnAdd}
-                    onPress={this._nextPage}
-                >
-                    <Image
-                        source={images.shopAdd}
-                        style={styles.add}
-                        resizeMode="contain"
-                    />
-                </TouchableOpacity>
             </View>
         );
     }
     getLiquidation = async () => {
         console.log('11111')
-        let params ={
-            type:'liquidation',
-            page:this.state.page
+        let params = {
+            type: 'liquidation',
+            page: this.state.page
         }
         getListLiquidation(params).then(res => {
-            console.log(res.data,'aaa')
+            console.log(res.data, 'aaa')
             if (res.data.code == Status.SUCCESS) {
-                this.setState({
-                    listLiqiudation: [...this.state.listLiqiudation,...res.data.data],
-                })
+                if (this.state.page == 1) {
+                    this.setState({
+                        listLiqiudation: res.data.data,
+                        Thresold: 0.1,
+                        loading: true,
+                        refreshing: false
+                    })
+                } else {
+                    this.setState({
+                        listLiqiudation: [...this.state.listLiqiudation, ...res.data.data],
+                        Thresold: 0.1,
+                        loading: true,
+                        refreshing: false
+                    })
+                }
             } else if (res.data.code == Status.NO_CONTENT) {
                 this.setState({
                     Thresold: 0,
-                    loading:false
+                    loading: false,
+                    refreshing: false
                 })
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
-                this.setState({Thresold: 0, loading:false})
+                this.setState({ Thresold: 0, loading: false, refreshing: false })
                 navigation.reset(SigninScreen)
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
-                this.setState({Thresold: 0, loading:false})
+                this.setState({ Thresold: 0, loading: false, refreshing: false })
                 popupCancel('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
-            this.setState({Thresold: 0, loading:false})
-            
+            this.setState({ Thresold: 0, loading: false, refreshing: false })
+
         })
     }
     componentDidMount = () => {
@@ -130,58 +176,37 @@ export default class ListLiquidation extends Component {
     };
 
 }
-const data= [
-    {
-      "id": 9,
-      "title": "asdsadsadsad",
-      "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
-      "category": "Trang phục",
-      "city": "Thành phố Hà Nội",
-      "time": "59 phút trước"
-    },
-    {
-        "id": 10,
-        "title": "asdsadsadsad",
-        "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
-        "category": "Trang phục",
-        "city": "Thành phố Hà Nội",
-        "time": "59 phút trước"
-      },
-      {
-        "id": 11,
-        "title": "asdsadsadsad",
-        "description": "12sadsadsadsadsad adsf dsf dsjkbfdsa fdslkfbmdsa fdjshbfmnds jhbfds  asdfdasf fadsfds fdas fdsaf  fdlsjhbfn sdfbsdlf ,mdsfhjbsad fjdbsfnds fbsdlf obfldskjn f",
-        "category": "Trang phục",
-        "city": "Thành phố Hà Nội",
-        "time": "59 phút trước"
-      }
-
-  ]
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 10,
-        backgroundColor:'#CCCCCC'
+        backgroundColor: '#CCCCCC'
     },
-    imgSearch:{
-        height:15,
-        width:15,
-        marginHorizontal:10
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
     },
-    inputSearch:{
-        flex:1
+    imgSearch: {
+        height: 15,
+        width: 15,
+        marginHorizontal: 10
     },
-    searchGroup:{
+    inputSearch: {
+        flex: 1
+    },
+    searchGroup: {
         flexDirection: 'row',
-        backgroundColor:'#FFFFFF',
+        backgroundColor: '#FFFFFF',
         justifyContent: 'space-between',
-        borderRadius:5,
-        height:40,
-        margin:10,
-        alignItems:'center',
-        borderColor:'#8FBEDF',
-        borderWidth:0.7
+        borderRadius: 5,
+        height: 40,
+        margin: 10,
+        alignItems: 'center',
+        borderColor: '#8FBEDF',
+        borderWidth: 0.7
     },
     add: {
         width: 25,
@@ -193,10 +218,10 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         backgroundColor: '#2166A2',
         position: 'absolute',
-        elevation:5,
-        shadowColor:'black',
-        shadowOffset:{width:0,height:2},
-        shadowOpacity:0.5,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
         // shadowRadius:25,
         bottom: '10%',
         alignItems: 'center',

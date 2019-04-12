@@ -1,4 +1,4 @@
-import {AsyncStorage,Alert, Platform} from 'react-native'
+import {AsyncStorage,Alert, Platform,Linking} from 'react-native'
 import navigation from 'navigation/NavigationService';
 
 export const getItem= async(token)=>{
@@ -100,3 +100,22 @@ export const getMimeType = (type) =>{
           return "*/*";
   }
   }
+  export const callNumber = phone => {
+    console.log('callNumber ----> ', phone);
+    let phoneNumber = phone;
+    if (Platform.OS !== 'android') {
+    phoneNumber = `telprompt:${phone}`;
+    }
+    else  {
+    phoneNumber = `tel:${phone}`;
+    }
+    Linking.canOpenURL(phoneNumber)
+    .then(supported => {
+    if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(phoneNumber);
+    }
+    })
+    .catch(err => console.log(err));
+    };

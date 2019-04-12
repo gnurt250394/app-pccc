@@ -80,7 +80,7 @@ constructor(props){
                                           placeholder={"Nhập nội dung"}
                                     />
                                     <Item
-                                          name={"Nội dung cần mua"}
+                                          name={"Nội dung cần thanh lý"}
                                           multiline={true}
                                           onChangeText={this._onChangeText('decription')}
                                           ref={val => this.inputDescription = val}
@@ -88,7 +88,7 @@ constructor(props){
                                           style={styles.inputItem}
                                     />
                                      <View keyboardShouldpersist='always' style={styles.containerStyle}>
-                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần mua</Text>
+                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần thanh lý</Text>
                                     <TouchableOpacity
                                           onPress={this.showFlatlit}
 
@@ -97,7 +97,7 @@ constructor(props){
                                           <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
                                     </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ mua</Text>
+                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ thanh lý</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
                                     >
@@ -141,25 +141,39 @@ constructor(props){
                   params.append('city_id', idCity)
                   params.append('district_id', idCountry)
             console.log(params, 'params')
-            postLiquidation(params).then(res => {
-                  console.log(res.data, 'data')
-                  if (res.data.code == Status.SUCCESS) {
-                        this.refress()
-                        navigation.pop()
-                  }else if(res.data.code == Status.TOKEN_EXPIRED){
-                        SimpleToast.show('Phiên đăng nhập hết hạn')
-                        navigation.reset(SigninScreen)
-                        removeItem('token')
-                  }else if(res.data.code == Status.TOKEN_VALID){
-                        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
-                  } else{
-                        SimpleToast.show("Lỗi hệ thống")
-                  }
-            }).catch(err => {
-                  SimpleToast.show("Server ERROR")
-                  console.log(err, 'err')
-            })
+            if(this.validate()==''){
+                  postLiquidation(params).then(res => {
+                        console.log(res.data, 'data')
+                        if (res.data.code == Status.SUCCESS) {
+                              this.refress()
+                              navigation.pop()
+                        }else if(res.data.code == Status.TOKEN_EXPIRED){
+                              SimpleToast.show('Phiên đăng nhập hết hạn')
+                              navigation.reset(SigninScreen)
+                              removeItem('token')
+                        }else if(res.data.code == Status.TOKEN_VALID){
+                              popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+                        } else{
+                              SimpleToast.show("Lỗi hệ thống")
+                        }
+                  }).catch(err => {
+                        SimpleToast.show("Server ERROR")
+                        console.log(err, 'err')
+                  })
+            }else{
+                  this.validate()
+            }
+            
 
+      }
+      validate = () =>{
+            let msg =''
+            let  {title,decription} = this.state
+            switch(''){
+                  case title: SimpleToast.show('Tên tiêu đề không được để trống');
+                  break;
+                  case decription: SimpleToast.show('Nội dung cần mua không được để trống')
+            }
       }
 
 }

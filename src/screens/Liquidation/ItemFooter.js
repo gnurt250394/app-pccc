@@ -6,14 +6,14 @@ const { width } = Dimensions.get('window')
 
 export default class ItemFooter extends Component {
       showImage = (link) => {
-            let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
+            let ext = link.fileName ? /[^\.]*$/.exec(link.fileName)[0] : 'txt'
             let source, uri
             switch (ext) {
                 case 'jpg':
                 case 'jpeg':
                 case 'gif':
                 case 'png':
-                    source = { uri: link }
+                    source = { uri: link.uri }
                     uri = true
                     break;
     

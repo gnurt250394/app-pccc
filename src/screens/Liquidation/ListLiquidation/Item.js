@@ -14,19 +14,25 @@ export default class Item extends Component {
                               onPress={this.props.onPress}
                               style={styles.containerList}>
                               <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
-                              <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.category}</Text>
+                              <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
                               <View style={styles.rowList}>
-                                    <View style={styles.row}>
+                                    <View style={[styles.row,styles.category]}>
+                                          <Image source={images.menu}
+                                                style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
+                                                resizeMode="contain"
+                                          />
+                                          <Text>{this.props.item.category ? this.props.item.category : null}</Text>
+                                    </View>
+                                    <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
+
+                              </View>
+                              <View style={styles.row}>
                                           <Image source={images.shopLocation}
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
                                           <Text>{this.props.item.city ? this.props.item.city : null}</Text>
                                     </View>
-                                    <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
-
-                              </View>
-
                         </TouchableOpacity>
                         <View
                               style={styles.end}
@@ -40,6 +46,10 @@ const styles = StyleSheet.create({
       containerList: {
             flex: 1,
             paddingHorizontal: 15
+      },
+      category:{
+            marginBottom:10,
+            alignItems:'center'
       },
       txtName: {
             color: '#333333',
@@ -58,7 +68,7 @@ const styles = StyleSheet.create({
       imgLocation: {
             height: 14,
             width: 14,
-            
+            tintColor:'#2166A2',
             marginRight: 5
       },
       row: {

@@ -55,6 +55,7 @@ export default class FooterDetail extends Component {
             )
      
          }
+         _keyExtractor =(item,index) => `${index|| item}`
       render() {
             return (
                   <View style={styles.container}>
