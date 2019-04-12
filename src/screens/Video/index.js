@@ -130,7 +130,7 @@ class Video extends React.Component {
                 </TouchableOpacity>
                 <Text style={style.name}>{item.name}</Text>
                 <View style={style.row}>
-                    <Text style={style.time}>{item.created_at && item.created_at.date != "" ? `Ngày đăng: ${this._formatDate(item.created_at.date)}`: ""}</Text>
+                    <Text style={style.time}>{item.created_at && item.created_at.date != "" ? `Ngày đăng: ${this._formatDate(item.created_at.date?item.created_at.date:item.created_at)}`: ""}</Text>
                     {item.follow == Follow.unfollow && <TouchableOpacity
                         onPress={this.onFollow(item.id, index)}
                         style={style.btn}>

@@ -160,5 +160,8 @@ module.exports = {
 
     // home
     closeSearch: require('./closeSearch.png'),
-    loading:require('./loading.gif')
+    loading:require('./loading.gif'),
+    tickerOk:require('./tickerOk.png'),
+    drop:require('./drop.png'),
+    liquiAdd:require('./LiquiAdd.png')
 }

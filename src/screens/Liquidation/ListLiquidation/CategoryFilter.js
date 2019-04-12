@@ -4,9 +4,8 @@ import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
 import images from "assets/images"
-import Search from 'screens/Liquidation/ListLiquidation/search';
 const {width} = Dimensions.get('window')
-export default class ListCategory extends Component {
+export default class CategoryFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,63 +16,33 @@ export default class ListCategory extends Component {
   _goBack=()=>{
     navigation.pop()
 }
-_selectList=()=>{
-  let listFinal = this.state.listCategory.filter(item => item.checked == true)
-  let listIdFinish=[],
-  listName=[]
-  listFinal.forEach(item=>{
-    listIdFinish.push(item.id)
-    listName.push(item.name)
-  })
+_selectList=(item)=>()=>{
+  
   
   if(this.props.navigation.state && this.props.navigation.state.params.fun){
-   
-    this.props.navigation.state.params.fun(listName.join(','),listIdFinish)
+   console.log(item,'itemC')
+    this.props.navigation.state.params.fun(item)
     navigation.pop()
   }
   
 }
-reduce =(a,b)=> a+b
-_checked =(index)=>()=>{
-  let listCategory = [...this.state.listCategory]
-  listCategory[index].checked = false
-  this.setState({listCategory})
-}
-_unChecked =(index)=>()=>{
-  let listCategory = [...this.state.listCategory]
-  
-  listCategory[index].checked = true
-  this.setState({listCategory})
-}
+
 _renderItem=({item,index})=>{
-  if(item.checked){
-    return(
-        <TouchableOpacity 
-        onPress={this._checked(index)}
-        style={styles.containerListChecked}>
-        <View style={styles.containerBtn}>
-            <Text style={styles.txtCheck}>{item.name}</Text>
-            <Image source={images.tickerOk}
-                    style={styles.ticker}
-                    resizeMode="contain"
-            />
-            </View>
-            <View style={styles.end}/>
-        </TouchableOpacity>
-    )
-  }else{
+ 
     return(
       <TouchableOpacity 
-      onPress={this._unChecked(index)}
+      onPress={this._selectList(item)}
       style={styles.containerListUnChecked}>
       <View style={styles.containerBtn}>
           <Text style={{marginLeft:15}}>{item.name}</Text>
-          
+          {/* <Image source={images.icon_ticker}
+                  style={styles.ticker}
+          /> */}
           </View>
           <View style={styles.end}/>
       </TouchableOpacity>
   )
-  }
+  
     
 }
 _keyExtractor=(item,index)=>{
@@ -86,17 +55,8 @@ _keyExtractor=(item,index)=>{
                 title="Chọn danh mục sản phẩm"
                 check={1}
                 onPress={this._goBack}
-                finish={1}
-                onFinish={this._selectList}
-            />
-            <Search
-             onSearch={this._onSearch}
-             checkFilter={1}
-             onClear={this.getLiquidation}
-             ref={val => this.search = val}
-             filter={this.filter}
-             goBack={this._goBack}
-             keyword={this.state.keyword}
+                // finish={1}
+                // onFinish={this._selectList}
             />
       <FlatList
           data={this.state.listCategory}
@@ -131,16 +91,12 @@ const styles = StyleSheet.create({
     ticker:{
       height:14,
       width:14,
-      marginRight:10
-  },
-  txtCheck:{
-    color:'#2166A2',
-    marginLeft:15
   },
     containerListChecked:{
         flex:1,
         height:50,
         justifyContent: 'center',
+        backgroundColor:'#2166A2'
     },
     containerListUnChecked:{
       flex:1,
@@ -151,8 +107,8 @@ const styles = StyleSheet.create({
     containerBtn:{
         flex:1,
         flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center'
+        alignItems:'center',
+        justifyContent:'space-between'
     },
     end:{
         height:0.5,

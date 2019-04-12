@@ -4,7 +4,7 @@ import navigation from 'navigation/NavigationService';
 import images from 'assets/images'
 const { width } = Dimensions.get('window')
 
-export default class ItemFooter extends Component {
+export default class ItemFooter extends React.PureComponent {
       showImage = (link) => {
             let ext = link.fileName ? /[^\.]*$/.exec(link.fileName)[0] : 'txt'
             let source, uri

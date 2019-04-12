@@ -20,11 +20,9 @@ class Notify extends React.Component {
     state = {
         count: ''
     }
-   static navigationOptions = ({ navigation,props }) => {      
+   static navigationOptions = ({ navigation }) => {      
         const { routeName } = navigation.state;     
-        console.log(navigation,'navigation') 
-        console.log(props,'props') 
-
+console.log(navigation,'na')
         return {        
           tabBarIcon: ({ focused }) => {  
              // You can return any component that you like here! 
@@ -49,6 +47,7 @@ class Notify extends React.Component {
             return null
         }
         });
+        
     }
     
     componentWillUnmount() {

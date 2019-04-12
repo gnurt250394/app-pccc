@@ -47,6 +47,11 @@ import DetailContractor from "screens/Contractors/Detail/DetailContractor";
 import Liquidation from "screens/Liquidation/Liquidation";
 import ListLiquidation from "screens/Liquidation/ListLiquidation/ListLiquidation";
 import DetailLiquidation from "screens/Liquidation/Detail/DetailLiquidation";
+import ListCity from "screens/Liquidation/ListLiquidation/ListCity";
+import CategoryFilter from "screens/Liquidation/ListLiquidation/CategoryFilter";
+import PostPurchase from "screens/PostPurchase/Purchase/PostPurchase";
+import DetailPostPurchase from "screens/PostPurchase/DetailPostPurchase/DetailPostPurchase";
+import ListPostPurchase from "screens/PostPurchase/ListPostPurchase/ListPostPurchase";
 
 // const MyDrawerNavigator = createDrawerNavigator({
 //   Tabs: TabsHome
@@ -111,6 +116,13 @@ const App = createStackNavigator(
     [ScreenName.Liquidation] : Liquidation,
     [ScreenName.ListLiquidation]: ListLiquidation,
     [ScreenName.DetailLiquidation]:DetailLiquidation,
+    [ScreenName.ListCity]:ListCity,
+    [ScreenName.CategoryFilter]:CategoryFilter,
+
+    // Post Purchase
+    [ScreenName.PostPurchase]:PostPurchase,
+    [ScreenName.DetailPostPurchase]:DetailPostPurchase,
+    [ScreenName.ListPostPurchase]:ListPostPurchase,
 
     //FolowContractor
     [ScreenName.FolowContractor]: FolowContractor,

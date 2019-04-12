@@ -3,6 +3,7 @@ import { Text, View, ScrollView, TextInput, StyleSheet, TouchableOpacity } from 
 import CustomDialog from 'components/CustomDialog';
 import DropDown from 'components/Dropdown';
 import { getOtherData } from 'config/apis/myShop';
+import SimpleToast from 'react-native-simple-toast';
 
 export default class Modal extends Component {
   state = {
@@ -41,10 +42,27 @@ export default class Modal extends Component {
 
   }
   _save = () => {
+    if(this.validate()== ''){
+      this.setState({ visible: false }, () => this.props.handleAddress(`${this.state.value} - ${this.state.districtName} - ${this.state.cityName}`))
+    }else{
+      SimpleToast.show(this.validate())
+    }
+    
 
-    this.setState({ visible: false }, () => this.props.handleAddress(`${this.state.value} - ${this.state.districtName} - ${this.state.cityName}`))
 
-
+  }
+  validate = () =>{
+    let msg =''
+    switch(''){
+      case this.state.idCity: 
+      return msg += 'Vui lòng chọn tỉnh/thành phố'
+      case this.state.idDistrict:
+      return msg+='Vui lòng chọn Quận/huyện'
+      case this.state.value:
+      return msg+='Vui lòng nhập địa chỉ cụ thể'
+      default: 
+      return msg 
+    }
   }
   render() {
     return (

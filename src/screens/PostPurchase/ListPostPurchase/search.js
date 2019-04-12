@@ -3,7 +3,6 @@ import { TouchableOpacity, Text, StyleSheet, View , Image, TextInput,SafeAreaVie
 import styles from "assets/styles" 
 import images from "assets/images" 
 import {  color } from 'config'
-import DropDown from '../Dropdown';
 import navigation from 'navigation/NavigationService';
 import { ListCity, ListCategory, CategoryFilter } from 'config/screenNames';
 import { postLiquidation, getListLiquidation } from 'config/apis/liquidation';
@@ -29,14 +28,13 @@ export default class Search extends React.PureComponent {
     filter =(city,category)=>{
         let params = {
             'city_id': city.id,
-            'type':'liquidation',
+            'type':'buy',
             'category_id': category.id,
         }
         console.log(params,'ram')
         getListLiquidation(params).then(res => {
             console.log(res.data, 'data')
             if (res.data.code == Status.SUCCESS) {
-                SimpleToast.show('locjok')
                   this.props.filter(res.data.data)
             }else if(res.data.code == Status.TOKEN_EXPIRED){
                   SimpleToast.show('Phiên đăng nhập hết hạn')
@@ -137,7 +135,7 @@ export default class Search extends React.PureComponent {
 const style = StyleSheet.create({
     heading: {justifyContent: 'space-between', padding: 10, alignContent:'center'},
     boxSearch: {flexDirection: 'row', justifyContent: 'space-between',  borderRadius: 6,backgroundColor:'#FFFFFF', borderColor:'#8FBEDF',borderWidth:1, height: 40, marginLeft: 10, marginRight: 10,},
-    head: { marginBottom:7, alignItems: 'center',backgroundColor:'#FFFFFF', paddingTop: 10},
+    head: {marginBottom:7,  alignItems: 'center',backgroundColor:'#FFFFFF', paddingTop: 10},
     txtSearch: {color: "#2166A2"},
     w15: { width: 15},
     iconClose: {  width: 13, marginTop: 0,tintColor:color},

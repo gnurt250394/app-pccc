@@ -80,6 +80,12 @@ export const searchProject = async ( keyword = '', page = 1) => {
     instance.defaults.headers.common['Authorization'] = "Bearer " + token;
     return instance.get(constant.SEARCH +`?table=news_projects&keyword=${keyword}&page=${page}`)
 }
+export const searchLiquidation = async (body) => {
+    // type | nếu lấy video truyền type=video ; catalog , type=catalog; document, type=document
+    let token = await getItem('token')
+    instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+    return instance.get(constant.SEARCH ,{params:body})
+}
 
 export const listDocumentFollows = async (type, page = 1) => {
     let token = await getItem('token')

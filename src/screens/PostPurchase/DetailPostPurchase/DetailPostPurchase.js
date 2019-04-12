@@ -11,7 +11,7 @@ import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
 import { Status, callNumber } from 'config/Controller';
 
-export default class DetailLiquidation extends Component {
+export default class DetailPostPurchase extends Component {
       state={
             id:this.props.navigation.getParam('id',''),
             Liquidation:{},
@@ -33,7 +33,7 @@ export default class DetailLiquidation extends Component {
                         <Header
                               check={1}
                               onPress={this._goBack}
-                              title={'Chi tiết thanh lý'}
+                              title={'Chi tiết đăng mua'}
                         />
                         {this.state.loading?
                         <ScrollView>

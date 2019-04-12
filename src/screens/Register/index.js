@@ -235,10 +235,13 @@ class Register extends React.Component {
                         }
                     })
             } else if (!this.state.allowPhone) {
+                this.setState({isSuccess:false})
                 popupOk('Số điện thoại đã được sử dụng')
             } else if (!allowEmail) {
+                this.setState({isSuccess:false})
                 popupOk('Email đã được sử dụng')
             } else {
+                this.setState({isSuccess:false})
                 popupOk('Email & Số điện thoại đã được sử dụng')
             }
         }

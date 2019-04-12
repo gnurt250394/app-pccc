@@ -284,7 +284,7 @@ class DetailProject extends Component {
 
 
     if (this.state.id) {
-
+      console.log(this.state.id)
       console.log(this.state.id)
       let project = await getListProject(this.state.id).then(res => {
 

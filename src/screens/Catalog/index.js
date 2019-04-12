@@ -21,6 +21,7 @@ class Catalog extends React.Component {
         follow: this.props.navigation.getParam('follow') || false,
         datas: [],
         backup: [],
+        search:true,
         page: 1,
         threshold: 0.1,
 
@@ -93,12 +94,11 @@ class Catalog extends React.Component {
     }
 
     handleLoadmore = () => {
-        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
+        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 },this.state.search? this.getData:this._onSearch) : null
     }
 
     ListFooterComponent = () => {
-        log(this.state.loading);
-        return this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return this.state.loading && this.state.datas.length >5? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     renderItem = count => ({ item, index }) => {
@@ -328,14 +328,15 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
-        this.setState({ loading: true }, async () => {
+        this.setState({ loading: true,search:false }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
 
-            let datas = await searchDocuments(this.state.type, keyword).then(res => {
-                return res.data.code == StatusCode.Success ? res.data.data : []
+            let datas = await searchDocuments(this.state.type, keyword,this.state.page).then(res => {
+                return res.data.code == Status.SUCCESS ? res.data.data : []
             }).catch(err => {
                 return []
             })
+            console.log(datas,'datas')
             this.formatData(datas)
         })
     }
@@ -346,8 +347,8 @@ class Catalog extends React.Component {
                 loading: false,
                 refreshing: false,
                 threshold: 0,
-                // datas
             })
+           
         } else {
             let backup = [...datas]
 
@@ -367,6 +368,8 @@ class Catalog extends React.Component {
 
     getData = async () => {
         let datas = [];
+        this.setState({search:true})
+        console.log(this.state.type)
         if (this.state.follow) {
             datas = await listDocumentFollows(this.state.type, this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []

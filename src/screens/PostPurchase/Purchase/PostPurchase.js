@@ -2,31 +2,27 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
-import { getLiquidation, getOtherData } from 'config/apis/myShop';
 import { Status, removeItem, getMimeType, popup } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
-import { popupCancel } from 'config';
 import { Header } from 'components';
 import Item from './Item';
 import { Btn } from 'components';
-import FooterLiquidation from './FooterLiquidation';
+import FooterLiquidation from './FooterPostPurchase';
 import { postLiquidation } from 'config/apis/liquidation';
-import CustomDialog from 'components/CustomDialog';
-import Modal from './Modal';
 import { fontStyles } from 'config/fontStyles';
-import DropDown from './Dropdown';
 import SimpleToast from 'react-native-simple-toast';
+import Modal from 'screens/Liquidation/Modal';
 moment.locale('vn')
 
 
-export default class Liquidation extends Component {
+export default class PostPurchase extends Component {
 constructor(props){
       super(props)
       this.state = {
             title: '',
             decription: '',
-            type: '1',
+            type: '0',
             category_id: [],
             city_id: '',
             district_id: '',
@@ -68,7 +64,7 @@ constructor(props){
                         <Header
                               check={1}
                               onPress={this._goBack}
-                              title={'Tin thanh lý'}
+                              title={'Đăng mua'}
                         />
                         <ScrollView keyboardShouldPersistTaps="handled">
                               <View style={styles.container}>
@@ -80,7 +76,7 @@ constructor(props){
                                           placeholder={"Nhập nội dung"}
                                     />
                                     <Item
-                                          name={"Nội dung cần thanh lý"}
+                                          name={"Nội dung cần mua"}
                                           multiline={true}
                                           onChangeText={this._onChangeText('decription')}
                                           ref={val => this.inputDescription = val}
@@ -88,7 +84,7 @@ constructor(props){
                                           style={styles.inputItem}
                                     />
                                      <View keyboardShouldpersist='always' style={styles.containerStyle}>
-                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần thanh lý</Text>
+                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần mua</Text>
                                     <TouchableOpacity
                                           onPress={this.showFlatlit}
 
@@ -97,7 +93,7 @@ constructor(props){
                                           <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
                                     </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ thanh lý</Text>
+                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ mua</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
                                     >
@@ -140,10 +136,10 @@ constructor(props){
                   params.append('type', this.state.type)
                   params.append('city_id', idCity)
                   params.append('district_id', idCountry)
-            console.log(params, 'params')
+            
             if(this.validate()==''){
                   postLiquidation(params).then(res => {
-                        console.log(res.data, 'data')
+                        
                         if (res.data.code == Status.SUCCESS) {
                               this.refress()
                               navigation.pop()
@@ -158,7 +154,7 @@ constructor(props){
                         }
                   }).catch(err => {
                         SimpleToast.show("Server ERROR")
-                        console.log(err, 'err')
+                        
                   })
             }else{
                   SimpleToast.show(this.validate())
@@ -170,13 +166,9 @@ constructor(props){
             let msg =''
             let  {title,decription} = this.state
             switch(''){
-                  case title: 
-                  return msg += 'Tên tiêu đề không được để trống';
-                  
-                  case decription: 
-                  return msg += 'Nội dung cần mua không được để trống'
-                  default: 
-                  return msg
+                  case title: return msg += 'Tên tiêu đề không được để trống';
+                  case decription:return msg += 'Nội dung cần mua không được để trống'
+                  default:return msg
             }
       }
 

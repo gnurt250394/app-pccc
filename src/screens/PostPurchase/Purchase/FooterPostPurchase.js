@@ -7,7 +7,7 @@ import { fontStyles } from 'config/fontStyles';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 const { width } = Dimensions.get('window')
 
-export default class FooterLiquidation extends Component {
+export default class FooterPostPurchase extends React.PureComponent {
       state={
             listFile:[],
       }

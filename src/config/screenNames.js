@@ -65,6 +65,16 @@ export const DetailContractor = "DetailContractor"
 export const Liquidation = "Liquidation"
 export const ListLiquidation = "ListLiquidation"
 export const DetailLiquidation = "DetailLiquidation"
+export const ListCity = "ListCity"
+export const CategoryFilter = "CategoryFilter"
+
+// Post Purchase
+export const PostPurchase = "PostPurchase"
+export const ListPostPurchase = "ListPostPurchase"
+export const DetailPostPurchase = "DetailPostPurchase"
+
+
+
 
 
 
