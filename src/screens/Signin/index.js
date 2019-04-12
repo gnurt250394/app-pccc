@@ -349,6 +349,7 @@ class Signin extends React.Component {
                 text: 'Cancel', style: 'cancel',onPress:()=>{this.setState({loading:false})}
               },
               {text: 'OK', onPress: async () => {
+                  this.setState({loading:true})
                 let phone = await getCurrentAccount()
                 if(phone){
                     // checkPhoneOrEmail({phone: phone}).then(res => {
@@ -356,19 +357,21 @@ class Signin extends React.Component {
                         //     this.setState({loading: false})
                         //     popupOk(CodeToMessage[res.data.code])
                         // }else{
-
+``
                             // call api update phone
                             console.log(userToken,'ttooott')
                             updateUser({phone: phone}, userToken).then(res => {
-                                this.setState({loading: false})
                                 console.log(res.data,'dddd')
                                 if(res.data.code == StatusCode.Success){
                                     AsyncStorage.setItem('token', res.data.token)
                                     navigation.reset(HomeScreen)
                                 }else{
+                                this.setState({loading: false})
                                     popupOk(CodeToMessage[res.data.code])
                                 }
                             }).catch(err => {
+
+                                this.setState({loading: false})
                                 popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
                                 console.log('err')
                             })
@@ -381,6 +384,7 @@ class Signin extends React.Component {
                     
                 }else{
                     this.setState({loading: false})
+                    console.log(phone,'ppppp')
                     // popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
                     console.log('err3')
                 }

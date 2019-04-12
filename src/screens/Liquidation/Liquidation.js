@@ -161,7 +161,7 @@ constructor(props){
                         console.log(err, 'err')
                   })
             }else{
-                  this.validate()
+                  SimpleToast.show(this.validate())
             }
             
 
@@ -170,9 +170,13 @@ constructor(props){
             let msg =''
             let  {title,decription} = this.state
             switch(''){
-                  case title: SimpleToast.show('Tên tiêu đề không được để trống');
-                  break;
-                  case decription: SimpleToast.show('Nội dung cần mua không được để trống')
+                  case title: 
+                  return msg += 'Tên tiêu đề không được để trống';
+                  
+                  case decription: 
+                  return msg += 'Nội dung cần mua không được để trống'
+                  default: 
+                  return msg
             }
       }
 

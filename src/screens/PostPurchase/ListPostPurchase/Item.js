@@ -21,7 +21,9 @@ export default class Item extends Component {
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
-                                          <Text>{this.props.item.category ? this.props.item.category : null}</Text>
+                                           <View style={styles.wrap}>
+                                          <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.props.item.category : null}</Text>
+                                          </View>
                                     </View>
                                     <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
 
@@ -49,7 +51,8 @@ const styles = StyleSheet.create({
       },
       category:{
             marginBottom:10,
-            alignItems:'center'
+            alignItems:'center',
+            width:'82%',
       },
       txtName: {
             color: '#333333',
@@ -77,7 +80,8 @@ const styles = StyleSheet.create({
       rowList: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: 12
+            marginTop: 12,
+            alignItems:'flex-start',
       },
       end: {
             height: 1,
@@ -88,6 +92,11 @@ const styles = StyleSheet.create({
       txtTime: {
             fontSize: 11,
             color: '#999999'
-      }
+      },
+      wrap:{
+            flexWrap:'wrap',
+            flexShrink:5,
+            width:'90%',
+      },
 
 })

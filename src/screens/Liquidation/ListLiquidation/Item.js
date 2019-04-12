@@ -18,10 +18,12 @@ export default class Item extends Component {
                               <View style={styles.rowList}>
                                     <View style={[styles.row,styles.category]}>
                                           <Image source={images.menu}
-                                                style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
+                                                style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?2:3}]}
                                                 resizeMode="contain"
                                           />
-                                          <Text>{this.props.item.category ? this.props.item.category : null}</Text>
+                                          <View style={styles.wrap}>
+                                          <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.props.item.category : null}</Text>
+                                          </View>
                                     </View>
                                     <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
 
@@ -31,7 +33,7 @@ export default class Item extends Component {
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
-                                          <Text>{this.props.item.city ? this.props.item.city : null}</Text>
+                                          <Text style={styles.txtDescription}>{this.props.item.city ? this.props.item.city : null}</Text>
                                     </View>
                         </TouchableOpacity>
                         <View
@@ -47,9 +49,16 @@ const styles = StyleSheet.create({
             flex: 1,
             paddingHorizontal: 15
       },
+      wrap:{
+            flexWrap:'wrap',
+            flexShrink:5,
+            width:'90%',
+      },
       category:{
             marginBottom:10,
-            alignItems:'center'
+            alignItems:'flex-start',
+            width:'82%',
+            
       },
       txtName: {
             color: '#333333',
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
       },
       txtDescription: {
             fontSize: 13,
-            color:'#333333'
+            color:'#333333',
       },
       container: {
             flex: 1,
@@ -77,6 +86,8 @@ const styles = StyleSheet.create({
       rowList: {
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems:'flex-start',
+            
             marginTop: 12
       },
       end: {

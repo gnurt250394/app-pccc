@@ -275,11 +275,10 @@ const style = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
         
     },
-    bot: { flexDirection: 'column', justifyContent: 'center', flex: 1},
+    bot: { flexDirection: 'column',left:-1, justifyContent: 'center', flex: 1},
     iconTop: { height: width < 400 ? 55 : 70, resizeMode: 'contain'},
     btnTop: { flexDirection: 'column', alignItems: 'center'},
     mr20p: {marginRight: "15%",},

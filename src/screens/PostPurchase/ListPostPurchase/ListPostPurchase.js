@@ -57,7 +57,7 @@ export default class ListPostPurchase extends Component {
         this.setState({ loading: true }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
             let params = {
-                type: 1,
+                type: 0,
                 keyword: keyword,
                 page: this.state.page,
                 table:'buy'
@@ -65,7 +65,7 @@ export default class ListPostPurchase extends Component {
             let datas = await searchLiquidation( params).then(res => {
                 return res.data.code == Status.SUCCESS ? res.data.data : []
             }).catch(err => {
-                return err.response
+                return []
             })
             console.log(datas,'dddd')
             if (datas.length == 0) {

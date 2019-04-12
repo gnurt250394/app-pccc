@@ -58,7 +58,7 @@ export default class ListLiquidation extends Component {
         this.setState({ loading: true }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
             let params = {
-                type: 0,
+                type: 1,
                 keyword: keyword,
                 page: this.state.page,
                 table:'news_products'

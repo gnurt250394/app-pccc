@@ -166,12 +166,9 @@ constructor(props){
             let msg =''
             let  {title,decription} = this.state
             switch(''){
-                  case title: msg += 'Tên tiêu đề không được để trống';
-                  break;
-                  case decription: msg += 'Nội dung cần mua không được để trống'
-                  break;
-                  default: msg
-                  break
+                  case title: return msg += 'Tên tiêu đề không được để trống';
+                  case decription:return msg += 'Nội dung cần mua không được để trống'
+                  default:return msg
             }
       }
 
