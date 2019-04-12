@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, T
 import { connect } from 'react-redux'
 import images from "assets/images"
 import { BaseSearch } from 'components'
-import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen, Liquidation, ListLiquidation } from 'config/screenNames'
+import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen, Liquidation, ListLiquidation, ListPostPurchase } from 'config/screenNames'
 import { color, toUpperCase, width, popupOk } from 'config'
 import { getItem } from 'config/Controller';
 import { popupCancel } from 'config';
@@ -111,8 +111,8 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
-                                // onPress={this._navTo(SearchScreen)}
-                                onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
+                                onPress={this._navTo(ListPostPurchase)}
+                                // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={[style.box3, style.mr0]} >
                                     <Image 

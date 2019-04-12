@@ -26,14 +26,14 @@ export default createBottomTabNavigator(
       }),
     },
     [NotifyScreen]: { 
-      screen:(props)=> <Notify {...props}/>,
+      screen:Notify,
       navigationOptions: () => ({
         title: 'Thông báo',
-        tabBarIcon: ({ focused }) => {  
-          // You can return any component that you like here! 
-          // We usually create an icon component rendering some svg        
-          return <Icon  source={focused ? images.notify : images.notifyDark }/>;       
-       }
+      //   tabBarIcon: ({ focused }) => {  
+      //     // You can return any component that you like here! 
+      //     // We usually create an icon component rendering some svg        
+      //     return <Icon  source={focused ? images.notify : images.notifyDark }/>;       
+      //  }
      
       }),
     },
