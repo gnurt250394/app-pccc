@@ -231,8 +231,12 @@ class Register extends React.Component {
                             })
                         } else {
                             this.setState({isSuccess:false})
+                            console.log('else')
                             // popupOk('Đăng ký thất bại')
                         }
+                    }).catch(err=>{
+                        console.log('eer',err)
+                        this.setState({isSuccess:false})
                     })
             } else if (!this.state.allowPhone) {
                 this.setState({isSuccess:false})

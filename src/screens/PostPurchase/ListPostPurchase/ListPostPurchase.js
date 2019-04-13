@@ -11,6 +11,7 @@ import { getListLiquidation } from 'config/apis/liquidation';
 import Search from './search';
 import { searchLiquidation } from 'config/apis/Project';
 import Item from './Item';
+import { Messages } from 'config/Status';
 moment.locale('vn')
 export default class ListPostPurchase extends Component {
 
@@ -160,7 +161,7 @@ export default class ListPostPurchase extends Component {
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
                 this.setState({Thresold: 0, loading:false,refreshing:false})
-                popupCancel('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(SigninScreen))
+                popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
             this.setState({Thresold: 0, loading:false,refreshing:false})

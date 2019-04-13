@@ -12,7 +12,7 @@ export default class TouchableOpacityCustom extends Component {
                                     style={style.imgStreet}
                                     source={this.props.source} />
                                 <Text style={style.text}>
-                                    {this.props.label}  <Image  style={style.iconNotify} source={images.dotYellow} />
+                                    {this.props.label}  {this.props.count == 1?<Image  style={style.iconNotify} source={images.dotYellow} />:null}
                                 </Text> 
                                 
                             </TouchableOpacity>

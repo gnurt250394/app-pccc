@@ -233,6 +233,11 @@ class EditProfile extends React.Component {
     }
 
     _onSuccess = async () => {
+        if(this.state.loading){
+            
+            return null
+        } else{
+            
         if (this.state.name && this.state.name.trim().length < 2) {
             popupOk('Họ và tên phải từ 2 ký tự')
         } else if (!validateName(this.state.name)) {
@@ -249,7 +254,7 @@ class EditProfile extends React.Component {
 
             }
             this.setState({ loading: true })
-            console.log(data, 'param')
+            
             if (this.state.email && this.state.email != this.user.email) {
 
                 data.email = this.state.email; // check để ko bị trùng email cũ
@@ -260,7 +265,7 @@ class EditProfile extends React.Component {
 
             await updateAvatar(this.state.image).then(res => {
                 if (res.data.code == Status.SUCCESS) {
-                    console.log('ok')
+                    
                 } else if (res.data.code == Status.TOKEN_EXPIRED) {
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
@@ -275,13 +280,13 @@ class EditProfile extends React.Component {
             })
 
             await updateProfile(data).then(res => {
-                console.log(res.data, 'errr')
+                
                 if (res.data.code == Status.SUCCESS) {
                     this.props.dispatch({ type: actionTypes.USER_UPDATE, data: res.data.data })
                     navigation.pop()
                     this.setState({ loading: false })
                     this.props.navigation.state.params.refress()
-                } else if (res.data.code == Status.TOKEN_EXPIRED || res.data.code == Status.TOKEN_VALID) {
+                } else if (res.data.code == Status.TOKEN_EXPIRED ) {
                     popupOk(CodeToMessage[res.data.code])
                     navigation.reset(SigninScreen)
                     this.setState({ loading: false })
@@ -297,6 +302,7 @@ class EditProfile extends React.Component {
 
         }
     }
+}
 }
 const mapStateToProps = (state) => {
     return {

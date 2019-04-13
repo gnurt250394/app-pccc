@@ -13,6 +13,7 @@ import { SigninScreen, HomeScreen } from 'config/screenNames';
 import moment from 'moment';
 import { popupOk } from 'config'
 import { fontStyles } from 'config/fontStyles';
+import { Messages } from 'config/Status';
 
 class DetailProject extends Component {
   constructor(props) {
@@ -42,9 +43,9 @@ class DetailProject extends Component {
   _folowUser = async (item) => {
     let token = await getItem('token')
     if (token) {
-      console.log(item, 'ggg')
+      
       FolowUser({ investor_id: item.user_id, table: 'UserInvestor' }).then(res => {
-        console.log(res.data, 'sssss')
+        
         if (res.data.code == Status.SUCCESS) {
           let data = this.state.listPartner
           data.forEach(e => {
@@ -65,13 +66,13 @@ class DetailProject extends Component {
         } else if (res.data.code == Status.USER_PERMISSION) {
           popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
         }else if(res.data.code == Status.TOKEN_VALID){
-          popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+          popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+      popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
     }
   }
 
@@ -79,7 +80,7 @@ class DetailProject extends Component {
   _UnfolowUser = async (item) => {
     let token = await getItem('token')
     if (token) {
-      console.log(item, 'eee')
+      
       UnFolowUser({ investor_id: item.user_id, table: 'UserInvestor' }).then(res => {
         if (res.data.code == Status.SUCCESS) {
           let data = this.state.listPartner
@@ -98,13 +99,13 @@ class DetailProject extends Component {
         } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         }else if(res.data.code == Status.TOKEN_VALID){
-          popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+          popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
         }
       }).catch(err => {
         Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
       })
     } else {
-      popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+      popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
     }
   }
 
@@ -141,7 +142,7 @@ class DetailProject extends Component {
           project_id: this.state.id,
           table: 'UserProject',
         }).then(res => {
-          console.log(res.data, 'hhh')
+          
           if (res.data.code == Status.SUCCESS) {
             this.state.project.follow = Status.UNCHECKED
             this.setState({})
@@ -155,16 +156,16 @@ class DetailProject extends Component {
             Toast.show('Dự án không tồn tại')
           } else if (res.data.code == Status.USER_PERMISSION) {
             popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
-            console.log(res.data)
+            
           }else if(res.data.code == Status.TOKEN_VALID){
-            popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+            popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
           }
         }).catch(err => {
           Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
-          console.log(err.response)
+          
         })
       } else {
-        popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+        popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
 
       }
 
@@ -192,13 +193,13 @@ class DetailProject extends Component {
           } else if (res.data.code == Status.ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           }else if(res.data.code == Status.TOKEN_VALID){
-            popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+            popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
           }
         }).catch(err => {
           Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
         })
       } else {
-        popupOk('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
+        popupOk(Messages.LOGIN_REQUIRE, () => this.props.navigation.navigate(SigninScreen))
 
       }
 
@@ -284,7 +285,7 @@ class DetailProject extends Component {
 
 
     if (this.state.id) {
-      console.log(this.state.id)
+      
       console.log(this.state.id)
       let project = await getListProject(this.state.id).then(res => {
 
@@ -292,9 +293,9 @@ class DetailProject extends Component {
         return res.data.code == Status.SUCCESS ? res.data.data : []
       }).catch(err => {
 
-        return err.response
+        return []
       })
-      console.log(project, 'aaa')
+      console.log(project,'project')
       if (project) {
         this.setState({
           project,

@@ -42,11 +42,13 @@ class TrackingInfo extends React.Component {
                <View style={style.content}>
                         <View style={style.row}>
                         <TouchableOpacityCustom
+                        count={1}
                         onPress={this._navTo(InfoProject, {follow: true})}
                         source={images.trackingDA}
                         label={'Thông tin dự án'}
                         />
                         <TouchableOpacityCustom
+                        count={1}
                         onPress={this._navTo(ListBiddingScreen, {follow: true})}
                         source={images.trackingDT}
                         label={'Thông tin đấu thầu'}
@@ -55,12 +57,14 @@ class TrackingInfo extends React.Component {
                         
                         <View style={style.row}>
                         <TouchableOpacityCustom
+                        count={1}
                          // onPress={this._navTo(ListBiddingScreen)} 
                          onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingSP}
                         label={'Sản phẩm'}
                         />
                         <TouchableOpacityCustom
+                        count={1}
                        onPress={this._navTo(FolowContractor)} 
                        // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingNT}
@@ -86,32 +90,7 @@ class TrackingInfo extends React.Component {
                         source={images.tailieu}
                         label={'Tài liệu'}
                         />
-                            {/* <TouchableOpacity style={style.box3} 
-                                onPress={this._navTo(VideoScreen, {follow: true})} >
-                                <Image 
-                                    style={style.imgBox3}
-                                    source={images.video} />
-                                <Text style={style.textB3}>Video  <Image  style={style.iconNotify} source={images.dotYellow} />
-                                </Text> 
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={style.box3}
-                                onPress={this._navTo(CatalogScreen, {type: 'catalog', follow: true,name:"Catalog theo dõi"})} >
-                                <Image 
-                                    style={style.imgBox3}
-                                    source={images.catalog} />
-                                <Text style={style.textB3}>Catalog  <Image  style={style.iconNotify} source={images.dotYellow} />
-                                </Text> 
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={style.box3} 
-                                onPress={this._navTo(CatalogScreen, {type: 'document', follow: true,name:"Tài liệu theo dõi"})} >
-                                <Image 
-                                    style={style.imgBox3}
-                                    source={images.tailieu} />
-                                <Text style={style.textB3}>Tài liệu  <Image  style={style.iconNotify} source={images.dotYellow} />
-                                </Text> 
-                            </TouchableOpacity> */}
+                            
                             
                         </View>
                     </View>

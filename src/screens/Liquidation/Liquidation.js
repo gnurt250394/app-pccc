@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Dimensions,
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation, getOtherData } from 'config/apis/myShop';
-import { Status, removeItem, getMimeType, popup } from 'config/Controller';
+import { Status, removeItem, getMimeType, popup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
 import { popupCancel } from 'config';
@@ -17,29 +17,30 @@ import Modal from './Modal';
 import { fontStyles } from 'config/fontStyles';
 import DropDown from './Dropdown';
 import SimpleToast from 'react-native-simple-toast';
+import { Messages } from 'config/Status';
 moment.locale('vn')
 
 
 export default class Liquidation extends Component {
-constructor(props){
-      super(props)
-      this.state = {
-            title: '',
-            decription: '',
-            type: '1',
-            category_id: [],
-            city_id: '',
-            district_id: '',
-            address: '',
-            location: 'Chọn địa chỉ',
-            isVisible: false,
-            value: '',
-            listCategory: [],
-            name: 'Chọn danh mục'
+      constructor(props) {
+            super(props)
+            this.state = {
+                  title: '',
+                  decription: '',
+                  category_id: [],
+                  city_id: '',
+                  district_id: '',
+                  address: '',
+                  location: 'Chọn địa chỉ',
+                  isVisible: false,
+                  value: '',
+                  listCategory: [],
+                  name: 'Chọn danh mục',
+                  type: this.props.navigation.getParam('type', typeScreen.postPurchase)
+            }
+            this.refress = this.props.navigation.getParam('refress', '')
       }
-      this.refress = this.props.navigation.getParam('refress','')
-}
-      
+
 
       _showModal = () => {
             this.setState({ isVisible: true })
@@ -55,20 +56,21 @@ constructor(props){
             this.setState({ location: value, isVisible: false })
 
       }
-      handleItem =(value,id)=>{
-            this.setState({name:value,category_id:id})
+      handleItem = (value, id) => {
+            this.setState({ name: value, category_id: id })
       }
       showFlatlit = () => {
-            navigation.navigate(ListCategory,{ fun: this.handleItem })
+            navigation.navigate(ListCategory, { fun: this.handleItem })
       }
       render() {
+            const { type } = this.state
             return (
                   <View style={styles.container}>
 
                         <Header
                               check={1}
                               onPress={this._goBack}
-                              title={'Tin thanh lý'}
+                              title={type == typeScreen.Liquidation ? 'Tin thanh lý' : 'Đăng mua'}
                         />
                         <ScrollView keyboardShouldPersistTaps="handled">
                               <View style={styles.container}>
@@ -80,24 +82,24 @@ constructor(props){
                                           placeholder={"Nhập nội dung"}
                                     />
                                     <Item
-                                          name={"Nội dung cần thanh lý"}
+                                          name={type == typeScreen.Liquidation ? "Nội dung cần thanh lý" : 'Nội dung cần mua'}
                                           multiline={true}
                                           onChangeText={this._onChangeText('decription')}
                                           ref={val => this.inputDescription = val}
                                           placeholder={"Nhập nội dung"}
                                           style={styles.inputItem}
                                     />
-                                     <View keyboardShouldpersist='always' style={styles.containerStyle}>
-                                    <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>Danh mục cần thanh lý</Text>
-                                    <TouchableOpacity
-                                          onPress={this.showFlatlit}
+                                    <View keyboardShouldpersist='always' style={styles.containerStyle}>
+                                          <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Danh mục cần thanh lý' : 'Danh mục cần mua'}</Text>
+                                          <TouchableOpacity
+                                                onPress={this.showFlatlit}
 
-                                          style={styles.editText} >
-                                          <Text numberOfLines={1} style={styles.txtBtn}>{this.state.name}</Text>
-                                          <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
-                                    </TouchableOpacity>
+                                                style={styles.editText} >
+                                                <Text numberOfLines={1} style={styles.txtBtn}>{this.state.name}</Text>
+                                                <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
+                                          </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>Địa chỉ thanh lý</Text>
+                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Địa chỉ thanh lý' : 'Địa chỉ mua'}</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
                                     >
@@ -123,61 +125,69 @@ constructor(props){
             );
       }
       _nextPage = () => {
-           
+
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
                   listFile = this.footer.state.listFile || []
-                  
-                  let params = new FormData()
-                  this.state.category_id.forEach(item=>{
-                        params.append('category_id[]', `${item}`)
-                  })
-                  listFile.forEach(item=>{
-                        params.append('file[]',{uri:`${item.uri}`,type:getMimeType(item.fileName),name:`${item.fileName}`},`${item.fileName}`)
-                  })
-                  params.append('title', this.state.title)
-                  params.append('description', this.state.decription)
-                  params.append('type', this.state.type)
-                  params.append('city_id', idCity)
-                  params.append('district_id', idCountry)
-            console.log(params, 'params')
-            if(this.validate()==''){
+
+            let params = new FormData()
+            this.state.category_id.forEach(item => {
+                  params.append('category_id[]', `${item}`)
+            })
+            // listFile.forEach(item => {
+            //       params.append('file[]', { uri: `${item.uri}`, type: item.type, name: `${item.fileName}` }, `${item.fileName}`)
+            // })
+            params.append('title', this.state.title)
+            params.append('description', this.state.decription)
+            params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
+            params.append('city_id', idCity)
+            params.append('district_id', idCountry)
+console.log(params,'parem')
+            if (this.validate() == '') {
                   postLiquidation(params).then(res => {
-                        console.log(res.data, 'data')
+
                         if (res.data.code == Status.SUCCESS) {
                               this.refress()
                               navigation.pop()
-                        }else if(res.data.code == Status.TOKEN_EXPIRED){
+                        } else if (res.data.code == Status.TOKEN_EXPIRED) {
                               SimpleToast.show('Phiên đăng nhập hết hạn')
                               navigation.reset(SigninScreen)
                               removeItem('token')
-                        }else if(res.data.code == Status.TOKEN_VALID){
-                              popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
-                        } else{
+                        } else if (res.data.code == Status.TOKEN_VALID) {
+                              popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+                        } else {
                               SimpleToast.show("Lỗi hệ thống")
                         }
                   }).catch(err => {
                         SimpleToast.show("Server ERROR")
-                        console.log(err, 'err')
+
                   })
-            }else{
+            } else {
                   SimpleToast.show(this.validate())
             }
-            
+
 
       }
-      validate = () =>{
-            let msg =''
-            let  {title,decription} = this.state
-            switch(''){
-                  case title: 
+      validate = () => {
+            let msg = ''
+            let idCity = this.Modal.state.idCity || '',
+                  idCountry = this.Modal.state.idDistrict || ''
+            console.log(idCity,'idddd')
+
+            let { title, decription, category_id } = this.state
+            if (title == '') {
                   return msg += 'Tên tiêu đề không được để trống';
-                  
-                  case decription: 
-                  return msg += 'Nội dung cần mua không được để trống'
-                  default: 
-                  return msg
             }
+            if (decription == '') {
+                  return msg += `Nội dung cần ${this.state.type == typeScreen.Liquidation ? 'thanh lý' : 'mua'} không được để trống`;
+            }
+            if (category_id.length == 0) {
+                  return msg += 'Vui lòng chọn danh mục';
+            }
+            if (idCity == ''&& idCountry == '') {
+                  return msg += 'Vui lòng chọn địa chỉ'
+            }
+            return msg
       }
 
 }
@@ -188,8 +198,8 @@ const styles = StyleSheet.create({
             flex: 1,
             // padding: 10,
       },
-      containerStyle:{
-            padding:10
+      containerStyle: {
+            padding: 10
       },
       btnGroup: {
             padding: 10
@@ -213,7 +223,7 @@ const styles = StyleSheet.create({
             color: '#333333',
             fontWeight: '500',
             fontSize: 15,
-            paddingLeft:10
+            paddingLeft: 10
       },
       txtNameTouch: {
             color: '#333333',
@@ -236,7 +246,7 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginTop: 3,
-            marginBottom:5,
+            marginBottom: 5,
             paddingLeft: 12,
             borderWidth: 1,
             borderColor: '#707070',
@@ -248,10 +258,10 @@ const styles = StyleSheet.create({
             transform: [{ rotate: '180deg' }]
       },
 
-     
+
       txtBtn: {
             color: '#333333',
-            width:'90%'
+            width: '90%'
       },
 
 })

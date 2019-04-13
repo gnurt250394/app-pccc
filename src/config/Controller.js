@@ -22,7 +22,8 @@ export const Status = {
     ID_NOT_FOUND:404,
     CHECKED:0,
     UNCHECKED:1,
-    USER_PERMISSION:449
+    USER_PERMISSION:449,
+    TAX_CODE_EXIST:450
 }
 export const formatNumber =(num)=> {
     return num? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."): 0;
@@ -119,3 +120,13 @@ export const getMimeType = (type) =>{
     })
     .catch(err => console.log(err));
     };
+
+    export const typeScreen ={
+        Liquidation:'liquidation',
+        postPurchase:'buy',
+        catalog:'catalog',
+        document:'document',
+        project:"project",
+        bidding:"bidding",
+        user:"user"
+    }

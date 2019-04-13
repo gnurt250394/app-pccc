@@ -8,6 +8,7 @@ import { ListCity, ListCategory, CategoryFilter } from 'config/screenNames';
 import { postLiquidation, getListLiquidation } from 'config/apis/liquidation';
 import SimpleToast from 'react-native-simple-toast';
 import { removeItem, popup, Status } from 'config/Controller';
+import { Messages } from 'config/Status';
 
 export default class Search extends React.PureComponent {
     state = {
@@ -41,7 +42,7 @@ export default class Search extends React.PureComponent {
                   navigation.reset(SigninScreen)
                   removeItem('token')
             }else if(res.data.code == Status.TOKEN_VALID){
-                  popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+                  popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
             } else if(res.data.code == Status.NO_CONTENT){
                 this.props.filter([])
             }else{

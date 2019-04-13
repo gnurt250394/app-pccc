@@ -7,6 +7,7 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen, BuyProduct } from 'config/screenNames';
 import { height } from 'config';
 import { popupCancel } from 'config';
+import { Messages } from 'config/Status';
 
 class MenuItem extends Component{
     render(){
@@ -46,7 +47,7 @@ export default class ProductShop extends Component {
             navigation.reset(SigninScreen)
             removeItem('token')
         } else if(res.data.code == Status.TOKEN_VALID){
-            popupCancel('Bạn phải đăng nhập để xử dụng tính năng này',()=>navigation.navigate(SigninScreen))
+            popupCancel(Messages.LOGIN_REQUIRE,()=>navigation.navigate(SigninScreen))
         }
     }).catch(err=>{
         console.log(err.response,'err')

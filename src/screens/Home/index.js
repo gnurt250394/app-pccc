@@ -5,7 +5,7 @@ import images from "assets/images"
 import { BaseSearch } from 'components'
 import { SearchScreen, ShopScreen, ListBiddingScreen, InfoProject, TrackingInfoScreen, VideoScreen, SigninScreen, CatalogScreen, Liquidation, ListLiquidation, ListPostPurchase } from 'config/screenNames'
 import { color, toUpperCase, width, popupOk } from 'config'
-import { getItem } from 'config/Controller';
+import { getItem, typeScreen } from 'config/Controller';
 import { popupCancel } from 'config';
 // import navigation from 'navigation/NavigationService';
 
@@ -100,7 +100,7 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
-                                onPress={this._navTo(ListLiquidation)} 
+                                onPress={this._navTo(ListLiquidation, {type: typeScreen.Liquidation})} 
                                 // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={style.box3} >
@@ -111,7 +111,7 @@ class Home extends React.Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity 
-                                onPress={this._navTo(ListPostPurchase)}
+                                onPress={this._navTo(ListLiquidation,{type: typeScreen.postPurchase})}
                                 // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')}
                                 >
                                 <View  style={[style.box3, style.mr0]} >
@@ -134,7 +134,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3}
-                                onPress={this._navTo(CatalogScreen, {type: 'catalog'})} >
+                                onPress={this._navTo(CatalogScreen, {type: typeScreen.catalog})} >
                                 <View  style={style.box3} >
                                     <Image 
                                         style={style.imgbox3}
@@ -144,7 +144,7 @@ class Home extends React.Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={style.box3} 
-                                onPress={this._navTo(CatalogScreen, {type: 'document'})} >
+                                onPress={this._navTo(CatalogScreen, {type: typeScreen.document})} >
                                 <View  style={style.box3} >
                                     <Image 
                                         style={style.imgbox3}

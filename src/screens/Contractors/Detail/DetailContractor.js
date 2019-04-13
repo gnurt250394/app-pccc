@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, FlatList, ScrollView, Animated, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, FlatList,TouchableOpacity, ScrollView, Animated, SafeAreaView } from 'react-native';
 import { Header } from 'components';
-import { fontStyle, color, Status } from 'config/Controller';
+import { fontStyle, color, Status, typeScreen } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
 import { DetailUserFollows } from 'config/apis/Project';
 import { fontStyles } from 'config/fontStyles';
+import { DetailProject, DetailBiddingScreen } from 'config/screenNames';
 const { width, height } = Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -34,15 +35,25 @@ export default class DetailContractor extends Component {
             UserObject: {}
         };
     }
-
+    nextPage=(item)=>()=>{
+       if(item.type == typeScreen.project){
+            navigation.navigate(DetailProject,{id:item.common_id})
+        }else if(item.type == typeScreen.bidding){
+            navigation.navigate(DetailBiddingScreen)
+        }else if(item.type ==typeScreen.user){
+            // navigation.navigate(DetailContractor)
+        }
+    }
     _renderItem = ({ item }) => {
         return (
             <View>
-                <View style={styles.containerList}>
+                <TouchableOpacity 
+                onPress={this.nextPage(item)}
+                style={styles.containerList}>
                     <Text style={[styles.titleList, fontStyles.Acumin_RPro_0]}>{item.message}</Text>
                     <Text style={[styles.timeList, fontStyles.Acumin_ItPro_0]}>{item.time}</Text>
 
-                </View>
+                </TouchableOpacity>
                 <View style={styles.end} />
             </View>
         )
