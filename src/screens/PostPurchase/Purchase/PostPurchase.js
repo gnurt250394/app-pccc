@@ -13,6 +13,7 @@ import { postLiquidation } from 'config/apis/liquidation';
 import { fontStyles } from 'config/fontStyles';
 import SimpleToast from 'react-native-simple-toast';
 import Modal from 'screens/Liquidation/Modal';
+import { Messages } from 'config/Status';
 moment.locale('vn')
 
 
@@ -148,7 +149,7 @@ constructor(props){
                               navigation.reset(SigninScreen)
                               removeItem('token')
                         }else if(res.data.code == Status.TOKEN_VALID){
-                              popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+                              popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
                         } else{
                               SimpleToast.show("Lỗi hệ thống")
                         }

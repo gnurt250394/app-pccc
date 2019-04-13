@@ -21,7 +21,6 @@ class Catalog extends React.Component {
         follow: this.props.navigation.getParam('follow') || false,
         datas: [],
         backup: [],
-        search:true,
         page: 1,
         threshold: 0.1,
 
@@ -94,7 +93,7 @@ class Catalog extends React.Component {
     }
 
     handleLoadmore = () => {
-        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 },this.state.search? this.getData:this._onSearch) : null
+        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
     }
 
     ListFooterComponent = () => {
@@ -328,7 +327,7 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
-        this.setState({ loading: true,search:false }, async () => {
+        this.setState({ loading: true,refreshing:true,page:1 }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
 
             let datas = await searchDocuments(this.state.type, keyword,this.state.page).then(res => {
@@ -336,8 +335,8 @@ class Catalog extends React.Component {
             }).catch(err => {
                 return []
             })
-            console.log(datas,'datas')
             this.formatData(datas)
+            console.log(datas,'search')
         })
     }
 
@@ -368,8 +367,8 @@ class Catalog extends React.Component {
 
     getData = async () => {
         let datas = [];
-        this.setState({search:true})
         console.log(this.state.type)
+        console.log('get')
         if (this.state.follow) {
             datas = await listDocumentFollows(this.state.type, this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []

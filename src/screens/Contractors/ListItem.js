@@ -5,7 +5,7 @@ import moment from 'moment';
 import { fontStyle } from 'config/Controller';
 import { fontStyles } from 'config/fontStyles';
 
-const { width } = Dimensions.get('window')
+const { width ,height} = Dimensions.get('window')
 class Item extends Component {
     render() {
         return this.props.name ? <View style={styles.Square}>
@@ -13,10 +13,8 @@ class Item extends Component {
                 style={styles.image}
                 resizeMode="contain"
             />
-            <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-                <Text style={styles.txt} >
+                <Text numberOfLines={1} style={styles.txt} >
                     {this.props.name}</Text>
-            </View>
         </View>
             : <View style={styles.Square}>
             <Image source={this.props.source}
@@ -24,7 +22,7 @@ class Item extends Component {
                 resizeMode="contain"
             />
             <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-                <Text style={styles.txt} > (Trống)</Text>
+                <Text style={styles.txt} > (Vị trí này đang trống)</Text>
             </View>
         </View>
     }
@@ -45,14 +43,14 @@ export default class ListItem extends Component {
                             style={styles.image}
                             resizeMode="contain"
                         />
-                        <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-                            <Text style={[styles.txtName,fontStyles.Acumin_bold]} >{this.props.item.name} <Image style={styles.iconNotify} source={this.props.item.status == 1 ? images.dotYellow : null} />
+                        {/* <View style={{ flexWrap: 'wrap', flexShink: 5 }}> */}
+                        <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} >{this.props.item.name} <Image style={styles.iconNotify} source={this.props.item.status == 1 ? images.dotYellow : null} />
                             </Text>
-                        </View>
+                        {/* </View> */}
                     </View>
                     <Item source={images.proEmail} name={this.props.item.email} />
                     <Item source={images.proPhone} name={this.props.item.phone} />
-                    <Item source={images.proFax} name={this.props.item.fax} />
+                    {/* <Item source={images.proFax} name={this.props.item.fax} /> */}
                     <Item source={images.proLocation} name={this.props.item.address} />
                     <Item source={images.proCompany} name={this.props.item.company} />
                     <Item source={images.proPosition} name={this.props.item.position} />
@@ -78,7 +76,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor:'#FFFFFF'
+        backgroundColor:'#FFFFFF',
+        // height:height/4
     },
     image: {
         height: 5,
@@ -105,7 +104,8 @@ const styles = StyleSheet.create({
     Square: {
         flexDirection: 'row',
         marginBottom: 10,
-        alignItems: 'flex-start'
+        alignItems:'flex-start',
+        width:'90%',
     },
     image: {
         height: 10,

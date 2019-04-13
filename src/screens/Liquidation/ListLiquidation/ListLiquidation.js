@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, Image, Dimensions, ScrollView, Activi
 import images from "assets/images"
 import moment from 'moment'
 import { getLiquidation } from 'config/apis/myShop';
-import { Status, removeItem, getItem, popup } from 'config/Controller';
+import { Status, removeItem, getItem, popup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, DetailLiquidation, Liquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
@@ -12,6 +12,7 @@ import { Header } from 'components';
 import { getListLiquidation } from 'config/apis/liquidation';
 import Search from './search';
 import { searchLiquidation } from 'config/apis/Project';
+import { Messages } from 'config/Status';
 moment.locale('vn')
 export default class ListLiquidation extends Component {
 
@@ -21,11 +22,12 @@ export default class ListLiquidation extends Component {
         page: 1,
         loading: false,
         refreshing: true,
-        keyword: ''
+        keyword: '',
+        type:this.props.navigation.getParam('type',typeScreen.postPurchase)
     }
     goDetail = (item) => () => {
 
-        navigation.navigate(DetailLiquidation, { id: item.id })
+        navigation.navigate(DetailLiquidation, { id: item.id,type:this.state.type })
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -49,7 +51,7 @@ export default class ListLiquidation extends Component {
     }
     _nextPage = async () => {
         let token = await getItem('token')
-        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation }) : popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation,type:this.state.type }) : popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
     }
     _goBack = () => {
         navigation.pop()
@@ -58,7 +60,7 @@ export default class ListLiquidation extends Component {
         this.setState({ loading: true }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
             let params = {
-                type: 1,
+                type: this.state.type == typeScreen.Liquidation? 1:0,
                 keyword: keyword,
                 page: this.state.page,
                 table:'news_products'
@@ -95,6 +97,7 @@ export default class ListLiquidation extends Component {
        
     handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
     render() {
+        const {type} = this.state
         return (
             <View style={styles.container}>
                 <Header
@@ -102,13 +105,14 @@ export default class ListLiquidation extends Component {
                     onPress={this._goBack}
                     finish={2}
                     onFinish={this._nextPage}
-                    title={'Danh sách tin thanh lý'}
+                    title={type == typeScreen.Liquidation?'Danh sách tin thanh lý':'Danh sách đăng mua'}
                 />
                 <Search
                     onSearch={this._onSearch}
                     onClear={this.getLiquidation}
                     ref={val => this.search = val}
                     filter={this.filter}
+                    type={this.state.type}
                     goBack={this._goBack}
                     keyword={this.state.keyword}
                 />
@@ -131,7 +135,7 @@ export default class ListLiquidation extends Component {
     getLiquidation = async () => {
         console.log('11111')
         let params = {
-            type: 'liquidation',
+            type: this.state.type,
             page: this.state.page
         }
         getListLiquidation(params).then(res => {
@@ -164,7 +168,7 @@ export default class ListLiquidation extends Component {
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
                 this.setState({ Thresold: 0, loading: false, refreshing: false })
-                popupCancel('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(SigninScreen))
+                popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
             this.setState({ Thresold: 0, loading: false, refreshing: false })

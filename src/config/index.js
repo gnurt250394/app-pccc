@@ -115,7 +115,8 @@ export const CodeToMessage = {
     447: "Lỗi hình ảnh",
     500: "Server Error",
     440:'Phiên đăng nhập hết hạn',
-    448:'Mật khẩu cũ không chính xác'
+    448:'Mật khẩu cũ không chính xác',
+    450:'Mã số thuế đã tồn tại'
 }
 
 export const toUpperCase = str => str.toUpperCase()

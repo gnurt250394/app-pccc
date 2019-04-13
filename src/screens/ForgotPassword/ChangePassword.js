@@ -123,7 +123,7 @@ const style = StyleSheet.create({
         justifyContent:'center',
         // bottom:'45%',
         position: 'absolute',
-        top: '20%',
+        top: '50%',
         right:'45%'
 
     }

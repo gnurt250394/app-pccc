@@ -9,13 +9,14 @@ import HeaderDetail from './HeaderDetail';
 import BodyDetail from './BodyDetail';
 import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
-import { Status, callNumber } from 'config/Controller';
+import { Status, callNumber, typeScreen } from 'config/Controller';
 
 export default class DetailLiquidation extends Component {
       state={
             id:this.props.navigation.getParam('id',''),
             Liquidation:{},
-            loading:true
+            loading:true,
+            type:this.props.navigation.getParam('type',typeScreen.postPurchase)
       }
       _nextPage=()=>{
             alert('111')
@@ -27,13 +28,13 @@ export default class DetailLiquidation extends Component {
             callNumber(Liquidation.user_phone)
       }
       render() {
-            const {Liquidation} = this.state
+            const {Liquidation,type} = this.state
             return (
                   <View style={styles.container}>
                         <Header
                               check={1}
                               onPress={this._goBack}
-                              title={'Chi tiết thanh lý'}
+                              title={type == typeScreen.Liquidation?'Chi tiết thanh lý':'Chi tiết đăng mua'}
                         />
                         {this.state.loading?
                         <ScrollView>

@@ -9,13 +9,15 @@ import { ListCity, ListCategory, CategoryFilter } from 'config/screenNames';
 import { postLiquidation, getListLiquidation } from 'config/apis/liquidation';
 import SimpleToast from 'react-native-simple-toast';
 import { removeItem, popup, Status } from 'config/Controller';
+import { Messages } from 'config/Status';
 
 export default class Search extends React.PureComponent {
     state = {
         keyword: this.props.keyword || '',
         clear: false,
-        city:{name:'Lọc theo tỉnh'},
-        category:{name:'Lọc theo danh mục'}
+        city:{name:'Chọn tỉnh'},
+        category:{name:'Chọn danh mục'},
+        type:this.props.type || ''
     }
 
     componentWillReceiveProps(props){
@@ -27,23 +29,23 @@ export default class Search extends React.PureComponent {
         this.filter(value,this.state.category)
     }
     filter =(city,category)=>{
+        console.log(this.state.type,'type')
         let params = {
             'city_id': city.id,
-            'type':'liquidation',
+            'type':this.state.type,
             'category_id': category.id,
         }
         console.log(params,'ram')
         getListLiquidation(params).then(res => {
             console.log(res.data, 'data')
             if (res.data.code == Status.SUCCESS) {
-                SimpleToast.show('locjok')
                   this.props.filter(res.data.data)
             }else if(res.data.code == Status.TOKEN_EXPIRED){
                   SimpleToast.show('Phiên đăng nhập hết hạn')
                   navigation.reset(SigninScreen)
                   removeItem('token')
             }else if(res.data.code == Status.TOKEN_VALID){
-                  popup('Bạn phải đăng nhập để sử dụng tính năng này.', null, () => navigation.navigate(SigninScreen))
+                  popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
             } else if(res.data.code == Status.NO_CONTENT){
                 this.props.filter([])
             }else{

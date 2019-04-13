@@ -8,6 +8,7 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import { popupCancel } from 'config';
 import Item from './Item';
+import { Messages } from 'config/Status';
 moment.locale('vn')
 export default class LiquidationShop extends Component {
 
@@ -144,7 +145,7 @@ export default class LiquidationShop extends Component {
                 navigation.reset(SigninScreen)
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
-                popupCancel('Bạn phải đăng nhập để xử dụng tính năng này', () => navigation.navigate(SigninScreen))
+                popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
             console.log(err.response, 'err')
