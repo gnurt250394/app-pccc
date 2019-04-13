@@ -13,7 +13,8 @@ export default class ListItem extends Component {
              style={styles.container}>
             <View style={styles.containerList}>
               <View style={styles.Header}> 
-                  <Text style={styles.txtHeader}>{this.props.item.name}  {this.props.item.change ==0&& <Image  style={styles.iconNotify} source={images.dotYellow} />}
+                  <Text style={styles.txtHeader}
+                  >{this.props.item.name}  {this.props.follow && (this.props.item.change==0&&<Image  style={styles.iconNotify} source={images.dotYellow} />)}
                    </Text>
               </View>
               {/* <View style={styles.row}>

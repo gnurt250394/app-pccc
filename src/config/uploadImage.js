@@ -4,10 +4,12 @@ export const chooseImage =  () => {
         title: 'Lựa chọn ảnh',
         takePhotoButtonTitle: "Chụp ảnh",
         chooseFromLibraryButtonTitle: "Từ thư viện",
+        maxWidth:300,
+        maxHeight:300,
         storageOptions: {
             skipBackup: true,
             path: 'images'
-        }
+        },
     };
     return new Promise((resovel, reject) => {
         ImagePicker.showImagePicker(options, (response) => {

@@ -223,11 +223,9 @@ class EditProfile extends React.Component {
     }
 
     _onUploadImage = async () => {
-        this.setState({ loading: true })
         await chooseImage().then(url => {
-            this.setState({ image: url.uri, loading: false })
+            this.setState({ image: url.uri})
         }).catch(err => {
-            this.setState({ loading: false })
 
         })
     }
