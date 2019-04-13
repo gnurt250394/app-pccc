@@ -12,7 +12,7 @@ import { actionTypes } from 'actions'
 import navigation from 'navigation/NavigationService'
 import { fontStyle } from 'config/Controller';
 import { fontStyles } from 'config/fontStyles';
-
+import OneSignal from 'react-native-onesignal';
 class Register extends React.Component {
     state = {
         allowPhone: false,
@@ -137,12 +137,12 @@ class Register extends React.Component {
                         this.setState({ allowEmail: true, loading: false })
                     }
                 }).catch(err => {
-                    console.log('err: ', err);
+                    
                     this.setState({ allowEmail: false, loading: false })
                 })
             })
         } catch (error) {
-            console.log('error: ', error);
+            
             this.setState({ allowEmail: false })
         }
 
@@ -156,7 +156,7 @@ class Register extends React.Component {
         try {
             this.setState({ loading: true }, () => {
                 checkPhoneOrEmail({ phone: phone }).then(res => {
-                    console.log('res: ', res);
+                    
                     if (res.data.code != StatusCode.Success || res.data == "") {
                         this.setState({ allowPhone: false, loading: false })
                         popupOk(CodeToMessage[res.data.code])
@@ -165,13 +165,13 @@ class Register extends React.Component {
                     }
 
                 }).catch(err => {
-                    console.log('err: ', err);
+                    
                     this.setState({ allowPhone: false, loading: false })
                 })
             })
 
         } catch (error) {
-            console.log('error: ', error);
+            
             this.setState({ allowPhone: false })
 
         }
@@ -215,7 +215,9 @@ class Register extends React.Component {
                                 email: email,
                                 password: password,
                             }).then(res => {
+                                console.log(res,'res')
                                 if (res.data.code == StatusCode.Success) {
+                                    OneSignal.sendTags({userId:res.data.data.id})
                                     AsyncStorage.setItem('token', res.data.token)
                                     this.setState({isSuccess:false})
                                     navigation.reset(HomeScreen)
@@ -225,17 +227,17 @@ class Register extends React.Component {
                                 }
 
                             }).catch(err => {
-                                console.log('err: ', err);
+                                
                                 this.setState({isSuccess:false})
                                 popupOk("Đăng ký thất bại")
                             })
                         } else {
                             this.setState({isSuccess:false})
-                            console.log('else')
+                            
                             // popupOk('Đăng ký thất bại')
                         }
                     }).catch(err=>{
-                        console.log('eer',err)
+                        
                         this.setState({isSuccess:false})
                     })
             } else if (!this.state.allowPhone) {

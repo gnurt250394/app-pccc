@@ -15,16 +15,16 @@ class Item extends Component {
             />
                 <Text numberOfLines={1} style={styles.txt} >
                     {this.props.name}</Text>
-        </View>
-            : <View style={styles.Square}>
-            <Image source={this.props.source}
-                style={styles.image}
-                resizeMode="contain"
-            />
-            <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-                <Text style={styles.txt} > (Vị trí này đang trống)</Text>
-            </View>
-        </View>
+        </View>:null
+        //     : <View style={styles.Square}>
+        //     <Image source={this.props.source}
+        //         style={styles.image}
+        //         resizeMode="contain"
+        //     />
+        //     <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
+        //         <Text style={styles.txt} > (Vị trí này đang trống)</Text>
+        //     </View>
+        // </View>
     }
 }
 export default class ListItem extends Component {
@@ -44,7 +44,8 @@ export default class ListItem extends Component {
                             resizeMode="contain"
                         />
                         {/* <View style={{ flexWrap: 'wrap', flexShink: 5 }}> */}
-                        <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} >{this.props.item.name} <Image style={styles.iconNotify} source={this.props.item.status == 1 ? images.dotYellow : null} />
+                        <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} 
+                        >{this.props.item.name} {this.props.item.change ==0&& <Image  style={styles.iconNotify} source={images.dotYellow} />}
                             </Text>
                         {/* </View> */}
                     </View>

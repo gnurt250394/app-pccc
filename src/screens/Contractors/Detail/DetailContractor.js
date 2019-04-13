@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, FlatList,TouchableOpacity, ScrollView, Animated, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, FlatList, TouchableOpacity, ScrollView, Animated, RefreshControl, SafeAreaView } from 'react-native';
 import { Header } from 'components';
-import { fontStyle, color, Status, typeScreen } from 'config/Controller';
+import { fontStyle, color, Status, typeScreen, removeItem } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
 import { DetailUserFollows } from 'config/apis/Project';
 import { fontStyles } from 'config/fontStyles';
 import { DetailProject, DetailBiddingScreen } from 'config/screenNames';
+import SimpleToast from 'react-native-simple-toast';
 const { width, height } = Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -32,24 +33,25 @@ export default class DetailContractor extends Component {
         this.state = {
             scrollY: new Animated.Value(0),
             listFolowUser: [],
-            UserObject: {}
+            UserObject: {},
+            refreshing: true
         };
     }
-    nextPage=(item)=>()=>{
-       if(item.type == typeScreen.project){
-            navigation.navigate(DetailProject,{id:item.common_id})
-        }else if(item.type == typeScreen.bidding){
+    nextPage = (item) => () => {
+        if (item.type == typeScreen.project) {
+            navigation.navigate(DetailProject, { id: item.common_id })
+        } else if (item.type == typeScreen.bidding) {
             navigation.navigate(DetailBiddingScreen)
-        }else if(item.type ==typeScreen.user){
+        } else if (item.type == typeScreen.user) {
             // navigation.navigate(DetailContractor)
         }
     }
     _renderItem = ({ item }) => {
         return (
             <View>
-                <TouchableOpacity 
-                onPress={this.nextPage(item)}
-                style={styles.containerList}>
+                <TouchableOpacity
+                    onPress={this.nextPage(item)}
+                    style={styles.containerList}>
                     <Text style={[styles.titleList, fontStyles.Acumin_RPro_0]}>{item.message}</Text>
                     <Text style={[styles.timeList, fontStyles.Acumin_ItPro_0]}>{item.time}</Text>
 
@@ -63,6 +65,16 @@ export default class DetailContractor extends Component {
     }
     _goBack = () => {
         navigation.pop()
+    }
+    _refresshing = () => {
+        return (
+            <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.getData}
+                colors={["#2166A2", 'white']}
+                tintColor="#2166A2"
+            />
+        )
     }
     render() {
         let { UserObject } = this.state
@@ -83,22 +95,22 @@ export default class DetailContractor extends Component {
         })
         return (
             <View style={styles.container}>
-                <SafeAreaView>
-                    <Animated.View
+                {/* <SafeAreaView> */}
+                    {/* <Animated.View
                         style={[styles.header, {
                             height: headerHeight,
                             zIndex
                         }]}
                     >
-                       
 
-                    </Animated.View>
+
+                    </Animated.View> */}
                     <Header
-                            check={1}
-                            // style={styles.header}
-                            onPress={this._goBack}
-                            title={"Thông tin nhà thầu"}
-                        />
+                        check={1}
+                        style={styles.header}
+                        onPress={this._goBack}
+                        title={"Thông tin nhà thầu"}
+                    />
                     {/* <Animated.View
         style={[styles.header,{
             height:headerHeight,
@@ -113,32 +125,34 @@ export default class DetailContractor extends Component {
         />
 
         </Animated.View> */}
-                </SafeAreaView>
-                <ScrollView
+                {/* </SafeAreaView> */}
+                {/* <ScrollView
+                    refreshControl={this._refresshing()}
                     style={{ flex: 1 }}
                     scrollEventThrottle={15}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
                     )}
-                >
-                    <Animated.View style={[styles.containerPosition, { marginTop }]}>
+                > */}
+                    <View style={[styles.containerPosition]}>
                         <Text style={[styles.txtBold, fontStyles.Acumin_bold]}>{UserObject.name}</Text>
                         <Item source={images.proEmail} name={UserObject.email} />
                         <Item source={images.proPhone} name={UserObject.phone} />
                         <Item source={images.proLocation} name={UserObject.address} />
                         <Item source={images.proCompany} name={UserObject.company} />
 
-                    </Animated.View>
+                    </View>
                     <View style={styles.containerFooter}>
                         <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
                         <FlatList
                             data={UserObject.content}
+                            refreshControl={this._refresshing()}
                             keyboardShouldPersistTaps="always"
                             renderItem={this._renderItem}
                             keyExtractor={this._keyExtractor}
                         />
                     </View>
-                </ScrollView>
+                {/* </ScrollView> */}
             </View>
         );
     }
@@ -149,12 +163,18 @@ export default class DetailContractor extends Component {
                 console.log(res.data, 'ddd')
                 if (res.data.code == Status.SUCCESS) {
                     this.setState({
-                        UserObject: res.data.data
+                        UserObject: res.data.data,
+                        refreshing: false
                     })
                 } else if (res.data.code == Status.TOKEN_EXPIRED) {
-
+                    SimpleToast.show('Phiên đăng nhập hết hạn')
+                    navigation.navigate(SigninScreen)
+                    this.setState({refreshing:false})
+                    removeItem('token')
                 }
-            }).catch(err => console.log(err.response, 'eeerrr'))
+            }).catch(err => {
+                this.setState({refreshing:false})
+                console.log(err.response, 'eeerrr')})
         }
     }
     componentDidMount = () => {
@@ -166,7 +186,8 @@ export default class DetailContractor extends Component {
 const styles = StyleSheet.create({
     header: {
         alignItems: 'flex-start',
-        // paddingTop:10,
+        height:HEADER_MAX_HEGHT,
+        paddingTop:30,
         position: 'absolute',
         backgroundColor: color,
         top: 0,
@@ -177,6 +198,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 15
     },
+
     container: {
         flex: 1
     },
@@ -210,7 +232,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignSelf: 'center',
         padding: 15,
-        flex: 1,
+        marginTop:HEADER_MAX_HEGHT -70,
+        // flex: 1,
         backgroundColor: '#FFFFFF',
     },
     txtBold: {

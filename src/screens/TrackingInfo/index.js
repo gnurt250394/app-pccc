@@ -48,7 +48,7 @@ class TrackingInfo extends React.Component {
                         label={'Thông tin dự án'}
                         />
                         <TouchableOpacityCustom
-                        count={1}
+                        count={0}
                         onPress={this._navTo(ListBiddingScreen, {follow: true})}
                         source={images.trackingDT}
                         label={'Thông tin đấu thầu'}
@@ -57,7 +57,7 @@ class TrackingInfo extends React.Component {
                         
                         <View style={style.row}>
                         <TouchableOpacityCustom
-                        count={1}
+                        count={0}
                          // onPress={this._navTo(ListBiddingScreen)} 
                          onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingSP}

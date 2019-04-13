@@ -208,9 +208,11 @@ const style = StyleSheet.create({
         marginRight: 2, position: 'relative'},
     imgbox6: {
         width: '100%', 
+        marginTop:1,
         alignSelf: 'center',
         resizeMode: 'stretch',
-        height: '100%'},
+        height: '99%'
+    },
     box4: {
         width: width * (1/3), 
         height: '100%', 

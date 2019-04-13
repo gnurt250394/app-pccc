@@ -10,6 +10,7 @@ import { Btn, BaseInput } from 'components'
 import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
 import  { actionTypes } from 'actions'
+import OneSignal from 'react-native-onesignal';
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
 import  { accountKit, getCurrentAccount } from 'config/accountKit'
@@ -135,9 +136,18 @@ class Signin extends React.Component {
         this.props.navigation.navigate(HomeScreen)
     }
 
+    _sendTagOneSignal =(id)=>{
+        if(id){
+            OneSignal.sendTags({
+                userId: `${id}`
+              })
+              
+        }
+        console.log(id,'id')
+        
+    }
     _onFacebookLogin = async () => {
         try {
-            this.setState({loading: true})
             const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(user => {
                 return user
             }).catch(err =>{
@@ -158,13 +168,15 @@ class Signin extends React.Component {
                     this.setState({loading: false})
                     // popupOk("Đăng nhập thất bại");
                 }else{
+            this.setState({loading: true})
+
                     let body = {
                         name: user.name,
                         token: user.id,
                         login_type: LoginType.facebook
                     } 
                     loginSocial(body).then(res => {
-                        console.log('res: fb', res);
+                        
                         if(res.data.code == StatusCode.Success){
                             this._onSwitchToHomePage(res, LoginType.facebook);
                         }else{
@@ -220,7 +232,7 @@ class Signin extends React.Component {
                     }).then(res => {
                         if(res.data.code == StatusCode.Success){
                             this.setState({loading: false})
-                            console.log(res.data,'gg')
+                            
                             this._onSwitchToHomePage(res);
                         }else{
                             this.setState({loading: false})
@@ -228,13 +240,13 @@ class Signin extends React.Component {
                         }
                     }).catch(err => {
                         this.setState({loading: false})
-                        console.log(err,'eeee')
+                        
                         popupOk("Đăng nhập thất bại");
                     })
                     }).catch(err=>{
                         this.setState({loading:false})
                     })
-                console.log(data,'data')
+                
                
                 
             })
@@ -245,19 +257,19 @@ class Signin extends React.Component {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 // user cancelled the login flow
                 this.setState({loading: false})
-                console.log(error,'SIGN_IN_CANCELLED')
+                
               } else if (error.code === statusCodes.IN_PROGRESS) {
                 // operation (f.e. sign in) is in progress already
                 this.setState({loading: false})
-                console.log(error,'IN_PROGRESS')
+                
               } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
                 // play services not available or outdated
                 this.setState({loading: false})
-                console.log(error,'PLAY_SERVICES_NOT_AVAILABLE')
+                
               } else {
                 // some other error happened
                 this.setState({loading: false})
-                console.log(error,'else')
+                
               }
             
         }
@@ -278,6 +290,9 @@ class Signin extends React.Component {
                 password: password
             }).then(res => {
                 if(res.data.code == StatusCode.Success){
+                    console.log(res.data,'data')
+                    this._sendTagOneSignal(res.data.data.id)
+                    this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token});
                     navigation.reset(HomeScreen)
                     AsyncStorage.setItem('token',res.data.token)
                     this.setState({loading: false})
@@ -297,10 +312,11 @@ class Signin extends React.Component {
     _onForgotPassword = async () => {
         this.setState({loading: true}, async () => {
             let phone = await getCurrentAccount();
-            
+            console.log(phone,'phone')
             if(phone){
                 // call api check phone
                 checkPhoneOrEmail({phone: phone}).then(res => {
+                    console.log(res,'res')
                     this.setState({loading: false})
                     if(res.data != "" && res.data.code == StatusCode.PhoneExists ){
                         this.props.navigation.navigate(ForgotPasswordScreen, {token: res.data.token})
@@ -327,20 +343,21 @@ class Signin extends React.Component {
         let userToken = data.token;
         if(!phone || phone == ""){
             // this.props.navigation.navigate(UpdateProfileScreen, {user: user, type: type, token: data.token});
-            this._popupUpdatePhone(userToken, phone)
+            this._popupUpdatePhone(userToken,user)
 
         }else{
             // navigation.reset(HomeScreen);
             this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
             AsyncStorage.setItem('token',userToken)
-
+            this._sendTagOneSignal(user.id)
+            console.log(user,'user1')
             this.props.navigation.navigate(HomeScreen)
             
         }
         
     }
 
-    _popupUpdatePhone = (userToken) => {
+    _popupUpdatePhone = (userToken,user) => {
         Alert.alert(
             'Thông báo',
             'Vui lòng cập nhật số điện thoại',
@@ -359,11 +376,11 @@ class Signin extends React.Component {
                         // }else{
 ``
                             // call api update phone
-                            console.log(userToken,'ttooott')
                             updateUser({phone: phone}, userToken).then(res => {
-                                console.log(res.data,'dddd')
+                                
                                 if(res.data.code == StatusCode.Success){
                                     AsyncStorage.setItem('token', res.data.token)
+                                    this._sendTagOneSignal(user.id)
                                     navigation.reset(HomeScreen)
                                 }else{
                                 this.setState({loading: false})
@@ -373,20 +390,20 @@ class Signin extends React.Component {
 
                                 this.setState({loading: false})
                                 popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                                console.log('err')
+                                
                             })
                         // }
                     // }).catch(err => {
                     //     this.setState({loading: false})
                     //     popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                    //     console.log('err2')
+                    //     
                     // })
                     
                 }else{
                     this.setState({loading: false})
-                    console.log(phone,'ppppp')
+                    
                     // popupOk("Không thể cập nhật số điện thoại, vui lòng thử lại sau.")
-                    console.log('err3')
+                    
                 }
                 
               }},

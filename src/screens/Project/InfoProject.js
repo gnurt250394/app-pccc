@@ -69,23 +69,29 @@ class InfoProject extends Component {
         this.setState({ [key]: val })
     }
     _onSearch = () => {
-        this.setState({ refreshing: true })
+        
         let keyword = this.search ? this.search.getValue() : ''
-        searchProject(keyword, this.state.page).then(res => {
-            console.log(res.data,'aaa')
-            if (res.data.code == Status.SUCCESS) {
-
-                if (this.state.page == 1) {
-                    this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
-                } else {
-                    this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+        if(keyword == ''){
+            return null
+        }else{
+            this.setState({ refreshing: true })
+            searchProject(keyword, this.state.page).then(res => {
+                
+                if (res.data.code == Status.SUCCESS) {
+    
+                    if (this.state.page == 1) {
+                        this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
+                    } else {
+                        this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                    }
+                } else if (res.data.code == Status.NO_CONTENT) {
+                    this.setState({ listProject: [],refreshing:false, loading: false, Threshold: 0 })
                 }
-            } else if (res.data.code == Status.NO_CONTENT) {
-                this.setState({ listProject: [],refreshing:false, loading: false, Threshold: 0 })
-            }
-        }).catch(err => {
-
-        })
+            }).catch(err => {
+    
+            })
+        }
+        
     }
     _ListEmpty = () => {
         return !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
@@ -103,7 +109,7 @@ class InfoProject extends Component {
                     :
                     <BaseSearch
                         onSearch={this._onSearch}
-                        onClear={this.getData}
+                        onClear={this.refressData}
                         ref={val => this.search = val}
                         goBack={this._goBack}
                         keyword={this.state.keyword} />}
@@ -130,10 +136,50 @@ class InfoProject extends Component {
             </View>
         );
     }
-    getData = async () => {
+    refressData = async () => {
+        
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
+        this.setState({refreshing:true})
+        if (this.state.follow) {
+            let params = toParams({
+                page: 1,
+                type: 'project',
+            })
+            listProject = await listFollows(params).then(res => {
+                return res.data.code == Status.SUCCESS ? res.data.data : []
+            }).catch(err => {
+                return []
+            })
+        } else {
+            listProject = await getNewProject({ page: this.state.page }).then(res => {
+                return res.data.code == Status.SUCCESS ? res.data.data : []
+            }).catch(err => {
+                return []
+            })
+
+
+        }
+        if (listProject.length == 0) {
+            this.setState({ loading: false, refreshing: false, Threshold: 0 })
+
+        } else {
+            if (this.state.page == 1) {
+
+                this.setState({ listProject, loading: true, refreshing: false, Threshold: 0.1 })
+            } else {
+                this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
+            }
+        }
+
+    }
+    getData = async () => {
+        
+        // this.search.onClear()
+        // check thêm api follow khi chuyển từ màn tracking qua
+        let listProject = [];
+        
         if (this.state.follow) {
             let params = toParams({
                 page: this.state.page,
@@ -153,7 +199,8 @@ class InfoProject extends Component {
 
 
         }
-        console.log(listProject,'sss')
+        console.log(listProject,'list')
+        
         if (listProject.length == 0) {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
 
