@@ -5,7 +5,7 @@ import { color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisC
 import { BaseSearch } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
-import { getItem, Status, getMimeType } from 'config/Controller';
+import { getItem, Status, getMimeType, downFile } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
 import Toast from 'react-native-simple-toast';
@@ -272,15 +272,8 @@ class Catalog extends React.Component {
     }
 
     onDownload = link => () => {
-        Linking.canOpenURL(link)
-    .then((supported) => {
-      if (!supported) {
-        console.log("Can't handle url: " + link);
-      } else {
-         Linking.openURL(link);
-      }
-    })
-    .catch((err) => console.log('An error occurred', err.response));
+        downFile(link)
+        
         // let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
         // let filename = /[^\/]*$/.exec(link)[0]
         // // let dirs = RNFetchBlob.fs.dirs

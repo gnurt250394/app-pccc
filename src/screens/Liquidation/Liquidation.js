@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
-import { getLiquidation, getOtherData } from 'config/apis/myShop';
 import { Status, removeItem, getMimeType, popup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
-import { popupCancel } from 'config';
 import { Header } from 'components';
+import { connect } from 'react-redux'
 import Item from './Item';
 import { Btn } from 'components';
 import FooterLiquidation from './FooterLiquidation';
@@ -21,7 +20,7 @@ import { Messages } from 'config/Status';
 moment.locale('vn')
 
 
-export default class Liquidation extends Component {
+class Liquidation extends Component {
       constructor(props) {
             super(props)
             this.state = {
@@ -36,11 +35,15 @@ export default class Liquidation extends Component {
                   value: '',
                   listCategory: [],
                   name: 'Chọn danh mục',
+                  address: this.props.users.address ,
                   type: this.props.navigation.getParam('type', typeScreen.postPurchase)
             }
             this.refress = this.props.navigation.getParam('refress', '')
       }
-
+      componentDidMount() {
+        
+      }
+      
 
       _showModal = () => {
             this.setState({ isVisible: true })
@@ -129,14 +132,16 @@ export default class Liquidation extends Component {
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
                   listFile = this.footer.state.listFile || []
-
+                  
             let params = new FormData()
             this.state.category_id.forEach(item => {
                   params.append('category_id[]', `${item}`)
             })
-            // listFile.forEach(item => {
-            //       params.append('file[]', { uri: `${item.uri}`, type: item.type, name: `${item.fileName}` }, `${item.fileName}`)
-            // })
+            let date = new Date()
+            listFile.forEach(item => {
+                  const fileName = date.getTime()  + '.' + /[^\.]*$/.exec(item.fileName)[0]
+                  params.append('file[]', { uri: item.uri, type: item.type,name: fileName }, fileName)
+            })
             params.append('title', this.state.title)
             params.append('description', this.state.decription)
             params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
@@ -265,3 +270,9 @@ const styles = StyleSheet.create({
       },
 
 })
+const mapStateToProps = (state) =>{
+      return{
+            users: state.users && state.users.data ? state.users.data : {},
+      }
+}
+export default connect(mapStateToProps)(Liquidation)

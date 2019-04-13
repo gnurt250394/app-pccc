@@ -3,10 +3,10 @@ import { View, Text, FlatList, ActivityIndicator,StyleSheet } from 'react-native
 import { connect } from 'react-redux'
 import ItemList from './ItemList';
 import { getListNotifi, ReviewNotifi } from 'config/apis/Notifi';
-import { Status, removeItem, popup, getItem } from 'config/Controller';
+import { Status, removeItem, popup, getItem, typeScreen } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
 import { actionTypes } from 'actions'
-import { SigninScreen, DetailProject, DetailBiddingScreen } from 'config/screenNames';
+import { SigninScreen, DetailProject, DetailBiddingScreen, DetailContractor } from 'config/screenNames';
 import navigation from 'navigation/NavigationService';
 class Folow extends Component {
     constructor(props) {
@@ -20,10 +20,12 @@ class Folow extends Component {
         };
     }
     _checkNavigate=(item)=>{
-        if(item.type == "project"){
+        if(item.type == typeScreen.project){
             navigation.navigate(DetailProject,{id:item.common_id})
-        }else if(item.type == "bidding"){
+        }else if(item.type == typeScreen.bidding){
             navigation.navigate(DetailBiddingScreen,{id:item.common_id})
+        }else if(item.type == typeScreen.user){
+            navigation.navigate(DetailContractor,{id:item.common_id})
         }
     }
     _reViewNotifi = (item) => () => {

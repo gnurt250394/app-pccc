@@ -13,6 +13,7 @@ import { getItem } from 'config/Controller';
 import { popupCancel } from 'config';
 import { popupOk } from 'config';
 import { fontStyles } from 'config/fontStyles';
+import OneSignal from 'react-native-onesignal';
 
 class Profile extends React.Component {
     state = {
@@ -153,6 +154,7 @@ class Profile extends React.Component {
     _logout = () => {
         AsyncStorage.removeItem('token')
         navigation.reset(SigninScreen)
+        OneSignal.sendTags({userId:''})
         this.props.dispatch({ type: actionTypes.USER_LOGOUT })
     }
 

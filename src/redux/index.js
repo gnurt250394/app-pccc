@@ -3,8 +3,7 @@ import { logger } from './middleware'
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import reactotron from 'config/debug';
-import countNotifi from './reducers/countNotification';
-const rootReducer = combineReducers({users: users,countNotifi:countNotifi})
+const rootReducer = combineReducers({users: users})
 const middleware = [ thunk, logger ]
 let store = createStore(rootReducer, applyMiddleware(...middleware))
 

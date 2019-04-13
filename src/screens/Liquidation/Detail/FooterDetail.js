@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet,FlatList,Dimensions } from 'react-native'
+import { Text, View, Image, StyleSheet,FlatList,Dimensions,TouchableOpacity } from 'react-native'
 import { fontStyles } from 'config/fontStyles';
 import images from 'assets/images'
+import { downFile } from 'config/Controller';
 const {width,height} = Dimensions.get('window')
 export default class FooterDetail extends Component {
       showImage = link => {
@@ -46,12 +47,17 @@ export default class FooterDetail extends Component {
                 style={styles.imageList}
                 source={source} />
         }
+        _downFile = (item)=>() =>{
+            downFile(item)
+        }
       _renderItem = ({ item, index }) => {
             
             return(
-                  <View style={styles.containerList}>
+                  <TouchableOpacity
+                  onPress={this._downFile(item)}
+                  style={styles.containerList}>
                   {this.showImage(item)}
-                  </View>
+                  </TouchableOpacity>
             )
      
          }

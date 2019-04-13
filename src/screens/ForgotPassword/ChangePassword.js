@@ -88,7 +88,10 @@ class ChangePassword extends React.Component {
         } else if (password != rePassword) {
             popupOk('Mật khẩu nhập lại không đúng')
             this.setState({ loading: false })
-        } else {
+        } else if(oldPassword == rePassword && oldPassword == password){
+            popupOk('Mật khẩu cũ và mật khẩu mới phải khác nhau')
+            this.setState({ loading: false })
+        } else{
             let params = {
                 old_password: oldPassword,
                 new_password: password

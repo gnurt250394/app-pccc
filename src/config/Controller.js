@@ -2,7 +2,14 @@ import {AsyncStorage,Alert, Platform,Linking} from 'react-native'
 import navigation from 'navigation/NavigationService';
 
 export const getItem= async(token)=>{
-    let e = await AsyncStorage.getItem(token)
+    let e =''
+    try {
+       e  = await AsyncStorage.getItem(token)
+        
+      } catch (error) {
+        // Error retrieving data
+      }
+    
     return e
 }
 export const saveItem= (token)=>{
@@ -129,4 +136,18 @@ export const getMimeType = (type) =>{
         project:"project",
         bidding:"bidding",
         user:"user"
+    }
+
+    export const downFile = (link) =>{
+        Linking.canOpenURL(link)
+    .then((supported) => {
+      if (!supported) {
+        console.log("Can't handle url: " + link);
+      } else {
+         Linking.openURL(link).then(res=>{
+             console.log(supported,'res')
+         });
+      }
+    })
+    .catch((err) => console.log('An error occurred', err.response));
     }

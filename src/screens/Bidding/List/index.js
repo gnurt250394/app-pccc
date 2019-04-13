@@ -114,7 +114,7 @@ class ListBidding extends React.Component {
         return <TouchableOpacity 
                     onPress={this._navTo(DetailBiddingScreen, {id: item.id,follow:this.state.follow})}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
-                <Text style={style.name}>{item.name || item.name_bidding}</Text>
+                <Text style={style.name}>{item.name || item.name_bidding}  {item.change ==0&& <Image  style={style.iconNotify} source={images.dotYellow} />}</Text>
                 {/* <View style={[style.row, style.calender]}>
                     <Image source={images.calender} style={style.iconCalender}/>
                     <Text style={style.time}>{this._formatTimeAction(item.time_action || item.time)}</Text>
@@ -205,6 +205,12 @@ const style = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
+    },
+    iconNotify: {
+        width: 12, 
+        height: 12, 
+        resizeMode: 'contain',
+        marginLeft:15
     },
     btw0: {
         borderBottomWidth: 0,
