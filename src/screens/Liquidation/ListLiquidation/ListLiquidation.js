@@ -23,11 +23,11 @@ export default class ListLiquidation extends Component {
         loading: false,
         refreshing: true,
         keyword: '',
-        type:this.props.navigation.getParam('type',typeScreen.postPurchase)
+        type: this.props.navigation.getParam('type', typeScreen.postPurchase)
     }
     goDetail = (item) => () => {
 
-        navigation.navigate(DetailLiquidation, { id: item.id,type:this.state.type })
+        navigation.navigate(DetailLiquidation, { id: item.id, type: this.state.type })
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -51,53 +51,59 @@ export default class ListLiquidation extends Component {
     }
     _nextPage = async () => {
         let token = await getItem('token')
-        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation,type:this.state.type }) : popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type }) : popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
     }
     _goBack = () => {
         navigation.pop()
     }
     _onSearch = () => {
-        this.setState({ loading: true }, async () => {
-            let keyword = this.search ? this.search.getValue() : ''
-            let params = {
-                type: this.state.type == typeScreen.Liquidation? 1:0,
-                keyword: keyword,
-                page: this.state.page,
-                table:'news_products'
-            }
-            console.log(params,'ssss')
-            let datas = await searchLiquidation(params).then(res => {
-                return res.data.code == Status.SUCCESS ? res.data.data : []
-            }).catch(err => {
-                return err.response
-            })
-            console.log(datas, 'dddd')
-            if (datas.length == 0) {
-                this.setState({
-                    loading: false,
-                    refreshing: false,
-                    threshold: 0,
-                    listLiqiudation:[]
-                })
-            } else {
+        let keyword = this.search ? this.search.getValue() : ''
+        if (keyword == '') {
+            return null
+        } else {
+            this.setState({ loading: true }, async () => {
 
-                if (this.state.page == 1) {
-                    this.setState({ listLiqiudation: datas, loading: true, refreshing: false, threshold: 0.1 })
-                } else {
-                    this.setState({ datas: [...this.state.listLiqiudation, ...datas], refreshing: false })
+                let params = {
+                    type: this.state.type == typeScreen.Liquidation ? 1 : 0,
+                    keyword: keyword,
+                    page: this.state.page,
+                    table: 'news_products'
                 }
-            }
-        })
+                
+                let datas = await searchLiquidation(params).then(res => {
+                    return res.data.code == Status.SUCCESS ? res.data.data : []
+                }).catch(err => {
+                    return err.response
+                })
+                
+                if (datas.length == 0) {
+                    this.setState({
+                        loading: false,
+                        refreshing: false,
+                        threshold: 0,
+                        listLiqiudation: []
+                    })
+                } else {
+
+                    if (this.state.page == 1) {
+                        this.setState({ listLiqiudation: datas, loading: true, refreshing: false, threshold: 0.1 })
+                    } else {
+                        this.setState({ datas: [...this.state.listLiqiudation, ...datas], refreshing: false })
+                    }
+                }
+            })
+        }
+
     }
     filter = (value) => {
-        console.log(value, 'value')
+        
         this.setState({ listLiqiudation: value })
     }
-    _listEmpty =()=>  !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
-       
+    _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
+
     handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
     render() {
-        const {type} = this.state
+        const { type } = this.state
         return (
             <View style={styles.container}>
                 <Header
@@ -105,11 +111,11 @@ export default class ListLiquidation extends Component {
                     onPress={this._goBack}
                     finish={2}
                     onFinish={this._nextPage}
-                    title={type == typeScreen.Liquidation?'Danh sách tin thanh lý':'Danh sách đăng mua'}
+                    title={type == typeScreen.Liquidation ? 'Danh sách tin thanh lý' : 'Danh sách đăng mua'}
                 />
                 <Search
                     onSearch={this._onSearch}
-                    onClear={this.getLiquidation}
+                    onClear={this.refressData}
                     ref={val => this.search = val}
                     filter={this.filter}
                     type={this.state.type}
@@ -132,14 +138,9 @@ export default class ListLiquidation extends Component {
             </View>
         );
     }
-    getLiquidation = async () => {
-        console.log('11111')
-        let params = {
-            type: this.state.type,
-            page: this.state.page
-        }
+    getData = (params) => {
         getListLiquidation(params).then(res => {
-            console.log(res.data, 'aaa')
+            
             if (res.data.code == Status.SUCCESS) {
                 if (this.state.page == 1) {
                     this.setState({
@@ -174,6 +175,20 @@ export default class ListLiquidation extends Component {
             this.setState({ Thresold: 0, loading: false, refreshing: false })
 
         })
+    }
+    refressData = () => {
+        let params = {
+            type: this.state.type,
+            page: 1
+        }
+        this.getData(params)
+    }
+    getLiquidation = async () => {
+        let params = {
+            type: this.state.type,
+            page: this.state.page
+        }
+        this.getData(params)
     }
     componentDidMount = () => {
         this.getLiquidation()

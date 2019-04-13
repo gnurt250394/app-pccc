@@ -21,7 +21,7 @@ export default class FooterLiquidation extends Component {
             console.log(res,'res')
             let dataName = []
             if(res){
-                dataName.push({fileName:res.fileName,uri:res.uri,type:res.type})
+                dataName.push(res)
                 this.setState({listFile:[...this.state.listFile,...dataName]})
             }
           });

@@ -29,15 +29,15 @@ export default class Search extends React.PureComponent {
         this.filter(value,this.state.category)
     }
     filter =(city,category)=>{
-        console.log(this.state.type,'type')
+        
         let params = {
             'city_id': city.id,
             'type':this.state.type,
             'category_id': category.id,
         }
-        console.log(params,'ram')
+        
         getListLiquidation(params).then(res => {
-            console.log(res.data, 'data')
+            
             if (res.data.code == Status.SUCCESS) {
                   this.props.filter(res.data.data)
             }else if(res.data.code == Status.TOKEN_EXPIRED){
@@ -53,7 +53,7 @@ export default class Search extends React.PureComponent {
             }
       }).catch(err => {
             SimpleToast.show("Server ERROR")
-            console.log(err, 'err')
+            
       })
     }
     _nextPageCity=()=>{
@@ -68,7 +68,7 @@ export default class Search extends React.PureComponent {
     }
     render(){
         return (
-            <View style={[style.head,{height:this.props.checkFilter == 1?'8%':'15%',}]}>
+            <View style={[style.head,]}>
                    
                 
 
@@ -188,6 +188,7 @@ const style = StyleSheet.create({
         resizeMode:'contain',
     },
     txtBtn:{
+        color:'#333333',
         textAlign:'center',
         width:'80%'
     }

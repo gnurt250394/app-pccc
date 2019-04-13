@@ -81,18 +81,19 @@ const style = StyleSheet.create({
     },
     view:{
         // flex:1/9,
-        paddingRight:7,
+        // paddingRight:7,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        width:'18%',
+        height:'90%'
     },
     txtFinish:{
         color:"#FFFFFF",
-        marginTop:2
+        fontSize:16
     },
     btnAdd: {
-        height: 25,
-        width: 25,
-        marginLeft:10,
+        height: '90%',
+        width: '13%',
         alignItems: 'center',
         justifyContent: 'center',
     },
