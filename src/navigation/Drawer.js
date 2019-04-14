@@ -6,7 +6,7 @@ import navigation from './NavigationService'
 import { toUpperCase, color } from 'config';
 import { connect } from 'react-redux'
 import  * as ScreenName from 'config/screenNames'
-import { actionTypes } from 'actions'
+import { logoutAction } from 'reduxs/actions/actionCreator';
 class DrawerItem extends React.Component {
     state = {
         showMore: this.props.showMore || undefined
@@ -98,7 +98,7 @@ class Drawer extends Component {
                     {   this.props.user && this.props.user.name 
                         ?  <DrawerItem 
                             onPress={() => {
-                                this.props.dispatch({type: actionTypes.USER_LOGOUT})
+                                this.props.logout()
                                 this.props.navigation.navigate(ScreenName.SigninScreen)}
                             }
                             title='Đăng xuất' 
@@ -118,7 +118,14 @@ const mapStateToProps = (state) =>{
     }
 }
 
-export default connect(mapStateToProps)(Drawer)
+
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    logout:()=>dispatch(logoutAction())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Drawer)
 
 const styles = StyleSheet.create({
     container:{

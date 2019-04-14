@@ -4,7 +4,7 @@ import React from 'react'
 import App from './src/navigation';
 import { Provider } from 'react-redux'
 import { NetInfo, Modal, StyleSheet, View, Text, Dimensions, Image } from 'react-native'
-import store from './src/redux'
+import store from './src/reduxs'
 import NavigationService from './src/navigation/NavigationService';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 import NoInternetScreen from 'components/CheckNetWorking';

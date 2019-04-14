@@ -5,9 +5,9 @@ import ItemList from './ItemList';
 import { getListNotifi, ReviewNotifi } from 'config/apis/Notifi';
 import { Status, removeItem, popup, getItem, typeScreen } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
-import { actionTypes } from 'actions'
 import { SigninScreen, DetailProject, DetailBiddingScreen, DetailContractor } from 'config/screenNames';
 import navigation from 'navigation/NavigationService';
+import { logoutAction, countNotificationAction } from 'reduxs/actions/actionCreator';
 class Folow extends Component {
     constructor(props) {
         super(props);
@@ -28,34 +28,33 @@ class Folow extends Component {
             navigation.navigate(DetailContractor,{id:item.common_id})
         }
     }
-    _reViewNotifi = (item) => () => {
+    _reViewNotifi = (item,index) => () => {
         ReviewNotifi(item.id).then(res => {
-            console.log(res.data, 'hhh')
-            console.log(this.state.listFolow, 'l')
+            
+            
             if (res.data.code == Status.SUCCESS) {
                 this._checkNavigate(item)
-                let list = this.state.listFolow
-                list.forEach(e => {
-                    if (e.id == item.id) {
-                        e.status = 1
-                    }
-                })
-                this.setState({ listFolow: list })
+                let listFolow = [...this.state.listFolow]
+                listFolow[index].status = 1
+                // let listChange = listFolow.filter(item=>item.status == 0)
+                
+                //     this.props.countNotifi(listChange.length)
+                this.setState({ listFolow })
 
             } else if (res.data.code == Status.ID_NOT_FOUND) {
                 SimpleToast.show("Thông báo không tồn tại")
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
                 removeItem('token')
                 navigation.reset(SigninScreen)
-                this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+                this.props.logout()
             }
-        }).catch(err => { console.log(err, 'err') })
+        }).catch(err => { })
     }
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item ,index}) => {
         return (
             <ItemList
                 item={item}
-                onPress={this._reViewNotifi(item)}
+                onPress={this._reViewNotifi(item,index)}
             />
         )
     }
@@ -93,7 +92,7 @@ class Folow extends Component {
     }
     getData = () => {
         getListNotifi({ page: this.state.page, type: '' }).then(res => {
-            console.log(res.data, 'folow')
+            
             if (res.data.code == Status.SUCCESS) {
                 if(this.state.page ==1 ){
                     this.setState({ listFolow: res.data.data,loading:false,refreshing:true,Thresold:0.1 })
@@ -112,7 +111,7 @@ class Folow extends Component {
                 navigation.reset(SigninScreen)
                 SimpleToast.show('Phiên đăng nhập hết hạn')
                 removeItem('token')
-                this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+                this.props.logout()
             } else {
                 SimpleToast.show("Lỗi hệ thống")
                 this.setState({
@@ -124,10 +123,14 @@ class Folow extends Component {
         })
     }
     componentDidMount = async () => {
-        let token = await getItem('token')
-        !token ? this.setState({ refresing: false, Thresold: 0,loading:false }) : this.getData()
+        this._willFocus = this.props.navigation.addListener('willFocus', () => {
+            this.getData()
+        }
+        )
     };
-
+    componentWillUnmount() {
+        this._willFocus.remove()
+    }
 }
 
 const styles= StyleSheet.create({
@@ -142,5 +145,15 @@ const styles= StyleSheet.create({
           backgroundColor:'#CCCCCC'
       }
 })
+const mapStateToProps = ()=>{
+    return{
 
-export default connect()(Folow)
+    }
+}
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      logout:()=>dispatch(logoutAction()),
+      countNotifi:(count)=>dispatch(countNotificationAction(count))
+    }
+  }
+export default connect(mapStateToProps,mapDispatchToProps)(Folow)

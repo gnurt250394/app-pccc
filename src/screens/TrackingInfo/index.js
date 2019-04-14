@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TouchableWithoutFeedback, TextInput, ImageBackground, Dimensions } from 'react-native'
+import { AsyncStorage, View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Keyboard, TextInput, ImageBackground, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import {  color, width, popupOk} from 'config'
 import { Header } from 'components'
@@ -13,7 +13,8 @@ class TrackingInfo extends React.Component {
     }
     // set status bar
     async componentDidMount() {
-        
+       let key = await AsyncStorage.getAllKeys()
+       console.log(key,'key')
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -42,13 +43,13 @@ class TrackingInfo extends React.Component {
                <View style={style.content}>
                         <View style={style.row}>
                         <TouchableOpacityCustom
-                        count={1}
+                        count={this.props.change.changeProject}
                         onPress={this._navTo(InfoProject, {follow: true})}
                         source={images.trackingDA}
                         label={'Thông tin dự án'}
                         />
                         <TouchableOpacityCustom
-                        count={0}
+                        count={this.props.change.changeBidding}
                         onPress={this._navTo(ListBiddingScreen, {follow: true})}
                         source={images.trackingDT}
                         label={'Thông tin đấu thầu'}
@@ -57,14 +58,14 @@ class TrackingInfo extends React.Component {
                         
                         <View style={style.row}>
                         <TouchableOpacityCustom
-                        count={0}
+                        count={this.props.change.changeProduct}
                          // onPress={this._navTo(ListBiddingScreen)} 
                          onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingSP}
                         label={'Sản phẩm'}
                         />
                         <TouchableOpacityCustom
-                        count={1}
+                        count={this.props.change.changeContractor}
                        onPress={this._navTo(FolowContractor)} 
                        // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingNT}
@@ -108,7 +109,16 @@ class TrackingInfo extends React.Component {
 
 
 }
-export default connect()(TrackingInfo)
+const mapStateToProps = (state) => {
+    console.log(state,'state')
+  return{
+      change: state && state.countReducer ? state.countReducer: {}
+  }
+}
+
+
+
+export default connect(mapStateToProps)(TrackingInfo)
 
 const style = StyleSheet.create({
     head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},

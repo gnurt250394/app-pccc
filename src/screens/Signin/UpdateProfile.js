@@ -6,10 +6,11 @@ import { checkPhoneOrEmail, updateUser } from 'config/apis/users'
 import { BaseInput, Btn} from 'components'
 import { toUpperCase,  popupOk, StatusCode, CodeToMessage, color } from 'config'
 import  { HomeScreen } from 'config/screenNames'
-import { actionTypes } from 'actions'
+
 import navigation from 'navigation/NavigationService';
 
 import  { accountKit } from 'config/accountKit'
+import { loginAction } from 'reduxs/actions/actionCreator';
 
 class UpdateProfile extends React.Component {
     
@@ -119,7 +120,7 @@ class UpdateProfile extends React.Component {
                         updateUser(this.state.token, {phone: phone}).then(res => {
                             if(res.data.code == StatusCode.Success){
                                 // AsyncStorage.setItem('token', this.state.token)
-                                this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: this.state.token})
+                                this.props.login(res.data.data,  this.state.token)
                                 navigation.reset(HomeScreen)
                             }else{
                                 popupOk(CodeToMessage[res.data.code])
@@ -140,6 +141,11 @@ class UpdateProfile extends React.Component {
         }
     }
 }
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      login:(user,token)=>dispatch(loginAction(user,token))
+    }
+  }
 
 export default connect()(UpdateProfile)
 

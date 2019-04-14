@@ -7,7 +7,8 @@ import { Status, removeItem, popup, getItem } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
-import { actionTypes } from 'actions'
+import { logoutAction } from 'reduxs/actions/actionCreator';
+
 class System extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +38,7 @@ class System extends Component {
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
                 removeItem('token')
                 navigation.reset(SigninScreen)
-                this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+                this.props.logout()
             }
         }).catch(err => {
             console.log(err, 'err')
@@ -82,6 +83,7 @@ class System extends Component {
         );
     }
     getData = () => {
+        console.log('hehe')
         getListNotifi({ page: this.state.page, type: 'system' }).then(res => {
             console.log(res.data, 'aaaa')
             console.log(this.state.page, 'page')
@@ -105,7 +107,7 @@ class System extends Component {
                 navigation.reset(SigninScreen)
                 SimpleToast.show('Phiên đăng nhập hết hạn')
                 removeItem('token')
-                this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+                this.props.logout()
             } else {
                 SimpleToast.show("Lỗi hệ thống")
                 this.setState({loading:false})
@@ -116,7 +118,8 @@ class System extends Component {
         })
     }
     componentDidMount = async () => {
-        let token = await getItem('token')
+        this._willFocus = this.props.navigation.addListener('willFocus',async () => {
+            let token = await getItem('token')
         if (token) {
             this.getData()
         } else{
@@ -127,8 +130,13 @@ class System extends Component {
             })
         }
 
+        }
+        )
+       
     };
-
+ componentWillUnmount() {
+        this._willFocus.remove()
+    }
 }
 const styles= StyleSheet.create({
     notFound: {
@@ -144,5 +152,9 @@ const styles= StyleSheet.create({
 })
 
 
-
-export default connect()(System)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      logout:()=>dispatch(logoutAction())
+    }
+  }
+export default connect(mapDispatchToProps)(System)

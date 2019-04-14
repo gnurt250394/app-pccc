@@ -8,7 +8,7 @@ import { BaseInput, Btn } from 'components'
 import { toUpperCase, validateEmail, popupOk, validateName, StatusCode, CodeToMessage, color, defaultStyle, height, smallScreen } from 'config'
 import { accountKit } from 'config/accountKit'
 import { SigninScreen, HomeScreen, } from 'config/screenNames'
-import { actionTypes } from 'actions'
+
 import navigation from 'navigation/NavigationService'
 import { fontStyle } from 'config/Controller';
 import { fontStyles } from 'config/fontStyles';

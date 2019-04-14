@@ -9,9 +9,9 @@ import Toast from 'react-native-simple-toast';
 import { Status, removeItem } from 'config/Controller';
 import { connect } from 'react-redux'
 import ListItem from './ListItem';
-import { actionTypes } from 'actions';
 import { popupCancel } from 'config';
 import { Messages } from 'config/Status';
+import { logoutAction, countContractor } from 'reduxs/actions/actionCreator';
 const { width, height } = Dimensions.get('window')
 
 class FolowContractor extends Component {
@@ -31,6 +31,7 @@ class FolowContractor extends Component {
    */
 
   _nextPage = (router, params) => () => {
+    this.props.changeContractor(1)
     navigation.navigate(router, params)
   }
   _renderItem = ({ item, index }) => {
@@ -108,7 +109,7 @@ class FolowContractor extends Component {
       } else if (res.data.code == Status.TOKEN_EXPIRED ) {
         navigation.reset(SigninScreen)
         removeItem('token')
-        this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+        this.props.logout()
       } else if(res.data.code == Status.NO_CONTENT){
         this.setState({loading:false})
       }
@@ -163,4 +164,18 @@ const styles = StyleSheet.create({
     width
   }
 })
-export default connect()(FolowContractor)
+const mapStateToProps = (state) => {
+  return {
+      change: state.countReducer ? state.countReducer : {}
+  }
+}
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    logout:()=>dispatch(logoutAction()),
+    changeContractor: (change) => dispatch(countContractor(change))
+  }
+}
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(FolowContractor)

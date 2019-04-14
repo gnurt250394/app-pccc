@@ -8,6 +8,7 @@ import { listFollows } from 'config/apis/Project'
 import { DetailBiddingScreen } from 'config/screenNames'
 import images from "assets/images"
 import moment from 'moment';
+import { countBidding } from 'reduxs/actions/actionCreator';
 
 class LI extends React.Component {
 
@@ -112,7 +113,7 @@ class ListBidding extends React.Component {
 
     renderItem = count => ({item, index}) => {
         return <TouchableOpacity 
-                    onPress={this._navTo(DetailBiddingScreen, {id: item.id,follow:this.state.follow})}
+                    onPress={this._navTo(DetailBiddingScreen, {id: item.id,follow:this.state.follow},index)}
                     style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <Text style={style.name}>{item.name || item.name_bidding}  {this.state.follow&&(item.change ==0&& <Image  style={style.iconNotify} source={images.dotYellow} />)}</Text>
                 {/* <View style={[style.row, style.calender]}>
@@ -158,16 +159,16 @@ class ListBidding extends React.Component {
             }).catch(err => {
                 return []
             })
-            console.log(datas,'1')
+            
         }else{
             datas = await listBiddings(this.state.page).then(res => {
                 // log('res: ', res);
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                // console.log('err: ', err);
+                // 
                 return []
             })
-            console.log(datas,'2')
+            
         }
         log(datas);
         if(datas.length == 0){
@@ -186,7 +187,20 @@ class ListBidding extends React.Component {
 
     }
 
-    _navTo = (screen, params = {} ) => () => {
+    _navTo = (screen, params = {},index ) => () => {
+        if (this.state.follow) {
+            let datas = [...this.state.datas]
+            datas[index].change = 1
+            
+           let listChange= datas.filter(item=>item.change ==0)
+           
+           if(listChange.length ==0){
+            this.props.changeBidding(1)
+           }else{
+            this.props.changeBidding(0)
+           }
+            this.setState({datas})
+        }
         this.props.navigation.navigate(screen, params)
     }
 
@@ -196,7 +210,18 @@ class ListBidding extends React.Component {
 
 
 }
-export default connect()(ListBidding)
+const mapStateToProps = (state) => {
+    return {
+        change: state.countReducer ? state.countReducer : {}
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeBidding: (change) => dispatch(countBidding(change))
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(ListBidding)
 
 const style = StyleSheet.create({
     flex: {flex: 1,backgroundColor:'#CCCCCC'},

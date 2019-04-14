@@ -7,6 +7,7 @@ import navigation from 'navigation/NavigationService';
 import SimpleToast from 'react-native-simple-toast';
 import { removeItem, Status } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames';
+import { countNotificationAction } from 'reduxs/actions/actionCreator';
 class Icon extends Component {
       state ={
             count:''
@@ -17,12 +18,13 @@ class Icon extends Component {
   render() {
     return (
       <View style={styles.flex}>
-           {this.state.count > 0?<View style={styles.containerNotifi}>
-        <Text style={styles.txtNotifi}>{this._renderCount(this.state.count)}</Text>
+           {this.props.count > 0?<View style={styles.containerNotifi}>
+        <Text style={styles.txtNotifi}>{this._renderCount(this.props.count)}</Text>
         </View> : null}
         <Image
         source={this.props.source}
         style={styles.img}
+        resizeMode="contain"
         />
       </View>
     )
@@ -31,13 +33,13 @@ class Icon extends Component {
       Count_Notification().then(res=> {
             console.log(res.data,'ddd')
           if(res.data.code == Status.SUCCESS){
-           this.setState({count:res.data.data})
+           this.props.countNotifi(res.data.data)
           }else if(res.data.code == Status.TOKEN_EXPIRED){
             navigation.reset(SigninScreen)
             SimpleToast.show('Phiên đăng nhập hết hạn')
             removeItem('token')
           }else if(res.data.code == Status.NO_CONTENT){
-            this.setState({count:0})
+            // this.props.countNotifi(res.data.code)
           }
       })
   }
@@ -75,6 +77,17 @@ const styles = StyleSheet.create({
             fontSize:10
       }
 })
+const mapStateToProps = (state) => {
+  return{
+    count:state.countReducer&&state.countReducer.count?state.countReducer.count:''
+  }
+}
+
+const mapDispatchToProps =(dispatch)=> {
+  return{
+    countNotifi:(count)=>dispatch(countNotificationAction(count))
+  }
+}
 
 
-export default connect()(Icon)
+export default connect(mapStateToProps,mapDispatchToProps)(Icon)

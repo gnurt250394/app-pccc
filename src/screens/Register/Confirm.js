@@ -6,6 +6,7 @@ import styles from "assets/styles"
 import { updateUser } from 'config/apis/users'
 import {  color, popupOk, StatusCode, CodeToMessage } from 'config'
 import { Input, Btn, Header, BaseInput} from 'components'
+import { loginAction } from 'reduxs/actions/actionCreator';
 
 class Confirm extends React.Component {
     state = {
@@ -26,7 +27,7 @@ class Confirm extends React.Component {
                 console.log( data,'data')
                 console.log(res,'res')
                 if(res.data.code == StatusCode.Success){
-                    this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
+                    this.props.login(res.data.data,res.data.token)
                     navigation.reset(HomeScreen)
                 }else{
                     popupOk(CodeToMessage[res.data.code])
@@ -103,7 +104,12 @@ class Confirm extends React.Component {
         }
     }
 }
-export default connect()(Confirm)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      login:(user,token)=>dispatch(loginAction(user,token))
+    }
+  }
+export default connect(mapDispatchToProps)(Confirm)
 const style = StyleSheet.create({
     content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40},
     flex: { flex:1},

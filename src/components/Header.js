@@ -38,7 +38,7 @@ export default class Header extends React.Component {
                         style={style.add}
                         resizeMode="contain"
                     />
-                </TouchableOpacity>:null}
+                </TouchableOpacity>:<View style={style.right}/>}
             </View>
             </SafeAreaView>
         )
@@ -62,6 +62,9 @@ const style = StyleSheet.create({
         height: 16,
         width:16, 
         resizeMode: 'contain', 
+    },
+    right:{
+        flex:1/9,
     },
     title: {
         // fontFamily: fontStyle.Acumin_bold,

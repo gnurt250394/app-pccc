@@ -11,7 +11,7 @@ export default class HeaderDetail extends Component {
                                           <Text style={styles.txtName}>{this.props.name}</Text>
                                           <View style={styles.rowChil}>
                                                 <Image source={images.proLocation}
-                                                      resizeMode="contain"
+                                                      resizeMode='contain'
                                                       style={styles.Image} />
                                                 <Text style={styles.txtAddress}>{this.props.address}</Text>
                                           </View>
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
             borderRadius: 25
       },
       Image: {
-            height: 15,
-            width: 15,
+            height: 13,
+            width: 13,
             marginRight:7
       },
       txtAddress: {
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
       },
       rowChil: {
             flexDirection: 'row',
+            alignItems:'center'
       },
       row: {
             flexDirection: 'row',
