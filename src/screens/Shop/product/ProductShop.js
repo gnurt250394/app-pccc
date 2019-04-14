@@ -37,11 +37,11 @@ export default class ProductShop extends Component {
         console.log(res.data,'log')
         if(res.data.code== Status.SUCCESS){
             this.setState({
-                ListProduct:res.data.data,
+                ListProduct:[res.data.data,{add:true}],
             })
         } else if(res.data.code== Status.NO_CONTENT){
             this.setState({
-                ListProduct:[],
+                ListProduct:[{add:true}],
             })
         } else if(res.data.code == Status.TOKEN_EXPIRED){
             navigation.reset(SigninScreen)
@@ -176,9 +176,17 @@ _addItem=()=>{
     );
   }
   componentDidMount = () => {
-    // this.getDetail()
+    this._didFocus = this.props.navigation.addListener(
+        'didFocus',
+        payload => {
+          console.debug('didFocus', payload);
+        }
+      );
+    this.getDetail()
   };
-  
+  componentWillUnmount(){
+      this._didFocus().remove()
+  }
 }
 
 const data = [

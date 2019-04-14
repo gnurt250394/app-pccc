@@ -43,6 +43,8 @@ export const DetailBiddingScreen = "DetailBiddingScreen"
 //Myshop
 export const BuyProduct = "BuyProduct"
 export const ListCategory = "ListCategory"
+export const ShopLiquidation = "LiquidationShop"
+export const ShopPostPurchase = "PostPurchaseShop"
 
 // Project
 export const DetailProject = "DetailProject"

@@ -165,6 +165,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':bugsnag-react-native')
     compile project(':react-native-onesignal')
     compile project(':react-native-document-picker')
     implementation project(':react-native-fetch-blob')

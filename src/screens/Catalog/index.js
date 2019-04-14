@@ -14,7 +14,7 @@ import { Header } from 'components';
 class Catalog extends React.Component {
     state = {
         loading: true,
-        refreshing: false,
+        refreshing: true,
         keyword: '',
         maxDesc: 48,
         type: this.props.navigation.getParam('type') || 'catalog',
@@ -52,6 +52,7 @@ class Catalog extends React.Component {
         }
         return txt
     }
+    _listEmpty=()=> !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
     render() {
         let count = this.state.datas.length
         return (
@@ -65,15 +66,12 @@ class Catalog extends React.Component {
                     :
                     <BaseSearch
                         onSearch={this._onSearch}
+                        onClear={this.refressData}
                         ref={val => this.search = val}
                         goBack={this._goBack}
                         keyword={this.state.keyword} />}
 
-                {
-                    this.state.datas.length == 0
-                        ?
-                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                        :
+                   
                         <FlatList
                             data={this.state.datas}
                             renderItem={this.renderItem(count)}
@@ -82,8 +80,8 @@ class Catalog extends React.Component {
                             onRefresh={this.handleRefresh}
                             onEndReached={this.handleLoadmore}
                             onEndReachedThreshold={this.state.threshold}
+                            ListEmptyComponent={this._listEmpty}
                             ListFooterComponent={this.ListFooterComponent} />
-                }
             </View>
         )
     }
@@ -320,17 +318,23 @@ class Catalog extends React.Component {
     }
 
     _onSearch = () => {
-        this.setState({ loading: true,refreshing:true,page:1 }, async () => {
-            let keyword = this.search ? this.search.getValue() : ''
+        let keyword = this.search ? this.search.getValue() : ''
+        if(keyword == ''){
+            return null
+        }else{
+            this.setState({ loading: true,refreshing:true,page:1 }, async () => {
+            
 
-            let datas = await searchDocuments(this.state.type, keyword,this.state.page).then(res => {
-                return res.data.code == Status.SUCCESS ? res.data.data : []
-            }).catch(err => {
-                return []
+                let datas = await searchDocuments(this.state.type, keyword,this.state.page).then(res => {
+                    return res.data.code == Status.SUCCESS ? res.data.data : []
+                }).catch(err => {
+                    return []
+                })
+                this.formatData(datas)
+                console.log(datas,'search')
             })
-            this.formatData(datas)
-            console.log(datas,'search')
-        })
+        }
+       
     }
 
     formatData = datas => {
@@ -357,19 +361,24 @@ class Catalog extends React.Component {
         }
 
     }
-
-    getData = async () => {
+    getData=()=>{
+        this.getDataDocument(this.state.page)
+    }
+    refressData =()=>{
+        this.getDataDocument(1)
+    }
+    getDataDocument = async (page) => {
         let datas = [];
         console.log(this.state.type)
         console.log('get')
         if (this.state.follow) {
-            datas = await listDocumentFollows(this.state.type, this.state.page).then(res => {
+            datas = await listDocumentFollows(this.state.type, page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []
             })
         } else {
-            datas = await listDocuments(this.state.type, this.state.page).then(res => {
+            datas = await listDocuments(this.state.type, page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
                 return []

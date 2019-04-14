@@ -9,7 +9,7 @@ import { AccessToken, LoginManager, GraphRequest, GraphRequestManager  } from 'r
 import { Btn, BaseInput } from 'components'
 import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import  { RegisterScreen, HomeScreen, ForgotPasswordScreen } from 'config/screenNames'
-import  { actionTypes } from 'actions'
+
 import OneSignal from 'react-native-onesignal';
 import navigation from 'navigation/NavigationService'
 import { saveItem } from 'config/Controller';
@@ -17,6 +17,7 @@ import  { accountKit, getCurrentAccount } from 'config/accountKit'
 import { log } from 'config/debug'
 import { fontStyles } from 'config/fontStyles';
 import Loading from 'components/loading';
+import { loginAction } from 'reduxs/actions/actionCreator';
 class Signin extends React.Component {
     state = {
         username: '',
@@ -292,7 +293,7 @@ class Signin extends React.Component {
                 if(res.data.code == StatusCode.Success){
                     console.log(res.data,'data')
                     this._sendTagOneSignal(res.data.data.id)
-                    this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token});
+                    this.props.login( res.data.data, res.data.token);
                     navigation.reset(HomeScreen)
                     AsyncStorage.setItem('token',res.data.token)
                     this.setState({loading: false})
@@ -347,7 +348,7 @@ class Signin extends React.Component {
 
         }else{
             // navigation.reset(HomeScreen);
-            this.props.dispatch({type: actionTypes.USER_LOGIN, data: user, token: data.token});
+            this.props.login(user,  data.token);
             AsyncStorage.setItem('token',userToken)
             this._sendTagOneSignal(user.id)
             console.log(user,'user1')
@@ -419,8 +420,12 @@ const mapStateToProps=(state)=>{
         user: state.user&& state.user.data? state.user.data :null
     }
 }
-
-export default connect(mapStateToProps)(Signin)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      login:(user,token)=>dispatch(loginAction(user,token))
+    }
+  }
+export default connect(mapStateToProps,mapDispatchToProps)(Signin)
 
 const style = StyleSheet.create({
     or: {color: '#80C9F0', fontSize: defaultStyle.fontSize, paddingLeft: 10, paddingRight: 10},

@@ -5,7 +5,7 @@ import images from "assets/images"
 import { ViewProfileScreen, ChangePasswordScreen, SigninScreen, EditProfileScreen, ShopScreen, RegisterScreen } from 'config/screenNames'
 import { color, toUpperCase, StatusCode, log } from 'config'
 import NavItem from './NavItem'
-import { actionTypes } from 'actions'
+
 import FastImage from 'react-native-fast-image'
 import navigation from 'navigation/NavigationService';
 import { getInfoAcount } from 'config/apis/users';
@@ -14,6 +14,7 @@ import { popupCancel } from 'config';
 import { popupOk } from 'config';
 import { fontStyles } from 'config/fontStyles';
 import OneSignal from 'react-native-onesignal';
+import { logoutAction } from 'reduxs/actions/actionCreator';
 
 class Profile extends React.Component {
     state = {
@@ -27,6 +28,7 @@ class Profile extends React.Component {
         this.props.navigation.navigate(EditProfileScreen)
     }
     async componentDidMount() {
+        console.log(this.props.count,'count')
         // phải check đoạn này vì đang dùng tabs
         this.props.navigation.addListener('willFocus', () => this.getInfo())
     }
@@ -155,7 +157,7 @@ class Profile extends React.Component {
         AsyncStorage.removeItem('token')
         navigation.reset(SigninScreen)
         OneSignal.sendTags({userId:''})
-        this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+        this.props.logout()
     }
 
     _navTo = (screen, params) => () => {
@@ -168,9 +170,15 @@ const mapStateToProps = (state) => {
     return {
         users: state.users && state.users.data ? state.users.data : {},
         token: state.users && state.users.token ? state.users.token : null,
+        count:state.countReducer.count
     }
 }
-export default connect(mapStateToProps)(Profile)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      logout:()=>dispatch(logoutAction())
+    }
+  }
+export default connect(mapStateToProps,mapDispatchToProps)(Profile)
 
 const style = StyleSheet.create({
     SafeAreaView: { backgroundColor: color },

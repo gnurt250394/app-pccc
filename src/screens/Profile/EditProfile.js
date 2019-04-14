@@ -2,17 +2,17 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, TouchableWithoutFeedback, Keyboard, RefreshControl, ScrollView, Platform, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
-import { updateUser, updateAvatar, getInfoAcount, updateProfile } from 'config/apis/users'
+import {  updateAvatar, getInfoAcount, updateProfile } from 'config/apis/users'
 import { Input } from 'components'
 import { validateName, popupOk, validateEmail, StatusCode, Gender, color, CodeToMessage } from 'config'
 import { chooseImage } from 'config/uploadImage'
-import { actionTypes } from 'actions'
 import FastImage from 'react-native-fast-image'
 import navigation from 'navigation/NavigationService';
 import { SigninScreen } from 'config/screenNames';
 import { removeItem, Status } from 'config/Controller';
 import SimpleToast from 'react-native-simple-toast';
 import { TextInput } from 'react-native-gesture-handler';
+import { updateUserAction } from 'reduxs/actions/actionCreator';
 class InputItem extends React.Component {
     render() {
         return <View style={style.mb5}>
@@ -280,7 +280,7 @@ class EditProfile extends React.Component {
             await updateProfile(data).then(res => {
                 
                 if (res.data.code == Status.SUCCESS) {
-                    this.props.dispatch({ type: actionTypes.USER_UPDATE, data: res.data.data })
+                    this.props.updateUsers(res.data.data)
                     navigation.pop()
                     this.setState({ loading: false })
                     this.props.navigation.state.params.refress()
@@ -308,8 +308,12 @@ const mapStateToProps = (state) => {
         token: state.users && state.users.token ? state.users.token : null,
     }
 }
-
-export default connect(mapStateToProps)(EditProfile)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      updateUsers:()=>dispatch(updateUserAction())
+    }
+  }
+export default connect(mapStateToProps,mapDispatchToProps)(EditProfile)
 
 const style = StyleSheet.create({
     SafeAreaView: {

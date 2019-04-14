@@ -1,52 +1,41 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet,Dimensions } from 'react-native'
+import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity ,Platform} from 'react-native'
 import images from "assets/images"
 import moment from 'moment'
+import { fontStyles } from 'config/fontStyles';
 moment.locale('vn')
 export default class Item extends Component {
       render() {
             return (
                   <View style={styles.container}>
-                        <View style={styles.containerList}>
-                              <View style={styles.Image}>
-                                    <Image source={{ uri: this.props.item.image }}
-                                          style={styles.image}
-                                          resizeMode="contain"
-                                    />
-                              </View>
-                              <TouchableOpacity onPress={this.props.onPress}
-                                    style={styles.dots}
-                              >
-                                    <Image source={images.dots}
-                                          style={styles.imgDots}
-                                          resizeMode="contain"
-                                    />
-                              </TouchableOpacity>
-                              <View style={styles.containerText}>
-                                    <Text style={styles.txtName}>{this.props.item.name}</Text>
-                                    <Text style={styles.txtPrice}>{this.props.item.description}</Text>
-                                    <View style={styles.rowList}>
-                                          <View style={styles.row}>
-                                                <Image source={images.shopLocation}
-                                                      style={styles.imgLocation}
-                                                      resizeMode="contain"
-                                                />
-                                                <Text>{this.props.item.city_id}</Text>
+
+
+                        <TouchableOpacity
+                              onPress={this.props.onPress}
+                              style={styles.containerList}>
+                              <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
+                              <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
+                              <View style={styles.rowList}>
+                                    <View style={[styles.row,styles.category]}>
+                                          <Image source={images.menu}
+                                                style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?2:1}]}
+                                                resizeMode="contain"
+                                          />
+                                          <View style={styles.wrap}>
+                                          <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.props.item.category : null}</Text>
                                           </View>
-                                          {/* <View style={styles.row}>
-                <Image 
-                    source={images.shopPrice}
-                    style={styles.imgLocation}
-                    resizeMode="contain"
-                />
-                <Text>{this.props.item.price}</Text>
-                </View> */}
-                                          <Text style={{ marginLeft: 10 }}>{this.props.item.time}</Text>
-
                                     </View>
-                              </View>
+                                    <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
 
-                        </View>
+                              </View>
+                              <View style={styles.row}>
+                                          <Image source={images.shopLocation}
+                                                style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:1}]}
+                                                resizeMode="contain"
+                                          />
+                                          <Text style={styles.txtDescription}>{this.props.item.city ? this.props.item.city : null}</Text>
+                                    </View>
+                        </TouchableOpacity>
                         <View
                               style={styles.end}
                         />
@@ -60,31 +49,56 @@ const styles = StyleSheet.create({
             flex: 1,
             paddingHorizontal: 15
       },
-      container: {
-            flex: 1
+      wrap:{
+            flexWrap:'wrap',
+            flexShrink:5,
+            width:'90%',
       },
-      titleList: {
+      category:{
+            marginBottom:10,
+            alignItems:'flex-start',
+            width:'82%',
+            
+      },
+      txtName: {
             color: '#333333',
-            // fontFamily: fontStyles.Acumin_RPro_0,
+            fontSize: 15,
+            marginBottom: 10,
+            marginTop: 7
       },
-      timeList: {
-            // fontFamily: fontStyles.Acumin_ItPro_0,
-            fontSize: 11,
-            color: '#999999',
-            marginTop: 5
+      txtDescription: {
+            fontSize: 13,
+            color:'#333333',
+      },
+      container: {
+            flex: 1,
+            backgroundColor: '#FFFFFF'
+      },
+      imgLocation: {
+            height: 14,
+            width: 14,
+            tintColor:'#2166A2',
+            marginRight: 5
+      },
+      row: {
+            flexDirection: 'row',
+      },
+      rowList: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems:'flex-start',
+            
+            marginTop: 12
       },
       end: {
             height: 1,
-            backgroundColor: '#DEDEDE',
-            width:'100%',
-            marginVertical: 5,
+            backgroundColor: '#CCCCCC',
+            width: '100%',
+            marginTop: 15
       },
-      image: {
-            height: 10,
-            width: 10,
-            // tintColor:'gray',
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 4,
-      },
+      txtTime: {
+            fontSize: 11,
+            color: '#999999'
+      }
+
 })

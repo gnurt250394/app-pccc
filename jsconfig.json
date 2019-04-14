@@ -8,8 +8,9 @@
       "config": ["src/config/*"],
       "assets": ["src/assets/*"],
       "screens": ["src/screens/*"],
-      "actions": ["src/redux/actions/*"],
-      "navigation":["src/navigation"]
+      "actions": ["src/reduxs/actions/**"],
+      "navigation":["src/navigation"],
+      "reduxs":["src/reduxs/*"],
     }
   }
 }

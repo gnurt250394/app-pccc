@@ -6,7 +6,8 @@ import { signup } from 'config/apis/users'
 import { Header, Input, Btn} from 'components'
 import {  toUpperCase, popupOk, StatusCode, CodeToMessage } from 'config'
 import  { HomeScreen} from 'config/screenNames'
-import { actionTypes } from 'actions'
+import { loginAction } from 'reduxs/actions/actionCreator';
+
 class Complete extends React.Component {
     constructor(props){
         super(props)
@@ -75,7 +76,7 @@ class Complete extends React.Component {
                         this.setState({loading: false})
                         if(res.data.code == StatusCode.Success){
                             AsyncStorage.setItem('token',res.data.token)
-                            this.props.dispatch({type: actionTypes.USER_LOGIN, data: res.data.data, token: res.data.token})
+                            this.props.login(res.data.data, res.data.token)
                             this.props.navigation.navigate(HomeScreen)
                         }else{
                             popupOk(CodeToMessage[res.data.code])
@@ -92,7 +93,12 @@ class Complete extends React.Component {
         }
     }
 }
-export default connect()(Complete)
+const mapDispatchToProps = (dispatch)=>{
+    return{
+      login:(user,token)=>dispatch(loginAction(user,token))
+    }
+  }
+export default connect(mapDispatchToProps)(Complete)
 
 const style = StyleSheet.create({
     content: {height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40},

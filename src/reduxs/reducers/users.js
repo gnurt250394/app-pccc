@@ -1,31 +1,35 @@
 import { actionTypes } from  '../actions'
 import {AsyncStorage} from 'react-native'
-export default function users(state = {}, action) {
+
+const initialState ={
+    data:{},
+    token:''
+}
+export default function users(state = initialState, action) {
     switch(action.type){
         case actionTypes.USER_LOGIN:
-            state = {
+           return state = {
                 ...state,
                 data: action.data,
                 token: action.token,
             }
-            break
+            
         case actionTypes.USER_LOGOUT:
-            state = {
+          return  state = {
                 ...state,
                 data: null,
                 token: null,
             }
-            break
+            
         case actionTypes.USER_UPDATE:
-            state = {
+           return state = {
                 ...state,
                 data: action.data
             }
-            break
+            
         default :
             // something here
-            state = { ...state }
-            break
+          return  state 
+            
     }
-    return state
 }

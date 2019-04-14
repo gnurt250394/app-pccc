@@ -1,74 +1,38 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
-import { getLiquidation } from 'config/apis/myShop';
-import { Status, removeItem } from 'config/Controller';
+import { Status, removeItem, getItem, popup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen } from 'config/screenNames';
+import { SigninScreen, DetailLiquidation, Liquidation, ShopLiquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
 import Item from './Item';
+import { Header } from 'components';
+import { getListLiquidation } from 'config/apis/liquidation';
 import { Messages } from 'config/Status';
 moment.locale('vn')
 export default class LiquidationShop extends Component {
 
     state = {
         listLiqiudation: [],
-        Thresold: 0.1
+        Thresold: 0.1,
+        page: 1,
+        loading: false,
+        refreshing: true,
+        keyword: '',
+        type: this.props.navigation.state.key == ShopLiquidation ? typeScreen.Liquidation : typeScreen.postPurchase
     }
-    goDetail = () => {
+    goDetail = (item) => () => {
 
+        navigation.navigate(DetailLiquidation, { id: item.id, type: this.state.type })
     }
     _renderItem = ({ item, index }) => {
         return (
             <Item
-                onPress={this.this.goDetail}
+                onPress={this.goDetail(item)}
+                item={item}
             />
-            // <View>
-            // <View style={styles.containerList}>
-            // <View style={styles.Image}>
-            //     <Image source={{uri:item.image}}
-            //         style={styles.image}
-            //         resizeMode="contain"
-            //     />
-            //     </View>
-            //     <TouchableOpacity onPress={this.goDetail}
-            //     style={styles.dots}
-            //     >
-            //     <Image source={images.dots}
-            //         style={styles.imgDots}
-            //         resizeMode="contain"
-            //     />
-            //     </TouchableOpacity>
-            //     <View style={styles.containerText}>
-            //     <Text style={styles.txtName}>{item.name}</Text>
-            //     <Text style={styles.txtPrice}>{item.description}</Text>
-            //     <View style={styles.rowList}>
-            //     <View style={styles.row}>
-            //         <Image source={images.shopLocation}
-            //             style={styles.imgLocation}
-            //             resizeMode="contain"
-            //         />
-            //         <Text>{item.city_id}</Text>
-            //         </View>
-            //         <View style={styles.row}>
-            //         <Image 
-            //             source={images.shopPrice}
-            //             style={styles.imgLocation}
-            //             resizeMode="contain"
-            //         />
-            //         <Text>{item.price}</Text>
-            //         </View>
-            //         <Text style={{marginLeft:10}}>{item.time}</Text>
 
-            //     </View>
-            //     </View>
-
-            // </View>
-            // <View
-            //         style={styles.end}
-            //     />
-            // </View>
 
         )
     }
@@ -76,41 +40,33 @@ export default class LiquidationShop extends Component {
         return `${item.id || index}`
     }
     _renderFooter = () => {
-        if (this.state.loadMore && this.state.listLiqiudation.length >5) {
-            return (
-                <ActivityIndicator
-                    size={"large"}
-                    color={"#2166A2"}
-                />
-            )
-        } else {
-            return null
-        }
+        return this.state.loading && this.state.listLiqiudation.length > 5 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
     }
 
     _loadMore = () => {
-        if (!this.state.loadMore) {
-            return null
-        } else {
-            this.setState((preState) => {
-                return {
-                    loadMore: true,
-                    page: preState.page + 1
-                }
-            }, () => {
-                this.getDetail()
-            })
-        }
+        !this.state.loading ? null : this.setState({ loading: true, page: this.state.page + 1 }, this.getLiquidation)
     }
     _nextPage = () => {
-        navigation.navigate()
+        navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type })
     }
+    _goBack = () => {
+        navigation.pop()
+    }
+
+    _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
+
+    handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
     render() {
+        const { type } = this.state
         return (
             <View style={styles.container}>
+
                 <FlatList
                     data={this.state.listLiqiudation}
                     renderItem={this._renderItem}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefress}
+                    ListEmptyComponent={this._listEmpty}
                     keyExtractor={this._keyExtractor}
                     ListFooterComponent={this._renderFooter}
                     onEndReached={this._loadMore}
@@ -128,40 +84,103 @@ export default class LiquidationShop extends Component {
             </View>
         );
     }
-    getLiquidation = () => {
-        getLiquidation(this.state.page).then(res => {
+    getData =async (params) => {
+        let token = await getItem('token')
+        getListLiquidation(params,token).then(res => {
+
             if (res.data.code == Status.SUCCESS) {
-                this.setState({
-                    listLiqiudation: res.data.data,
-                    loadMore: true
-                })
+                if (this.state.page == 1) {
+                    this.setState({
+                        listLiqiudation: res.data.data,
+                        Thresold: 0.1,
+                        loading: true,
+                        refreshing: false
+                    })
+                } else {
+                    this.setState({
+                        listLiqiudation: [...this.state.listLiqiudation, ...res.data.data],
+                        Thresold: 0.1,
+                        loading: true,
+                        refreshing: false
+                    })
+                }
             } else if (res.data.code == Status.NO_CONTENT) {
                 this.setState({
-                    listLiqiudation: [],
-                    loadMore: false,
-                    Thresold: 0
+                    Thresold: 0,
+                    loading: false,
+                    refreshing: false
                 })
             } else if (res.data.code == Status.TOKEN_EXPIRED) {
+                this.setState({ Thresold: 0, loading: false, refreshing: false })
                 navigation.reset(SigninScreen)
                 removeItem('token')
             } else if (res.data.code == Status.TOKEN_VALID) {
+                this.setState({ Thresold: 0, loading: false, refreshing: false })
                 popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
-            console.log(err.response, 'err')
+            this.setState({ Thresold: 0, loading: false, refreshing: false })
+
         })
     }
+    refressData = () => {
+        let params = {
+            type: this.state.type,
+            page: 1
+        }
+        this.getData(params)
+    }
+    getLiquidation = async () => {
+        if(this.state.page ==1){this.setState({ refreshing: true })}
+        let params = {
+            type: this.state.type,
+            page: this.state.page
+        }
+        this.getData(params)
+    }
     componentDidMount = () => {
-        // this.getLiquidation()
+
+
+        this._willFocus = this.props.navigation.addListener('willFocus', () => {
+            this.getLiquidation()
+        }
+        )
     };
-
+    componentWillUnmount() {
+        this._willFocus.remove()
+    }
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 10,
+        backgroundColor: '#CCCCCC'
+    },
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
+    },
+    imgSearch: {
+        height: 15,
+        width: 15,
+        marginHorizontal: 10
+    },
+    inputSearch: {
+        flex: 1
+    },
+    searchGroup: {
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'space-between',
+        borderRadius: 5,
+        height: 40,
+        margin: 10,
+        alignItems: 'center',
+        borderColor: '#8FBEDF',
+        borderWidth: 0.7
     },
     add: {
         width: 25,
@@ -173,6 +192,11 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         backgroundColor: '#2166A2',
         position: 'absolute',
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        // shadowRadius:25,
         bottom: '10%',
         alignItems: 'center',
         justifyContent: 'center',

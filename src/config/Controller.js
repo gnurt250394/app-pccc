@@ -151,3 +151,6 @@ export const getMimeType = (type) =>{
     })
     .catch((err) => console.log('An error occurred', err.response));
     }
+   export const Capitalize=(str)=>{
+        return str.charAt(0).toUpperCase() + str.slice(1);
+        }

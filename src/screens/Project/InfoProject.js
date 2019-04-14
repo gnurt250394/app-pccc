@@ -10,6 +10,7 @@ import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
 import { log, width, toParams } from 'config'
 import { Header } from 'components';
+import { countProject } from 'reduxs/actions/actionCreator';
 class InfoProject extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ class InfoProject extends Component {
             refreshing: true,
             loading: false,
             keyword: '',
-            follow: this.props.navigation.getParam('follow',false) ,
+            follow: this.props.navigation.getParam('follow', false),
         };
     }
 
@@ -28,13 +29,28 @@ class InfoProject extends Component {
      * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
 
-    _nextPage = (router, params) => () => {
+    _nextPage = (router, params,index) => () => {
+       
+        if (this.state.follow) {
+            console.log(this.state.listProject,'stateList')
+            let listProject = [...this.state.listProject]
+            listProject[index].change = 1
+            console.log(listProject,'listproject')
+           let listChange= listProject.filter(item=>item.change ==0)
+           console.log(listChange,'listChange')
+           if(listChange.length ==0){
+            this.props.changeProject(1)
+           }else{
+            this.props.changeProject(0)
+           }
+            this.setState({listProject})
+        }
         navigation.navigate(router, params)
     }
     _renderItem = count => ({ item, index }) => {
         return (
             <ListItem
-                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow })}
+                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow },index)}
                 item={item}
                 follow={this.state.follow}
                 count={count}
@@ -47,7 +63,7 @@ class InfoProject extends Component {
         this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
     }
     ListFooterComponent = () => {
-        if (this.state.loading&& this.state.listProject.length >3) {
+        if (this.state.loading && this.state.listProject.length > 3) {
 
             return <ActivityIndicator size={"large"} color="#2166A2" />
         } else {
@@ -57,7 +73,7 @@ class InfoProject extends Component {
     }
 
     handleRefresh = () => {
-        this.setState({ refreshing: true, page: 1 }, ()=>{this.search.onClear(), this.getData})
+        this.setState({ refreshing: true, page: 1 }, () => { this.search.onClear(), this.getData })
     }
     _keyExtractor = (item, index) => {
         return `${item.id || index}`
@@ -69,29 +85,29 @@ class InfoProject extends Component {
         this.setState({ [key]: val })
     }
     _onSearch = () => {
-        
+
         let keyword = this.search ? this.search.getValue() : ''
-        if(keyword == ''){
+        if (keyword == '') {
             return null
-        }else{
+        } else {
             this.setState({ refreshing: true })
             searchProject(keyword, this.state.page).then(res => {
-                
+
                 if (res.data.code == Status.SUCCESS) {
-    
+
                     if (this.state.page == 1) {
                         this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
                     } else {
                         this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
                     }
                 } else if (res.data.code == Status.NO_CONTENT) {
-                    this.setState({ listProject: [],refreshing:false, loading: false, Threshold: 0 })
+                    this.setState({ listProject: [], refreshing: false, loading: false, Threshold: 0 })
                 }
             }).catch(err => {
-    
+
             })
         }
-        
+
     }
     _ListEmpty = () => {
         return !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
@@ -137,11 +153,11 @@ class InfoProject extends Component {
         );
     }
     refressData = async () => {
-        
+
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
-        this.setState({refreshing:true})
+        this.setState({ refreshing: true })
         if (this.state.follow) {
             let params = toParams({
                 page: 1,
@@ -175,11 +191,11 @@ class InfoProject extends Component {
 
     }
     getData = async () => {
-        
+
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
-        
+
         if (this.state.follow) {
             let params = toParams({
                 page: this.state.page,
@@ -199,8 +215,8 @@ class InfoProject extends Component {
 
 
         }
-        console.log(listProject,'list')
-        
+        console.log(listProject, 'list')
+
         if (listProject.length == 0) {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
 
@@ -282,4 +298,16 @@ const styles = StyleSheet.create({
         padding: 20,
     }
 })
-export default connect()(InfoProject)
+const mapStateToProps = (state) => {
+    return {
+        change: state.countReducer ? state.countReducer : {}
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeProject: (changeProject) => dispatch(countProject(changeProject))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoProject)

@@ -105,12 +105,8 @@ export default class DetailContractor extends Component {
 
 
                     </Animated.View> */}
-                    <Header
-                        check={1}
-                        style={styles.header}
-                        onPress={this._goBack}
-                        title={"Thông tin nhà thầu"}
-                    />
+                    <View style={styles.header}/>
+                   
                     {/* <Animated.View
         style={[styles.header,{
             height:headerHeight,
@@ -134,6 +130,12 @@ export default class DetailContractor extends Component {
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
                     )}
                 > */}
+                 <Header
+                        check={1}
+                        // style={styles.header}
+                        onPress={this._goBack}
+                        title={"Thông tin nhà thầu"}
+                    />
                     <View style={[styles.containerPosition]}>
                         <Text style={[styles.txtBold, fontStyles.Acumin_bold]}>{UserObject.name}</Text>
                         <Item source={images.proEmail} name={UserObject.email} />
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
     header: {
         alignItems: 'flex-start',
         height:HEADER_MAX_HEGHT,
-        paddingTop:30,
+        paddingTop:15,
         position: 'absolute',
         backgroundColor: color,
         top: 0,
@@ -232,7 +234,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignSelf: 'center',
         padding: 15,
-        marginTop:HEADER_MAX_HEGHT -70,
+        // marginTop:HEADER_MAX_HEGHT -70,
         // flex: 1,
         backgroundColor: '#FFFFFF',
     },

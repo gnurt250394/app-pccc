@@ -45,8 +45,9 @@ export default class ListItem extends Component {
                         />
                         {/* <View style={{ flexWrap: 'wrap', flexShink: 5 }}> */}
                         <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} 
-                        >{this.props.item.name} {this.props.item.change ==0&& <Image  style={styles.iconNotify} source={images.dotYellow} />}
+                        >{this.props.item.name} 
                             </Text>
+                            <Image  style={styles.iconNotify} source={images.dotYellow} />
                         {/* </View> */}
                     </View>
                     <Item source={images.proEmail} name={this.props.item.email} />
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
     txtName: {
         fontSize: 16,
         // fontFamily: fontStyles.Acumin_bold,
-        color: '#333131'
+        color: '#333131',
+        
     },
     txtColor: {
         color: '#333131'
@@ -80,12 +82,12 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFFFFF',
         // height:height/4
     },
-    image: {
-        height: 5,
-        width: 5,
-        tintColor: 'gray',
-        marginRight: 8,
-    },
+    // image: {
+    //     height: 5,
+    //     width: 5,
+    //     tintColor: 'gray',
+    //     marginRight: 8,
+    // },
     txtHeader: {
         fontWeight: '600',
         fontSize: 15,
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
         alignItems:'flex-start',
-        width:'90%',
+        width:'85%',
     },
     image: {
         height: 10,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 5,
+        marginTop: 2,
     },
     txt: {
         color: '#333131',
@@ -126,5 +128,7 @@ const styles = StyleSheet.create({
         width: 12,
         height: 12,
         resizeMode: 'contain',
+        alignSelf:'center',
+        marginLeft:5
     },
 })

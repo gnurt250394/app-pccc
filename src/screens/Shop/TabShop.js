@@ -18,10 +18,15 @@ const TabShop = createMaterialTopTabNavigator({
     LiquidationShop: { 
         screen: props => <LiquidationShop  {...props} />,
         navigationOptions: () => ({
-          title: 'Thanh lý',
+          title: 'Tin thanh lý',
         }),
       },
-
+      PostPurchaseShop: { 
+        screen: props => <LiquidationShop  {...props} />,
+        navigationOptions: ({navigation}) => ({
+          title: 'Tin đăng mua',
+        }),
+      },
     },{
         // initialRouteName:'LiquidationShop',
         defaultNavigationOptions: ({ navigation }) => ({
@@ -30,14 +35,14 @@ const TabShop = createMaterialTopTabNavigator({
           tabBarOptions: {
             activeTintColor: '#2166A2',
             inactiveTintColor : '#333333',
-            scrollEnabled : true,
+            scrollEnabled : false,
             labelStyle: {
               fontSize: 12,
               fontWeight: '500',
               // textTransform: 'none'
             },
             tabStyle: {
-              width: width/2,
+              // width: width/2,
             },
             style: {
               backgroundColor: 'white', //<== remove background color

@@ -14,12 +14,12 @@ import moment from 'moment';
 
 class Video extends React.Component {
     state = {
-        loading: true,
+        loading: false,
         keyword: '',
         datas: [],
         page: 1,
         threshold: 0.1,
-        refreshing: false,
+        refreshing: true,
         follow: this.props.navigation.getParam('follow') || false,
     }
     // set status bar
@@ -37,7 +37,7 @@ class Video extends React.Component {
     componentWillUnmount() {
         this._navListener.remove();
     }
-
+    _listEmpty=()=>!this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
     render(){
         let count = this.state.datas.length
         return (
@@ -56,21 +56,17 @@ class Video extends React.Component {
                     keyword={this.state.keyword} />}
 
 
-                {
-                    this.state.datas.length == 0
-                        ?
-                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                        :
+              
                     <FlatList
                         data={this.state.datas}
                         keyExtractor={(item, index) => index.toString()} 
                         refreshing={this.state.refreshing}
                         onRefresh={this.handleRefresh}
+                        ListEmptyComponent={this._listEmpty}
                         onEndReached={this.handleLoadmore}
                         onEndReachedThreshold={this.state.threshold}
                         ListFooterComponent={this.ListFooterComponent} 
                         renderItem={this.renderItem(count)}/>
-                }
             </View>
         )
     }
@@ -95,15 +91,12 @@ class Video extends React.Component {
             }).catch(err => {
                 return []
             })
-            console.log(datas,'1')
         }else{
             datas = await listDocuments('video', this.state.page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                console.log('err: ', err);
                 return []
             })
-            console.log(datas,'2')
         }
         
         if(datas.length == 0){
@@ -122,7 +115,6 @@ class Video extends React.Component {
        return newDate
     }
     renderItem = count => ({item, index}) => {
-        console.log(item,'item')
         return <View style={index == count -1 ? [style.box, style.btw0] : style.box}>
                 <TouchableOpacity onPress={this.playvideo(item.link)} style={style.posR} >
                     <Image style={style.image} source={{uri: youtube.thumbnail(item.link)}}/>
@@ -164,7 +156,6 @@ class Video extends React.Component {
                         break;
                 }
             }).catch(err => {
-                console.log('err: ', err);
                 Toast.show('Theo dõi thất bại.')
             })
         }
@@ -195,14 +186,12 @@ class Video extends React.Component {
                         break;
                 }
             }).catch(err => {
-                // console.log('err: ', err);
                 Toast.show('Bỏ theo dõi thất bại.')
             })
         }
     }
 
     playvideo = id => () => {
-        console.log(id,'id')
         if(isIos){
         
             YouTubeStandaloneIOS.playVideo(id)
@@ -227,10 +216,8 @@ class Video extends React.Component {
         this.setState({ loading: true, refreshing: true }, async () => {
             let keyword = this.search ? this.search.getValue() : ''
             let datas = await searchDocuments('video', keyword).then(res => {
-                // console.log('res: ', res);
                 return res.data.code == StatusCode.Success ? res.data.data : []
             }).catch(err => {
-                console.log('err: ', err);
                 return []
             })
             this.setState({ loading: false, datas, refreshing: false })

@@ -14,6 +14,7 @@ import moment from 'moment';
 import { popupOk } from 'config'
 import { fontStyles } from 'config/fontStyles';
 import { Messages } from 'config/Status';
+import { logoutAction } from 'reduxs/actions/actionCreator';
 
 class DetailProject extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class DetailProject extends Component {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
           removeItem('token')
-          this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+          this.props.logout()
         } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         } else if (res.data.code == Status.USER_PERMISSION) {
@@ -95,7 +96,7 @@ class DetailProject extends Component {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
           removeItem('token')
-          this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+          this.props.logout()
         } else if (res.data.code == Status.ID_NOT_FOUND) {
           Toast.show('Dự án không tồn tại')
         }else if(res.data.code == Status.TOKEN_VALID){
@@ -151,7 +152,7 @@ class DetailProject extends Component {
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.navigate(SigninScreen)
             removeItem('token')
-            this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+            this.props.logout()
           } else if (res.data.code == Status.PROJECT_ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           } else if (res.data.code == Status.USER_PERMISSION) {
@@ -189,7 +190,7 @@ class DetailProject extends Component {
             Toast.show('Phiên đăng nhập hết hạn')
             navigation.navigate(SigninScreen)
             removeItem('token')
-            this.props.dispatch({ type: actionTypes.USER_LOGOUT })
+            this.props.logout()
           } else if (res.data.code == Status.ID_NOT_FOUND) {
             Toast.show('Dự án không tồn tại')
           }else if(res.data.code == Status.TOKEN_VALID){
@@ -412,5 +413,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 })
-
-export default connect()(DetailProject)
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    logout:()=>dispatch(logoutAction())
+  }
+}
+export default connect(mapDispatchToProps)(DetailProject)
