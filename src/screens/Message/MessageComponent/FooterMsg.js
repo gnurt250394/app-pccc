@@ -1,0 +1,81 @@
+import React, { Component } from 'react'
+import { Text, View ,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native'
+import images from 'assets/images'
+export default class FooterMsg extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+      <View style={styles.containerInput}>
+       <TextInput style={styles.input}
+       placeholder={"Nhập tin nhắn"}
+       />
+       <View style={styles.row}>
+       <TouchableOpacity>
+           <Image
+           style={styles.imgAvatar}
+           resizeMode="contain"
+           source={images.capture}
+           />
+       </TouchableOpacity>
+       <TouchableOpacity>
+           <Image
+           style={styles.imgIcon}
+           source={images.smile}
+           resizeMode="contain"
+           />
+       </TouchableOpacity>
+       </View>
+       </View>
+       <TouchableOpacity style={styles.containerSend}>
+           <Text style={styles.send}>Gửi</Text>
+       </TouchableOpacity>
+      </View>
+    )
+  }
+}
+const styles = StyleSheet.create({
+    container:{
+        backgroundColor:'#FFFFFF',
+        borderTopColor:'#CCCCCC',
+        borderTopWidth:0.6,
+        alignItems:'center',
+        flexDirection:'row'
+    },
+    containerInput:{
+        borderColor:'#2166A2',
+        marginLeft:5,
+        borderWidth:1,
+        borderRadius:5,
+        width:'87%',
+        height:40,
+        alignItems:'center',
+        flexDirection:'row',
+        marginVertical:6
+    },
+    row:{
+        flexDirection:'row',
+        flex:1,
+        justifyContent:'space-evenly'
+    },
+    containerSend:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    send:{
+        color:'#2166A2',
+        fontSize:16,
+        fontWeight:'800'
+    },
+    input:{
+        width:'70%'
+    },
+    imgAvatar:{
+        height:23,
+        width:23
+    },
+    imgIcon:{
+        height:23,
+        width:23
+    }
+})

@@ -5,9 +5,11 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
-import { HomeScreen, MessengerScreen } from 'config/screenNames'
+import { HomeScreen, MessageScreen,  } from 'config/screenNames'
 import { color, MessageStatus, popupOk } from 'config'
-
+import { BaseSearch } from 'components';
+import navigation from 'navigation/NavigationService';
+import { withNavigation } from 'react-navigation';
 
 class ListChat extends React.Component {
     state = {
@@ -17,54 +19,20 @@ class ListChat extends React.Component {
 
     // set status bar
     componentDidMount() {
-        this._navListener = this.props.navigation.addListener('didFocus', async () => {
-          StatusBar.setBarStyle('light-content');
-          StatusBar.setBackgroundColor(color);
+        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
+        //   StatusBar.setBarStyle('light-content');
+        //   StatusBar.setBackgroundColor(color);
          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
-        });
+        // });
     }
-    
-    componentWillUnmount() {
-        this._navListener.remove();
+    _nextPage=(item)=>()=>{
+        navigation.navigate(MessageScreen,{id:item.id,title:item.name})
     }
-    // end status bar
-
-    render(){
-        return (
-            <View style={{}}>
-               { !this.state.loading && <ScrollView>
-                     <View style={style.head}>
-                        <View 
-                            style={style.boxSearch}>
-                            <TouchableOpacity style={style.p8} onPress={this._navTo(MessengerScreen)} >
-                                <Image 
-                                    style={[styles.icon, style.w15]}
-                                    source={images.iconSearch} />
-                            </TouchableOpacity>
-                            <TextInput 
-                                style={[style.flex, style.txtSearch]}
-                                value={this.state.keyword}
-                                returnKeyLabel="Tìm"
-                                onSubmitEditing={this._onSearch}
-                                onChangeText={this.onChangeText('keyword')}
-                                placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                                placeholder="Tìm kiếm" />
-                            
-                        </View >
-                    </View>
-
-                    <FlatList
-                        data={datas}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item, index) => index.toString()} />
-                </ScrollView>}
-            </View>
-        )
-    }
-
     renderItem  = ({item, index}) => {
         return (
-            <TouchableOpacity style={style.box}>
+            <TouchableOpacity style={style.box}
+            onPress={this._nextPage(item)}
+            >
                 <Text style={item.status == MessageStatus.unread ? style.timeUnread : style.time}>{item.createdAt}</Text>
                 <View style={style.row}>
                     <View style={style.relative}>
@@ -86,6 +54,48 @@ class ListChat extends React.Component {
         )
     }
 
+    componentWillUnmount() {
+        // this._navListener.remove();
+    }
+    // end status bar
+    _keyExtractor = (item, index) => `${item.id||index}`
+    render(){
+        return (
+            <View style={style.container}>
+            <BaseSearch
+                        onSearch={this._onSearch}
+                        onClear={this.refressData}
+                        ref={val => this.search = val}
+                        // goBack={this._goBack}
+                        keyword={this.state.keyword} />
+                     {/* <View style={style.head}>
+                        <View 
+                            style={style.boxSearch}>
+                            <TouchableOpacity style={style.p8} onPress={this._navTo(MessengerScreen)} >
+                                <Image 
+                                    style={[styles.icon, style.w15]}
+                                    source={images.iconSearch} />
+                            </TouchableOpacity>
+                            <TextInput 
+                                style={[style.flex, style.txtSearch]}
+                                value={this.state.keyword}
+                                returnKeyLabel="Tìm"
+                                onSubmitEditing={this._onSearch}
+                                onChangeText={this.onChangeText('keyword')}
+                                placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                                placeholder="Tìm kiếm" />
+                            
+                        </View >
+                    </View> */}
+
+                    <FlatList
+                        data={datas}
+                        renderItem={this.renderItem}
+                        keyExtractor={this._keyExtractor} />
+            </View>
+        )
+    }
+    
     _showLabel = (item) => {
         
     }
@@ -122,17 +132,20 @@ const style = StyleSheet.create({
     w20: { width: 20},
     p8: {padding: 8},
     flex: {flex: 1},
-    avatar: {width: 50, height: 50, resizeMode: 'contain', borderRadius: 50},
+    avatar: {width: 60, height: 60, resizeMode: 'contain', borderRadius: 30},
     box: {borderBottomWidth: 1,padding: 10, borderBottomColor: '#ddd',},
-    time: {textAlign: 'right', fontSize: 11},
-    timeUnread: {textAlign: 'right', color: '#111111', fontSize: 11},
+    time: {position:'absolute',right:8,top:10, fontSize: 11},
+    timeUnread: {position:'absolute',right:8,top:10, color: '#111111', fontSize: 11},
     name: {color: '#111111', fontSize: 14, fontWeight: 'bold', paddingBottom: 8},
     message: {fontSize: 12, color: '#999999' },
     messageUnread: {color: '#111111', fontSize: 12, fontWeight: 'bold'},
-    dot: {width: 10, resizeMode: 'contain', position: 'absolute', right: 5, bottom: 4},
+    dot: {width: 10, resizeMode: 'contain', position: 'absolute', right: 3, bottom: 2},
     boxLabel: { flexDirection: 'column', paddingLeft: 10,},
-    row: {flexDirection: 'row'},
-    relative: {position: 'relative'}
+    row: {flexDirection: 'row',alignItems:'center'},
+    relative: {position: 'relative'},
+    container:{
+        flex:1
+    }
 })
 
 const datas = [
