@@ -23,14 +23,38 @@ export default class LiquidationShop extends Component {
         type: this.props.navigation.state.key == ShopLiquidation ? typeScreen.Liquidation : typeScreen.postPurchase
     }
     goDetail = (item) => () => {
-
+        this._hideMenu()
         navigation.navigate(DetailLiquidation, { id: item.id, type: this.state.type })
+    }
+    _hideMenu = () => {
+        let listLiqiudation = this.state.listLiqiudation
+        listLiqiudation.forEach(item => item.isShow = false)
+        this.setState({ listLiqiudation })
+        console.log(listLiqiudation, 'aaa')
+
+    }
+    showMenu = (item) => () => {
+
+        let listLiqiudation = this.state.listLiqiudation
+       listLiqiudation.forEach(e=>{
+           if(e.id == item.id){
+               e.isShow = true
+           }else{
+               e.isShow= false
+           }
+       })
+        
+        this.setState({ listLiqiudation })
     }
     _renderItem = ({ item, index }) => {
         return (
             <Item
+                // onStartShouldSetResponderCapture={this._hideMenu}
                 onPress={this.goDetail(item)}
+                edit={() => { alert('1111') }}
                 item={item}
+                index={index}
+                onShowMenu={this.showMenu(item)}
             />
 
 
@@ -56,14 +80,19 @@ export default class LiquidationShop extends Component {
     _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
 
     handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
+
     render() {
         const { type } = this.state
         return (
-            <View style={styles.container}>
+            <View style={styles.container}
+
+
+            >
 
                 <FlatList
                     data={this.state.listLiqiudation}
                     renderItem={this._renderItem}
+                    extraData={this.state}
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefress}
                     ListEmptyComponent={this._listEmpty}
@@ -84,7 +113,7 @@ export default class LiquidationShop extends Component {
             </View>
         );
     }
-    getData =async (params) => {
+    getData = async (params) => {
         let token = await getItem('token')
         getListLiquidation(params,token).then(res => {
 
@@ -131,7 +160,7 @@ export default class LiquidationShop extends Component {
         this.getData(params)
     }
     getLiquidation = async () => {
-        if(this.state.page ==1){this.setState({ refreshing: true })}
+        if (this.state.page == 1) { this.setState({ refreshing: true }) }
         let params = {
             type: this.state.type,
             page: this.state.page

@@ -10,6 +10,7 @@ import BodyDetail from './BodyDetail';
 import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
 import { Status, callNumber, typeScreen } from 'config/Controller';
+import { MessageScreen } from 'config/screenNames';
 
 export default class DetailLiquidation extends Component {
       state={
@@ -19,7 +20,7 @@ export default class DetailLiquidation extends Component {
             type:this.props.navigation.getParam('type',typeScreen.postPurchase)
       }
       _nextPage=()=>{
-            alert('111')
+           navigation.navigate(MessageScreen)
       }
       _goBack=()=>{
             navigation.pop()
