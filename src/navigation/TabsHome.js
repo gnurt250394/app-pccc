@@ -2,11 +2,11 @@ import { createBottomTabNavigator } from "react-navigation";
 import {Image, StatusBar} from 'react-native'
 import React from 'react'
 import images from "assets/images"
-import { HomeScreen, MessengerScreen, ProfileScreen, NotifyScreen } from "config/screenNames"
+import { HomeScreen, ProfileScreen, NotifyScreen, ListChatScreen } from "config/screenNames"
 import Profile from 'screens/Profile'
 import Home from 'screens/Home'
 
-import ListChat from 'screens/Messenger/ListChat'
+import ListChat from 'screens/Message/ListChat'
 import Notify from 'screens/Notify'
 import { color } from 'config'
 import Icon from "screens/Notify/Icon";
@@ -19,7 +19,7 @@ export default createBottomTabNavigator(
         title: 'Trang chủ',
       }),
     },
-    [MessengerScreen]: { 
+    [ListChatScreen]: { 
       screen: ListChat,
       navigationOptions: () => ({
         title: 'Tin nhắn',
@@ -55,7 +55,7 @@ export default createBottomTabNavigator(
             image = focused ? images.tabHomeRed : images.tabHome;
             w = 22;
             break;
-          case MessengerScreen:
+          case ListChatScreen:
             image = focused ? images.tabMsgRed : images.tabMsgDark;
             w = 22;
             break;

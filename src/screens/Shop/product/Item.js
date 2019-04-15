@@ -2,7 +2,12 @@ import React, { PureComponent } from 'react';
 import { View, Text,Image,StyleSheet,Dimensions,TouchableOpacity,TextInput } from 'react-native';
 const {width} = Dimensions.get('window')
 export default class Item extends PureComponent {
- 
+ state={
+     text:''
+ }
+    _onChangeText =(state)=>(value)=>{
+        this.setState({[state]:value})
+    }
 
   render() {
    if(this.props.edit ==1 ) {
@@ -38,7 +43,7 @@ export default class Item extends PureComponent {
             <Text>{this.props.title}</Text>
             </View>
             <TextInput 
-            value={this.props.name}
+            onChangeText={this._onChangeText('text')}
             placeholder={this.props.placeholder}
             style={styles.txtInput}></TextInput>
         </View>

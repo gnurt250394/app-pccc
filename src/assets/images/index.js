@@ -163,5 +163,7 @@ module.exports = {
     loading:require('./loading.gif'),
     tickerOk:require('./tickerOk.png'),
     drop:require('./drop.png'),
-    liquiAdd:require('./LiquiAdd.png')
+    liquiAdd:require('./LiquiAdd.png'),
+    smile:require('./smile.png'),
+    capture:require('./capture.png')
 }

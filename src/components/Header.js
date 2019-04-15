@@ -15,17 +15,17 @@ export default class Header extends React.Component {
             {/* <StatusBar
                 barStyle="light-content" 
                 backgroundColor={color} /> */}
-            {   this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
+            {this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                     <Image 
                         style={style.icon}
                         source={images.backLight} />
                 </TouchableOpacity>
                 :
-                <View style={style.view}/>
-
-            
-            }
+                <View style={style.view}/>}
+                <View style={style.flex}>
                 <Text style={[ style.title,fontStyles.Acumin_bold]}>{this.props.title}</Text>
+                {this.props.status&&<Text style={style.status}>{this.props.status}</Text>}
+                </View>
                 {this.props.finish == 1?<TouchableOpacity 
                 onPress={this.props.onFinish}
                 style={style.view}>
@@ -46,6 +46,16 @@ export default class Header extends React.Component {
 }
 
 const style = StyleSheet.create({
+    flex:{
+        alignSelf:'center'
+    },
+    status:{
+        fontSize:11,
+        textAlign:'center',
+        color:'#FFFFFF',
+        fontWeight:'300',
+        paddingBottom:5
+    },
     content: {
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -68,10 +78,10 @@ const style = StyleSheet.create({
     },
     title: {
         // fontFamily: fontStyle.Acumin_bold,
-        flex: 1, 
+        // flex: 1, 
         fontSize: 18, 
         color: '#fff', 
-        textAlign: 'center', 
+        // textAlign: 'center', 
         // paddingRight: 20, 
     },
     btn: {

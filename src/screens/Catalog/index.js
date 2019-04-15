@@ -5,7 +5,7 @@ import { color, width, StatusCode, popupOk, MIME, Follow, popupCancel, ellipsisC
 import { BaseSearch } from 'components'
 import images from "assets/images"
 import { listDocuments, addFolow, searchDocuments, UnFolowUser, listDocumentFollows } from 'config/apis/Project'
-import { getItem, Status, getMimeType, downFile } from 'config/Controller';
+import { getItem, Status, getMimeType, downFile, Capitalize } from 'config/Controller';
 import { SigninScreen } from 'config/screenNames'
 import RNFetchBlob from 'react-native-fetch-blob'
 import Toast from 'react-native-simple-toast';
@@ -105,7 +105,7 @@ class Catalog extends React.Component {
             {this.showImage(item.link)}
 
             <View style={style.right}>
-                <Text style={style.name}>{item.name}</Text>
+                <Text style={style.name}>{Capitalize(item.name)}</Text>
                 {this.showDescription(item, index)}
                 <View style={style.row}>
 
@@ -149,7 +149,7 @@ class Catalog extends React.Component {
         if (!item.showMore) {
             return (
                 <View>
-                    <Text style={style.description}>{item.description}</Text>
+                    <Text style={style.description}>{Capitalize(item.description)}</Text>
                     {item.showLess && <TouchableOpacity onPress={this._showLess(index)} style={[style.p8, style.flexEnd, style.pr10]}>
                         <Image source={images.lessThan} style={style.iconMore} />
                     </TouchableOpacity>}
@@ -159,7 +159,7 @@ class Catalog extends React.Component {
 
             return (
                 <View style={style.boxDesc}>
-                    <Text style={style.description}>{item.description}</Text>
+                    <Text style={style.description}>{Capitalize(item.description)}</Text>
                     <TouchableOpacity onPress={this._showMore(index)} style={[style.p8, style.pr10]}>
                         <Image source={images.moreThan} style={style.iconMore} />
                     </TouchableOpacity>

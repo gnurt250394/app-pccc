@@ -102,9 +102,9 @@ _addItem=()=>{
      data[index].isShow = true
      this.setState({ListProduct:data})
  }
- _handleMenu=(index)=>()=>{
-    let data = [...this.state.ListProduct]
-    data[index].isShow = false
+ _handleMenu=()=>{
+    let data = this.state.ListProduct
+    data.forEach(item=> item.isShow = false)
     this.setState({ListProduct:data})
  }
  _renderItem=({item,index})=>{
@@ -122,7 +122,7 @@ _addItem=()=>{
     } else{
         return(
             <View style={styles.containerList}
-            onStartShouldSetResponderCapture={this._handleMenu(index)}
+            onStartShouldSetResponderCapture={this._handleMenu}
             >
                 <Image source={{uri:item.full_path}}
                     style={styles.image}
@@ -163,6 +163,7 @@ _addItem=()=>{
   render() {
     return (
       <View style={styles.container}
+      onStartShouldSetResponderCapture={this._handleMenu}
       >
        <FlatList
             data={this.state.ListProduct}
@@ -182,7 +183,7 @@ _addItem=()=>{
           console.debug('didFocus', payload);
         }
       );
-    this.getDetail()
+    // this.getDetail()
   };
   componentWillUnmount(){
       this._didFocus().remove()

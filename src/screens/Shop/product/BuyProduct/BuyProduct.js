@@ -7,6 +7,7 @@ import images from 'assets/images'
 import { chooseImage } from 'config/uploadImage';
 import { ListCategory } from 'config/screenNames';
 import ModalCustom from '../../Component/Modal';
+import Modal from 'screens/Liquidation/Modal';
 const { width } = Dimensions.get('window')
 export default class BuyProduct extends Component {
     constructor(props) {
@@ -31,7 +32,8 @@ export default class BuyProduct extends Component {
             address: '',
             file: '',
             visible: false,
-            height: ''
+            height: '',
+            valueAddress:''
         };
     }
     _goBack = () => {
@@ -119,7 +121,10 @@ export default class BuyProduct extends Component {
     _nextCategory = () => {
         navigation.navigate(ListCategory)
     }
+    handleAddress = () => (value) => {
+        this.setState({ valueAddress: value, visible: false })
 
+  }
     onChangeText = (index) => (val) => {
         this.setState({ [index]: val })
     }
@@ -214,7 +219,7 @@ export default class BuyProduct extends Component {
                         <Item
                             source={images.sLocation}
                             title={"Địa điểm bán"}
-                            placeholder={"adbf"}
+                            placeholder={this.state.valueAddress}
                             edit={1}
                             onPress={this._OpenModal}
                         />
@@ -246,15 +251,10 @@ export default class BuyProduct extends Component {
                             name={''}
                             subName={">"}
                         />
-                        <ModalCustom
-                            // closeModal={this.onVisibleModal}
-                            // getListCounty={this.getListCounty}
-                            visible={this.state.visible}
-                            // data={this.state.listCity}
-                            // listCountry={this.state.listCountry}
-                            onClose={() => {
-                                this.setState({ visible: false });
-                            }}
+                        <Modal
+                        visible={this.state.visible}
+                        ref={ref => this.Modal = ref}
+                        handleAddress={this.handleAddress()}
                         />
                         <TouchableOpacity style={styles.button}
                             onPress={this._sellProduct}

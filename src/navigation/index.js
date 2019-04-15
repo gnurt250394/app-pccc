@@ -24,7 +24,6 @@ import Contacts from "../screens/Product/contact";
 import Introduce from "../screens/Introduce/Introduce";
 import Shop from "../screens/Shop";
 import Search from "../screens/Search";
-import Messenger from 'screens/Messenger'
 import InfoProject from "screens/Project/InfoProject";
 import DetailProject from "screens/Project/DetailProject";
 
@@ -52,6 +51,7 @@ import CategoryFilter from "screens/Liquidation/ListLiquidation/CategoryFilter";
 import PostPurchase from "screens/PostPurchase/Purchase/PostPurchase";
 import DetailPostPurchase from "screens/PostPurchase/DetailPostPurchase/DetailPostPurchase";
 import ListPostPurchase from "screens/PostPurchase/ListPostPurchase/ListPostPurchase";
+import Message from "screens/Message/Message";
 
 // const MyDrawerNavigator = createDrawerNavigator({
 //   Tabs: TabsHome
@@ -90,7 +90,7 @@ const App = createStackNavigator(
     [ScreenName.SearchScreen]: Search,
     [ScreenName.CheckPhoneScreen]: CheckPhone,
     
-    [ScreenName.MessengerScreen]: Messenger,
+    [ScreenName.MessageScreen]: Message,
 
     // bidding
     [ScreenName.ListBiddingScreen]: ListBidding,
