@@ -100,9 +100,12 @@ export default class ListLiquidation extends Component {
         }
 
     }
+    filterStart=()=>{
+        this.setState({refreshing:true})
+    }
     filter = (value) => {
         
-        this.setState({ listLiqiudation: value })
+        this.setState({ listLiqiudation: value ,refreshing:false})
     }
     _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
 
@@ -123,6 +126,7 @@ export default class ListLiquidation extends Component {
                     onClear={this.refressData}
                     ref={val => this.search = val}
                     filter={this.filter}
+                    filterStart={this.filterStart}
                     type={this.state.type}
                     goBack={this._goBack}
                     keyword={this.state.keyword}
@@ -190,7 +194,7 @@ export default class ListLiquidation extends Component {
         this.getData(page)
     }
     getLiquidation = async () => {
-        
+        this.search.resetFilter()
         this.getData(this.state.page)
     }
     componentDidMount = () => {

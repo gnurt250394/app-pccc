@@ -72,7 +72,7 @@ export default class FooterDetail extends Component {
                         <FlatList
                               data={this.props.file_attach}
                               horizontal={true}
-                              showsHorizontalScrollIndicator={false}
+                              // showsHorizontalScrollIndicator={false}
                               renderItem={this._renderItem}
                               keyExtractor={this._keyExtractor}
                         />

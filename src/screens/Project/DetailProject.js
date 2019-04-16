@@ -200,7 +200,7 @@ class DetailProject extends Component {
           Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
         })
       } else {
-        popupOk(Messages.LOGIN_REQUIRE, () => this.props.navigation.navigate(SigninScreen))
+        popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
 
       }
 

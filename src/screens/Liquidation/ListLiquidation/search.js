@@ -16,7 +16,7 @@ export default class Search extends React.PureComponent {
         keyword: this.props.keyword || '',
         clear: false,
         city:{name:'Chọn tỉnh'},
-        category:{name:'Chọn danh mục'},
+        category:{name:'Danh mục'},
         type:this.props.type || ''
     }
 
@@ -28,8 +28,11 @@ export default class Search extends React.PureComponent {
        
         this.filter(value,this.state.category)
     }
+    resetFilter=()=>{
+        this.setState({ city:{name:'Chọn tỉnh',id:''},category:{name:'Danh mục',id:''}})
+    }
     filter =(city,category)=>{
-        
+        this.props.filterStart()
         let params = {
             'city_id': city.id,
             'type':this.state.type,
@@ -37,7 +40,7 @@ export default class Search extends React.PureComponent {
         }
         
         getListLiquidation(params).then(res => {
-            
+            console.log(res.data,'filter')
             if (res.data.code == Status.SUCCESS) {
                   this.props.filter(res.data.data)
             }else if(res.data.code == Status.TOKEN_EXPIRED){
@@ -50,9 +53,11 @@ export default class Search extends React.PureComponent {
                 this.props.filter([])
             }else{
                 SimpleToast.show("Lỗi hệ thống")
+                this.props.filter([])
             }
       }).catch(err => {
             SimpleToast.show("Server ERROR")
+            this.props.filter([])
             
       })
     }
@@ -87,7 +92,7 @@ export default class Search extends React.PureComponent {
                         onFocus={this.showBtnClose}
                         onSubmitEditing={this.props.onSearch}
                         onChangeText={this.onChangeText}
-                        placeholderTextColor={color}
+                        placeholderTextColor={'#87BBE8'}
                         placeholder="Tìm kiếm" />
                     
                     {this.state.clear && <TouchableOpacity style={style.p8}  onPress={this.onClear}  >
@@ -192,7 +197,8 @@ const style = StyleSheet.create({
         textAlign:'center',
         maxWidth:'80%',
         marginRight:5,
-        fontWeight:'500'
+        fontWeight:'500',
+        fontSize:17
     }
 })
 

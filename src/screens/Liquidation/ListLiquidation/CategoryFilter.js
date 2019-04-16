@@ -10,7 +10,7 @@ export default class CategoryFilter extends Component {
     super(props);
     this.state = {
       listCategory: [],
-
+      loading:true
     };
   }
   _goBack = () => {
@@ -18,12 +18,16 @@ export default class CategoryFilter extends Component {
   }
   _selectList = (item) => () => {
 
-
-    if (this.props.navigation.state && this.props.navigation.state.params.fun) {
-      console.log(item, 'itemC')
-      this.props.navigation.state.params.fun(item)
-      navigation.pop()
+    if(this.state.loading){
+      this.setState({loading:false})
+      if (this.props.navigation.state && this.props.navigation.state.params.fun) {
+        this.props.navigation.state.params.fun(item)
+        navigation.pop()
+      }
+    }else{
+      return null
     }
+   
 
   }
 
