@@ -11,19 +11,24 @@ export default class ListCity extends Component {
     super(props);
     this.state = {
       listCity:[],
-      
+      loading:true
     };
   }
   _goBack=()=>{
     navigation.pop()
 }
 _selectList=(item)=>()=>{
-  
-  if(this.props.navigation.state && this.props.navigation.state.params.fun){
-   console.log(item,'city')
-    this.props.navigation.state.params.fun(item)
-    navigation.pop()
+  if(this.state.loading){
+    this.setState({loading:false})
+    if(this.props.navigation.state && this.props.navigation.state.params.fun){
+      
+       this.props.navigation.state.params.fun(item)
+       navigation.pop()
+     }
+  }else{
+    return null
   }
+  
   
 }
 

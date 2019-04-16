@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity,ScrollView,Linking } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity,ScrollView,Linking,RefreshControl } from 'react-native'
 import { Header } from 'components';
 import images from "assets/images"
 import { fontStyles } from 'config/fontStyles';
@@ -9,8 +9,9 @@ import HeaderDetail from './HeaderDetail';
 import BodyDetail from './BodyDetail';
 import FooterDetail from './FooterDetail';
 import { getDetailLiquidation } from 'config/apis/liquidation';
-import { Status, callNumber, typeScreen } from 'config/Controller';
-import { MessageScreen } from 'config/screenNames';
+import { Status, callNumber, typeScreen, getItem, popup } from 'config/Controller';
+import { MessageScreen, SigninScreen } from 'config/screenNames';
+import { Messages } from 'config/Status';
 
 export default class DetailLiquidation extends Component {
       state={
@@ -19,14 +20,29 @@ export default class DetailLiquidation extends Component {
             loading:true,
             type:this.props.navigation.getParam('type',typeScreen.postPurchase)
       }
-      _nextPage=()=>{
-           navigation.navigate(MessageScreen)
+      _nextPage= async()=>{
+            let token = await getItem('token')
+            if(token){
+                  navigation.navigate(MessageScreen)
+            }else{
+                  popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+            }
+          
       }
       _goBack=()=>{
             navigation.pop()
       }
       _CallPhone = (Liquidation)=>() =>{
             callNumber(Liquidation.user_phone)
+      }
+      refress=()=>{
+            return(
+                  <RefreshControl
+                  refreshing={this.state.loading}
+                  onRefresh={this.getDetail}
+                  colors={['#2166A2','#FFFFFF']}
+                  />
+            )
       }
       render() {
             const {Liquidation,type} = this.state
@@ -37,8 +53,11 @@ export default class DetailLiquidation extends Component {
                               onPress={this._goBack}
                               title={type == typeScreen.Liquidation?'Chi tiết thanh lý':'Chi tiết đăng mua'}
                         />
-                        {this.state.loading?
-                        <ScrollView>
+                        
+                        <ScrollView 
+                        refreshControl={this.refress()}
+                        >
+                        {!this.state.loading ?
                         <View style={styles.Group}>
                               <HeaderDetail
                               image={Liquidation.user_image}
@@ -58,8 +77,9 @@ export default class DetailLiquidation extends Component {
                               file_attach={Liquidation.file_attach}
                               />
                         </View>
-                        </ScrollView>
                         : null}
+                        </ScrollView>
+                        
                         <Button
                         onPressMsg={this._nextPage}
                         onPressPhone={this._CallPhone(Liquidation)}
@@ -72,12 +92,12 @@ export default class DetailLiquidation extends Component {
             getDetailLiquidation(this.state.id).then(res=>{
                   console.log(res.data,'dadads')
                   if(res.data.code == Status.SUCCESS){
-                        this.setState({Liquidation:res.data.data})
+                        this.setState({Liquidation:res.data.data,loading:false})
                   }else if(res.data.code == Status.ID_NOT_FOUND){
-                        this.setState({loading:false,Liquidation:{}})
+                        this.setState({loading:false,Liquidation:{},loading:false})
                   }
             }).catch(err=>{
-                  
+                  this.setState({loading:false})
             })
       }
       componentDidMount() {

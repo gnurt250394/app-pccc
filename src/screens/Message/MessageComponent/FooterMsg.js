@@ -2,12 +2,24 @@ import React, { Component } from 'react'
 import { Text, View ,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native'
 import images from 'assets/images'
 export default class FooterMsg extends Component {
+    state={
+        text:''
+    }
+    _onChangeText=(state)=>(value)=>{
+        this.setState({[state]:value})
+    }
+
+    onClear =()=>{
+        this.setState({text:''})
+    }
   render() {
     return (
       <View style={styles.container}>
       <View style={styles.containerInput}>
        <TextInput style={styles.input}
        placeholder={"Nhập tin nhắn"}
+       value={this.state.text}
+       onChangeText={this._onChangeText('text')}
        />
        <View style={styles.row}>
        <TouchableOpacity>
@@ -26,7 +38,9 @@ export default class FooterMsg extends Component {
        </TouchableOpacity>
        </View>
        </View>
-       <TouchableOpacity style={styles.containerSend}>
+       <TouchableOpacity style={styles.containerSend}
+       onPress={this.props.onPress}
+       >
            <Text style={styles.send}>Gửi</Text>
        </TouchableOpacity>
       </View>
@@ -68,7 +82,8 @@ const styles = StyleSheet.create({
         fontWeight:'800'
     },
     input:{
-        width:'70%'
+        width:'70%',
+        height:'100%'
     },
     imgAvatar:{
         height:23,

@@ -26,6 +26,7 @@ const constant ={
     LIST_FOLLOW_DOCUMMENT: 'list-document-follow',
     COUNT_NOTIFICATION:'count-notification',
     LIST_LIQUIDATION:'new-post',
+    MESSAGE:'message-chat'
 }
 
 export default constant;

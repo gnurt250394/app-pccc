@@ -130,8 +130,9 @@ class Liquidation extends Component {
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
                   listFile = this.footer.state.listFile || [],
-                  title = this.inputTitle.state.text || ''
-            decription = this.inputDescription.state.text || ''
+                  title = this.inputTitle.state.text || '',
+                  decription = this.inputDescription.state.text || '',
+                  address = this.Modal.state.value || ''
 
             let params = new FormData()
             this.state.category_id.forEach(item => {
@@ -146,6 +147,7 @@ class Liquidation extends Component {
             params.append('description', decription)
             params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
             params.append('city_id', idCity)
+            params.append('address', address)
             params.append('district_id', idCountry)
             console.log(params, 'parem')
             if (this.validate() == '') {

@@ -1,20 +1,31 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { Text, View, StyleSheet, Image,ActivityIndicator } from 'react-native'
 import images from 'assets/images'
+import moment from 'moment'
+import 'moment/locale/vi'
 export default class BodyMsg extends React.PureComponent {
+constructor(props){
+  super(props)
+ 
+}
+  convertTime =(time)=>{
+   
+    return  moment(time,'YYYY-MM-DD hh:mm:ss').subtract(1, 'days').calendar()
+  }
   render() {
     const { item } = this.props
     // check nếu tin nhắn của người khác gửi đến
-    if (item.type == 1) {
+    if (item.receiver_id) {
       return (
         <View style={styles.container}>
           <Image style={styles.imgAvatar} resizeMode="contain" source={item.avatar ? { uri: item.avatar } : images.userBlue} />
           <View>
             <View style={styles.containerGuest}>
-              {item.msg ? <Text style={styles.txtGuest}>{item.msg}</Text> : null}
+              {item.message ? <Text style={styles.txtGuest}>{item.message}</Text> : null}
             </View>
             {item.image ? <Image style={styles.img} source={{ uri: item.image }} /> : null}
-            <Text style={styles.time}>{item.time}</Text>
+            
+            <Text style={styles.time}>{this.convertTime(item.created_at)}</Text>
           </View>
         </View>
       )
@@ -23,12 +34,14 @@ export default class BodyMsg extends React.PureComponent {
     } else {
       return (
         <View style={styles.groupUser}>
-          <View>
             <View style={styles.containerUser}>
-              <Text style={styles.txtUser}>{item.msg}</Text>
+              <Text style={styles.txtUser}>{item.message}</Text>
             </View>
-            <Text style={styles.timeUser}>{item.time}</Text>
-          </View>
+            {item.loading?
+            <ActivityIndicator size="small" color="#2166A2" style={styles.loading}
+            />
+            :<Text style={styles.timeUser}>{item.created_at}</Text>}
+             {this.props.image ? <Image style={styles.img} source={{ uri: this.props.image }} /> : null}
         </View>
       )
     }
@@ -40,9 +53,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  loading:{
+    alignSelf:'flex-end',
+    marginRight:10
+  },
   groupUser: {
     flex: 1,
     alignSelf: 'flex-end',
+    marginBottom:20
   },
   imgAvatar: {
     height: 40,
@@ -58,6 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: 5,
     maxWidth: '90%',
+    minWidth:'20%',
     paddingVertical: 10,
     paddingStart: 10
   },
@@ -66,8 +85,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#2166A2',
     marginTop: 5,
     maxWidth: '90%',
+    minWidth:'20%',
+    maxHeight:'100%',
     paddingVertical: 10,
-    paddingStart: 10
+    paddingStart: 10,
+    marginRight:10
   },
   timeUser: {
     fontSize: 11,
