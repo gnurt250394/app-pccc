@@ -5,10 +5,12 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  Image,
+  StyleSheet
 } from 'react-native';
-
-export default class SearchableDropDown extends Component{
+import images from 'assets/images'
+export default class SearchableDropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,20 +20,20 @@ export default class SearchableDropDown extends Component{
     };
   };
 
-  renderFlatList(){
-    if(this.state.focus){
+  renderFlatList() {
+    if (this.state.focus) {
       return (
-          <FlatList
-            style={{ ...this.props.itemsContainerStyle }}
-            keyboardShouldPersistTaps="always"
-            data={this.state.listItems}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({  item  }) => this.renderItems(item)} />
-         )
-     }
+        <FlatList
+          style={{ ...this.props.itemsContainerStyle }}
+          keyboardShouldPersistTaps="always"
+          data={this.state.listItems}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => this.renderItems(item)} />
+      )
+    }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const listItems = this.props.items;
     const defaultIndex = this.props.defaultIndex;
     if (defaultIndex && listItems.length > defaultIndex) {
@@ -41,26 +43,26 @@ export default class SearchableDropDown extends Component{
       });
     }
     else {
-      this.setState({listItems});
+      this.setState({ listItems });
     }
   }
 
-  searchedItems= (searchedText) => {
-      var ac = this.props.items.filter((item)=> {
-        return item.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
-      });
-      let item = {
-        id: -1,
-        name: searchedText
-      }
-      this.setState({listItems: ac, item: item });
+  searchedItems = (searchedText) => {
+    var ac = this.props.items.filter((item) => {
+      return item.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
+    });
+    let item = {
+      id: -1,
+      name: searchedText
+    }
+    this.setState({ listItems: ac, item: item });
 
-      const onTextChange = this.props.onTextChange;
-      if (onTextChange && typeof onTextChange === 'function') {
-        // setTimeout(() => {
-          onTextChange(searchedText);
-        // }, 1000);
-      }
+    const onTextChange = this.props.onTextChange;
+    if (onTextChange && typeof onTextChange === 'function') {
+      // setTimeout(() => {
+      onTextChange(searchedText);
+      // }, 1000);
+    }
   };
 
   renderItems = (item) => {
@@ -77,15 +79,15 @@ export default class SearchableDropDown extends Component{
     );
   };
 
-  
 
- render() {
+
+  render() {
     return (
-      <View keyboardShouldpersist='always' style={{...this.props.containerStyle}}>
-        
-        <TextInput
+      <View keyboardShouldpersist='always' style={{ ...this.props.containerStyle }}>
+        <View style={{ ...this.props.textInputStyle }}>
+          <TextInput
             underlineColorAndroid={this.props.underlineColorAndroid}
-          editable={this.props.editable}
+            editable={this.props.editable}
             onFocus={() => {
               this.setState({
                 focus: true,
@@ -96,20 +98,34 @@ export default class SearchableDropDown extends Component{
                 listItems: this.props.items
               });
             }}
-            
+
             onBlur={() => {
               this.setState({ focus: false })
             }}
             ref={(e) => this.input = e}
             onChangeText={(text) => {
-              this.searchedItems(text)}
+              this.searchedItems(text)
+            }
             }
             value={this.props.value}
-            style={{ ...this.props.textInputStyle }}
+            style={styles.textInput}
             placeholderTextColor={this.props.placeholderTextColor}
             placeholder={this.props.placeholder} />
-            { this.renderFlatList() }
+          <Image style={styles.images} source={images.drop} />
+        </View>
+        {this.renderFlatList()}
       </View>
     );
   };
 }
+const styles = StyleSheet.create({
+  images: {
+    height: 13,
+    width: 13,
+    marginLeft: 5,
+    resizeMode: 'contain',
+  },
+  textInput: {
+    width:'90%'
+  }
+})

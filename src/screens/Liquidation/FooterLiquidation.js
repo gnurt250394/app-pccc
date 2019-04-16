@@ -32,7 +32,7 @@ export default class FooterLiquidation extends Component {
                     onPress={this._choseFile}
                 >
                     <Image
-                        source={images.mAdd}
+                        source={images.shopAdd}
                         style={styles.imageAdd}
                         resizeMode="contain"
                     />
@@ -74,9 +74,10 @@ const styles = StyleSheet.create({
             flex:1
       },
       txtAdd:{
-            fontSize: 12, 
+            fontSize: 13, 
             color: '#2166A2', 
-            marginTop:4
+            marginTop:4,
+            fontWeight:'500'
       },
       txtFile:{
             color: '#333333',

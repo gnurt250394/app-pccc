@@ -12,11 +12,11 @@ import { Btn } from 'components';
 import FooterLiquidation from './FooterLiquidation';
 import { postLiquidation } from 'config/apis/liquidation';
 import CustomDialog from 'components/CustomDialog';
-import Modal from './Modal';
 import { fontStyles } from 'config/fontStyles';
 import DropDown from './Dropdown';
 import SimpleToast from 'react-native-simple-toast';
 import { Messages } from 'config/Status';
+import ModalScreen from './Modal';
 moment.locale('vn')
 
 
@@ -81,13 +81,11 @@ class Liquidation extends Component {
                                     <Item
                                           name={"Tên tiêu đề"}
                                           ref={val => this.inputTitle = val}
-                                          onChangeText={this._onChangeText('title')}
                                           placeholder={"Nhập nội dung"}
                                     />
                                     <Item
                                           name={type == typeScreen.Liquidation ? "Nội dung cần thanh lý" : 'Nội dung cần mua'}
                                           multiline={true}
-                                          onChangeText={this._onChangeText('decription')}
                                           ref={val => this.inputDescription = val}
                                           placeholder={"Nhập nội dung"}
                                           style={styles.inputItem}
@@ -108,7 +106,7 @@ class Liquidation extends Component {
                                     >
                                           <Text style={[styles.btnDropdown]}>{this.state.location}</Text>
                                     </TouchableOpacity>
-                                    <Modal
+                                    <ModalScreen
                                           visible={this.state.isVisible}
                                           ref={ref => this.Modal = ref}
                                           handleAddress={this.handleAddress()}
@@ -118,7 +116,7 @@ class Liquidation extends Component {
                                           ref={ref => this.footer = ref}
                                     />
                                     <Btn
-                                          name="đăng tin"
+                                          name={this.state.type == typeScreen.Liquidation ? "đăng tin" : "Đăng mua ngay"}
                                           onPress={this._nextPage}
                                           customStyle={styles.btnLiquidation}
                                     />
@@ -131,7 +129,9 @@ class Liquidation extends Component {
 
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
-                  listFile = this.footer.state.listFile || []
+                  listFile = this.footer.state.listFile || [],
+                  title = this.inputTitle.state.text || ''
+            decription = this.inputDescription.state.text || ''
 
             let params = new FormData()
             this.state.category_id.forEach(item => {
@@ -142,8 +142,8 @@ class Liquidation extends Component {
                   const fileName = date.getTime() + '.' + /[^\.]*$/.exec(item.fileName)[0]
                   params.append('file[]', { uri: item.uri, type: item.type, name: fileName }, fileName)
             })
-            params.append('title', this.state.title)
-            params.append('description', this.state.decription)
+            params.append('title', title)
+            params.append('description', decription)
             params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
             params.append('city_id', idCity)
             params.append('district_id', idCountry)
@@ -177,10 +177,12 @@ class Liquidation extends Component {
       validate = () => {
             let msg = ''
             let idCity = this.Modal.state.idCity || '',
-                  idCountry = this.Modal.state.idDistrict || ''
+                  idCountry = this.Modal.state.idDistrict || '',
+                  title = this.inputTitle.state.text || ''
+            decription = this.inputDescription.state.text || ''
             console.log(idCity, 'idddd')
 
-            let { title, decription, category_id } = this.state
+            let { category_id } = this.state
             if (title == '') {
                   return msg += 'Tên tiêu đề không được để trống';
             }

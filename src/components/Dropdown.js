@@ -8,7 +8,9 @@ export default class DropDown extends PureComponent {
 
     render() {
       return(
-      <View onStartShouldSetResponderCapture={this.props.onStartShouldSetResponderCapture} >
+      <View onStartShouldSetResponderCapture={this.props.onStartShouldSetResponderCapture}
+    onResponderRelease={this.props.onResponderRelease}
+      >
       {/* {this.props.touch == false?
           null:
       <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
@@ -24,7 +26,6 @@ export default class DropDown extends PureComponent {
       <SearchableDropDown
           onItemSelect={this.props.onItemSelect}
           containerStyle={this.props.style}
-          placeholderTextColor={"#333333"}
           textInputStyle={styles.editText}
           itemStyle={styles.itemStyle}
           itemTextStyle={{ color: '#222' }}
@@ -51,8 +52,9 @@ export default class DropDown extends PureComponent {
         height:40,
         marginTop:3,
         paddingLeft:12,
-        borderWidth:0.7,
-        fontWeight:'600',
+        borderWidth:1,
+        flexDirection:"row",
+        alignItems:'center',
         borderColor: '#707070',
     },
     imageButton:{

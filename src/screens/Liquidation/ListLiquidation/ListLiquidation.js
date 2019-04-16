@@ -143,11 +143,15 @@ export default class ListLiquidation extends Component {
             </View>
         );
     }
-    getData = (params) => {
+    getData = (page) => {
+        let params ={
+            type: this.state.type,
+            page:page
+        }
         getListLiquidation(params).then(res => {
             console.log(res.data,'get')
             if (res.data.code == Status.SUCCESS) {
-                if (this.state.page == 1) {
+                if (page == 1) {
                     this.setState({
                         listLiqiudation: res.data.data,
                         Thresold: 0.1,
@@ -182,18 +186,12 @@ export default class ListLiquidation extends Component {
         })
     }
     refressData = () => {
-        let params = {
-            type: this.state.type,
-            page: 1
-        }
-        this.getData(params)
+       let page = 1
+        this.getData(page)
     }
     getLiquidation = async () => {
-        let params = {
-            type: this.state.type,
-            page: this.state.page
-        }
-        this.getData(params)
+        
+        this.getData(this.state.page)
     }
     componentDidMount = () => {
         this.getLiquidation()
