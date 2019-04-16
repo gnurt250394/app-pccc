@@ -19,11 +19,11 @@ class ListChat extends React.Component {
 
     // set status bar
     componentDidMount() {
-        // this._navListener = this.props.navigation.addListener('didFocus', async () => {
-        //   StatusBar.setBarStyle('light-content');
-        //   StatusBar.setBackgroundColor(color);
+        this._navListener = this.props.navigation.addListener('didFocus', async () => {
+          StatusBar.setBarStyle('light-content');
+          StatusBar.setBackgroundColor(color);
          popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
-        // });
+        });
     }
     _nextPage=(item)=>()=>{
         navigation.navigate(MessageScreen,{id:item.id,title:item.name})
@@ -68,30 +68,12 @@ class ListChat extends React.Component {
                         ref={val => this.search = val}
                         // goBack={this._goBack}
                         keyword={this.state.keyword} />
-                     {/* <View style={style.head}>
-                        <View 
-                            style={style.boxSearch}>
-                            <TouchableOpacity style={style.p8} onPress={this._navTo(MessengerScreen)} >
-                                <Image 
-                                    style={[styles.icon, style.w15]}
-                                    source={images.iconSearch} />
-                            </TouchableOpacity>
-                            <TextInput 
-                                style={[style.flex, style.txtSearch]}
-                                value={this.state.keyword}
-                                returnKeyLabel="Tìm"
-                                onSubmitEditing={this._onSearch}
-                                onChangeText={this.onChangeText('keyword')}
-                                placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                                placeholder="Tìm kiếm" />
-                            
-                        </View >
-                    </View> */}
+                    
 
-                    <FlatList
+                    {/* <FlatList
                         data={datas}
                         renderItem={this.renderItem}
-                        keyExtractor={this._keyExtractor} />
+                        keyExtractor={this._keyExtractor} /> */}
             </View>
         )
     }
