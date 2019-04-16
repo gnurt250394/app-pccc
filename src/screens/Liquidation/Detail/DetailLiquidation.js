@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
       },
       end: {
             height: 0.6,
-            backgroundColor: 'gray',
+            backgroundColor: '#CCCCCC',
             width: '100%',
             marginVertical:15
       },

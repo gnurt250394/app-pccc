@@ -45,7 +45,8 @@ export default class FooterDetail extends Component {
             }
             return <Image
                 style={styles.imageList}
-                source={source} />
+                source={source}
+                resizeMode="contain" />
         }
         _downFile = (item)=>() =>{
             downFile(item)
@@ -98,11 +99,11 @@ const styles = StyleSheet.create({
             alignItems: 'center',
             justifyContent: 'center',
             borderColor: '#2166A2',
-            borderWidth: 1,
+            borderWidth: 0.5,
         },
         imageList: {
-            height: 40,
-            width: 40,
+            height: 70,
+            width: 70,
 
       },
 })

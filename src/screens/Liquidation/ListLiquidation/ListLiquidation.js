@@ -66,8 +66,7 @@ export default class ListLiquidation extends Component {
                 let params = {
                     type: this.state.type == typeScreen.Liquidation ? 1 : 0,
                     keyword: keyword,
-                    page: this.state.page,
-                    table: 'news_products'
+                    table: 'posts'
                 }
                 
                 let datas = await searchLiquidation(params).then(res => {
@@ -75,7 +74,7 @@ export default class ListLiquidation extends Component {
                 }).catch(err => {
                     return err.response
                 })
-                
+                console.log(datas,'ddaa')
                 if (datas.length == 0) {
                     this.setState({
                         loading: false,
@@ -140,7 +139,7 @@ export default class ListLiquidation extends Component {
     }
     getData = (params) => {
         getListLiquidation(params).then(res => {
-            
+            console.log(res.data,'get')
             if (res.data.code == Status.SUCCESS) {
                 if (this.state.page == 1) {
                     this.setState({

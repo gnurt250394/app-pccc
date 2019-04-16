@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
       width:14,
   },
   txt:{
-      marginLeft:15
+      marginLeft:15,
+      fontWeight:'500',
+      color:'#333333'
   },
     containerListChecked:{
         flex:1,
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
     end:{
-        height:0.5,
-        backgroundColor: '#333333',
+        height:2,
+        backgroundColor: '#CCCCCC',
         width,
     }
 })

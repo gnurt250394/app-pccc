@@ -23,9 +23,9 @@ export default class HeaderDetail extends Component {
 const styles = StyleSheet.create({
 
       image: {
-            height: 50,
-            width: 50,
-            borderRadius: 25
+            height: 60,
+            width: 60,
+            borderRadius: 30
       },
       Image: {
             height: 13,
