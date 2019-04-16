@@ -5,6 +5,7 @@ import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
 import images from "assets/images"
 import Search from 'screens/Liquidation/ListLiquidation/search';
+import { searchLiquidation } from 'config/apis/Project';
 const {width} = Dimensions.get('window')
 export default class ListCategory extends Component {
   constructor(props) {
@@ -75,6 +76,45 @@ _renderItem=({item,index})=>{
   )
   }
     
+}
+_onSearch = () => {
+  let keyword = this.search ? this.search.getValue() : ''
+  if (keyword == '') {
+      return null
+  } else {
+      this.setState({ loading: true }, async () => {
+
+          let params = {
+              type: this.state.type == typeScreen.Liquidation ? 1 : 0,
+              keyword: keyword,
+              
+              table: 'categories'
+          }
+          
+          let datas = await searchLiquidation(params).then(res => {
+              return res.data.code == Status.SUCCESS ? res.data.data : []
+          }).catch(err => {
+              return err.response
+          })
+          console.log(datas,'ddaa')
+          if (datas.length == 0) {
+              this.setState({
+                  loading: false,
+                  refreshing: false,
+                  threshold: 0,
+                  listLiqiudation: []
+              })
+          } else {
+
+              if (this.state.page == 1) {
+                  this.setState({ listLiqiudation: datas, loading: true, refreshing: false, threshold: 0.1 })
+              } else {
+                  this.setState({ datas: [...this.state.listLiqiudation, ...datas], refreshing: false })
+              }
+          }
+      })
+  }
+
 }
 _keyExtractor=(item,index)=>{
     return `${item.id || index}`

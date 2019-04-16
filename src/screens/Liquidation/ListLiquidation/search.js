@@ -143,7 +143,7 @@ const style = StyleSheet.create({
     txtSearch: {color: "#2166A2"},
     w15: { width: 15},
     iconClose: {  width: 13, marginTop: 0,tintColor:color},
-    iconSearch: {  marginTop: -2},
+    iconSearch: {  marginTop: -2,tintColor:'#2166A2'},
     p8: {padding: 8,alignItems:'center',justifyContent:'center'},
     flex: {flex: 1},
     cancel: {color: 'white', padding: 10},
@@ -190,7 +190,9 @@ const style = StyleSheet.create({
     txtBtn:{
         color:'#333333',
         textAlign:'center',
-        width:'80%'
+        maxWidth:'80%',
+        marginRight:5,
+        fontWeight:'500'
     }
 })
 
