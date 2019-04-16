@@ -64,9 +64,15 @@ export default class ListLiquidation extends Component {
             this.setState({ loading: true }, async () => {
 
                 let params = {
-                    type: this.state.type == typeScreen.Liquidation ? 1 : 0,
+                    type: this.state.type == typeScreen.Liquidation ? typeScreen.Liquidation : typeScreen.postPurchase,
                     keyword: keyword,
-                    table: 'posts'
+                    table: 'news_products',
+                    // 'data[]':'category',
+                    // 'data[]':'city',
+                    // 'data[]':'title',
+                    // 'data[]':'description',
+                    // 'data[]':'time',
+                    // 'data[]':'id'
                 }
                 
                 let datas = await searchLiquidation(params).then(res => {

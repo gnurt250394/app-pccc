@@ -24,6 +24,7 @@ export default class DropDown extends PureComponent {
       <SearchableDropDown
           onItemSelect={this.props.onItemSelect}
           containerStyle={this.props.style}
+          placeholderTextColor={"#333333"}
           textInputStyle={styles.editText}
           itemStyle={styles.itemStyle}
           itemTextStyle={{ color: '#222' }}
@@ -50,7 +51,8 @@ export default class DropDown extends PureComponent {
         height:40,
         marginTop:3,
         paddingLeft:12,
-        borderWidth:1,
+        borderWidth:0.7,
+        fontWeight:'600',
         borderColor: '#707070',
     },
     imageButton:{

@@ -25,11 +25,11 @@ export default class CustomDialog extends Component {
               contentContainerStyle={{flexGrow:1,justifyContent:'center'}}
             >
         <View style={styles.container}>
-          <StatusBar
+          {/* <StatusBar
             barStyle={"light-content"}
             backgroundColor="#00000040"
             animated={true}
-          />
+          /> */}
           <View onTouchStart={this.props.onClose} style={styles.containerModal}/>
           <View style={styles.modal}>
             <Text style={[styles.txtHeader,fontStyles.Acumin_bold]}>{this.props.title}</Text>
