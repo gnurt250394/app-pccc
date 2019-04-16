@@ -8,7 +8,7 @@ export default class ItemFooter extends Component {
       showImage = (link) => {
             let ext = link.fileName ? /[^\.]*$/.exec(link.fileName)[0] : 'txt'
             let source, uri
-            switch (ext) {
+            switch (ext.toLowerCase()) {
                 case 'jpg':
                 case 'jpeg':
                 case 'gif':
@@ -45,7 +45,9 @@ export default class ItemFooter extends Component {
             }
             return <Image
                 style={styles.imageList}
-                source={source} />
+                source={source} 
+                resizeMode="contain"
+                />
         }
       render() {
             if (this.props.index >= 2 && this.props.listFile.length != 3) {
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
       },
       
       imageList: {
-            height: 40,
-            width: 40,
+            height: 65,
+            width: 65,
 
       },
 })

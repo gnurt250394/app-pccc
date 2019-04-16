@@ -18,7 +18,7 @@ export default class FooterLiquidation extends Component {
           },(error,res) => {
             // Android
             
-            console.log(res,'res')
+            
             let dataName = []
             if(res){
                 dataName.push(res)
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
      
       containerAdd: {
           marginVertical: 7,
-          marginLeft: 7,
+          marginLeft: 10,
           height:70,
           width:80,
           paddingVertical:10,
           alignItems: 'center',
           justifyContent: 'center',
           borderColor: '#2166A2',
-          borderWidth: 1,
+          borderWidth: 0.6,
       },
       
       imageAdd: {

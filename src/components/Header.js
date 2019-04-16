@@ -12,9 +12,9 @@ export default class Header extends React.Component {
         return (
             <SafeAreaView style={style.container}>
             <View style={ [style.content,{...this.props.style}]} >
-            {/* <StatusBar
+            <StatusBar
                 barStyle="light-content" 
-                backgroundColor={color} /> */}
+                backgroundColor={color} />
             {this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                     <Image 
                         style={style.icon}
@@ -29,7 +29,7 @@ export default class Header extends React.Component {
                 {this.props.finish == 1?<TouchableOpacity 
                 onPress={this.props.onFinish}
                 style={style.view}>
-                <Text style={[style.txtFinish,fontStyles.Acumin_thin]}>Xong</Text>
+                <Text style={[style.txtFinish,fontStyles.Acumin_bold]}>Xong</Text>
                 </TouchableOpacity>:this.props.finish ==2 ?  <TouchableOpacity style={style.btnAdd}
                     onPress={this.props.onFinish}
                 >

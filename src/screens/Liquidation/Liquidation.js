@@ -35,15 +35,15 @@ class Liquidation extends Component {
                   value: '',
                   listCategory: [],
                   name: 'Chọn danh mục',
-                  address: this.props.users.address ,
+                  address: this.props.users.address,
                   type: this.props.navigation.getParam('type', typeScreen.postPurchase)
             }
             this.refress = this.props.navigation.getParam('refress', '')
       }
       componentDidMount() {
-        
+
       }
-      
+
 
       _showModal = () => {
             this.setState({ isVisible: true })
@@ -63,7 +63,7 @@ class Liquidation extends Component {
             this.setState({ name: value, category_id: id })
       }
       showFlatlit = () => {
-            navigation.navigate(ListCategory, { fun: this.handleItem })
+            navigation.navigate(ListCategory, { fun: this.handleItem, id: this.state.category_id })
       }
       render() {
             const { type } = this.state
@@ -132,22 +132,22 @@ class Liquidation extends Component {
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
                   listFile = this.footer.state.listFile || []
-                  
+
             let params = new FormData()
             this.state.category_id.forEach(item => {
                   params.append('category_id[]', `${item}`)
             })
             let date = new Date()
             listFile.forEach(item => {
-                  const fileName = date.getTime()  + '.' + /[^\.]*$/.exec(item.fileName)[0]
-                  params.append('file[]', { uri: item.uri, type: item.type,name: fileName }, fileName)
+                  const fileName = date.getTime() + '.' + /[^\.]*$/.exec(item.fileName)[0]
+                  params.append('file[]', { uri: item.uri, type: item.type, name: fileName }, fileName)
             })
             params.append('title', this.state.title)
             params.append('description', this.state.decription)
             params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
             params.append('city_id', idCity)
             params.append('district_id', idCountry)
-console.log(params,'parem')
+            console.log(params, 'parem')
             if (this.validate() == '') {
                   postLiquidation(params).then(res => {
 
@@ -164,6 +164,7 @@ console.log(params,'parem')
                               SimpleToast.show("Lỗi hệ thống")
                         }
                   }).catch(err => {
+                        console.log(err.response, 'err')
                         SimpleToast.show("Server ERROR")
 
                   })
@@ -177,7 +178,7 @@ console.log(params,'parem')
             let msg = ''
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || ''
-            console.log(idCity,'idddd')
+            console.log(idCity, 'idddd')
 
             let { title, decription, category_id } = this.state
             if (title == '') {
@@ -189,7 +190,7 @@ console.log(params,'parem')
             if (category_id.length == 0) {
                   return msg += 'Vui lòng chọn danh mục';
             }
-            if (idCity == ''&& idCountry == '') {
+            if (idCity == '' && idCountry == '') {
                   return msg += 'Vui lòng chọn địa chỉ'
             }
             return msg
@@ -270,8 +271,8 @@ const styles = StyleSheet.create({
       },
 
 })
-const mapStateToProps = (state) =>{
-      return{
+const mapStateToProps = (state) => {
+      return {
             users: state.users && state.users.data ? state.users.data : {},
       }
 }

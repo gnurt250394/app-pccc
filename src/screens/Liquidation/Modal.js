@@ -8,10 +8,10 @@ import SimpleToast from 'react-native-simple-toast';
 export default class Modal extends Component {
   state = {
     visible: this.props.visible,
-    cityName: 'Chọn tỉnh/Thành phố',
+    cityName: '',
     idCity: '',
     idDistrict: '',
-    districtName: 'Quận/Huyện',
+    districtName: '',
     value: '',
     Country: [],
     listCity: [],
@@ -144,7 +144,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2166A2',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: 20,
+    borderBottomLeftRadius:6,
+    borderBottomRightRadius:6,
   },
   txtBtn: {
     color: '#FFFFFF',
