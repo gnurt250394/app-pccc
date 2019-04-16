@@ -56,7 +56,7 @@ export default class ItemFooter extends Component {
                               
                               {this.showImage(this.props.item)}
                               <View style={styles.viewOpacity}>
-                                    <Text style={styles.txtAdd}>{this.props.listFile.length - 3}++</Text>
+                                    <Text style={styles.txtAdd}>+ {this.props.listFile.length - 3}</Text>
                               </View>
                         </View>
                   )
@@ -73,8 +73,8 @@ export default class ItemFooter extends Component {
 const styles = StyleSheet.create({
       txtAdd: {
             color: '#FFFFFF',
-            fontSize:11,
-            fontWeight:'600'
+            fontSize:16,
+            fontWeight:'bold'
       },
       viewOpacity: {
             opacity: 0.6,

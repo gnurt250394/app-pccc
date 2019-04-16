@@ -3,7 +3,12 @@ import { View, Text, TextInput, StyleSheet, Image, Dimensions, TouchableOpacity 
 import { fontStyles } from 'config/fontStyles';
 
 export default class Item extends Component {
-
+      state={
+            text:''
+      }
+      onChangeText=(state)=>(value)=>{
+            this.setState({[state]:value})
+      }
       render() {
             return (
                   <View style={styles.container}>
@@ -12,7 +17,7 @@ export default class Item extends Component {
                               multiline={this.props.multiline}
                               style={[styles.inputItem,{...this.props.style}]}
                               placeholder={this.props.placeholder}
-                              onChangeText={this.props.onChangeText}
+                              onChangeText={this.onChangeText('text')}
                         />
                   </View>
             )
