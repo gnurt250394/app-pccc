@@ -22,7 +22,7 @@ class ListChat extends React.Component {
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
-         popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
+        //  popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
         });
     }
     _nextPage=(item)=>()=>{
@@ -70,10 +70,10 @@ class ListChat extends React.Component {
                         keyword={this.state.keyword} />
                     
 
-                    {/* <FlatList
+                    <FlatList
                         data={datas}
                         renderItem={this.renderItem}
-                        keyExtractor={this._keyExtractor} /> */}
+                        keyExtractor={this._keyExtractor} />
             </View>
         )
     }
