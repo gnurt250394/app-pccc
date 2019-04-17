@@ -24,14 +24,14 @@ export default class Header extends React.Component {
                         <View style={style.view} />}
                     <View style={style.flex}>
                         <Text style={[style.title, fontStyles.Acumin_bold]}>{this.props.title}</Text>
-                        {this.props.status && (
+                        {/* {this.props.status && (
                             <View style={style.row}>
                                 <Image
                                     style={style.dot}
                                     source={this.props.status ? images.online : images.offline} />
                                 <Text style={style.status}>{this.props.status?'Đang hoạt động':'Không hoạt động'}</Text>
                             </View>
-                        )}
+                        )} */}
                     </View>
                     {this.props.finish == 1 ? <TouchableOpacity
                         onPress={this.props.onFinish}

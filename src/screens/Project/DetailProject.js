@@ -56,7 +56,7 @@ class DetailProject extends Component {
           })
 
           this.setState({ listPartner: data })
-          Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
+          Toast.show('Bạn đã theo dõi nhà thầu ' + item.user_name + ' thành công')
         } else if (res.data.code == Status.TOKEN_EXPIRED) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
@@ -91,7 +91,7 @@ class DetailProject extends Component {
             }
           })
           this.setState({ listPartner: data })
-          Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
+          Toast.show('Bạn đã bỏ theo dõi nhà thầu ' + item.user_name + ' thành công')
         } else if (res.data.code == Status.TOKEN_EXPIRED ) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)

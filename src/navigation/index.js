@@ -52,6 +52,8 @@ import PostPurchase from "screens/PostPurchase/Purchase/PostPurchase";
 import DetailPostPurchase from "screens/PostPurchase/DetailPostPurchase/DetailPostPurchase";
 import ListPostPurchase from "screens/PostPurchase/ListPostPurchase/ListPostPurchase";
 import Message from "screens/Message/Message";
+import Edit from "screens/Shop/liquidation/Edit";
+
 
 // const MyDrawerNavigator = createDrawerNavigator({
 //   Tabs: TabsHome
@@ -118,6 +120,7 @@ const App = createStackNavigator(
     [ScreenName.DetailLiquidation]:DetailLiquidation,
     [ScreenName.ListCity]:ListCity,
     [ScreenName.CategoryFilter]:CategoryFilter,
+    [ScreenName.EditLiquidation]:Edit,
 
     // Post Purchase
     [ScreenName.PostPurchase]:PostPurchase,

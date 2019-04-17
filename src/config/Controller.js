@@ -135,7 +135,8 @@ export const getMimeType = (type) =>{
         document:'document',
         project:"project",
         bidding:"bidding",
-        user:"user"
+        user:"user",
+        editLiquidation:'editLiquidation'
     }
 
     export const downFile = (link) =>{

@@ -4,11 +4,11 @@ import images from "assets/images"
 import moment from 'moment'
 import { Status, removeItem, getItem, popup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen, DetailLiquidation, Liquidation, ShopLiquidation } from 'config/screenNames';
+import { SigninScreen, DetailLiquidation, Liquidation, ShopLiquidation, EditLiquidation } from 'config/screenNames';
 import { popupCancel } from 'config';
 import Item from './Item';
 import { Header } from 'components';
-import { getListLiquidation } from 'config/apis/liquidation';
+import { getListLiquidation, deleteLiquidation } from 'config/apis/liquidation';
 import { Messages } from 'config/Status';
 moment.locale('vn')
 export default class LiquidationShop extends Component {
@@ -46,13 +46,33 @@ export default class LiquidationShop extends Component {
         
         this.setState({ listLiqiudation })
     }
+    _deleteItem=(item)=>()=>{
+        let data = this.state.listLiqiudation
+        let listFinal =[]
+        data.forEach(e=>{
+            if(e.id == item.id){
+                listFinal = data.filter(e=>e.id!=item.id)
+            }
+        })
+        this.setState({listLiqiudation:listFinal})
+        deleteLiquidation(item.id).then(res=>{
+            console.log(res,'res')
+        }).catch(err=>{
+            console.log(err.response,'err')
+        })
+    }
+    _editLiquidation=(item)=>()=>{
+        this._hideMenu()
+        navigation.navigate(EditLiquidation,{id:item.id,type:this.state.type})
+    }
     _renderItem = ({ item, index }) => {
         return (
             <Item
                 // onStartShouldSetResponderCapture={this._hideMenu}
                 onPress={this.goDetail(item)}
-                edit={() => { alert('1111') }}
+                edit={this._editLiquidation(item)}
                 item={item}
+                delete={this._deleteItem(item)}
                 index={index}
                 onShowMenu={this.showMenu(item)}
             />

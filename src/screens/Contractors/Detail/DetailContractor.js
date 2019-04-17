@@ -4,10 +4,11 @@ import { Header } from 'components';
 import { fontStyle, color, Status, typeScreen, removeItem } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
-import { DetailUserFollows } from 'config/apis/Project';
+import { DetailUserFollows, UnFolowUser } from 'config/apis/Project';
 import { fontStyles } from 'config/fontStyles';
-import { DetailProject, DetailBiddingScreen } from 'config/screenNames';
+import { DetailProject, DetailBiddingScreen, SigninScreen } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
+import { Btn } from 'components';
 const { width, height } = Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -76,6 +77,25 @@ export default class DetailContractor extends Component {
             />
         )
     }
+
+    _UnfolowUser = ()=> {
+
+          let {UserObject} =this.state
+          UnFolowUser({ investor_id: UserObject.id, table: 'UserInvestor' }).then(res => {
+            if (res.data.code == Status.SUCCESS) {
+              
+                SimpleToast.show('Bạn đã bỏ theo dõi nhà thầu ' + UserObject.name + ' thành công')
+            } else if (res.data.code == Status.TOKEN_EXPIRED ) {
+              SimpleToast.show('Phiên đăng nhập hết hạn')
+              navigation.reset(SigninScreen)
+              removeItem('token')
+            } else if (res.data.code == Status.ID_NOT_FOUND) {
+                SimpleToast.show('Dự án không tồn tại')
+            }
+          }).catch(err => {
+            SimpleToast.show('Lỗi hệ thống' + ' ' + err.response.status)
+          })
+      }
     render() {
         let { UserObject } = this.state
         const headerHeight = this.state.scrollY.interpolate({
@@ -96,7 +116,7 @@ export default class DetailContractor extends Component {
         return (
             <View style={styles.container}>
                 {/* <SafeAreaView> */}
-                    {/* <Animated.View
+                {/* <Animated.View
                         style={[styles.header, {
                             height: headerHeight,
                             zIndex
@@ -105,9 +125,9 @@ export default class DetailContractor extends Component {
 
 
                     </Animated.View> */}
-                    <View style={styles.header}/>
-                   
-                    {/* <Animated.View
+                <View style={styles.header} />
+
+                {/* <Animated.View
         style={[styles.header,{
             height:headerHeight,
             zIndex
@@ -130,30 +150,33 @@ export default class DetailContractor extends Component {
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
                     )}
                 > */}
-                 <Header
-                        check={1}
-                        // style={styles.header}
-                        onPress={this._goBack}
-                        title={"Thông tin nhà thầu"}
+                <Header
+                    check={1}
+                    // style={styles.header}
+                    onPress={this._goBack}
+                    title={"Thông tin nhà thầu"}
+                />
+                <View style={[styles.containerPosition]}>
+                    <Text style={[styles.txtBold, fontStyles.Acumin_bold]}>{UserObject.name}</Text>
+                    <Item source={images.proEmail} name={UserObject.email} />
+                    <Item source={images.proPhone} name={UserObject.phone} />
+                    <Item source={images.proLocation} name={UserObject.address} />
+                    <Item source={images.proCompany} name={UserObject.company} />
+                    <Btn name={"Bỏ theo dõi"}
+                        onPress={this._UnfolowUser}
+                        
+                        customStyle={styles.btnUnFollow} />
+                </View>
+                <View style={styles.containerFooter}>
+                    <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
+                    <FlatList
+                        data={UserObject.content}
+                        refreshControl={this._refresshing()}
+                        keyboardShouldPersistTaps="always"
+                        renderItem={this._renderItem}
+                        keyExtractor={this._keyExtractor}
                     />
-                    <View style={[styles.containerPosition]}>
-                        <Text style={[styles.txtBold, fontStyles.Acumin_bold]}>{UserObject.name}</Text>
-                        <Item source={images.proEmail} name={UserObject.email} />
-                        <Item source={images.proPhone} name={UserObject.phone} />
-                        <Item source={images.proLocation} name={UserObject.address} />
-                        <Item source={images.proCompany} name={UserObject.company} />
-
-                    </View>
-                    <View style={styles.containerFooter}>
-                        <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
-                        <FlatList
-                            data={UserObject.content}
-                            refreshControl={this._refresshing()}
-                            keyboardShouldPersistTaps="always"
-                            renderItem={this._renderItem}
-                            keyExtractor={this._keyExtractor}
-                        />
-                    </View>
+                </View>
                 {/* </ScrollView> */}
             </View>
         );
@@ -171,12 +194,13 @@ export default class DetailContractor extends Component {
                 } else if (res.data.code == Status.TOKEN_EXPIRED) {
                     SimpleToast.show('Phiên đăng nhập hết hạn')
                     navigation.navigate(SigninScreen)
-                    this.setState({refreshing:false})
+                    this.setState({ refreshing: false })
                     removeItem('token')
                 }
             }).catch(err => {
-                this.setState({refreshing:false})
-                console.log(err.response, 'eeerrr')})
+                this.setState({ refreshing: false })
+                console.log(err.response, 'eeerrr')
+            })
         }
     }
     componentDidMount = () => {
@@ -188,13 +212,19 @@ export default class DetailContractor extends Component {
 const styles = StyleSheet.create({
     header: {
         alignItems: 'flex-start',
-        height:HEADER_MAX_HEGHT,
-        paddingTop:15,
+        height: HEADER_MAX_HEGHT,
+        paddingTop: 15,
         position: 'absolute',
         backgroundColor: color,
         top: 0,
         left: 0,
         right: 0
+    },
+    btnUnFollow: {
+        width: '40%',
+        borderRadius: 5,
+        marginBottom:0,
+        marginTop:0
     },
     containerList: {
         flex: 1,

@@ -14,7 +14,7 @@ export default class ListItem extends Component {
             <View style={styles.containerList}>
               <View style={styles.Header}> 
                   <Text style={styles.txtHeader}
-                  >{this.props.item.name}  {this.props.follow && (this.props.item.change==0&&<Image  style={styles.iconNotify} source={images.dotYellow} />)}
+                  >{this.props.item.name}  {this.props.follow && (this.props.item.change==1&&<Image  style={styles.iconNotify} source={images.dotYellow} />)}
                    </Text>
               </View>
               {/* <View style={styles.row}>

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
             marginVertical: 7,
             marginLeft: 7,
             flex:1,
-            backgroundColor: '#333333',
+            // backgroundColor: '#333333',
             position: "absolute",
             height: '100%',
             width:'100%',
