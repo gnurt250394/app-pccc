@@ -26,6 +26,14 @@ export default class FooterLiquidation extends Component {
             }
           });
       }
+
+      forrmatData =(data)=>{
+          let arr = []
+          data.forEach(e=>{
+              arr.push({fileName:e})
+          })
+          this.setState({listFile:arr})
+      }
       _listFooter = () => {
             return (
                 <TouchableOpacity style={styles.containerAdd}

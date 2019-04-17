@@ -34,6 +34,7 @@ class Liquidation extends Component {
                   isVisible: false,
                   value: '',
                   listCategory: [],
+                  loading: false,
                   name: 'Chọn danh mục',
                   address: this.props.users.address,
                   type: this.props.navigation.getParam('type', typeScreen.postPurchase)
@@ -43,7 +44,25 @@ class Liquidation extends Component {
       componentDidMount() {
 
       }
+ getDetail = () => {
 
+            getDetailLiquidation(this.state.id).then(res => {
+                  console.log(res, 'dadads')
+                  if (res.data.code == Status.SUCCESS) {
+                       const data = res.data.data;
+                       console.log(data);
+                        this.setState({
+                              Liquidation: data,
+                              loading: false,
+                              address: data.address + " - " + data.district + " - " + data.city
+                        })
+                  } else if (res.data.code == Status.ID_NOT_FOUND) {
+                        this.setState({ loading: false, Liquidation: {}, loading: false })
+                  }
+            }).catch(err => {
+                  this.setState({ loading: false })
+            })
+      }
 
       _showModal = () => {
             this.setState({ isVisible: true })
@@ -126,6 +145,10 @@ class Liquidation extends Component {
             );
       }
       _nextPage = () => {
+            
+            if (this.state.loading) {
+                  return null
+            }else{
 
             let idCity = this.Modal.state.idCity || '',
                   idCountry = this.Modal.state.idDistrict || '',
@@ -151,21 +174,24 @@ class Liquidation extends Component {
             params.append('district_id', idCountry)
             console.log(params, 'parem')
             if (this.validate() == '') {
+                  this.setState({ loading: true })
                   postLiquidation(params).then(res => {
 
                         if (res.data.code == Status.SUCCESS) {
                               this.refress()
+                              this.setState({ loading: false })
                               navigation.pop()
                         } else if (res.data.code == Status.TOKEN_EXPIRED) {
                               SimpleToast.show('Phiên đăng nhập hết hạn')
                               navigation.reset(SigninScreen)
+                              this.setState({ loading: false })
                               removeItem('token')
-                        } else if (res.data.code == Status.TOKEN_VALID) {
-                              popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
-                        } else {
+                        }  else {
                               SimpleToast.show("Lỗi hệ thống")
+                              this.setState({ loading: false })
                         }
                   }).catch(err => {
+                        this.setState({ loading: false })
                         console.log(err.response, 'err')
                         SimpleToast.show("Server ERROR")
 
@@ -174,6 +200,7 @@ class Liquidation extends Component {
                   SimpleToast.show(this.validate())
             }
 
+      }
 
       }
       validate = () => {
@@ -218,7 +245,7 @@ const styles = StyleSheet.create({
             marginTop: 7,
             color: '#333333',
             width: '100%',
-            height: 37,
+            height: 40,
             padding: 10,
             borderRadius: 5,
             borderColor: '#707070',

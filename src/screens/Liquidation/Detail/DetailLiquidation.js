@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity,ScrollView,Linking,RefreshControl } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Linking, RefreshControl } from 'react-native'
 import { Header } from 'components';
 import images from "assets/images"
 import { fontStyles } from 'config/fontStyles';
@@ -14,96 +14,104 @@ import { MessageScreen, SigninScreen } from 'config/screenNames';
 import { Messages } from 'config/Status';
 
 export default class DetailLiquidation extends Component {
-      state={
-            id:this.props.navigation.getParam('id',''),
-            Liquidation:{},
-            loading:true,
-            type:this.props.navigation.getParam('type',typeScreen.postPurchase)
+      state = {
+            id: this.props.navigation.getParam('id', ''),
+            Liquidation: {},
+            loading: true,
+            address: '',
+            type: this.props.navigation.getParam('type', typeScreen.postPurchase)
       }
-      _nextPage= async()=>{
+      _nextPage = async () => {
             let token = await getItem('token')
-            if(token){
-                  navigation.navigate(MessageScreen)
-            }else{
+            let { Liquidation } = this.state
+            if (token) {
+                  navigation.navigate(MessageScreen, { id: Liquidation.user_id, title: Liquidation.user_name })
+            } else {
                   popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
             }
-          
+
       }
-      _goBack=()=>{
+      _goBack = () => {
             navigation.pop()
       }
-      _CallPhone = (Liquidation)=>() =>{
+      _CallPhone = (Liquidation) => () => {
             callNumber(Liquidation.user_phone)
       }
-      refress=()=>{
-            return(
+      refress = () => {
+            return (
                   <RefreshControl
-                  refreshing={this.state.loading}
-                  onRefresh={this.getDetail}
-                  colors={['#2166A2','#FFFFFF']}
+                        refreshing={this.state.loading}
+                        onRefresh={this.getDetail}
+                        colors={['#2166A2', '#FFFFFF']}
                   />
             )
       }
       render() {
-            const {Liquidation,type} = this.state
+            const { Liquidation, type } = this.state
             return (
                   <View style={styles.container}>
                         <Header
                               check={1}
                               onPress={this._goBack}
-                              title={type == typeScreen.Liquidation?'Chi tiết thanh lý':'Chi tiết đăng mua'}
+                              title={type == typeScreen.Liquidation ? 'Chi tiết thanh lý' : 'Chi tiết đăng mua'}
                         />
-                        
-                        <ScrollView 
-                        refreshControl={this.refress()}
+
+                        <ScrollView
+                              refreshControl={this.refress()}
                         >
-                        {!this.state.loading ?
-                        <View style={styles.Group}>
-                              <HeaderDetail
-                              image={Liquidation.user_image}
-                              name={Liquidation.user_name}
-                              address={Liquidation.user_address}
-                              />
-                              <View style={styles.end}/>
-                              <BodyDetail
-                              title={Liquidation.title}
-                              description={Liquidation.description}
-                              time={Liquidation.time}
-                              />
-                              <View style={styles.end}/>
-                              <FooterDetail
-                              category={Liquidation.category}
-                              address={Liquidation.district + " - " + Liquidation.city}
-                              file_attach={Liquidation.file_attach}
-                              />
-                        </View>
-                        : null}
+                              {!this.state.loading ?
+                                    <View style={styles.Group}>
+                                          <HeaderDetail
+                                                image={Liquidation.user_image}
+                                                name={Liquidation.user_name}
+                                                address={Liquidation.user_address}
+                                          />
+                                          <View style={styles.end} />
+                                          <BodyDetail
+                                                title={Liquidation.title}
+                                                description={Liquidation.description}
+                                                time={Liquidation.time}
+                                          />
+                                          <View style={styles.end} />
+                                          <FooterDetail
+                                                category={Liquidation.category}
+                                                address={this.state.address}
+                                                file_attach={Liquidation.file_attach? Liquidation.file_attach:''}
+                                          />
+                                    </View>
+                                    : null}
                         </ScrollView>
-                        
+
                         <Button
-                        onPressMsg={this._nextPage}
-                        onPressPhone={this._CallPhone(Liquidation)}
+                              onPressMsg={this._nextPage}
+                              onPressPhone={this._CallPhone(Liquidation)}
                         />
                   </View>
             )
       }
-      getDetail = () =>{
-            
-            getDetailLiquidation(this.state.id).then(res=>{
-                  console.log(res.data,'dadads')
-                  if(res.data.code == Status.SUCCESS){
-                        this.setState({Liquidation:res.data.data,loading:false})
-                  }else if(res.data.code == Status.ID_NOT_FOUND){
-                        this.setState({loading:false,Liquidation:{},loading:false})
+      getDetail = () => {
+
+            getDetailLiquidation(this.state.id).then(res => {
+                  console.log(res, 'dadads')
+                  if (res.data.code == Status.SUCCESS) {
+                       const data = res.data.data;
+                       console.log(data);
+                        this.setState({
+                              Liquidation: data,
+                              loading: false,
+                              address: data.address + " - " + data.district + " - " + data.city
+                        })
+                  } else if (res.data.code == Status.ID_NOT_FOUND) {
+                        this.setState({ loading: false, Liquidation: {}})
                   }
-            }).catch(err=>{
-                  this.setState({loading:false})
+            }).catch(err => {
+                  this.setState({ loading: false })
             })
       }
       componentDidMount() {
-        this.getDetail()
+            this.getDetail()
       }
-      
+
 }
 
 const styles = StyleSheet.create({
@@ -112,12 +120,12 @@ const styles = StyleSheet.create({
       },
       Group: {
             flex: 1,
-            padding:10
+            padding: 10
       },
       end: {
             height: 0.6,
             backgroundColor: '#CCCCCC',
             width: '100%',
-            marginVertical:15
+            marginVertical: 15
       },
 })

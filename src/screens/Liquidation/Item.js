@@ -9,6 +9,9 @@ export default class Item extends Component {
       onChangeText=(state)=>(value)=>{
             this.setState({[state]:value})
       }
+      handleText=(value)=>{
+            this.setState({text:value})
+      }
       render() {
             return (
                   <View style={styles.container}>
@@ -17,6 +20,7 @@ export default class Item extends Component {
                               multiline={this.props.multiline}
                               style={[styles.inputItem,{...this.props.style}]}
                               placeholder={this.props.placeholder}
+                              value={this.state.text}
                               onChangeText={this.onChangeText('text')}
                         />
                   </View>

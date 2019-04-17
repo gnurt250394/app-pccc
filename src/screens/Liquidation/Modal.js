@@ -76,7 +76,6 @@ export default class ModalScreen extends PureComponent {
     this.setState({ visible: false })
   }
   render() {
-    console.log('121212',this.state.visible)
     return (
       <Modal
         visible={this.state.visible}
