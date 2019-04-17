@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { log, width, toParams } from 'config'
 import { Header } from 'components';
 import { countProject } from 'reduxs/actions/actionCreator';
+import SimpleToast from 'react-native-simple-toast';
 class InfoProject extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +37,7 @@ class InfoProject extends Component {
             let listProject = [...this.state.listProject]
             listProject[index].change = 1
             console.log(listProject,'listproject')
-           let listChange= listProject.filter(item=>item.change ==0)
+           let listChange= listProject.filter(item=>item.change ==1)
            console.log(listChange,'listChange')
            if(listChange.length ==0){
             this.props.changeProject(1)
@@ -90,22 +91,28 @@ class InfoProject extends Component {
         if (keyword == '') {
             return null
         } else {
-            this.setState({ refreshing: true })
-            searchProject(keyword, this.state.page).then(res => {
+            this.setState({ refreshing: true, page:1},()=>{
+                searchProject(keyword, this.state.page).then(res => {
 
-                if (res.data.code == Status.SUCCESS) {
-
-                    if (this.state.page == 1) {
-                        this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
-                    } else {
-                        this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                    if (res.data.code == Status.SUCCESS) {
+    
+                        if (this.state.page == 1) {
+                            this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
+                        } else {
+                            this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                        }
+                    } else if (res.data.code == Status.NO_CONTENT) {
+                        this.setState({ listProject: [], refreshing: false, loading: false, Threshold: 0 })
+                    }else{
+                        SimpleToast.show("Lỗi hệ thống")
+                        this.setState({ refreshing: false, loading: false, Threshold: 0 })
                     }
-                } else if (res.data.code == Status.NO_CONTENT) {
-                    this.setState({ listProject: [], refreshing: false, loading: false, Threshold: 0 })
-                }
-            }).catch(err => {
-
+                }).catch(err => {
+                    SimpleToast.show("Lỗi hệ thống")
+                    this.setState({  refreshing: false, loading: false, Threshold: 0 })
+                })
             })
+           
         }
 
     }
@@ -169,7 +176,7 @@ class InfoProject extends Component {
                 return []
             })
         } else {
-            listProject = await getNewProject({ page: this.state.page }).then(res => {
+            listProject = await getNewProject({ page: 1 }).then(res => {
                 return res.data.code == Status.SUCCESS ? res.data.data : []
             }).catch(err => {
                 return []
@@ -181,12 +188,8 @@ class InfoProject extends Component {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
 
         } else {
-            if (this.state.page == 1) {
 
                 this.setState({ listProject, loading: true, refreshing: false, Threshold: 0.1 })
-            } else {
-                this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
-            }
         }
 
     }

@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   textInput: {
-    width:'90%'
+    width:'90%',
+    fontWeight:'bold'
   }
 })
