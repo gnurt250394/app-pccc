@@ -45,7 +45,7 @@ export default class Item extends React.PureComponent {
                         <TouchableOpacity
                               onPress={this.props.onPress}
                               style={styles.containerList}>
-                              <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{item.title ? item.title : null}</Text>
+                              <Text numberOfLines={1} style={[styles.txtName, fontStyles.Acumin_bold]}>{item.title ? item.title : null}</Text>
                               <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{item.description}</Text>
                               <View style={styles.rowList}>
                                     <View style={[styles.row, styles.category]}>

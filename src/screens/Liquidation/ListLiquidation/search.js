@@ -25,7 +25,7 @@ export default class Search extends React.PureComponent {
     }
     handleFilterCity = (value) => {
         this.setState({ city: value })
-
+        
         this.filter(value, this.state.category)
     }
     resetFilter = () => {
@@ -33,10 +33,18 @@ export default class Search extends React.PureComponent {
     }
     filter = (city, category) => {
         this.props.filterStart()
+       let cityId =city.id
+       let categoryId =category.id
+        if(city.id == 0){
+            cityId = ''
+        }
+        if(category.id == 0){
+            categoryId = ''
+        }
         let params = {
-            'city_id': city.id,
+            'city_id': cityId,
             'type': this.state.type,
-            'category_id': category.id,
+            'category_id': categoryId,
         }
 
         getListLiquidation(params).then(res => {

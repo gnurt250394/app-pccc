@@ -16,7 +16,8 @@ class ChangePassword extends React.Component {
         password: '',
         oldPassword: '',
         rePassword: '',
-        loading: false
+        loading: false,
+        editable:true
     }
 
     render() {
@@ -32,16 +33,19 @@ class ChangePassword extends React.Component {
                         <View>
                             <BaseInput
                                 icon={images.keyDark}
+                                editable={this.state.editable}
                                 ref={val => this.oldPassword = val}
                                 secureTextEntry={true}
                                 placeholder="Mật khẩu hiện tại" />
                             <BaseInput
                                 icon={images.keyDark}
+                                editable={this.state.editable}
                                 ref={val => this.password = val}
                                 secureTextEntry={true}
                                 placeholder="Mật khẩu mới" />
                             <BaseInput
                                 icon={images.keyDark}
+                                editable={this.state.editable}
                                 ref={val => this.rePassword = val}
                                 secureTextEntry={true}
                                 placeholder="Nhập lại mật khẩu mới" />
@@ -74,24 +78,24 @@ class ChangePassword extends React.Component {
     }
 
     _onSuccess = () => {
-        this.setState({ loading: true })
+        
         let oldPassword = this.oldPassword ? this.oldPassword.getValue() : "",
             password = this.password ? this.password.getValue() : "",
             rePassword = this.rePassword ? this.rePassword.getValue() : "";
 
         if (oldPassword.trim().length == 0) {
             popupOk('Mật khẩu hiện tại không đúng')
-            this.setState({ loading: false })
         } else if (password.trim().length < 6) {
             popupOk('Mật khẩu mới phải từ 6 ký tự')
-            this.setState({ loading: false })
         } else if (password != rePassword) {
             popupOk('Mật khẩu nhập lại không đúng')
-            this.setState({ loading: false })
         } else if(oldPassword == rePassword && oldPassword == password){
             popupOk('Mật khẩu cũ và mật khẩu mới phải khác nhau')
-            this.setState({ loading: false })
         } else{
+            if(this.state.loading){
+                return null
+            }else{
+            this.setState({ loading: true ,editable:false})
             let params = {
                 old_password: oldPassword,
                 new_password: password
@@ -101,18 +105,19 @@ class ChangePassword extends React.Component {
                 console.log(res.data, 'aaaa')
                 if (res.data.code == Status.SUCCESS) {
                     popupOk('Đổi mật khẩu thành công')
-                    this.setState({ loading: false })
+                    this.setState({ loading: false,editable:true })
                     navigation.pop()
                 } else if (res.data.code == Status.TOKEN_EXPIRED) {
                     SimpleToast.show('Phiên đăng nhập hết hạn')
-                    this.setState({ loading: false })
+                    this.setState({ loading: false,editable:true })
                     navigation.reset(SigninScreen)
                     removeItem('token')
                 } else if (res.data.code == Status.PASS_FAIL) {
                     popupOk(CodeToMessage[res.data.code])
-                    this.setState({ loading: false })
+                    this.setState({ loading: false,editable:true })
                 }
             })
+        }
         }
     }
 }

@@ -294,10 +294,10 @@ class Catalog extends React.Component {
         //     .then((res) => {
         //         RNFetchBlob.fs.exists(resp.path())
         //             .then((exist) => {
-        //                 console.log(`file ${exist ? '' : 'not'} exists`)
+        //                 
         //             })
-        //             .catch(() => { console.log('err while checking') });
-        //         console.log(link, 'linkok')
+        //             .catch(() => { 
+        //         
         //         if (Platform.OS == "ios") {
         //             RNFetchBlob.ios.openDocument(res.path());
         //             Toast.show('Tải xuống hoàn tất.')
@@ -309,7 +309,7 @@ class Catalog extends React.Component {
                 
         //     })
         //     .catch((errorMessage, statusCode) => {
-        //         console.log(link, 'alink')
+        //         
 
         //         Toast.show('Lỗi khi tải xuống.')
         //     })
@@ -331,7 +331,7 @@ class Catalog extends React.Component {
                     return []
                 })
                 this.formatData(datas)
-                console.log(datas,'search')
+                
             })
         }
        
@@ -352,25 +352,30 @@ class Catalog extends React.Component {
                 let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
                 return { ...e, description: description.value, showMore: description.showMore, showLess: false }
             })
-
+            console.log('1')
             if (this.state.page == 1) {
+                console.log('2')
                 this.setState({ datas, backup, loading: true, refreshing: false, threshold: 0.1 })
             } else {
+                console.log('3')
                 this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], refreshing: false })
             }
         }
 
     }
     getData=()=>{
+        
         this.getDataDocument(this.state.page)
     }
     refressData =()=>{
-        this.getDataDocument(1)
+        
+        this.setState({page:1},()=>this.getDataDocument(this.state.page))
     }
-    getDataDocument = async (page) => {
+    getDataDocument = async (page=1) => {
+        
         let datas = [];
-        console.log(this.state.type)
-        console.log('get')
+        
+        
         if (this.state.follow) {
             datas = await listDocumentFollows(this.state.type, page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
@@ -383,7 +388,7 @@ class Catalog extends React.Component {
             }).catch(err => {
                 return []
             })
-            console.log(datas, 'ss')
+            
         }
 
         this.formatData(datas)

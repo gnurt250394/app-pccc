@@ -88,7 +88,7 @@ export default class LiquidationShop extends Component {
     }
 
     _loadMore = () => {
-        !this.state.loading ? null : this.setState({ loading: true, page: this.state.page + 1 }, this.getLiquidation)
+        !this.state.loading ? null : this.setState({ loading: true, page: this.state.page + 1 },()=> this.getLiquidation(this.state.page))
     }
     _nextPage = () => {
         navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type })
@@ -134,9 +134,10 @@ export default class LiquidationShop extends Component {
         );
     }
     getData = async (params) => {
+       
         let token = await getItem('token')
         getListLiquidation(params,token).then(res => {
-
+            console.log(res.data,'refres')
             if (res.data.code == Status.SUCCESS) {
                 if (this.state.page == 1) {
                     this.setState({
@@ -179,19 +180,20 @@ export default class LiquidationShop extends Component {
         }
         this.getData(params)
     }
-    getLiquidation = async () => {
+    getLiquidation = async (page = 1) => {
         if (this.state.page == 1) { this.setState({ refreshing: true }) }
         let params = {
             type: this.state.type,
-            page: this.state.page
+            page: page
         }
+        console.log(params,'params')
         this.getData(params)
     }
     componentDidMount = () => {
 
-
+console.log('did')
         this._willFocus = this.props.navigation.addListener('willFocus', () => {
-            this.getLiquidation()
+            this.getLiquidation(this.state.page)
         }
         )
     };

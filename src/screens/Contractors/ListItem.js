@@ -15,16 +15,16 @@ class Item extends Component {
             />
                 <Text numberOfLines={1} style={styles.txt} >
                     {this.props.name}</Text>
-        </View>:null
-        //     : <View style={styles.Square}>
-        //     <Image source={this.props.source}
-        //         style={styles.image}
-        //         resizeMode="contain"
-        //     />
-        //     <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
-        //         <Text style={styles.txt} > (Vị trí này đang trống)</Text>
-        //     </View>
-        // </View>
+        </View>
+            : <View style={styles.Square}>
+            <Image source={this.props.source}
+                style={styles.image}
+                resizeMode="contain"
+            />
+            <View style={{ flexWrap: 'wrap', flexShink: 5 }}>
+                <Text style={styles.txt} > (Không có dữ liệu)</Text>
+            </View>
+        </View>
     }
 }
 export default class ListItem extends Component {
@@ -47,7 +47,7 @@ export default class ListItem extends Component {
                         <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} 
                         >{this.props.item.name} 
                             </Text>
-                            <Image  style={styles.iconNotify} source={images.dotYellow} />
+                           {this.props.item.status==0? <Image  style={styles.iconNotify} source={images.dotYellow} />:null}
                         {/* </View> */}
                     </View>
                     <Item source={images.proEmail} name={this.props.item.email} />

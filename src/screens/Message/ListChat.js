@@ -10,42 +10,60 @@ import { color, MessageStatus, popupOk } from 'config'
 import { BaseSearch } from 'components';
 import navigation from 'navigation/NavigationService';
 import { withNavigation } from 'react-navigation';
-
+import { listMessage } from 'config/apis/mesage';
+import { Status } from 'config/Controller';
+import moment from 'moment'
 class ListChat extends React.Component {
     state = {
         keyword: "",
-        loading: true
+        loading: true,
+        listMessage:[]
     }
+    getData=()=>{
+        listMessage().then(res=>{
+            console.log(res.data)
+            if(res.data.code == Status.SUCCESS){
+                this.setState({listMessage:res.data.data})
+            }else{
 
+            }
+        }).catch(err=>{
+            console.log(err.response,'err')
+        })
+    }
     // set status bar
     componentDidMount() {
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
+          this.getData()
         //  popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
         });
     }
     _nextPage=(item)=>()=>{
-        navigation.navigate(MessageScreen,{id:item.id,title:item.name})
+        navigation.navigate(MessageScreen,{id:item.user_id,title:item.user_name})
+    }
+    formatDate =(time)=>{
+        return moment(time,'DD-MM-YYYY hh:mm:ss').format('DD/MM/YYYY')
     }
     renderItem  = ({item, index}) => {
         return (
             <TouchableOpacity style={style.box}
             onPress={this._nextPage(item)}
             >
-                <Text style={item.status == MessageStatus.unread ? style.timeUnread : style.time}>{item.createdAt}</Text>
+                <Text style={item.status == MessageStatus.unread ? style.timeUnread : style.time}>{this.formatDate(item.time)}</Text>
                 <View style={style.row}>
                     <View style={style.relative}>
                         <Image 
                             style={style.avatar}
-                            source={images.logo} />
-                        <Image 
+                            source={item.image?{uri:item.image}:images.userBlue} />
+                        {/* <Image 
                             style={style.dot}
-                            source={item.online ? images.online : images.offline} />
+                            source={item.online ? images.online : images.offline} /> */}
                     </View>
                     <View style={style.boxLabel}>
-                        <Text style={style.name}>{item.name}</Text>
-                        <Text style={ item.status == MessageStatus.unread ? style.messageUnread : style.message}>{item.message}</Text>
+                        <Text style={style.name}>{item.user_name}</Text>
+                        <Text style={ item.status == MessageStatus.unread ? style.messageUnread : style.message}>{item.massage}</Text>
                     </View>
                     
                 </View>
@@ -71,7 +89,7 @@ class ListChat extends React.Component {
                     
 
                     <FlatList
-                        data={datas}
+                        data={this.state.listMessage}
                         renderItem={this.renderItem}
                         keyExtractor={this._keyExtractor} />
             </View>
@@ -130,37 +148,37 @@ const style = StyleSheet.create({
     }
 })
 
-const datas = [
-    {
-        id: 1,
-        name: 'Hoang Pear',
-        message: 'Bên mình đang sale 30%...',
-        online: true,
-        status: 0,
-        createdAt: 'Hôm nay 14:24'
-    },
-    {
-        id: 2,
-        name: 'Hoang Pear',
-        message: 'Bên mình đang sale 30%...',
-        online: false,
-        status: 0,
-        createdAt: 'Hôm nay 14:24'
-    },
-    {
-        id: 3,
-        name: 'Hoang Pear',
-        message: 'Bên mình đang sale 30%...',
-        online: true,
-        status: 1,
-        createdAt: 'Hôm nay 14:24'
-    },
-    {
-        id: 4,
-        name: 'Hoang Pear',
-        message: 'Bên mình đang sale 30%...',
-        online: true,
-        status: 1,
-        createdAt: 'Hôm nay 14:24'
-    },
-]
+// const datas = [
+//     {
+//         id: 1,
+//         name: 'Hoang Pear',
+//         message: 'Bên mình đang sale 30%...',
+//         online: true,
+//         status: 0,
+//         createdAt: 'Hôm nay 14:24'
+//     },
+//     {
+//         id: 2,
+//         name: 'Hoang Pear',
+//         message: 'Bên mình đang sale 30%...',
+//         online: false,
+//         status: 0,
+//         createdAt: 'Hôm nay 14:24'
+//     },
+//     {
+//         id: 3,
+//         name: 'Hoang Pear',
+//         message: 'Bên mình đang sale 30%...',
+//         online: true,
+//         status: 1,
+//         createdAt: 'Hôm nay 14:24'
+//     },
+//     {
+//         id: 4,
+//         name: 'Hoang Pear',
+//         message: 'Bên mình đang sale 30%...',
+//         online: true,
+//         status: 1,
+//         createdAt: 'Hôm nay 14:24'
+//     },
+// ]

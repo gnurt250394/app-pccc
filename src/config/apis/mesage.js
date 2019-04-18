@@ -24,6 +24,12 @@ export const postMessage=async(body)=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.post(constant.MESSAGE,body)
 }
+export const listMessage=async()=>{
+ 
+  let token = await getItem('token')
+      instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+      return instance.get(constant.LIST_MESSAGE)
+}
 
 export const LaravelEchoConfig = async () => {
     let token =await getItem('token')
