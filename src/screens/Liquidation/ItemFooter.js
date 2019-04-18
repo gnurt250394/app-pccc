@@ -72,7 +72,7 @@ export default class ItemFooter extends Component {
 }
 const styles = StyleSheet.create({
       txtAdd: {
-            color: '#FFFFFF',
+            color: '#333333',
             fontSize:16,
             fontWeight:'bold'
       },

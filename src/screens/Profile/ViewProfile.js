@@ -174,7 +174,7 @@ const style = StyleSheet.create({
         height: 40,
     },
     txtSub: {
-        color: '#cccccc',
+        color: '#999999',
         fontSize: 14,
         marginLeft: 7
     },

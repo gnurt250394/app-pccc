@@ -61,7 +61,7 @@ export default class ListLiquidation extends Component {
         if (keyword == '') {
             return null
         } else {
-            this.setState({ loading: true }, async () => {
+            this.setState({ loading: true ,page:1}, async () => {
 
                 let params = {
                     type: this.state.type == typeScreen.Liquidation ? typeScreen.Liquidation : typeScreen.postPurchase,

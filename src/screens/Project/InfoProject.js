@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity,AsyncStorage, ActivityIndicator, Text } from 'react-native';
 import { BaseSearch } from 'components';
 import navigation from 'navigation/NavigationService';
 import { DetailProject } from 'config/screenNames';
 import { getNewProject, searchProject, listFollows } from 'config/apis/Project';
 import Toast from 'react-native-simple-toast';
-import { Status, color } from 'config/Controller';
+import { Status, color, typeScreen } from 'config/Controller';
 import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
 import { log, width, toParams } from 'config'
@@ -38,11 +38,12 @@ class InfoProject extends Component {
             listProject[index].change = 1
             console.log(listProject,'listproject')
            let listChange= listProject.filter(item=>item.change ==1)
-           console.log(listChange,'listChange')
            if(listChange.length ==0){
-            this.props.changeProject(1)
-           }else{
+               AsyncStorage.setItem(typeScreen.project,`${0}`)
             this.props.changeProject(0)
+           }else{
+            AsyncStorage.setItem(typeScreen.project,`${1}`)
+            this.props.changeProject(1)
            }
             this.setState({listProject})
         }
@@ -74,7 +75,7 @@ class InfoProject extends Component {
     }
 
     handleRefresh = () => {
-        this.setState({ refreshing: true, page: 1 }, () => { this.search.onClear(), this.getData })
+        this.setState({ refreshing: true, page: 1 },  this.getData )
     }
     _keyExtractor = (item, index) => {
         return `${item.id || index}`
@@ -198,7 +199,7 @@ class InfoProject extends Component {
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
-
+        console.log(this.state.page,'page')
         if (this.state.follow) {
             let params = toParams({
                 page: this.state.page,

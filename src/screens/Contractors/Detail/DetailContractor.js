@@ -42,9 +42,9 @@ export default class DetailContractor extends Component {
         if (item.type == typeScreen.project) {
             navigation.navigate(DetailProject, { id: item.common_id })
         } else if (item.type == typeScreen.bidding) {
-            navigation.navigate(DetailBiddingScreen)
+            navigation.navigate(DetailBiddingScreen,{id:item.common_id})
         } else if (item.type == typeScreen.user) {
-            // navigation.navigate(DetailContractor)
+            navigation.navigate(DetailContractor,{id:item.common_id})
         }
     }
     _renderItem = ({ item }) => {
@@ -164,7 +164,7 @@ export default class DetailContractor extends Component {
                     <Item source={images.proCompany} name={UserObject.company} />
                     <Btn name={"Bỏ theo dõi"}
                         onPress={this._UnfolowUser}
-                        
+                        textStyle={styles.textUnFollow}
                         customStyle={styles.btnUnFollow} />
                 </View>
                 <View style={styles.containerFooter}>
@@ -220,11 +220,15 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0
     },
+    textUnFollow:{
+        color:'#2166A2'
+    },
     btnUnFollow: {
         width: '40%',
         borderRadius: 5,
         marginBottom:0,
-        marginTop:0
+        marginTop:0,
+        backgroundColor:'#FFFFFF'
     },
     containerList: {
         flex: 1,

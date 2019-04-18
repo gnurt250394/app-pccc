@@ -28,7 +28,7 @@ class ListBidding extends React.Component {
         type: this.props.navigation.getParam('type'),
         follow: this.props.navigation.getParam('follow') || false,
         loading: true,
-        refreshing: false,
+        refreshing: true,
         datas: [],
         page: 1,
         threshold: 0.1,
@@ -47,7 +47,9 @@ class ListBidding extends React.Component {
     componentWillUnmount() {
         this._navListener.remove();
     }
-
+    _ListEmpty = () => {
+        return !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
+      }
     /**
      * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
@@ -69,11 +71,7 @@ class ListBidding extends React.Component {
                         goBack={this._goBack}
                         keyword={this.state.keyword} />}
 
-                    {
-                        this.state.datas.length == 0 
-                            ?
-                        !this.state.loading && <Text style={style.notFound}>Không có dữ liệu</Text>
-                            :
+                    
                         <FlatList
                             // ref='bidding'
                             data={this.state.datas}
@@ -82,9 +80,10 @@ class ListBidding extends React.Component {
                             refreshing={this.state.refreshing}
                             onRefresh={this.handleRefresh}
                             onEndReached={this.handleLoadmore}
+                            ListEmptyComponent={this._ListEmpty}
                             onEndReachedThreshold={this.state.threshold}
                             ListFooterComponent={this.ListFooterComponent}  />
-                    }
+                    
                 
             </View>
         )

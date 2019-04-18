@@ -87,7 +87,7 @@ export default class ListCategory extends Component {
     if (keyword == '') {
       return null
     } else {
-      this.setState({ loading: true }, async () => {
+      this.setState({ refreshing: true }, async () => {
 
         let params = {
           keyword: keyword,

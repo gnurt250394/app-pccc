@@ -4,13 +4,15 @@ import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
 import images from "assets/images"
+import { Status } from 'config/Controller';
 const { width } = Dimensions.get('window')
 export default class CategoryFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listCategory: [],
-      loading:true
+      loading: true,
+      refreshing: true
     };
   }
   _goBack = () => {
@@ -18,16 +20,16 @@ export default class CategoryFilter extends Component {
   }
   _selectList = (item) => () => {
 
-    if(this.state.loading){
-      this.setState({loading:false})
+    if (this.state.loading) {
+      this.setState({ loading: false })
       if (this.props.navigation.state && this.props.navigation.state.params.fun) {
         this.props.navigation.state.params.fun(item)
         navigation.pop()
       }
-    }else{
+    } else {
       return null
     }
-   
+
 
   }
 
@@ -49,6 +51,7 @@ export default class CategoryFilter extends Component {
 
 
   }
+  handleRefress = () => this.setState({ refreshing: true }, this.getData)
   _keyExtractor = (item, index) => {
     return `${item.id || index}`
   }
@@ -66,6 +69,8 @@ export default class CategoryFilter extends Component {
           data={this.state.listCategory}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
+          refreshing={this.state.refreshing}
+          onRefresh={this.handleRefress}
         />
       </View>
     );
@@ -73,12 +78,24 @@ export default class CategoryFilter extends Component {
 
   getData = () => {
     getOtherData({ table: 'categories' }).then(res => {
+      console.log(res.data, 'ddd')
+      if (res.data.code == Status.SUCCESS) {
+        let data = res.data.data
+        let obj = {
+          id: 0,
+          name: "Tất cả danh mục"
 
-      this.setState({
-        listCategory: res.data.data
-      })
+        }
+        this.setState({
+          listCategory: [obj,...data],
+          refreshing: false
+        })
+      } else {
+        this.setState({ refreshing: false })
+      }
+
     }).catch(err => {
-
+      this.setState({ refreshing: false })
     })
   }
   componentDidMount = () => {
@@ -104,8 +121,8 @@ const styles = StyleSheet.create({
   },
   txt: {
     marginLeft: 15,
-    fontWeight:'500',
-    color:'#333333'
+    fontWeight: '500',
+    color: '#333333'
   },
   containerListUnChecked: {
     flex: 1,

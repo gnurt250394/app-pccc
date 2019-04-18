@@ -222,7 +222,7 @@ const style = StyleSheet.create({
         // borderColor:color,
         // borderWidth:1
     },
-    btnModal: { fontSize: 16, fontWeight: '500', height: '100%', width: '100%', color: 'white', flex: 1, textAlign: 'center', },
+    btnModal: { fontSize: 16,  height: '100%', width: '100%', color: 'white', flex: 1, textAlign: 'center', },
     register: { color: color, backgroundColor: 'white' },
     groupTxt: {
         flex: 1,
