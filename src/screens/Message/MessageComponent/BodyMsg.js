@@ -28,9 +28,10 @@ export default class BodyMsg extends React.PureComponent {
 
   }
   messageReceiver = (item) => {
+    // console.log(item,'messageReceiver')
     return (
       <View style={styles.container}>
-        <Image style={styles.imgAvatar} resizeMode="contain" source={item.avatar ? { uri: item.avatar } : images.userBlue} />
+        <Image style={styles.imgAvatar} resizeMode="contain" source={item.avatar ? { uri: item.full_path } : images.userBlue} />
         <View>
           <View style={styles.containerGuest}>
             {item.message ? <Text style={styles.txtGuest}>{item.message}</Text> : null}
@@ -43,6 +44,7 @@ export default class BodyMsg extends React.PureComponent {
     )
   }
   messageSender = (item) => {
+    // console.log(item,'messageSender')
     return (
       <View style={styles.groupUser}>
         <View style={styles.containerUser}>
@@ -60,7 +62,7 @@ export default class BodyMsg extends React.PureComponent {
     const { item } = this.props
 
     // check  nếu nhắn tin của chính mình
-    if (item.sender_id == this.state.user_id) {
+    if (item.sender_id == this.state.user_id ) {
       return this.messageSender(item)
       // check nếu tin nhắn của người khác gửi đến
     } else {
@@ -121,11 +123,13 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 11,
     color: '#999999',
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop:3
   },
   txtUser: {
     width: '90%',
     color: '#FFFFFF',
+    marginTop:3,
     marginBottom: 10
   },
   txtGuest: {

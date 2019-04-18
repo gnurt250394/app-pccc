@@ -28,7 +28,8 @@ const constant ={
     COUNT_NOTIFICATION:'count-notification',
     LIST_LIQUIDATION:'new-post',
     UPDATE_LIQUIDATION:'update-post',
-    MESSAGE:'message-chat'
+    MESSAGE:'message-chat',
+    LIST_MESSAGE:'list-chat'
 }
 
 export default constant;
