@@ -53,6 +53,7 @@ import DetailPostPurchase from "screens/PostPurchase/DetailPostPurchase/DetailPo
 import ListPostPurchase from "screens/PostPurchase/ListPostPurchase/ListPostPurchase";
 import Message from "screens/Message/Message";
 import Edit from "screens/Shop/liquidation/Edit";
+import ShowImage from "screens/Message/MessageComponent/ShowImage";
 
 
 // const MyDrawerNavigator = createDrawerNavigator({
@@ -122,6 +123,8 @@ const App = createStackNavigator(
     [ScreenName.CategoryFilter]:CategoryFilter,
     [ScreenName.EditLiquidation]:Edit,
 
+
+    [ScreenName.ShowImage]:ShowImage,
     // Post Purchase
     [ScreenName.PostPurchase]:PostPurchase,
     [ScreenName.DetailPostPurchase]:DetailPostPurchase,

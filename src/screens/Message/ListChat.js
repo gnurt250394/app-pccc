@@ -16,18 +16,19 @@ import moment from 'moment'
 class ListChat extends React.Component {
     state = {
         keyword: "",
-        loading: true,
+        refreshing: true,
         listMessage:[]
     }
     getData=()=>{
         listMessage().then(res=>{
             console.log(res.data)
             if(res.data.code == Status.SUCCESS){
-                this.setState({listMessage:res.data.data})
+                this.setState({listMessage:res.data.data,refreshing:false})
             }else{
-
+                this.setState({refreshing:false})
             }
         }).catch(err=>{
+            this.setState({refreshing:false})
             console.log(err.response,'err')
         })
     }
@@ -71,12 +72,18 @@ class ListChat extends React.Component {
             </TouchableOpacity>
         )
     }
+    handleRefress=()=>{
+        this.setState({refreshing:true},this.getData)
+    }
 
     componentWillUnmount() {
         // this._navListener.remove();
     }
     // end status bar
     _keyExtractor = (item, index) => `${item.id||index}`
+    _ListEmpty = () => {
+        return !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
+    }
     render(){
         return (
             <View style={style.container}>
@@ -91,6 +98,9 @@ class ListChat extends React.Component {
                     <FlatList
                         data={this.state.listMessage}
                         renderItem={this.renderItem}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefress}
+                        ListEmptyComponent={this._listEmpty}
                         keyExtractor={this._keyExtractor} />
             </View>
         )
@@ -133,7 +143,7 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1},
     avatar: {width: 60, height: 60, resizeMode: 'contain', borderRadius: 30},
-    box: {borderBottomWidth: 1,padding: 10, borderBottomColor: '#ddd',},
+    box: {borderBottomWidth: 1,padding: 10, borderBottomColor: '#ddd',backgroundColor:'#FFFFFF'},
     time: {position:'absolute',right:8,top:10, fontSize: 11},
     timeUnread: {position:'absolute',right:8,top:10, color: '#111111', fontSize: 11},
     name: {color: '#111111', fontSize: 14, fontWeight: 'bold', paddingBottom: 8},
@@ -144,7 +154,14 @@ const style = StyleSheet.create({
     row: {flexDirection: 'row',alignItems:'center'},
     relative: {position: 'relative'},
     container:{
-        flex:1
+        flex:1,
+        backgroundColor:'#cccccc'
+    },
+    notFound: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 20,
     }
 })
 

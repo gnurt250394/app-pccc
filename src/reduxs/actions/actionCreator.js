@@ -55,3 +55,10 @@ export const countProject = (changeProject) =>{
         changeContractor
     }
  }
+
+ export const ChangeImage=(image)=>{
+     return{
+         type:actionTypes.CHANGE_IMAGE,
+         image
+     }
+ }

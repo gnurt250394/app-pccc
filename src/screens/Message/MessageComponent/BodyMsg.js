@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { Text, View, StyleSheet, Image, ActivityIndicator,TouchableOpacity,Dimensions } from 'react-native'
 import images from 'assets/images'
 import moment from 'moment'
 import 'moment/locale/vi'
 import { getItem } from 'config/Controller';
+import navigation from 'navigation/NavigationService';
+import { ShowImage } from 'config/screenNames';
+const {width,height} = Dimensions.get('window')
 export default class BodyMsg extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       user_id: '',
-      receiver_id: ''
+      receiver_id: '',
+      image:null,
+      sizeImage:false
     }
   }
+  
   componentDidMount = async () => {
     let user_id = await getItem('user_id')
     let receiver_id = this.props.receiver_id
@@ -27,16 +33,27 @@ export default class BodyMsg extends React.PureComponent {
     }
 
   }
+  handleImage=(item)=>()=>{
+    navigation.navigate(ShowImage,{image:item.get_image[0].full_path})
+  }
+  
   messageReceiver = (item) => {
-    // console.log(item,'messageReceiver')
+    
+    // 
     return (
       <View style={styles.container}>
-        <Image style={styles.imgAvatar} resizeMode="contain" source={item.avatar ? { uri: item.full_path } : images.userBlue} />
+        <Image style={styles.imgAvatar} resizeMode="contain" source={item.full_path ? { uri: item.full_path } : images.userBlue} />
         <View>
-          <View style={styles.containerGuest}>
-            {item.message ? <Text style={styles.txtGuest}>{item.message}</Text> : null}
-          </View>
-          {item.image ? <Image style={styles.img} source={{ uri: item.image }} /> : null}
+        {item.message ? <View style={styles.containerGuest}>
+            <Text style={styles.txtGuest}>{item.message}</Text> 
+          </View>: null}
+          {item.get_image && item.get_image[0]  ? 
+          <TouchableOpacity style={[styles.btnImage]}
+          onPress={this.handleImage(item)}
+          >
+          <Image style={styles.img} source={{ uri: item.get_image[0].full_path }} /> 
+          </TouchableOpacity>
+          : null}
 
           <Text style={styles.time}>{this.convertTime(item.created_at)}</Text>
         </View>
@@ -44,17 +61,24 @@ export default class BodyMsg extends React.PureComponent {
     )
   }
   messageSender = (item) => {
-    // console.log(item,'messageSender')
+    // 
     return (
       <View style={styles.groupUser}>
-        <View style={styles.containerUser}>
+        {item.message?<View style={styles.containerUser}>
           <Text style={styles.txtUser}>{item.message}</Text>
-        </View>
-        {item.created_at ? <Text style={styles.timeUser}>{this.convertTime(item.created_at)}</Text>
+        </View> :null}
+        {item.get_image && item.get_image[0]  ? 
+        <TouchableOpacity style={styles.btnImage}
+        onPress={this.handleImage(item)}
+        >
+        <Image style={styles.img} source={{ uri: item.get_image[0].full_path }} /> 
+        </TouchableOpacity>
+        : null}
+        {!item.loading  ? <Text style={styles.timeUser}>{this.convertTime(item.created_at ? item.created_at:'')}</Text>
           :
           <ActivityIndicator size="small" color="#2166A2" style={styles.loading} />
         }
-        {this.props.image ? <Image style={styles.img} source={{ uri: this.props.image }} /> : null}
+        
       </View>
     )
   }
@@ -63,10 +87,46 @@ export default class BodyMsg extends React.PureComponent {
 
     // check  nếu nhắn tin của chính mình
     if (item.sender_id == this.state.user_id ) {
-      return this.messageSender(item)
+      return (
+        <View style={styles.groupUser}>
+        {item.message?<View style={styles.containerUser}>
+          <Text style={styles.txtUser}>{item.message}</Text>
+        </View> :null}
+        {item.get_image && item.get_image[0]  ? 
+        <TouchableOpacity style={styles.btnImage}
+        onPress={this.handleImage(item)}
+        >
+        <Image style={styles.img} source={{ uri: item.get_image[0].full_path }} /> 
+        </TouchableOpacity>
+        : null}
+        {!item.loading  ? <Text style={styles.timeUser}>{this.convertTime(item.created_at ? item.created_at:'')}</Text>
+          :
+          <ActivityIndicator size="small" color="#2166A2" style={styles.loading} />
+        }
+        
+      </View>
+      )
       // check nếu tin nhắn của người khác gửi đến
     } else {
-      return this.messageReceiver(item)
+      return (
+        <View style={styles.container}>
+        <Image style={styles.imgAvatar} resizeMode="contain" source={item.full_path ? { uri: item.full_path } : images.userBlue} />
+        <View>
+        {item.message ? <View style={styles.containerGuest}>
+            <Text style={styles.txtGuest}>{item.message}</Text> 
+          </View>: null}
+          {item.get_image && item.get_image[0]  ? 
+          <TouchableOpacity style={[styles.btnImage]}
+          onPress={this.handleImage(item)}
+          >
+          <Image style={styles.img} source={{ uri: item.get_image[0].full_path }} /> 
+          </TouchableOpacity>
+          : null}
+
+          <Text style={styles.time}>{this.convertTime(item.created_at)}</Text>
+        </View>
+      </View>
+      )
     }
 
   }
@@ -137,8 +197,19 @@ const styles = StyleSheet.create({
     color: '#333333'
   },
   img: {
+    height: '100%',
+    width: '100%',
+    // resizeMode:'contain'
+  },
+  btnImage:{
     height: 200,
     width: 130,
-    marginTop: 5
+    marginTop: 5,
+    marginRight:10
   }
 })
+
+
+
+
+
