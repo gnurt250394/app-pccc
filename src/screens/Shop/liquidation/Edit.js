@@ -30,6 +30,7 @@ class Edit extends Component {
                   address: '',
                   location: 'Chọn địa chỉ',
                   isVisible: false,
+                  item:this.props.navigation.getParam('item',''),
                   value: '',
                   id: this.props.navigation.getParam('id', ' '),
                   Liquidation: {},
@@ -44,21 +45,32 @@ class Edit extends Component {
       componentDidMount() {
             this.getDetail()
       }
+      handleCategory=(item)=>{
+            let arr =[]
+            item.category.forEach(e=>{
+                  
+                  arr.push(e.id)})
+            return arr
+      }
       getDetail = () => {
-            console.log(this.state.id, 'iii')
+            console.log(this.state.item, 'iii')
             getDetailLiquidation(this.state.id).then(res => {
                   if (res.data.code == Status.SUCCESS) {
                         const data = res.data.data;
                         console.log(data, 'sss')
                         this.inputTitle.handleText(data.title)
                         this.inputDescription.handleText(data.description)
-                        this.footer.forrmatData(data.file_attach)
+
                         this.setState({
                               name: data.category,
+                              category_id:this.handleCategory(this.state.item),
                               location: data.address + " - " + data.district + " - " + data.city
                         })
+                        console.log(this.state.category_id,'id')
+                        this.footer.forrmatData(data.file_attach)
+                        console.log(this.state.location, 'location')
                   } else if (res.data.code == Status.ID_NOT_FOUND) {
-                        this.setState({ loading: false,  })
+                        this.setState({ loading: false, })
                   }
             }).catch(err => {
                   this.setState({ loading: false })
@@ -151,7 +163,7 @@ class Edit extends Component {
                   return null
             } else {
 
-                  let idCity = this.Modal.state.idCity || '',
+                  let idCity = this.Modal.state.idCity || this.state.item.city.id,
                         idCountry = this.Modal.state.idDistrict || '',
                         listFile = this.footer.state.listFile || [],
                         title = this.inputTitle.state.text || '',
@@ -173,7 +185,7 @@ class Edit extends Component {
                   params.append('city_id', idCity)
                   params.append('address', address)
                   params.append('district_id', idCountry)
-                        console.log(params,'params')
+                  console.log(params, 'params')
                   if (this.validate() == '') {
                         this.setState({ loading: true })
                         updateLiquidation(params).then(res => {
@@ -193,7 +205,7 @@ class Edit extends Component {
                               }
                         }).catch(err => {
                               this.setState({ loading: false })
-                              console.log(err.response,'err')
+                              console.log(err.response, 'err')
                               SimpleToast.show("Server ERROR")
 
                         })

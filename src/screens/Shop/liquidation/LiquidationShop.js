@@ -63,7 +63,7 @@ export default class LiquidationShop extends Component {
     }
     _editLiquidation=(item)=>()=>{
         this._hideMenu()
-        navigation.navigate(EditLiquidation,{id:item.id,type:this.state.type})
+        navigation.navigate(EditLiquidation,{id:item.id,type:this.state.type,item:item})
     }
     _renderItem = ({ item, index }) => {
         return (
