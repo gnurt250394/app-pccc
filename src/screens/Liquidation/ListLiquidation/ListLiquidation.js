@@ -185,7 +185,7 @@ export default class ListLiquidation extends Component {
                 popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
-            console.log(err.response)
+            console.log(err)
             this.setState({ Thresold: 0, loading: false, refreshing: false })
 
         })

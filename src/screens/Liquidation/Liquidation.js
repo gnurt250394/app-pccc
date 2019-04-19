@@ -110,7 +110,8 @@ class Liquidation extends Component {
                                           style={styles.inputItem}
                                     />
                                     <View keyboardShouldpersist='always' style={styles.containerStyle}>
-                                          <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Danh mục cần thanh lý' : 'Danh mục cần mua'}</Text>
+                                          <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}
+                                          >{type == typeScreen.Liquidation ? 'Danh mục cần thanh lý' : 'Danh mục cần mua'}</Text>
                                           <TouchableOpacity
                                                 onPress={this.showFlatlit}
 
@@ -119,7 +120,8 @@ class Liquidation extends Component {
                                                 <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
                                           </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Địa chỉ thanh lý' : 'Địa chỉ mua'}</Text>
+                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}
+                                    >{type == typeScreen.Liquidation ? 'Địa chỉ thanh lý' : 'Địa chỉ mua'}</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
                                     >

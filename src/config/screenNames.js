@@ -75,7 +75,7 @@ export const EditLiquidation = "EditLiquidation"
 export const PostPurchase = "PostPurchase"
 export const ListPostPurchase = "ListPostPurchase"
 export const DetailPostPurchase = "DetailPostPurchase"
-
+export const ShowImage = "ShowImage"
 
 
 

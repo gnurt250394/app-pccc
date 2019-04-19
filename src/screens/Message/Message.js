@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StatusBar, StyleSheet, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { Text, View, StatusBar, StyleSheet, FlatList, TouchableWithoutFeedback,ActivityIndicator, Keyboard } from 'react-native'
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import HeaderMsg from './MessageComponent/HeaderMsg';
@@ -8,8 +8,10 @@ import FooterMsg from './MessageComponent/FooterMsg';
 import { getMessage, postMessage, LaravelEchoConfig } from 'config/apis/mesage';
 import { getItem, Status } from 'config/Controller';
 import Echo from 'laravel-echo';
+import { connect } from 'react-redux'
 import SocketIOClient from 'socket.io-client/dist/socket.io';
 import constant from 'config/apis/constant';
+import SimpleToast from 'react-native-simple-toast';
 export default class Message extends Component {
   constructor(props) {
     super(props);
@@ -17,14 +19,17 @@ export default class Message extends Component {
       title: this.props.navigation.getParam('title', ''),
       id: this.props.navigation.getParam('id', ''),
       listMessage: [],
-      loading: false,
-      image: null
+      loading: true,
+      image: null,
+      page:1,
+      Threshold: 0.1
     }
-    // this.configSocket()
+    this.configSocket()
   }
 
   configSocket = async () => {
-    let token = await getItem('token')
+    const token = await getItem('token')
+    let user_id = await getItem('user_id')
     let echo = new Echo({
       broadcaster: 'socket.io',
       host: constant.BASE_SOCKET,
@@ -35,15 +40,69 @@ export default class Message extends Component {
         },
       },
     });
-    console.log('start')
-    echo.channel('chatroom').listen('MessagePosted', data => {
-        console.log(data,'event')
-        if(data && data.message){
-          this.setState({listMessage:[data.message,...this.state.listMessage]})
-        }
-      })
-  }
 
+
+    echo.channel('chatroom').listen('MessagePosted', data => {
+      // 
+      console.log(data, 'event')
+      if (data && data.message) {
+        if (data.message.sender_id == user_id) {
+          return null
+        } else {
+          let obj = data.message
+          let list = [{
+            full_path: data.image
+          }]
+          obj.get_image = list
+          this.setState({ listMessage: [obj, ...this.state.listMessage] })
+        }
+
+      }
+    })
+  }
+  selectImage = async (value) => {
+    // this.setState({image:value})
+    let user_id = await getItem('user_id')
+
+
+    let data = this.state.listMessage
+    // if (message == '') return null
+    let params = new FormData()
+    let date = new Date()
+    let name = `IMG_${date.getTime()}.png`
+    params.append('receiver_id', this.state.id)
+    // params.append('message', message)
+    params.append('file[]', { uri: value, type: 'image/jpeg', name }, name)
+    let obj = {
+      // message: message,
+      receiver_id: this.state.id,
+      sender_id: user_id,
+      loading: true,
+      get_image: [
+        {
+          full_path: value
+        }
+      ]
+    }
+
+    this.setState({ listMessage: [obj, ...data] })
+
+    postMessage(params).then(res => {
+
+      if (res.data.code == Status.SUCCESS) {
+        obj.loading = false
+        obj.get_image[0].full_path = res.data.data.image
+        obj.created_at = res.data.data.created_at
+        this.setState({ listMessage: [obj, ...data] })
+      } else {
+        SimpleToast.show("Không thể gửi tin nhắn")
+      }
+    }).catch(err => {
+      SimpleToast.show("Không thể gửi tin nhắn")
+    })
+
+
+  }
   _goBack = () => {
     navigation.pop()
   }
@@ -52,7 +111,6 @@ export default class Message extends Component {
       <BodyMsg
         item={item}
         receiver_id={this.state.id}
-        image={item.image ? item.image : this.state.image}
       />
     )
   }
@@ -64,36 +122,36 @@ export default class Message extends Component {
     let params = new FormData()
     params.append('receiver_id', this.state.id)
     params.append('message', message)
-    params.append('file[]', '')
+    params.append('file[]', this.state.image)
     let obj = {
       message: message,
       receiver_id: this.state.id,
       sender_id: user_id,
-      loading:true
+      loading: true
     }
-    
-    
-    
-    this.setState({ listMessage: [obj,...this.state.listMessage] })
+    this.setState({ listMessage: [obj, ...data] })
     postMessage(params).then(res => {
-      
       if (res.data.code == Status.SUCCESS) {
-        let obj = this.state.listMessage
-        obj.forEach(e=>{
-          if(e.message == message){
-            e = res.data.data
-          }
-        })
-        
-        this.setState({ listMessage: obj })
-        
+        let obj = res.data.data
+        obj.loading = false
+        this.setState({ listMessage: [obj, ...data] })
+
+      } else {
+        SimpleToast.show("Không thể gửi tin nhắn")
       }
     }).catch(err => {
-      
+      SimpleToast.show("Không thể gửi tin nhắn")
     })
     this.Footer.onClear()
 
   }
+  _headerComponent = () => {
+   return this.state.loading  ? <ActivityIndicator size={"large"} color="#2166A2" />: null
+}
+onEndReached = () => {
+console.log('111111',this.state.page)
+  this.state.loading ? this.getMessage() : null
+}
   _keyExtractor = (item, index) => `${item.id || index}`
   render() {
     return (
@@ -109,12 +167,18 @@ export default class Message extends Component {
           renderItem={this._renderItem}
           ref={ref => this.flatlit = ref}
           inverted={true}
+          extraData={this.state}
           keyExtractor={this._keyExtractor}
           data={this.state.listMessage}
+          
+          onEndReachedThreshold={this.state.Threshold}
+          onEndReached={this.onEndReached}
+          ListFooterComponent={this._headerComponent}
         />
         <FooterMsg
           ref={ref => this.Footer = ref}
           onPress={this._sentMessage}
+          selectImage={this.selectImage}
         />
       </View>
     )
@@ -126,116 +190,58 @@ export default class Message extends Component {
   }
   getMessage = async () => {
     let user_id = await getItem('user_id')
-    
-    getMessage().then(res => {
-      
-      
 
-      if(res.data.code == Status.SUCCESS){
-        
-        let data = res.data.data
+    getMessage(this.state.page).then(res => {
+
+
+console.log(res.data,'data')
+      if (res.data.code == Status.SUCCESS) {
+        console.log(res.data,this.state.page,'1')
+        let data = res.data.data.data
         let listSend = data.filter(e => e.receiver_id == user_id && e.sender_id == this.state.id)
         let listReciver = data.filter(e => e.receiver_id == this.state.id && e.sender_id == user_id)
         let listFinal = listSend.concat(listReciver).sort(this.sortData)
-        this.setState({ listMessage: listFinal })
-      }else{
+        this.setState({ listMessage: [...this.state.listMessage,...listFinal],page:this.state.page+1 ,loading:true})
+      } else if(res.data.code == Status.NO_CONTENT){
+        console.log(this.state.page,'2')
         
+          this.setState({loading:false,Threshold:0})
+          console.log(this.state.loading,this.state.Threshold,'loading')
+      }else{
+        console.log('4',)
+        this.setState({loading:false,Threshold:0})
       }
-      
-      
+
+
     }).catch(err => {
-      
+      console.log(res.data,'3')
+      this.setState({loading:false,Threshold:0})
     })
   }
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('#2166A2');
-      this.getMessage()
+      
 
     });
-    this.configSocket()
+    this.getMessage()
+    // this.configSocket()
   }
 
   componentWillUnmount() {
     this._navListener.remove();
   }
 }
-const data = [
-  {
-    id: 1,
-    message: 'Mình là Nam, mình thấy bạn đang bán sản phẩm Báo cháy HOCHIKI, giá bao nhiêu ạ?',
-    receiver_id: 1,
-    created_at: '2019-02-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 2,
-    message: 'Bên mình đang sale 30% giá là 350.000 đ bạn nhé!',
-    receiver_id: 1,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 3,
-    message: 'Chào bạn aaaaa',
-    receiver_id: 2,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 4,
-    message: 'Hello bạn!',
-    sender_id: 1,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 5,
-    message: ':))',
-    receiver_id: 2,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 6,
-    message: 'Mình là Nam, mình thấy bạn đang bán sản phẩm Báo cháy HOCHIKI, giá bao nhiêu ạ?',
-    sender_id: 1,
-    created_at: '2019-02-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 7,
-    message: 'Bên mình đang sale 30% giá là 350.000 đ bạn nhé!',
-    receiver_id: 1,
-    created_at: '2019-03-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 8,
-    message: 'Chào bạn!!',
-    receiver_id: 2,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 9,
-    message: 'Hello bạn!',
-    sender_id: 1,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  },
-  {
-    id: 10,
-    message: '',
-    sender_id: 2,
-    created_at: '2019-04-12 06:41:25',
-    image: ''
-  }
-]
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3'
   }
 })
+
+
+
+
+

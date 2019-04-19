@@ -4,7 +4,8 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import reactotron from 'config/debug';
 import countReducer from './reducers/countNotifiReducer';
-const rootReducer = combineReducers({users,countReducer})
+import changeImage from './reducers/changeImage';
+const rootReducer = combineReducers({users,countReducer,changeImage})
 const middleware = [ thunk, logger ]
 let store = createStore(rootReducer, applyMiddleware(...middleware))
 
