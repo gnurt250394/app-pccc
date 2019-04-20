@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bugsnag-react-native": "^2.16.0",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "16.6.3",
