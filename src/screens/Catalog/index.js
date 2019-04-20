@@ -52,7 +52,7 @@ class Catalog extends React.Component {
         }
         return txt
     }
-    _listEmpty=()=> !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
+    _listEmpty = () => !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
     render() {
         let count = this.state.datas.length
         return (
@@ -71,17 +71,17 @@ class Catalog extends React.Component {
                         goBack={this._goBack}
                         keyword={this.state.keyword} />}
 
-                   
-                        <FlatList
-                            data={this.state.datas}
-                            renderItem={this.renderItem(count)}
-                            keyExtractor={(item, index) => index.toString()}
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.handleRefresh}
-                            onEndReached={this.handleLoadmore}
-                            onEndReachedThreshold={this.state.threshold}
-                            ListEmptyComponent={this._listEmpty}
-                            ListFooterComponent={this.ListFooterComponent} />
+
+                <FlatList
+                    data={this.state.datas}
+                    renderItem={this.renderItem(count)}
+                    keyExtractor={(item, index) => index.toString()}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
+                    onEndReached={this.handleLoadmore}
+                    onEndReachedThreshold={this.state.threshold}
+                    ListEmptyComponent={this._listEmpty}
+                    ListFooterComponent={this.ListFooterComponent} />
             </View>
         )
     }
@@ -95,7 +95,7 @@ class Catalog extends React.Component {
     }
 
     ListFooterComponent = () => {
-        return this.state.loading && this.state.datas.length >5? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+        return this.state.loading && this.state.datas.length > 5 ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
     renderItem = count => ({ item, index }) => {
@@ -271,7 +271,7 @@ class Catalog extends React.Component {
 
     onDownload = link => () => {
         downFile(link)
-        
+
         // let ext = link ? /[^\.]*$/.exec(link)[0] : 'txt'
         // let filename = /[^\/]*$/.exec(link)[0]
         // // let dirs = RNFetchBlob.fs.dirs
@@ -306,7 +306,7 @@ class Catalog extends React.Component {
         //             //   res.path()
         //             Toast.show('Tải xuống hoàn tất.')
         //         }
-                
+
         //     })
         //     .catch((errorMessage, statusCode) => {
         //         
@@ -319,22 +319,43 @@ class Catalog extends React.Component {
 
     _onSearch = () => {
         let keyword = this.search ? this.search.getValue() : ''
-        if(keyword == ''){
+        if (keyword == '') {
             return null
-        }else{
-            this.setState({ loading: true,refreshing:true,page:1 }, async () => {
-            
+        } else {
+            this.setState({ loading: true, refreshing: true, page: 1 }, async () => {
 
-                let datas = await searchDocuments(this.state.type, keyword,this.state.page).then(res => {
+
+                let datas = await searchDocuments(this.state.type, keyword, this.state.page).then(res => {
                     return res.data.code == Status.SUCCESS ? res.data.data : []
                 }).catch(err => {
                     return []
                 })
-                this.formatData(datas)
-                
+
+                if (datas.length == 0) {
+                    this.setState({
+                        loading: false,
+                        refreshing: false,
+                        threshold: 0,
+                        datas
+                    })
+
+                } else {
+                    let backup = [...datas]
+
+                    datas = datas.map(e => {
+                        let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
+                        return { ...e, description: description.value, showMore: description.showMore, showLess: false }
+                    })
+
+
+
+                    this.setState({ datas: datas, backup: backup, refreshing: false })
+
+                }
+
             })
         }
-       
+
     }
 
     formatData = datas => {
@@ -344,7 +365,7 @@ class Catalog extends React.Component {
                 refreshing: false,
                 threshold: 0,
             })
-           
+
         } else {
             let backup = [...datas]
 
@@ -352,30 +373,30 @@ class Catalog extends React.Component {
                 let description = ellipsisCheckShowMore(e.description, this.state.maxDesc)
                 return { ...e, description: description.value, showMore: description.showMore, showLess: false }
             })
-            console.log('1')
+
             if (this.state.page == 1) {
-                console.log('2')
+
                 this.setState({ datas, backup, loading: true, refreshing: false, threshold: 0.1 })
             } else {
-                console.log('3')
+
                 this.setState({ datas: [...this.state.datas, ...datas], backup: [...this.state.backup, ...backup], refreshing: false })
             }
         }
 
     }
-    getData=()=>{
-        
+    getData = () => {
+
         this.getDataDocument(this.state.page)
     }
-    refressData =()=>{
-        
-        this.setState({page:1},()=>this.getDataDocument(this.state.page))
+    refressData = () => {
+
+        this.setState({ page: 1 }, () => this.getDataDocument(this.state.page))
     }
-    getDataDocument = async (page=1) => {
-        
+    getDataDocument = async (page = 1) => {
+
         let datas = [];
-        
-        
+
+
         if (this.state.follow) {
             datas = await listDocumentFollows(this.state.type, page).then(res => {
                 return res.data.code == StatusCode.Success ? res.data.data : []
@@ -388,7 +409,7 @@ class Catalog extends React.Component {
             }).catch(err => {
                 return []
             })
-            
+
         }
 
         this.formatData(datas)

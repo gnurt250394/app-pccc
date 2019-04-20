@@ -66,6 +66,7 @@ export default class ListCity extends Component {
           data={this.state.listCity}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
+          bounces={false}
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefress}
         />
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   txt: {
     marginLeft: 15,
     fontWeight: '500',
-    color: '#333333'
+    color: 'black'
   },
   containerListChecked: {
     flex: 1,

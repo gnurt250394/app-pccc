@@ -87,6 +87,7 @@ export default class BodyMsg extends React.PureComponent {
 
     // check  nếu nhắn tin của chính mình
     if (item.sender_id == this.state.user_id ) {
+      console.log(item,'1111')
       return (
         <View style={styles.groupUser}>
         {item.message?<View style={styles.containerUser}>
@@ -108,6 +109,7 @@ export default class BodyMsg extends React.PureComponent {
       )
       // check nếu tin nhắn của người khác gửi đến
     } else {
+      console.log(item,'2222')
       return (
         <View style={styles.container}>
         <Image style={styles.imgAvatar} resizeMode="contain" source={item.full_path ? { uri: item.full_path } : images.userBlue} />

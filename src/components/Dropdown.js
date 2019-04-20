@@ -110,7 +110,7 @@ export default class DropDown extends PureComponent {
     },
     itemStyle:{
         padding: 10,
-        marginTop: 2,
+        marginTop: 5,
         backgroundColor: '#DCF6FF',
         borderColor: '#333333',
         borderWidth: 0.09,

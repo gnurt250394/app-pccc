@@ -214,8 +214,8 @@ const style = StyleSheet.create({
         backgroundColor: '#cccccc'
     },
     images: {
-        height: 13,
-        width: 13,
+        height: 11,
+        width: 11,
         resizeMode: 'contain',
     },
     txtBtn: {
@@ -223,7 +223,7 @@ const style = StyleSheet.create({
         textAlign: 'center',
         maxWidth: '80%',
         marginRight: 5,
-        fontWeight: '500',
+        // fontWeight: '500',
         fontSize: 15
     }
 })

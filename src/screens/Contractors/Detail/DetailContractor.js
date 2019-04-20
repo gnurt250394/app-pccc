@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, FlatList, TouchableOpacity, ScrollView, Animated, RefreshControl, SafeAreaView } from 'react-native';
 import { Header } from 'components';
-import { fontStyle, color, Status, typeScreen, removeItem } from 'config/Controller';
+import { fontStyle, color, Status, typeScreen, removeItem, popup } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
 import { DetailUserFollows, UnFolowUser } from 'config/apis/Project';
@@ -35,8 +35,10 @@ export default class DetailContractor extends Component {
             scrollY: new Animated.Value(0),
             listFolowUser: [],
             UserObject: {},
-            refreshing: true
+            refreshing: true,
+            show:true
         };
+        this.refress = this.props.navigation.getParam('refress','')
     }
     nextPage = (item) => () => {
         if (item.type == typeScreen.project) {
@@ -65,9 +67,11 @@ export default class DetailContractor extends Component {
         return `${item.id || index}`
     }
     _goBack = () => {
+        this.refress()
         navigation.pop()
     }
     _refresshing = () => {
+        console.log(this.state.refreshing,'re')
         return (
             <RefreshControl
                 refreshing={this.state.refreshing}
@@ -77,13 +81,17 @@ export default class DetailContractor extends Component {
             />
         )
     }
-
+    _addItem=()=>{
+        popup('Bạn có muốn mua bỏ theo dõi không?',null,()=> this._UnfolowUser())
+            
+       
+    }
     _UnfolowUser = ()=> {
 
           let {UserObject} =this.state
           UnFolowUser({ investor_id: UserObject.id, table: 'UserInvestor' }).then(res => {
             if (res.data.code == Status.SUCCESS) {
-              
+              this.setState({show:false,refreshing:false})
                 SimpleToast.show('Bạn đã bỏ theo dõi nhà thầu ' + UserObject.name + ' thành công')
             } else if (res.data.code == Status.TOKEN_EXPIRED ) {
               SimpleToast.show('Phiên đăng nhập hết hạn')
@@ -162,10 +170,13 @@ export default class DetailContractor extends Component {
                     <Item source={images.proPhone} name={UserObject.phone} />
                     <Item source={images.proLocation} name={UserObject.address} />
                     <Item source={images.proCompany} name={UserObject.company} />
-                    <Btn name={"Bỏ theo dõi"}
-                        onPress={this._UnfolowUser}
+                   {this.state.show? <Btn name={"Bỏ theo dõi"}
+                        onPress={this._addItem}
                         textStyle={styles.textUnFollow}
-                        customStyle={styles.btnUnFollow} />
+                        customStyle={styles.btnUnFollow} />:<Btn name={"Bỏ theo dõi"}
+                        onPress={this._addItem}
+                        textStyle={styles.textUnFollow}
+                        customStyle={styles.btnUnFollow} />}
                 </View>
                 <View style={styles.containerFooter}>
                     <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
@@ -221,14 +232,14 @@ const styles = StyleSheet.create({
         right: 0
     },
     textUnFollow:{
-        color:'#2166A2'
+        color:'#FFFFFF'
     },
     btnUnFollow: {
-        width: '40%',
+        width: '30%',
         borderRadius: 5,
         marginBottom:0,
         marginTop:0,
-        backgroundColor:'#FFFFFF'
+        backgroundColor:'#2166A2'
     },
     containerList: {
         flex: 1,

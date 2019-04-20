@@ -31,11 +31,7 @@ class ChangePassword extends React.Component {
         return (
             <TouchableWithoutFeedback style={style.flex} onPress={this._dismiss}>
                 <View >
-                    {this.state.loading ?
-                        <View style={styles.loading}>
-                            <ActivityIndicator size="large" color="#0000ff" />
-                        </View> : null
-                    }
+                    
                     <Header
                         check={1}
                         title="Đổi mật khẩu" onPress={this._goBack} />
@@ -54,6 +50,11 @@ class ChangePassword extends React.Component {
                                 ref={val => this.rePassword = val}
                                 secureTextEntry={true}
                                 placeholder="Nhập lại mật khẩu mới" />
+                                {this.state.loading ?
+                        <View style={style.loading}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </View> : null
+                    }
                         </View>
                         <Btn name="Hoàn tất" onPress={this._onSuccess()} />
                     </View>
@@ -118,5 +119,9 @@ export default connect()(ChangePassword)
 
 const style = StyleSheet.create({
     flex: { flex: 1 },
-    content: { height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40 }
+    content: { height: '70%', flexDirection: 'column', justifyContent: 'space-between', marginTop: 40 },
+    loading:{
+        alignItems:'center',
+        justifyContent:'center'
+    }
 })

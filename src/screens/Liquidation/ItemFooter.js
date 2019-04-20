@@ -72,16 +72,16 @@ export default class ItemFooter extends Component {
 }
 const styles = StyleSheet.create({
       txtAdd: {
-            color: '#333333',
+            color: '#FFFFFF',
             fontSize:16,
             fontWeight:'bold'
       },
       viewOpacity: {
-            opacity: 0.6,
+            opacity: 0.8,
             marginVertical: 7,
             marginLeft: 7,
             flex:1,
-            // backgroundColor: '#333333',
+            backgroundColor: '#333333',
             position: "absolute",
             height: '100%',
             width:'100%',

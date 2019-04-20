@@ -14,13 +14,18 @@ import { MessageScreen, SigninScreen } from 'config/screenNames';
 import { Messages } from 'config/Status';
 
 export default class DetailLiquidation extends Component {
-      state = {
-            id: this.props.navigation.getParam('id', ''),
-            Liquidation: {},
-            loading: true,
-            address: '',
-            type: this.props.navigation.getParam('type', typeScreen.postPurchase)
+      constructor(props){
+            super(props);
+            this.state = {
+                  id: this.props.navigation.getParam('id', ''),
+                  Liquidation: {},
+                  user_id:'',
+                  loading: true,
+                  address: '',
+                  type: this.props.navigation.getParam('type', typeScreen.postPurchase)
+            }
       }
+     
       _nextPage = async () => {
             let token = await getItem('token')
             let { Liquidation } = this.state
@@ -47,7 +52,7 @@ export default class DetailLiquidation extends Component {
             )
       }
       render() {
-            const { Liquidation, type } = this.state
+            const { Liquidation, type ,user_id} = this.state
             return (
                   <View style={styles.container}>
                         <Header
@@ -82,21 +87,24 @@ export default class DetailLiquidation extends Component {
                                     : null}
                         </ScrollView>
 
-                        <Button
+                        {user_id == Liquidation.user_id?null:<Button
                               onPressMsg={this._nextPage}
                               onPressPhone={this._CallPhone(Liquidation)}
-                        />
+                        />}
                   </View>
             )
       }
-      getDetail = () => {
-
+      getDetail =async () => {
+            let user_id= await getItem('user_id')
+            console.log(user_id,'id')
+            
             getDetailLiquidation(this.state.id).then(res => {
-                  console.log(res, 'dadads')
+                  console.log(res.data,'rrrr')
                   if (res.data.code == Status.SUCCESS) {
                        const data = res.data.data;
-                       console.log(data);
+                       
                         this.setState({
+                              user_id,
                               Liquidation: data,
                               loading: false,
                               address: data.address + " - " + data.district + " - " + data.city
@@ -109,6 +117,7 @@ export default class DetailLiquidation extends Component {
             })
       }
       componentDidMount() {
+           
             this.getDetail()
       }
 

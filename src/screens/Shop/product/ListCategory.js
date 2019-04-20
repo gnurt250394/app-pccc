@@ -209,7 +209,8 @@ const styles = StyleSheet.create({
   },
   txtUnCheck: {
     marginLeft: 15,
-    fontWeight: '600'
+    fontWeight: '600',
+    color:'black'
   },
   containerListChecked: {
     flex: 1,

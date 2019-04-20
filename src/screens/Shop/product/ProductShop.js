@@ -4,10 +4,11 @@ import images from "assets/images"
 import { getProduct } from 'config/apis/myShop';
 import { Status, removeItem, formatNumber, showPopup } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
-import { SigninScreen, HomeScreen, BuyProduct } from 'config/screenNames';
+import { SigninScreen, HomeScreen, BuyProduct, ShopScreen } from 'config/screenNames';
 import { height } from 'config';
 import { popupCancel } from 'config';
 import { Messages } from 'config/Status';
+import { popupOk } from 'config';
 
 class MenuItem extends Component{
     render(){
@@ -81,8 +82,9 @@ _addItem=()=>{
             {cancelable: false},
           );
     } else{
+         popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.')
         // this.setState({ListProduct:[{id:10,full_path:'',price:100000000,product_name:'bình cứu hỏa 123'},...this.state.ListProduct]})
-        navigation.navigate(BuyProduct)
+        // navigation.navigate(BuyProduct)
     }
    
 }

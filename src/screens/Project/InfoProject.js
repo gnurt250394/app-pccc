@@ -31,7 +31,7 @@ class InfoProject extends Component {
      */
 
     _nextPage = (router, params,index) => () => {
-       
+       this.setState({page:1})
         if (this.state.follow) {
             console.log(this.state.listProject,'stateList')
             let listProject = [...this.state.listProject]
@@ -52,7 +52,7 @@ class InfoProject extends Component {
     _renderItem = count => ({ item, index }) => {
         return (
             <ListItem
-                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow },index)}
+                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.getData },index)}
                 item={item}
                 follow={this.state.follow}
                 count={count}
