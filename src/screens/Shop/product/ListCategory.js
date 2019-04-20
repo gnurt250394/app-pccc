@@ -87,7 +87,7 @@ export default class ListCategory extends Component {
     if (keyword == '') {
       return null
     } else {
-      this.setState({ loading: true }, async () => {
+      this.setState({ refreshing: true }, async () => {
 
         let params = {
           keyword: keyword,
@@ -209,7 +209,8 @@ const styles = StyleSheet.create({
   },
   txtUnCheck: {
     marginLeft: 15,
-    fontWeight: '600'
+    fontWeight: '600',
+    color:'black'
   },
   containerListChecked: {
     flex: 1,

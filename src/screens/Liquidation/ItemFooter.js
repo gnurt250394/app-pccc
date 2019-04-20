@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
             fontWeight:'bold'
       },
       viewOpacity: {
-            opacity: 0.6,
+            opacity: 0.8,
             marginVertical: 7,
             marginLeft: 7,
             flex:1,

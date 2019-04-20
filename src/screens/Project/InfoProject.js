@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity,AsyncStorage, ActivityIndicator, Text } from 'react-native';
 import { BaseSearch } from 'components';
 import navigation from 'navigation/NavigationService';
 import { DetailProject } from 'config/screenNames';
 import { getNewProject, searchProject, listFollows } from 'config/apis/Project';
 import Toast from 'react-native-simple-toast';
-import { Status, color } from 'config/Controller';
+import { Status, color, typeScreen } from 'config/Controller';
 import ListItem from './ListItemInfoProject';
 import { connect } from 'react-redux'
 import { log, width, toParams } from 'config'
 import { Header } from 'components';
 import { countProject } from 'reduxs/actions/actionCreator';
+import SimpleToast from 'react-native-simple-toast';
 class InfoProject extends Component {
     constructor(props) {
         super(props);
@@ -30,18 +31,19 @@ class InfoProject extends Component {
      */
 
     _nextPage = (router, params,index) => () => {
-       
+       this.setState({page:1})
         if (this.state.follow) {
             console.log(this.state.listProject,'stateList')
             let listProject = [...this.state.listProject]
             listProject[index].change = 1
             console.log(listProject,'listproject')
-           let listChange= listProject.filter(item=>item.change ==0)
-           console.log(listChange,'listChange')
+           let listChange= listProject.filter(item=>item.change ==1)
            if(listChange.length ==0){
-            this.props.changeProject(1)
-           }else{
+               AsyncStorage.setItem(typeScreen.project,`${0}`)
             this.props.changeProject(0)
+           }else{
+            AsyncStorage.setItem(typeScreen.project,`${1}`)
+            this.props.changeProject(1)
            }
             this.setState({listProject})
         }
@@ -50,7 +52,7 @@ class InfoProject extends Component {
     _renderItem = count => ({ item, index }) => {
         return (
             <ListItem
-                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow },index)}
+                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.getData },index)}
                 item={item}
                 follow={this.state.follow}
                 count={count}
@@ -73,7 +75,7 @@ class InfoProject extends Component {
     }
 
     handleRefresh = () => {
-        this.setState({ refreshing: true, page: 1 }, () => { this.search.onClear(), this.getData })
+        this.setState({ refreshing: true, page: 1 },  this.getData )
     }
     _keyExtractor = (item, index) => {
         return `${item.id || index}`
@@ -90,22 +92,28 @@ class InfoProject extends Component {
         if (keyword == '') {
             return null
         } else {
-            this.setState({ refreshing: true })
-            searchProject(keyword, this.state.page).then(res => {
+            this.setState({ refreshing: true, page:1},()=>{
+                searchProject(keyword, this.state.page).then(res => {
 
-                if (res.data.code == Status.SUCCESS) {
-
-                    if (this.state.page == 1) {
-                        this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
-                    } else {
-                        this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                    if (res.data.code == Status.SUCCESS) {
+    
+                        if (this.state.page == 1) {
+                            this.setState({ listProject: res.data.data, loading: true, refreshing: false, Threshold: 0.1 })
+                        } else {
+                            this.setState({ listProject: [...this.state.listProject, ...res.data.data], refreshing: false })
+                        }
+                    } else if (res.data.code == Status.NO_CONTENT) {
+                        this.setState({ listProject: [], refreshing: false, loading: false, Threshold: 0 })
+                    }else{
+                        SimpleToast.show("Lỗi hệ thống")
+                        this.setState({ refreshing: false, loading: false, Threshold: 0 })
                     }
-                } else if (res.data.code == Status.NO_CONTENT) {
-                    this.setState({ listProject: [], refreshing: false, loading: false, Threshold: 0 })
-                }
-            }).catch(err => {
-
+                }).catch(err => {
+                    SimpleToast.show("Lỗi hệ thống")
+                    this.setState({  refreshing: false, loading: false, Threshold: 0 })
+                })
             })
+           
         }
 
     }
@@ -169,7 +177,7 @@ class InfoProject extends Component {
                 return []
             })
         } else {
-            listProject = await getNewProject({ page: this.state.page }).then(res => {
+            listProject = await getNewProject({ page: 1 }).then(res => {
                 return res.data.code == Status.SUCCESS ? res.data.data : []
             }).catch(err => {
                 return []
@@ -181,12 +189,8 @@ class InfoProject extends Component {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
 
         } else {
-            if (this.state.page == 1) {
 
                 this.setState({ listProject, loading: true, refreshing: false, Threshold: 0.1 })
-            } else {
-                this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
-            }
         }
 
     }
@@ -195,7 +199,7 @@ class InfoProject extends Component {
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
-
+        console.log(this.state.page,'page')
         if (this.state.follow) {
             let params = toParams({
                 page: this.state.page,

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View ,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native'
 import images from 'assets/images'
+import { chooseImage } from 'config/uploadImage';
 export default class FooterMsg extends Component {
     state={
-        text:''
+        text:'',
+        image:null
     }
     _onChangeText=(state)=>(value)=>{
         this.setState({[state]:value})
@@ -12,6 +14,14 @@ export default class FooterMsg extends Component {
     onClear =()=>{
         this.setState({text:''})
     }
+    _onUploadImage =  () => {
+         chooseImage().then(url => {
+            this.props.selectImage(url.uri)
+        }).catch(err => {
+
+        })
+    }
+
   render() {
     return (
       <View style={styles.container}>
@@ -22,7 +32,7 @@ export default class FooterMsg extends Component {
        onChangeText={this._onChangeText('text')}
        />
        <View style={styles.row}>
-       <TouchableOpacity>
+       <TouchableOpacity onPress={this._onUploadImage}>
            <Image
            style={styles.imgAvatar}
            resizeMode="contain"
@@ -64,7 +74,8 @@ const styles = StyleSheet.create({
         height:40,
         alignItems:'center',
         flexDirection:'row',
-        marginVertical:6
+        marginVertical:6,
+        paddingLeft:5
     },
     row:{
         flexDirection:'row',

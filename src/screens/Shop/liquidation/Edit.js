@@ -7,20 +7,18 @@ import navigation from 'navigation/NavigationService';
 import { SigninScreen, ListLiquidation, DetailLiquidation, ListCategory } from 'config/screenNames';
 import { Header } from 'components';
 import { connect } from 'react-redux'
-import Item from './Item';
 import { Btn } from 'components';
-import FooterLiquidation from './FooterLiquidation';
-import { postLiquidation } from 'config/apis/liquidation';
-import CustomDialog from 'components/CustomDialog';
+import { postLiquidation, getDetailLiquidation, updateLiquidation } from 'config/apis/liquidation';
 import { fontStyles } from 'config/fontStyles';
-import DropDown from './Dropdown';
 import SimpleToast from 'react-native-simple-toast';
 import { Messages } from 'config/Status';
-import ModalScreen from './Modal';
+import Item from 'screens/Liquidation/Item';
+import ModalScreen from 'screens/Liquidation/Modal';
+import FooterLiquidation from 'screens/Liquidation/FooterLiquidation';
 moment.locale('vn')
 
 
-class Liquidation extends Component {
+class Edit extends Component {
       constructor(props) {
             super(props)
             this.state = {
@@ -32,33 +30,47 @@ class Liquidation extends Component {
                   address: '',
                   location: 'Chọn địa chỉ',
                   isVisible: false,
+                  item:this.props.navigation.getParam('item',''),
                   value: '',
+                  id: this.props.navigation.getParam('id', ' '),
+                  Liquidation: {},
                   listCategory: [],
                   loading: false,
                   name: 'Chọn danh mục',
                   address: this.props.users.address,
-                  type: this.props.navigation.getParam('type', typeScreen.postPurchase)
+                  type: this.props.navigation.getParam('type', '')
             }
             this.refress = this.props.navigation.getParam('refress', '')
       }
       componentDidMount() {
-          
+            this.getDetail()
       }
- getDetail = () => {
-
+      handleCategory=(item)=>{
+            let arr =[]
+            item.forEach(e=>{
+                  
+                  arr.push(e.id)})
+            return arr
+      }
+      getDetail = () => {
+            console.log(this.state.item, 'iii')
             getDetailLiquidation(this.state.id).then(res => {
-                  console.log(res, 'dadads')
                   if (res.data.code == Status.SUCCESS) {
-                       const data = res.data.data;
-                       console.log(data);
-                      
+                        const data = res.data.data;
+                        console.log(data, 'sss')
+                        this.inputTitle.handleText(data.title)
+                        this.inputDescription.handleText(data.description)
+                        this.Modal.handleAdress(data.address)
                         this.setState({
-                              Liquidation: data,
-                              loading: false,
-                              address: data.address + " - " + data.district + " - " + data.city
+                              name: data.category,
+                              category_id:this.handleCategory(this.state.item.category),
+                              location: data.address + " - " + data.district + " - " + data.city
                         })
+                        console.log(this.state.category_id,'id')
+                        this.footer.forrmatData(data.file_attach)
+                        console.log(this.state.location, 'location')
                   } else if (res.data.code == Status.ID_NOT_FOUND) {
-                        this.setState({ loading: false, Liquidation: {}, loading: false })
+                        this.setState({ loading: false, })
                   }
             }).catch(err => {
                   this.setState({ loading: false })
@@ -111,8 +123,7 @@ class Liquidation extends Component {
                                           style={styles.inputItem}
                                     />
                                     <View keyboardShouldpersist='always' style={styles.containerStyle}>
-                                          <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}
-                                          >{type == typeScreen.Liquidation ? 'Danh mục cần thanh lý' : 'Danh mục cần mua'}</Text>
+                                          <Text style={[styles.txtNameTouch, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Danh mục cần thanh lý' : 'Danh mục cần mua'}</Text>
                                           <TouchableOpacity
                                                 onPress={this.showFlatlit}
 
@@ -121,8 +132,7 @@ class Liquidation extends Component {
                                                 <Image source={images.icon_up} resizeMode="contain" style={styles.ticker} />
                                           </TouchableOpacity>
                                     </View>
-                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}
-                                    >{type == typeScreen.Liquidation ? 'Địa chỉ thanh lý' : 'Địa chỉ mua'}</Text>
+                                    <Text style={[styles.txtNameItem, fontStyles.Acumin_RPro_0]}>{type == typeScreen.Liquidation ? 'Địa chỉ thanh lý' : 'Địa chỉ mua'}</Text>
                                     <TouchableOpacity style={styles.btnModal}
                                           onPress={this._showModal}
                                     >
@@ -138,7 +148,7 @@ class Liquidation extends Component {
                                           ref={ref => this.footer = ref}
                                     />
                                     <Btn
-                                          name={this.state.type == typeScreen.Liquidation ? "đăng tin" : "Đăng mua ngay"}
+                                          name={"Lưu"}
                                           onPress={this._nextPage}
                                           customStyle={styles.btnLiquidation}
                                     />
@@ -148,71 +158,72 @@ class Liquidation extends Component {
             );
       }
       _nextPage = () => {
-            
+
             if (this.state.loading) {
                   return null
-            }else{
-
-            let idCity = this.Modal.state.idCity || '',
-                  idCountry = this.Modal.state.idDistrict || '',
-                  listFile = this.footer.state.listFile || [],
-                  title = this.inputTitle.state.text || '',
-                  decription = this.inputDescription.state.text || '',
-                  address = this.Modal.state.value || ''
-
-            let params = new FormData()
-            this.state.category_id.forEach(item => {
-                  params.append('category_id[]', `${item}`)
-            })
-            let date = new Date()
-            listFile.forEach(item => {
-                  const fileName = date.getTime() + '.' + /[^\.]*$/.exec(item.fileName)[0]
-                  params.append('file[]', { uri: item.uri, type: item.type, name: fileName }, fileName)
-            })
-            params.append('title', title)
-            params.append('description', decription)
-            params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
-            params.append('city_id', idCity)
-            params.append('address', address)
-            params.append('district_id', idCountry)
-            console.log(params, 'parem')
-            if (this.validate() == '') {
-                  this.setState({ loading: true })
-                  postLiquidation(params).then(res => {
-
-                        if (res.data.code == Status.SUCCESS) {
-                              this.refress()
-                              this.setState({ loading: false })
-                              navigation.pop()
-                        } else if (res.data.code == Status.TOKEN_EXPIRED) {
-                              SimpleToast.show('Phiên đăng nhập hết hạn')
-                              navigation.reset(SigninScreen)
-                              this.setState({ loading: false })
-                              removeItem('token')
-                        }  else {
-                              SimpleToast.show("Lỗi hệ thống")
-                              this.setState({ loading: false })
-                        }
-                  }).catch(err => {
-                        this.setState({ loading: false })
-                        console.log(err.response, 'err')
-                        SimpleToast.show("Server ERROR")
-
-                  })
             } else {
-                  SimpleToast.show(this.validate())
-            }
 
-      }
+                  let idCity = this.Modal.state.idCity || this.state.item.city.id,
+                        idCountry = this.Modal.state.idDistrict || this.state.item.district.id,
+                        listFile = this.footer.state.listFile || [],
+                        title = this.inputTitle.state.text || '',
+                        decription = this.inputDescription.state.text || '',
+                        address = this.Modal.state.value || ''
+
+                  let params = new FormData()
+                  this.state.category_id.forEach(item => {
+                        params.append('category_id[]', `${item}`)
+                  })
+                  let date = new Date()
+                  listFile.forEach(item => {
+                        const fileName = date.getTime() + '.' + /[^\.]*$/.exec(item.fileName)[0]
+                        params.append('file[]', { uri: item.uri, type: item.type, name: fileName }, fileName)
+                  })
+                  params.append('title', title)
+                  params.append('description', decription)
+                  params.append('type', this.state.type == typeScreen.Liquidation ? 1 : 0)
+                  params.append('city_id', idCity)
+                  params.append('address', address)
+                  params.append('district_id', idCountry)
+                  params.append('post_id', this.state.id)
+                  console.log(params, 'params')
+                  if (this.validate() == '') {
+                        this.setState({ loading: true })
+                        updateLiquidation(params).then(res => {
+                              console.log(res.data,'aaaa')
+                              if (res.data.code == Status.SUCCESS) {
+                                    this.refress()
+                                    this.setState({ loading: false })
+                                    navigation.pop()
+                              } else if (res.data.code == Status.TOKEN_EXPIRED) {
+                                    SimpleToast.show('Phiên đăng nhập hết hạn')
+                                    navigation.reset(SigninScreen)
+                                    this.setState({ loading: false })
+                                    removeItem('token')
+                              } else {
+                                    SimpleToast.show("Lỗi hệ thống")
+                                    this.setState({ loading: false })
+                              }
+                        }).catch(err => {
+                              this.setState({ loading: false })
+                              console.log(err, 'err')
+                              SimpleToast.show("Server ERROR")
+
+                        })
+                  } else {
+                        SimpleToast.show(this.validate())
+                  }
+
+            }
 
       }
       validate = () => {
             let msg = ''
-            let idCity = this.Modal.state.idCity || '',
-                  idCountry = this.Modal.state.idDistrict || '',
+            let idCity = this.Modal.state.idCity || this.state.item.city.id,
+                  idCountry = this.Modal.state.idDistrict || this.state.item.district.id,
                   title = this.inputTitle.state.text || ''
             decription = this.inputDescription.state.text || ''
-            console.log(idCity, 'idddd')
+
 
             let { category_id } = this.state
             if (title == '') {
@@ -249,15 +260,15 @@ const styles = StyleSheet.create({
             color: '#333333',
             width: '100%',
             height: 40,
-            padding:9,
+            padding: 10,
             borderRadius: 5,
             borderColor: '#707070',
-            borderWidth: 1
+            borderWidth: 0.7
       },
       btnModal: {
             width: '100%',
             paddingHorizontal: 10,
-            paddingBottom: 10,
+            paddingBottom: 10
       },
       txtNameItem: {
             color: '#333333',
@@ -310,4 +321,4 @@ const mapStateToProps = (state) => {
             users: state.users && state.users.data ? state.users.data : {},
       }
 }
-export default connect(mapStateToProps)(Liquidation)
+export default connect(mapStateToProps)(Edit)

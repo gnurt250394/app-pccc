@@ -37,7 +37,7 @@ class FolowContractor extends Component {
   _renderItem = ({ item, index }) => {
     return (
       <ListItem
-        onPress={this._nextPage(DetailContractor, { id: item.id })}
+        onPress={this._nextPage(DetailContractor, { id: item.id,refress:this.getData })}
         item={item}
         index={index}
       />
@@ -111,7 +111,7 @@ class FolowContractor extends Component {
         removeItem('token')
         this.props.logout()
       } else if(res.data.code == Status.NO_CONTENT){
-        this.setState({loading:false})
+        this.setState({loading:false,listProject:[]})
       }
     }).catch(err=>{
       console.log(err.response)

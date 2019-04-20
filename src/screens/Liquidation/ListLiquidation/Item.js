@@ -5,7 +5,16 @@ import moment from 'moment'
 import { fontStyles } from 'config/fontStyles';
 moment.locale('vn')
 export default class Item extends Component {
+      handleCategory=(item)=>{
+            console.log(item.city,'item')
+            let arr =[]
+            item.category.forEach(e=>{
+                  
+                  arr.push(e.name)})
+            return arr.join(',')
+      }
       render() {
+            console.log(this.props.item,'item')
             return (
                   <View style={styles.container}>
 
@@ -13,7 +22,7 @@ export default class Item extends Component {
                         <TouchableOpacity
                               onPress={this.props.onPress}
                               style={styles.containerList}>
-                              <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
+                              <Text numberOfLines={1} style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
                               <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
                               <View style={styles.rowList}>
                                     <View style={[styles.row,styles.category]}>
@@ -22,7 +31,7 @@ export default class Item extends Component {
                                                 resizeMode="contain"
                                           />
                                           <View style={styles.wrap}>
-                                          <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.props.item.category : null}</Text>
+                                          <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.handleCategory(this.props.item) : null}</Text>
                                           </View>
                                     </View>
                                     <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
@@ -33,7 +42,7 @@ export default class Item extends Component {
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
-                                          <Text style={styles.txtDescription}>{this.props.item.city ? this.props.item.city : null}</Text>
+                                          <Text style={styles.txtDescription}>{this.props.item.city&& this.props.item.city.name ? this.props.item.city.name : this.props.item.city}</Text>
                                     </View>
                         </TouchableOpacity>
                         <View

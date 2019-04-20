@@ -27,6 +27,7 @@ export default class DropDown extends PureComponent {
           onItemSelect={this.props.onItemSelect}
           containerStyle={this.props.style}
           textInputStyle={styles.editText}
+          placeholderTextColor={"#333333"}
           itemStyle={styles.itemStyle}
           itemTextStyle={{ color: '#222' }}
           itemsContainerStyle={{ maxHeight: 120 }}
@@ -109,7 +110,7 @@ export default class DropDown extends PureComponent {
     },
     itemStyle:{
         padding: 10,
-        marginTop: 2,
+        marginTop: 5,
         backgroundColor: '#DCF6FF',
         borderColor: '#333333',
         borderWidth: 0.09,

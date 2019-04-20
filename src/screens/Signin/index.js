@@ -139,6 +139,8 @@ class Signin extends React.Component {
 
     _sendTagOneSignal =(id)=>{
         if(id){
+            AsyncStorage.setItem('user_id',`${id}`)
+            console.log(id,'id')
             OneSignal.sendTags({
                 userId: `${id}`
               })
@@ -350,6 +352,7 @@ class Signin extends React.Component {
             // navigation.reset(HomeScreen);
             this.props.login(user,  data.token);
             AsyncStorage.setItem('token',userToken)
+            
             this._sendTagOneSignal(user.id)
             console.log(user,'user1')
             this.props.navigation.navigate(HomeScreen)

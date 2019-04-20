@@ -27,6 +27,7 @@ class DetailProject extends Component {
       loading: true,
       folow: this.props.navigation.getParam('follow') || false,
     };
+    this.refress= this.props.navigation.getParam('refress','')
   }
 
 
@@ -43,10 +44,11 @@ class DetailProject extends Component {
   // theo dõi user
   _folowUser = async (item) => {
     let token = await getItem('token')
+ 
     if (token) {
       
       FolowUser({ investor_id: item.user_id, table: 'UserInvestor' }).then(res => {
-        
+        console.log('object',res)
         if (res.data.code == Status.SUCCESS) {
           let data = this.state.listPartner
           data.forEach(e => {
@@ -56,7 +58,7 @@ class DetailProject extends Component {
           })
 
           this.setState({ listPartner: data })
-          Toast.show('Bạn đã theo dõi dự án ' + item.user_name + ' thành công')
+          Toast.show('Bạn đã theo dõi nhà thầu ' + item.user_name + ' thành công')
         } else if (res.data.code == Status.TOKEN_EXPIRED) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
@@ -91,7 +93,7 @@ class DetailProject extends Component {
             }
           })
           this.setState({ listPartner: data })
-          Toast.show('Bạn đã bỏ theo dõi dự án ' + item.user_name + ' thành công')
+          Toast.show('Bạn đã bỏ theo dõi nhà thầu ' + item.user_name + ' thành công')
         } else if (res.data.code == Status.TOKEN_EXPIRED ) {
           Toast.show('Phiên đăng nhập hết hạn')
           navigation.reset(SigninScreen)
@@ -133,6 +135,7 @@ class DetailProject extends Component {
     return `${item.user_id || index}`
   }
   _goBack = () => {
+    this.refress()
     navigation.pop()
   }
   _folowProject = async () => {

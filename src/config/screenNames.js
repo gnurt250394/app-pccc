@@ -1,8 +1,8 @@
-export const SignupScreen = "SignupScreen" 
-export const SigninScreen = "SigninScreen" 
+export const SignupScreen = "SignupScreen"
+export const SigninScreen = "SigninScreen"
 
-export const RegisterScreen = "RegisterScreen" 
-export const ForgotPasswordScreen = "ForgotPasswordScreen" 
+export const RegisterScreen = "RegisterScreen"
+export const ForgotPasswordScreen = "ForgotPasswordScreen"
 export const ChangePasswordScreen = "ChangePasswordScreen"
 export const CompleteScreen = "CompleteScreen"
 export const ViewProfileScreen = "ViewProfileScreen"
@@ -13,28 +13,28 @@ export const ConfirmScreen = "ConfirmScreen"
 export const CartScreen = "CartScreen"
 
 export const ProductDetailScreen = "ProductDetailScreen"
-export const SplashScreen ="SplashScreen"
-export const HelloScreen ="HelloScreen"
-export const CheckAuthScreen ="CheckAuthScreen"
-export const ContactsScreen ="ContactsScreen"
-export const IntroduceScreen ="IntroduceScreen"
-export const NotifyScreen ="NotifyScreen"
-export const ViewAllProductScreen ="ViewAllProductScreen"
-export const ShopScreen ="ShopScreen"
-export const HomeScreen ="HomeScreen"
-export const MyProfile ="MyProfile"
-export const UpdateProfileScreen ="UpdateProfileScreen"
-export const CheckPhoneScreen ="CheckPhoneScreen"
+export const SplashScreen = "SplashScreen"
+export const HelloScreen = "HelloScreen"
+export const CheckAuthScreen = "CheckAuthScreen"
+export const ContactsScreen = "ContactsScreen"
+export const IntroduceScreen = "IntroduceScreen"
+export const NotifyScreen = "NotifyScreen"
+export const ViewAllProductScreen = "ViewAllProductScreen"
+export const ShopScreen = "ShopScreen"
+export const HomeScreen = "HomeScreen"
+export const MyProfile = "MyProfile"
+export const UpdateProfileScreen = "UpdateProfileScreen"
+export const CheckPhoneScreen = "CheckPhoneScreen"
 
 // search
 export const SearchScreen = "SearchScreen"
-export const SearchProductScreen ="SearchProductScreen"
-export const SearchLiquidationScreen ="SearchLiquidationScreen"
-export const SearchProjectScreen ="SearchProjectScreen"
-export const SearchBiddingScreen ="SearchBiddingScreen"
+export const SearchProductScreen = "SearchProductScreen"
+export const SearchLiquidationScreen = "SearchLiquidationScreen"
+export const SearchProjectScreen = "SearchProjectScreen"
+export const SearchBiddingScreen = "SearchBiddingScreen"
 
 // messenger
-export const ListChatScreen ="ListChatScreen"
+export const ListChatScreen = "ListChatScreen"
 export const MessageScreen = "MessageScreen"
 
 // bidding
@@ -69,12 +69,13 @@ export const ListLiquidation = "ListLiquidation"
 export const DetailLiquidation = "DetailLiquidation"
 export const ListCity = "ListCity"
 export const CategoryFilter = "CategoryFilter"
+export const EditLiquidation = "EditLiquidation"
 
 // Post Purchase
 export const PostPurchase = "PostPurchase"
 export const ListPostPurchase = "ListPostPurchase"
 export const DetailPostPurchase = "DetailPostPurchase"
-
+export const ShowImage = "ShowImage"
 
 
 

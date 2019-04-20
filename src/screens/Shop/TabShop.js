@@ -5,6 +5,8 @@ import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, Sear
 import ProductShop from './product/ProductShop';
 import LiquidationShop from './liquidation/LiquidationShop';
 import { color } from 'config'
+import { fontStyles } from 'config/fontStyles';
+import { fontStyle } from 'config/Controller';
 
 const {width,height} = Dimensions.get('window')
 
@@ -33,13 +35,15 @@ const TabShop = createMaterialTopTabNavigator({
           swipeEnabled: true,
           tabBarPosition: 'top',
           tabBarOptions: {
+            upperCaseLabel:false,
             activeTintColor: '#2166A2',
             inactiveTintColor : '#333333',
             scrollEnabled : false,
             labelStyle: {
-              fontSize: 12,
-              fontWeight: '500',
+              fontSize: 14,
+              fontWeight: 'bold',
               // textTransform: 'none'
+              fontFamily: fontStyle.Acumin_bold 
             },
             tabStyle: {
               // width: width/2,

@@ -1,5 +1,6 @@
 const constant ={
     BASEURL:'http://app-pccc.yez.vn/api/',
+    BASE_SOCKET:'http://app-pccc.yez.vn:6006',
     SERVER_TIMEOUT:10000,
     USER: 'user',
     UPDATE_PHONE:'update-phone',
@@ -26,7 +27,9 @@ const constant ={
     LIST_FOLLOW_DOCUMMENT: 'list-document-follow',
     COUNT_NOTIFICATION:'count-notification',
     LIST_LIQUIDATION:'new-post',
-    MESSAGE:'message-chat'
+    UPDATE_LIQUIDATION:'update-post',
+    MESSAGE:'message-chat',
+    LIST_MESSAGE:'list-chat'
 }
 
 export default constant;

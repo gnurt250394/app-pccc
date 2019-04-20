@@ -46,7 +46,7 @@ export default class FooterDetail extends Component {
             return <Image
                 style={styles.imageList}
                 source={source}
-                resizeMode="contain" />
+                 />
         }
         _downFile = (item)=>() =>{
             downFile(item)
@@ -66,13 +66,14 @@ export default class FooterDetail extends Component {
       render() {
             return (
                   <View style={styles.container}>
-                        <Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>Danh mục: {this.props.category}</Text>
-                        <Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>Địa chỉ: {this.props.address}</Text>
-                        <Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>File đính kèm</Text>
+                        <Text style={[styles.txtTitle]}>Danh mục: <Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>{this.props.category}</Text></Text>
+                        <Text style={[styles.txtTitle]}>Địa chỉ: <Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>{this.props.address}</Text></Text>
+                        {this.props.file_attach.length >0?<Text style={[styles.txtTitle, fontStyles.Acumin_bold]}>File đính kèm</Text>:null}
                         <FlatList
                               data={this.props.file_attach}
                               horizontal={true}
-                              // showsHorizontalScrollIndicator={false}
+                              showsHorizontalScrollIndicator={false}
+                              // scrollIndicatorInsets
                               renderItem={this._renderItem}
                               keyExtractor={this._keyExtractor}
                         />
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
       containerList: {
             marginVertical: 7,
             marginLeft: 7,
-            height:70,
+            height:80,
             width:80,
             paddingVertical:10,
             alignItems: 'center',
@@ -102,8 +103,8 @@ const styles = StyleSheet.create({
             borderWidth: 0.5,
         },
         imageList: {
-            height: 70,
-            width: 70,
+            height: '100%',
+            width: '100%',
 
       },
 })

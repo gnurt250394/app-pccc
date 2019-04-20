@@ -20,7 +20,13 @@ class MenuItem extends React.PureComponent{
       }
   }
 export default class Item extends React.PureComponent {
-     
+      handleCategory=(item)=>{
+            let arr =[]
+            item.category.forEach(e=>{
+                  
+                  arr.push(e.name)})
+            return arr.join(',')
+      }
      
       render() {
             const {item,index}= this.props
@@ -45,7 +51,7 @@ export default class Item extends React.PureComponent {
                         <TouchableOpacity
                               onPress={this.props.onPress}
                               style={styles.containerList}>
-                              <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{item.title ? item.title : null}</Text>
+                              <Text numberOfLines={1} style={[styles.txtName, fontStyles.Acumin_bold]}>{item.title ? item.title : null}</Text>
                               <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{item.description}</Text>
                               <View style={styles.rowList}>
                                     <View style={[styles.row, styles.category]}>
@@ -54,7 +60,7 @@ export default class Item extends React.PureComponent {
                                                 resizeMode="contain"
                                           />
                                           <View style={styles.wrap}>
-                                                <Text numberOfLines={1} style={styles.txtDescription}>{item.category ? item.category : null}</Text>
+                                                <Text numberOfLines={1} style={styles.txtDescription}>{item && item.category ? this.handleCategory(item) : null}</Text>
                                           </View>
                                     </View>
                                     <Text style={styles.txtTime}>{item.time ? item.time : null}</Text>
@@ -65,7 +71,7 @@ export default class Item extends React.PureComponent {
                                           style={[styles.imgLocation, { marginTop: Platform.OS == "ios" ? 0 : 1 }]}
                                           resizeMode="contain"
                                     />
-                                    <Text style={styles.txtDescription}>{item.city ? item.city : null}</Text>
+                                    <Text style={styles.txtDescription}>{item.city && item.city.name ? item.city.name : null}</Text>
                               </View>
                         </TouchableOpacity>
                         
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
       btnMenu:{
             flexDirection:'row',
             alignItems:'center',
-            justifyContent:'space-around',
+            // justifyContent:'space-around',
             marginBottom:6,
             zIndex:3
         },
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
         imgMenu:{
             height:14,
             width:14,
-            marginRight:5,
+            marginRight:15,
             tintColor:'#333333'
         },
       wrap: {
@@ -112,6 +118,9 @@ const styles = StyleSheet.create({
             position:'absolute',
             right:10,
             elevation:2,
+            height:'50%',
+            width:'30%',
+            justifyContent:'space-between',
             padding:4,
             borderRadius:5,
             backgroundColor:'#FFFFFF',
