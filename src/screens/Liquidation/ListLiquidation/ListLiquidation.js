@@ -51,7 +51,13 @@ export default class ListLiquidation extends Component {
     }
     _nextPage = async () => {
         let token = await getItem('token')
-        token ? navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type }) : popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+        if(token){
+            this.setState({page:1})
+            navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type }) 
+        }else{
+            popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+        }
+           
     }
     _goBack = () => {
         navigation.pop()
@@ -61,10 +67,10 @@ export default class ListLiquidation extends Component {
         if (keyword == '') {
             return null
         } else {
-            this.setState({ loading: true ,page:1}, async () => {
+            this.setState({ refreshing: true,loading:true ,page:1}, async () => {
 
                 let params = {
-                    type: this.state.type == typeScreen.Liquidation ? typeScreen.Liquidation : typeScreen.postPurchase,
+                    type: this.state.type == typeScreen.Liquidation ? 1 : 0,
                     keyword: keyword,
                     table: 'news_products',
                     // 'data[]':'category',
@@ -191,10 +197,12 @@ export default class ListLiquidation extends Component {
         })
     }
     refressData = () => {
+        this.setState({refreshing:true})
        let page = 1
         this.getData(page)
     }
     getLiquidation = async () => {
+        console.log(this.state.page,'page')
         this.search.resetFilter()
         this.getData(this.state.page)
     }

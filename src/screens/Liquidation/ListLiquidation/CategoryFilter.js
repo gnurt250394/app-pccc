@@ -76,11 +76,16 @@ export default class CategoryFilter extends Component {
     );
   }
 
+  sortData = (a, b) => {
+    if (a.name < b.name) return 1;
+    if (a.name > b.name) return -1;
+    return 0;
+  }
   getData = () => {
     getOtherData({ table: 'categories' }).then(res => {
       console.log(res.data, 'ddd')
       if (res.data.code == Status.SUCCESS) {
-        let data = res.data.data
+        let data = res.data.data.filter(e=>e.parent_id==0).sort(this.sortData)
         let obj = {
           id: 0,
           name: "Tất cả danh mục"
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
   txt: {
     marginLeft: 15,
     fontWeight: '500',
-    color: '#333333'
+    color: 'black'
   },
   containerListUnChecked: {
     flex: 1,

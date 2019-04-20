@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
       btnMenu:{
             flexDirection:'row',
             alignItems:'center',
-            justifyContent:'space-around',
+            // justifyContent:'space-around',
             marginBottom:6,
             zIndex:3
         },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         imgMenu:{
             height:14,
             width:14,
-            marginRight:5,
+            marginRight:15,
             tintColor:'#333333'
         },
       wrap: {
@@ -118,6 +118,9 @@ const styles = StyleSheet.create({
             position:'absolute',
             right:10,
             elevation:2,
+            height:'50%',
+            width:'30%',
+            justifyContent:'space-between',
             padding:4,
             borderRadius:5,
             backgroundColor:'#FFFFFF',

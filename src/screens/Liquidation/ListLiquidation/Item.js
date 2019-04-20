@@ -14,6 +14,7 @@ export default class Item extends Component {
             return arr.join(',')
       }
       render() {
+            console.log(this.props.item,'item')
             return (
                   <View style={styles.container}>
 
@@ -21,7 +22,7 @@ export default class Item extends Component {
                         <TouchableOpacity
                               onPress={this.props.onPress}
                               style={styles.containerList}>
-                              <Text style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
+                              <Text numberOfLines={1} style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
                               <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
                               <View style={styles.rowList}>
                                     <View style={[styles.row,styles.category]}>
@@ -41,7 +42,7 @@ export default class Item extends Component {
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
-                                          <Text style={styles.txtDescription}>{this.props.item.city&& this.props.item.city.name ? this.props.item.city.name : null}</Text>
+                                          <Text style={styles.txtDescription}>{this.props.item.city&& this.props.item.city.name ? this.props.item.city.name : this.props.item.city}</Text>
                                     </View>
                         </TouchableOpacity>
                         <View

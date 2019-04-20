@@ -42,7 +42,7 @@ class Liquidation extends Component {
             this.refress = this.props.navigation.getParam('refress', '')
       }
       componentDidMount() {
-
+          
       }
  getDetail = () => {
 
@@ -51,6 +51,7 @@ class Liquidation extends Component {
                   if (res.data.code == Status.SUCCESS) {
                        const data = res.data.data;
                        console.log(data);
+                      
                         this.setState({
                               Liquidation: data,
                               loading: false,
@@ -248,15 +249,15 @@ const styles = StyleSheet.create({
             color: '#333333',
             width: '100%',
             height: 40,
-            padding: 10,
+            padding:9,
             borderRadius: 5,
             borderColor: '#707070',
-            borderWidth: 0.7
+            borderWidth: 1
       },
       btnModal: {
             width: '100%',
             paddingHorizontal: 10,
-            paddingBottom: 10
+            paddingBottom: 10,
       },
       txtNameItem: {
             color: '#333333',

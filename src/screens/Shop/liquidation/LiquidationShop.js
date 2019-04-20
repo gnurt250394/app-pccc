@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator,BackHandler } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
 import { Status, removeItem, getItem, popup, typeScreen } from 'config/Controller';
@@ -8,6 +8,7 @@ import { SigninScreen, DetailLiquidation, Liquidation, ShopLiquidation, EditLiqu
 import { popupCancel } from 'config';
 import Item from './Item';
 import { Header } from 'components';
+import { NavigationEvents } from 'react-navigation';
 import { getListLiquidation, deleteLiquidation } from 'config/apis/liquidation';
 import { Messages } from 'config/Status';
 moment.locale('vn')
@@ -36,34 +37,35 @@ export default class LiquidationShop extends Component {
     showMenu = (item) => () => {
 
         let listLiqiudation = this.state.listLiqiudation
-       listLiqiudation.forEach(e=>{
-           if(e.id == item.id){
-               e.isShow = true
-           }else{
-               e.isShow= false
-           }
-       })
-        
-        this.setState({ listLiqiudation })
-    }
-    _deleteItem=(item)=>()=>{
-        let data = this.state.listLiqiudation
-        let listFinal =[]
-        data.forEach(e=>{
-            if(e.id == item.id){
-                listFinal = data.filter(e=>e.id!=item.id)
+        listLiqiudation.forEach(e => {
+            if (e.id == item.id) {
+                e.isShow = true
+            } else {
+                e.isShow = false
             }
         })
-        this.setState({listLiqiudation:listFinal})
-        deleteLiquidation(item.id).then(res=>{
-            console.log(res,'res')
-        }).catch(err=>{
-            console.log(err.response,'err')
+
+        this.setState({ listLiqiudation })
+    }
+    _deleteItem = (item) => () => {
+        let data = this.state.listLiqiudation
+        let listFinal = []
+        data.forEach(e => {
+            if (e.id == item.id) {
+                listFinal = data.filter(e => e.id != item.id)
+            }
+        })
+        this.setState({ listLiqiudation: listFinal })
+        deleteLiquidation(item.id).then(res => {
+            console.log(res, 'res')
+        }).catch(err => {
+            console.log(err.response, 'err')
         })
     }
-    _editLiquidation=(item)=>()=>{
+    _editLiquidation = (item) => () => {
+        this.setState({page:1})
         this._hideMenu()
-        navigation.navigate(EditLiquidation,{id:item.id,type:this.state.type,item:item})
+        navigation.navigate(EditLiquidation, { id: item.id, type: this.state.type, item: item ,refress:this.getLiquidation})
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -88,9 +90,10 @@ export default class LiquidationShop extends Component {
     }
 
     _loadMore = () => {
-        !this.state.loading ? null : this.setState({ loading: true, page: this.state.page + 1 },()=> this.getLiquidation(this.state.page))
+        !this.state.loading ? null : this.setState({ page: this.state.page + 1 }, () => this.getLiquidation(this.state.page))
     }
     _nextPage = () => {
+        this.setState({page:1})
         navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type })
     }
     _goBack = () => {
@@ -105,10 +108,12 @@ export default class LiquidationShop extends Component {
         const { type } = this.state
         return (
             <View style={styles.container}
-
-
+                onMagicTap
             >
-
+                <NavigationEvents
+                  
+                    onDidBlur={this._hideMenu}
+                />
                 <FlatList
                     data={this.state.listLiqiudation}
                     renderItem={this._renderItem}
@@ -134,10 +139,10 @@ export default class LiquidationShop extends Component {
         );
     }
     getData = async (params) => {
-       
+
         let token = await getItem('token')
-        getListLiquidation(params,token).then(res => {
-            console.log(res.data,'refres')
+        getListLiquidation(params, token).then(res => {
+            console.log(res.data, 'refres')
             if (res.data.code == Status.SUCCESS) {
                 if (this.state.page == 1) {
                     this.setState({
@@ -186,19 +191,28 @@ export default class LiquidationShop extends Component {
             type: this.state.type,
             page: page
         }
-        console.log(params,'params')
+        console.log(params, 'params')
         this.getData(params)
     }
+    handleBackPress = () => {
+        this.goBack(); // works best when the goBack is async
+        return true;
+      }
     componentDidMount = () => {
-
-console.log('did')
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            console.log('11111112222')
+            navigation.pop(); // works best when the goBack is async
+            return true;
+          });
         this._willFocus = this.props.navigation.addListener('willFocus', () => {
             this.getLiquidation(this.state.page)
         }
         )
     };
     componentWillUnmount() {
+        this.backHandler.remove();
         this._willFocus.remove()
+        
     }
 }
 

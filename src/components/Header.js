@@ -12,9 +12,9 @@ export default class Header extends React.Component {
         return (
             <SafeAreaView style={style.container}>
                 <View style={[style.content, { ...this.props.style }]} >
-                    <StatusBar
+                    {/* <StatusBar
                         barStyle="light-content"
-                        backgroundColor={color} />
+                        backgroundColor={color} /> */}
                     {this.props.check == 1 ? <TouchableOpacity onPress={this.props.onPress} style={style.btn}>
                         <Image
                             style={style.icon}

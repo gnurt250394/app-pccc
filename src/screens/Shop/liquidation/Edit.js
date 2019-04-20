@@ -47,7 +47,7 @@ class Edit extends Component {
       }
       handleCategory=(item)=>{
             let arr =[]
-            item.category.forEach(e=>{
+            item.forEach(e=>{
                   
                   arr.push(e.id)})
             return arr
@@ -60,10 +60,10 @@ class Edit extends Component {
                         console.log(data, 'sss')
                         this.inputTitle.handleText(data.title)
                         this.inputDescription.handleText(data.description)
-
+                        this.Modal.handleAdress(data.address)
                         this.setState({
                               name: data.category,
-                              category_id:this.handleCategory(this.state.item),
+                              category_id:this.handleCategory(this.state.item.category),
                               location: data.address + " - " + data.district + " - " + data.city
                         })
                         console.log(this.state.category_id,'id')
@@ -148,7 +148,7 @@ class Edit extends Component {
                                           ref={ref => this.footer = ref}
                                     />
                                     <Btn
-                                          name={this.state.type == typeScreen.Liquidation ? "Sửa tin thanh lý" : "Sửa tin đăng mua"}
+                                          name={"Lưu"}
                                           onPress={this._nextPage}
                                           customStyle={styles.btnLiquidation}
                                     />
@@ -164,7 +164,7 @@ class Edit extends Component {
             } else {
 
                   let idCity = this.Modal.state.idCity || this.state.item.city.id,
-                        idCountry = this.Modal.state.idDistrict || '',
+                        idCountry = this.Modal.state.idDistrict || this.state.item.district.id,
                         listFile = this.footer.state.listFile || [],
                         title = this.inputTitle.state.text || '',
                         decription = this.inputDescription.state.text || '',
@@ -185,11 +185,12 @@ class Edit extends Component {
                   params.append('city_id', idCity)
                   params.append('address', address)
                   params.append('district_id', idCountry)
+                  params.append('post_id', this.state.id)
                   console.log(params, 'params')
                   if (this.validate() == '') {
                         this.setState({ loading: true })
                         updateLiquidation(params).then(res => {
-
+                              console.log(res.data,'aaaa')
                               if (res.data.code == Status.SUCCESS) {
                                     this.refress()
                                     this.setState({ loading: false })
@@ -205,7 +206,7 @@ class Edit extends Component {
                               }
                         }).catch(err => {
                               this.setState({ loading: false })
-                              console.log(err.response, 'err')
+                              console.log(err, 'err')
                               SimpleToast.show("Server ERROR")
 
                         })
@@ -218,8 +219,8 @@ class Edit extends Component {
       }
       validate = () => {
             let msg = ''
-            let idCity = this.Modal.state.idCity || '',
-                  idCountry = this.Modal.state.idDistrict || '',
+            let idCity = this.Modal.state.idCity || this.state.item.city.id,
+                  idCountry = this.Modal.state.idDistrict || this.state.item.district.id,
                   title = this.inputTitle.state.text || ''
             decription = this.inputDescription.state.text || ''
 

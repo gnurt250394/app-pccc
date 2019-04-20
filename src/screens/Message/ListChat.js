@@ -5,21 +5,23 @@ import images from "assets/images"
 import styles from "assets/styles"
 import { signup } from 'config/apis/users'
 import { Footer, ViewMore } from 'components'
-import { HomeScreen, MessageScreen,  } from 'config/screenNames'
+import { HomeScreen, MessageScreen, SigninScreen,  } from 'config/screenNames'
 import { color, MessageStatus, popupOk } from 'config'
 import { BaseSearch } from 'components';
 import navigation from 'navigation/NavigationService';
 import { withNavigation } from 'react-navigation';
 import { listMessage } from 'config/apis/mesage';
-import { Status } from 'config/Controller';
+import { Status, getItem, popup } from 'config/Controller';
 import moment from 'moment'
+import { Messages } from 'config/Status';
 class ListChat extends React.Component {
     state = {
         keyword: "",
-        refreshing: true,
+        refreshing: false,
         listMessage:[]
     }
     getData=()=>{
+        this.setState({refreshing:true})
         listMessage().then(res=>{
             console.log(res.data)
             if(res.data.code == Status.SUCCESS){
@@ -37,7 +39,9 @@ class ListChat extends React.Component {
         this._navListener = this.props.navigation.addListener('didFocus', async () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
-          this.getData()
+          let token = await getItem('token')
+          token ? this.getData() : popup(Messages.LOGIN_REQUIRE, ()=>navigation.pop(), () => navigation.navigate(SigninScreen))
+          
         //  popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.', () => this.props.navigation.navigate(HomeScreen))
         });
     }
@@ -82,7 +86,7 @@ class ListChat extends React.Component {
     // end status bar
     _keyExtractor = (item, index) => `${item.id||index}`
     _ListEmpty = () => {
-        return !this.state.refreshing && <Text style={style.notFound}>Không có dữ liệu</Text>
+        return <Text style={style.notFound}>Không có dữ liệu</Text>
     }
     render(){
         return (

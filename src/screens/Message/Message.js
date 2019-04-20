@@ -22,7 +22,8 @@ export default class Message extends Component {
       loading: true,
       image: null,
       page:1,
-      Threshold: 0.1
+      Threshold: 0.1,
+      link:this.props.navigation.getParam('link','')
     }
     this.configSocket()
   }
@@ -44,16 +45,20 @@ export default class Message extends Component {
 
     echo.channel('chatroom').listen('MessagePosted', data => {
       // 
-      console.log(data, 'event')
+      console.log(data,'event')
       if (data && data.message) {
         if (data.message.sender_id == user_id) {
           return null
-        } else {
+        } else if(data.message.receiver_id == this.state.id){
           let obj = data.message
-          let list = [{
-            full_path: data.image
-          }]
-          obj.get_image = list
+          if(data.image){
+            
+            let list = [{
+              full_path: data.image
+            }]
+            obj.get_image = list
+          }
+          
           this.setState({ listMessage: [obj, ...this.state.listMessage] })
         }
 
@@ -64,17 +69,15 @@ export default class Message extends Component {
     // this.setState({image:value})
     let user_id = await getItem('user_id')
 
-
+console.log(user_id,'id')
     let data = this.state.listMessage
     // if (message == '') return null
     let params = new FormData()
     let date = new Date()
     let name = `IMG_${date.getTime()}.png`
     params.append('receiver_id', this.state.id)
-    // params.append('message', message)
     params.append('file[]', { uri: value, type: 'image/jpeg', name }, name)
     let obj = {
-      // message: message,
       receiver_id: this.state.id,
       sender_id: user_id,
       loading: true,
@@ -88,12 +91,13 @@ export default class Message extends Component {
     this.setState({ listMessage: [obj, ...data] })
 
     postMessage(params).then(res => {
-
+      console.log(res.data)
       if (res.data.code == Status.SUCCESS) {
         obj.loading = false
         obj.get_image[0].full_path = res.data.data.image
         obj.created_at = res.data.data.created_at
-        this.setState({ listMessage: [obj, ...data] })
+        this.setState({ listMessage: [obj, ...data] },console.log(this.state.listMessage))
+        
       } else {
         SimpleToast.show("Không thể gửi tin nhắn")
       }
@@ -146,10 +150,10 @@ export default class Message extends Component {
 
   }
   _headerComponent = () => {
-   return this.state.loading  ? <ActivityIndicator size={"large"} color="#2166A2" />: null
+   return this.state.loading   ? <ActivityIndicator size={"large"} color="#2166A2" />: null
 }
 onEndReached = () => {
-console.log('111111',this.state.page)
+
   this.state.loading ? this.getMessage() : null
 }
   _keyExtractor = (item, index) => `${item.id || index}`
@@ -159,10 +163,10 @@ console.log('111111',this.state.page)
         <Header
           check={1}
           onPress={this._goBack}
-          status={"Đang hoạt động"}
+          // status={"Đang hoạt động"}
           title={this.state.title}
         />
-        <HeaderMsg />
+        {this.state.link?<HeaderMsg />:null}
         <FlatList
           renderItem={this._renderItem}
           ref={ref => this.flatlit = ref}
@@ -170,7 +174,6 @@ console.log('111111',this.state.page)
           extraData={this.state}
           keyExtractor={this._keyExtractor}
           data={this.state.listMessage}
-          
           onEndReachedThreshold={this.state.Threshold}
           onEndReached={this.onEndReached}
           ListFooterComponent={this._headerComponent}
@@ -193,34 +196,34 @@ console.log('111111',this.state.page)
 
     getMessage(this.state.page).then(res => {
 
+console.log(res.data,'dddd')
 
-console.log(res.data,'data')
       if (res.data.code == Status.SUCCESS) {
-        console.log(res.data,this.state.page,'1')
+        
         let data = res.data.data.data
         let listSend = data.filter(e => e.receiver_id == user_id && e.sender_id == this.state.id)
         let listReciver = data.filter(e => e.receiver_id == this.state.id && e.sender_id == user_id)
         let listFinal = listSend.concat(listReciver).sort(this.sortData)
         this.setState({ listMessage: [...this.state.listMessage,...listFinal],page:this.state.page+1 ,loading:true})
       } else if(res.data.code == Status.NO_CONTENT){
-        console.log(this.state.page,'2')
+        
         
           this.setState({loading:false,Threshold:0})
-          console.log(this.state.loading,this.state.Threshold,'loading')
+          
       }else{
-        console.log('4',)
+        
         this.setState({loading:false,Threshold:0})
       }
 
 
     }).catch(err => {
-      console.log(res.data,'3')
+      
       this.setState({loading:false,Threshold:0})
     })
   }
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor('#2166A2');
       
 

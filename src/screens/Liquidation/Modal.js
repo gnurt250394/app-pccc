@@ -39,8 +39,10 @@ export default class ModalScreen extends PureComponent {
   _onChangeText = (state) => (value) => {
 
     this.setState({ [state]: value })
+  }
 
-
+  handleAdress=(val)=>{
+    this.setState({value:val})
   }
   _save = () => {
     if (this.validate() == '') {
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 5,
     borderColor: '#707070',
-    borderWidth: 0.7,
+    borderWidth: 1,
   },
   dropDown: {
     marginTop: 10,
