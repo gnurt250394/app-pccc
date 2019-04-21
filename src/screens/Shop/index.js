@@ -17,9 +17,7 @@ class Shop extends React.Component {
         // popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
     };
     _nextPage=()=>{
-        let routerName = this.tabShop.state.nav.routes
         // if(routerName.ProductShop)
-        console.log(routerName,'reouter')
     }
     render() {
         return (

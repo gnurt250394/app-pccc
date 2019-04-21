@@ -103,15 +103,16 @@ export default class LiquidationShop extends Component {
     _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
 
     handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
-
+    onDidFocus=()=>{
+        this.props.navigation.setParams('type',this.props.navigation.state.key)
+    }
     render() {
         const { type } = this.state
         return (
             <View style={styles.container}
-                onMagicTap
             >
                 <NavigationEvents
-                  
+                //   onDidFocus={this.onDidFocus}
                     onDidBlur={this._hideMenu}
                 />
                 <FlatList
@@ -169,9 +170,8 @@ export default class LiquidationShop extends Component {
                 this.setState({ Thresold: 0, loading: false, refreshing: false })
                 navigation.reset(SigninScreen)
                 removeItem('token')
-            } else if (res.data.code == Status.TOKEN_VALID) {
+            } else {
                 this.setState({ Thresold: 0, loading: false, refreshing: false })
-                popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
             this.setState({ Thresold: 0, loading: false, refreshing: false })
