@@ -45,7 +45,7 @@ export const BuyProduct = "BuyProduct"
 export const ListCategory = "ListCategory"
 export const ShopLiquidation = "LiquidationShop"
 export const ShopPostPurchase = "PostPurchaseShop"
-
+export const ProductShop ="ProductShop"
 // Project
 export const DetailProject = "DetailProject"
 export const InfoProject = "InfoProject"

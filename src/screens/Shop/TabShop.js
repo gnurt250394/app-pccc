@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Dimensions} from  'react-native'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
-import { SearchProductScreen, SearchLiquidationScreen, SearchProjectScreen, SearchBiddingScreen } from "config/screenNames"
+import * as ScreenName from 'config/screenNames'
 import ProductShop from './product/ProductShop';
 import LiquidationShop from './liquidation/LiquidationShop';
 import { color } from 'config'
@@ -11,26 +11,26 @@ import { fontStyle } from 'config/Controller';
 const {width,height} = Dimensions.get('window')
 
 const TabShop = createMaterialTopTabNavigator({
-    ProductShop: { 
+    [ScreenName.ProductShop]: { 
         screen: props => <ProductShop  {...props} />,
         navigationOptions: () => ({
           title: 'Sản phẩm',
         }),
       },
-    LiquidationShop: { 
+    [ScreenName.ShopLiquidation]: { 
         screen: props => <LiquidationShop  {...props} />,
         navigationOptions: () => ({
           title: 'Tin thanh lý',
         }),
       },
-      PostPurchaseShop: { 
+      [ScreenName.ShopPostPurchase]: { 
         screen: props => <LiquidationShop  {...props} />,
         navigationOptions: ({navigation}) => ({
           title: 'Tin đăng mua',
         }),
       },
     },{
-        // initialRouteName:'LiquidationShop',
+        // initialRouteName:'LiquidationShop',  
         defaultNavigationOptions: ({ navigation }) => ({
           swipeEnabled: true,
           tabBarPosition: 'top',
