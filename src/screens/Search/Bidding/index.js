@@ -18,30 +18,33 @@ class SearchBidding extends React.Component {
 
     // set status bar
     async componentDidMount() {
-        this.props.navigation.addListener('willFocus', () => this.loadData())
+        this.props.navigation.addListener('willFocus', () => this.loadData(this.props.screenProps.keyword))
     }
 
     componentWillReceiveProps(props){
-        if(props.screenProps && props.screenProps.isSearch) this.loadData()
+        if(props.screenProps && props.screenProps.isSearch) {
+            console.log(props.screenProps.isSearch,'iseraraf')
+            this.loadData(props.screenProps.keyword)}
     }
 
-    loadData = () => {
-        let keyword = this.props.screenProps ? this.props.screenProps.keyword : this.ste
-        if(keyword != "")
-        this.setState({loading: true, keyword: keyword}, async () => {
+    loadData = (keywordProps) => {
+        if(keywordProps != "")
+        this.setState({loading: true, keyword: keywordProps}, async () => {
             let params = toParams({
                 table: 'news_biddings',
-                keyword: keyword
+                keyword: keywordProps
             })
             search(params).then(res => {
                 console.log('res: BIDDING', res);
                 if(res.data.code == StatusCode.Success){
+                    console.log('112233')
+
                     this.setState({
                         datas: res.data.data,
                         loading: false
                     })
                 }else{
-                    this.setState({ loading: false })
+                    this.setState({ loading: false,datas:[] })
                 }
             }).catch(err => {
                 console.log('err: BIDDING', err.response);

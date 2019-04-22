@@ -5,14 +5,14 @@ import images from "assets/images"
 export default class TouchableOpacityCustom extends Component {
   render() {
     return (
-      <TouchableOpacity style={style.box2} 
+      <TouchableOpacity style={[style.box2,this.props.style]} 
                                 onPress={this.props.onPress} 
                                 >
                                 <Image 
                                     style={style.imgStreet}
                                     source={this.props.source} />
                                 <Text style={style.text}>
-                                    {this.props.label}  {this.props.count == 0?<Image  style={style.iconNotify} source={images.dotYellow} />:null}
+                                    {this.props.label}  {this.props.count == 1?<Image  style={style.iconNotify} source={images.dotYellow} />:null}
                                 </Text> 
                                 
                             </TouchableOpacity>
@@ -23,12 +23,14 @@ const style = StyleSheet.create({
       box2: {
           flex: 1, 
           height: '100%',
+          width:'100%',
           marginRight: 0.2, position: 'relative'},
       imgStreet: {
           width: '100%', 
-          alignSelf: 'center',
+        //   alignSelf: 'center',
           resizeMode: 'stretch',
-          height: '100%'},
+          height: '100%'
+        },
      
       
       iconNotify: {

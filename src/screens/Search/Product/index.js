@@ -17,21 +17,21 @@ class SearchProduct extends React.Component {
 
     // set status bar
     async componentDidMount() {
-        this.props.navigation.addListener('willFocus', () => this.loadData())
+        this.props.navigation.addListener('willFocus', () => this.loadData(this.props.screenProps.keyword))
     }
 
     componentWillReceiveProps(props){
-        if(props.screenProps && props.screenProps.isSearch) this.loadData()
+        if(props.screenProps && props.screenProps.isSearch) this.loadData(props.screenProps.keyword)
     }
 
-    loadData = () => {
-        let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-        log('Focus Product: ', keyword);
-        if(keyword != "")
-        this.setState({loading: true, keyword: keyword}, async () => {
+    loadData = (keywordProps) => {
+          
+        log('Focus Product: ', keywordProps);
+        if(keywordProps != "")
+        this.setState({loading: true, keyword: keywordProps}, async () => {
             let params = toParams({
                 table: 'sell_products',
-                keyword: keyword
+                keyword: keywordProps
             })
             search(params).then(res => {
                 console.log('res: Product', res);
@@ -42,7 +42,7 @@ class SearchProduct extends React.Component {
                     })
                     // log(res.data,'aaa')
                 }else{
-                    this.setState({ loading: false })
+                    this.setState({ loading: false ,datas:[]})
                 }
             }).catch(err => {
                 console.log(err.response,'errrrProduct')

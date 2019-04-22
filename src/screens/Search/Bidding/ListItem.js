@@ -23,7 +23,7 @@ export default class ListItem extends React.Component {
         this.state = {
             datas: this.props.datas || [],
             keyword: this.props.keyword || '' ,
-            keyword: this.props.loading || true ,
+            loading: this.props.loading || true ,
         }
         
     }
@@ -86,7 +86,7 @@ export default class ListItem extends React.Component {
         let count = this.state.datas.length
         return (
             <FlatList
-                data={this.state.datas}
+                data={this.props.datas}
                 refreshControl={
                 <RefreshControl
                     refreshing={this.props.loading}

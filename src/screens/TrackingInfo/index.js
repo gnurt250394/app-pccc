@@ -6,15 +6,34 @@ import { Header } from 'components'
 import {  ListBiddingScreen, InfoProject, CatalogScreen, VideoScreen, FolowContractor } from 'config/screenNames'
 import images from "assets/images"
 import TouchableOpacityCustom from './component';
+import { getStatusFollow } from 'config/apis/Notifi';
+import { countBidding, countContractor, countProduct, countProject } from 'reduxs/actions/actionCreator';
+import { Status } from 'config/Controller';
 
 class TrackingInfo extends React.Component {
     state = {
         loading: false,
+        
+    }
+
+    getFollow=()=>{
+        getStatusFollow().then(res=>{
+            console.log(res.data.data,'eeeerrrrr')
+            if(res.data.code == Status.SUCCESS){
+                let count = res.data.data
+                this.props.changeBidding(count.bidding)
+                this.props.changeProject(count.project)
+                this.props.changeContractor(count.investor)
+            }
+        }).catch(err=>{
+            console.log(err.response,'err')
+        })
     }
     // set status bar
     async componentDidMount() {
+        this.getFollow()
        let key = await AsyncStorage.getAllKeys()
-       console.log(key,'key')
+       
         this._navListener = this.props.navigation.addListener('didFocus', () => {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
@@ -44,13 +63,14 @@ class TrackingInfo extends React.Component {
                         <View style={style.row}>
                         <TouchableOpacityCustom
                         count={this.props.change.changeProject}
-                        onPress={this._navTo(InfoProject, {follow: true})}
+                        onPress={this._navTo(InfoProject, {follow: true,refress:this.getFollow})}
                         source={images.trackingDA}
                         label={'Thông tin dự án'}
                         />
                         <TouchableOpacityCustom
+                        style={style.bidding}
                         count={this.props.change.changeBidding}
-                        onPress={this._navTo(ListBiddingScreen, {follow: true})}
+                        onPress={this._navTo(ListBiddingScreen, {follow: true,refress:this.getFollow})}
                         source={images.trackingDT}
                         label={'Thông tin đấu thầu'}
                         />
@@ -65,8 +85,9 @@ class TrackingInfo extends React.Component {
                         label={'Sản phẩm'}
                         />
                         <TouchableOpacityCustom
+                        style={style.bidding}
                         count={this.props.change.changeContractor}
-                       onPress={this._navTo(FolowContractor)} 
+                       onPress={this._navTo(FolowContractor,{refress:this.getFollow})} 
                        // onPress={() => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau')} 
                         source={images.trackingNT}
                         label={'Nhà thầu'}
@@ -110,15 +131,22 @@ class TrackingInfo extends React.Component {
 
 }
 const mapStateToProps = (state) => {
-    console.log(state,'state')
+    
   return{
       change: state && state.countReducer ? state.countReducer: {}
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeProject: (changeProject) => dispatch(countProject(changeProject)),
+        changeBidding: (changeBidding) => dispatch(countBidding(changeBidding)),
+        changeContractor: (changeContractor)=> dispatch(countContractor(changeContractor)),
+        changeProduct:(changeProduct) => dispatch(countProduct(changeProduct))
+    }
+}
 
-
-export default connect(mapStateToProps)(TrackingInfo)
+export default connect(mapStateToProps,mapDispatchToProps)(TrackingInfo)
 
 const style = StyleSheet.create({
     head: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: color, paddingTop: 10, paddingBottom: 10,},
@@ -130,7 +158,11 @@ const style = StyleSheet.create({
     box2: {
         flex: 1, 
         height: '100%',
-        marginRight: 2, position: 'relative'},
+        marginRight: 2, position: 'relative'
+    },
+    bidding:{
+        marginLeft:2
+    },
     imgStreet: {
         width: '100%', 
         alignSelf: 'center',
@@ -170,5 +202,5 @@ const style = StyleSheet.create({
     mr20p: {marginRight: "15%",},
     w80p: {width: "80%",},
     mr0: {marginRight: 0},
-    mt0: {marginTop: 0},
+    mt0: {marginTop: 0,width:'100%'},
 })
