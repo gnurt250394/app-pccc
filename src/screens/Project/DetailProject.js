@@ -83,35 +83,39 @@ class DetailProject extends Component {
   _UnfolowUser = async (item) => {
     let token = await getItem('token')
     if (token) {
-      
-      UnFolowUser({ investor_id: item.user_id, table: 'UserInvestor' }).then(res => {
-        if (res.data.code == Status.SUCCESS) {
-          let data = this.state.listPartner
-          data.forEach(e => {
-            if (e.user_id == item.user_id) {
-              e.follow = Status.CHECKED
-            }
-          })
-          this.setState({ listPartner: data })
-          Toast.show('Bạn đã bỏ theo dõi nhà thầu ' + item.user_name + ' thành công')
-        } else if (res.data.code == Status.TOKEN_EXPIRED ) {
-          Toast.show('Phiên đăng nhập hết hạn')
-          navigation.reset(SigninScreen)
-          removeItem('token')
-          this.props.logout()
-        } else if (res.data.code == Status.ID_NOT_FOUND) {
-          Toast.show('Dự án không tồn tại')
-        }else if(res.data.code == Status.TOKEN_VALID){
-          popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
-        }
-      }).catch(err => {
-        Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
+      popup('Bạn có muốn bỏ theo dõi nhà thầu này không?', null, () => {
+        UnFolowUser({ investor_id: item.user_id, table: 'UserInvestor' }).then(res => {
+          if (res.data.code == Status.SUCCESS) {
+            let data = this.state.listPartner
+            data.forEach(e => {
+              if (e.user_id == item.user_id) {
+                e.follow = Status.CHECKED
+              }
+            })
+            this.setState({ listPartner: data })
+            Toast.show('Bạn đã bỏ theo dõi nhà thầu ' + item.user_name + ' thành công')
+          } else if (res.data.code == Status.TOKEN_EXPIRED ) {
+            Toast.show('Phiên đăng nhập hết hạn')
+            navigation.reset(SigninScreen)
+            removeItem('token')
+            this.props.logout()
+          } else if (res.data.code == Status.ID_NOT_FOUND) {
+            Toast.show('Dự án không tồn tại')
+          }else if(res.data.code == Status.TOKEN_VALID){
+            popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+          }
+        }).catch(err => {
+          Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
+        })
       })
+      
     } else {
       popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
     }
   }
 
+
+  
   // 
   _check = (item) => () => {
     this._folowUser(item)
@@ -180,28 +184,31 @@ class DetailProject extends Component {
     if (this.state.id) {
       let token = await getItem('token')
       if (token) {
-        unFolowProject({
-          project_id: this.state.id,
-          table: 'UserProject'
-        }).then(res => {
-
-          if (res.data.code == Status.SUCCESS) {
-            Toast.show('Bạn đã bỏ theo dõi dự án ' + this.state.title + ' thành công')
-            this.state.project.follow = Status.CHECKED
-            this.setState({})
-          } else if (res.data.code == Status.TOKEN_EXPIRED ) {
-            Toast.show('Phiên đăng nhập hết hạn')
-            navigation.navigate(SigninScreen)
-            removeItem('token')
-            this.props.logout()
-          } else if (res.data.code == Status.ID_NOT_FOUND) {
-            Toast.show('Dự án không tồn tại')
-          }else if(res.data.code == Status.TOKEN_VALID){
-            popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
-          }
-        }).catch(err => {
-          Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
+        popup('Bạn có muốn bỏ theo dõi dự án này không?', null, () => {
+          unFolowProject({
+            project_id: this.state.id,
+            table: 'UserProject'
+          }).then(res => {
+  
+            if (res.data.code == Status.SUCCESS) {
+              Toast.show('Bạn đã bỏ theo dõi dự án ' + this.state.title + ' thành công')
+              this.state.project.follow = Status.CHECKED
+              this.setState({})
+            } else if (res.data.code == Status.TOKEN_EXPIRED ) {
+              Toast.show('Phiên đăng nhập hết hạn')
+              navigation.navigate(SigninScreen)
+              removeItem('token')
+              this.props.logout()
+            } else if (res.data.code == Status.ID_NOT_FOUND) {
+              Toast.show('Dự án không tồn tại')
+            }else if(res.data.code == Status.TOKEN_VALID){
+              popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
+            }
+          }).catch(err => {
+            Toast.show('Lỗi hệ thống' + ' ' + err.response.status)
+          })
         })
+        
       } else {
         popup(Messages.LOGIN_REQUIRE, null, () => navigation.navigate(SigninScreen))
 

@@ -115,12 +115,12 @@ class Catalog extends React.Component {
                     {item.follow == Follow.unfollow && <TouchableOpacity
                         onPress={this.onFollow(item.id, index)}
                         style={style.btn}>
-                        <Text style={style.textBtn}>Theo dõi</Text>
+                        <Text style={style.textBtn}>Quan tâm</Text>
                     </TouchableOpacity>}
                     {item.follow == Follow.follow && <TouchableOpacity
                         onPress={this.onUnFollow(item.id, index)}
                         style={style.btn}>
-                        <Text style={style.textBtn}>Bỏ theo dõi</Text>
+                        <Text style={style.textBtn}>Bỏ quan tâm</Text>
                     </TouchableOpacity>}
                 </View>
             </View>

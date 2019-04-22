@@ -18,32 +18,33 @@ class SearchLiquidation extends React.Component {
 
     // set status bar
     async componentDidMount() {
-        this.props.navigation.addListener('willFocus', () => this.loadData())
+        this.props.navigation.addListener('willFocus', () => this.loadData(this.props.screenProps.keyword))
     }
 
     componentWillReceiveProps(props){
-        if(props.screenProps && props.screenProps.isSearch) this.loadData()
+        if(props.screenProps && props.screenProps.isSearch) this.loadData(props.screenProps.keyword)
     }
 
-    loadData = () => {
-        let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-        console.log('Focus Liquidation: ', keyword);
-        if(keyword != "")
-        this.setState({loading: true, keyword: keyword}, async () => {
+    loadData = (keywordProps) => {
+        console.log('Focus Liquidation: ', keywordProps);
+        if(keywordProps != "")
+        this.setState({loading: true, keyword: keywordProps}, async () => {
             let params = toParams({
-                table: 'posts',
+                table: 'news_products',
                 type: 1,
-                keyword: keyword
+                keyword: keywordProps
             })
+            console.log(params,'params')
             search(params).then(res => {
-                console.log('res: LIQUIDATION', res);
+                console.log('res: LIQUIDATION', res.data);
                 if(res.data.code == StatusCode.Success){
                     this.setState({
                         datas: res.data.data,
                         loading: false
                     })
                 }else{
-                    this.setState({ loading: false })
+
+                    this.setState({ loading: false,datas:[] })
                 }
             }).catch(err => {
                 console.log('err: LIQUIDATION ', err.response);

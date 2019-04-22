@@ -60,7 +60,10 @@ const tabs =  createMaterialTopTabNavigator(
         style: {
           backgroundColor: 'white', //<== remove background color
           borderColor: '#ccc' // <== remove border
-        }
+        },
+        indicatorStyle:{
+          backgroundColor:'#2166A2'
+      }
       },
 
       

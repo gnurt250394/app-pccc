@@ -30,3 +30,8 @@ export const Count_Notification = async()=>{
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
         return instance.get(constant.COUNT_NOTIFICATION)
 }
+export const getStatusFollow = async()=>{
+    let token = await getItem('token')
+        instance.defaults.headers.common['Authorization'] = "Bearer " + token;
+        return instance.get(constant.STATUS_FOLLOW)
+}

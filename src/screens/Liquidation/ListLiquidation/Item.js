@@ -6,7 +6,7 @@ import { fontStyles } from 'config/fontStyles';
 moment.locale('vn')
 export default class Item extends Component {
       handleCategory=(item)=>{
-            console.log(item.city,'item')
+            
             let arr =[]
             item.category.forEach(e=>{
                   
@@ -14,7 +14,7 @@ export default class Item extends Component {
             return arr.join(',')
       }
       render() {
-            console.log(this.props.item,'item')
+            
             return (
                   <View style={styles.container}>
 
@@ -24,7 +24,7 @@ export default class Item extends Component {
                               style={styles.containerList}>
                               <Text numberOfLines={1} style={[styles.txtName, fontStyles.Acumin_bold]}>{this.props.item.title ? this.props.item.title : null}</Text>
                               <Text numberOfLines={2} style={[styles.txtDescription, fontStyles.Acumin_RPro_0]}>{this.props.item.description}</Text>
-                              <View style={styles.rowList}>
+                             
                                     <View style={[styles.row,styles.category]}>
                                           <Image source={images.menu}
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?2:3}]}
@@ -34,15 +34,19 @@ export default class Item extends Component {
                                           <Text numberOfLines={1} style={styles.txtDescription}>{this.props.item.category ? this.handleCategory(this.props.item) : null}</Text>
                                           </View>
                                     </View>
-                                    <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
+                                    
 
-                              </View>
+                           
+                              <View style={styles.rowList}>
                               <View style={styles.row}>
                                           <Image source={images.shopLocation}
                                                 style={[styles.imgLocation,{marginTop:Platform.OS == "ios"?0:3}]}
                                                 resizeMode="contain"
                                           />
                                           <Text style={styles.txtDescription}>{this.props.item.city&& this.props.item.city.name ? this.props.item.city.name : this.props.item.city}</Text>
+                                    </View>
+                                    <Text style={styles.txtTime}>{this.props.item.time ? this.props.item.time : null}</Text>
+
                                     </View>
                         </TouchableOpacity>
                         <View
@@ -64,7 +68,8 @@ const styles = StyleSheet.create({
             width:'90%',
       },
       category:{
-            marginBottom:10,
+            marginTop:10,
+            marginBottom:7,
             alignItems:'flex-start',
             width:'82%',
             
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
       txtName: {
             color: '#333333',
             fontSize: 15,
-            marginBottom: 10,
+            marginBottom: 6,
             marginTop: 7
       },
       txtDescription: {
@@ -96,8 +101,8 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems:'flex-start',
-            
-            marginTop: 12
+            width:'100%',
+            // marginTop: 12
       },
       end: {
             height: 1,

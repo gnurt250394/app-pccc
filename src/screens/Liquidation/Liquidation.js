@@ -17,6 +17,7 @@ import DropDown from './Dropdown';
 import SimpleToast from 'react-native-simple-toast';
 import { Messages } from 'config/Status';
 import ModalScreen from './Modal';
+import { getInfoAcount } from 'config/apis/users';
 moment.locale('vn')
 
 
@@ -42,21 +43,17 @@ class Liquidation extends Component {
             this.refress = this.props.navigation.getParam('refress', '')
       }
       componentDidMount() {
-          
+          this.getDetail()
       }
  getDetail = () => {
 
-            getDetailLiquidation(this.state.id).then(res => {
+            getInfoAcount().then(res => {
                   console.log(res, 'dadads')
                   if (res.data.code == Status.SUCCESS) {
                        const data = res.data.data;
-                       console.log(data);
+                       console.log(this.Modal,'mo');
                       
-                        this.setState({
-                              Liquidation: data,
-                              loading: false,
-                              address: data.address + " - " + data.district + " - " + data.city
-                        })
+                        this.Modal.handleAdress(data.address)
                   } else if (res.data.code == Status.ID_NOT_FOUND) {
                         this.setState({ loading: false, Liquidation: {}, loading: false })
                   }
@@ -306,6 +303,7 @@ const styles = StyleSheet.create({
 
 })
 const mapStateToProps = (state) => {
+      console.log(state,'state')
       return {
             users: state.users && state.users.data ? state.users.data : {},
       }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
@@ -11,16 +11,19 @@ export default class ListCity extends Component {
     super(props);
     this.state = {
       listCity: [],
+      checking: true,
+      refreshing: true,
       loading: true,
-      refreshing:true,
+      page: 1,
+      threshold:0.1
     };
   }
   _goBack = () => {
     navigation.pop()
   }
   _selectList = (item) => () => {
-    if (this.state.loading) {
-      this.setState({ loading: false })
+    if (this.state.checking) {
+      this.setState({ checking: false })
       if (this.props.navigation.state && this.props.navigation.state.params.fun) {
 
         this.props.navigation.state.params.fun(item)
@@ -51,7 +54,13 @@ export default class ListCity extends Component {
   _keyExtractor = (item, index) => {
     return `${item.id || index}`
   }
-  handleRefress=()=> this.setState({ refreshing: true}, this.getData)
+  handleRefress = () => this.setState({ refreshing: true }, this.getData)
+  loadMore = () => this.state.loading ? this.getData() : null
+  _listFooter = () => {
+    console.log(this.state.loading)
+
+    return this.state.loading && this.state.listCity.length > 8 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -69,30 +78,46 @@ export default class ListCity extends Component {
           bounces={false}
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefress}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={this.state.threshold}
+          ListFooterComponent={this._listFooter}
         />
       </View>
     );
   }
 
-  getData = () => {
-    getOtherData({ table: 'taxonomies' }).then(res => {
-      console.log(res.data, 'ddd')
-      if (res.data.code == Status.SUCCESS) {
-        let obj = {
-          id: 0,
-          name: "Toàn quốc",
-        }
-        let data = res.data.data.filter(e => e.type == "city")
-        this.setState({
-          listCity: [obj,...data],
-          refreshing:false
-        })
-      }else{
-        this.setState({refreshing:false})
+  getData =async () => {
+   let data=await getOtherData({ table: 'taxonomies', page: this.state.page }).then(res => {
+      switch(res.data.code){
+        case Status.SUCCESS: {
+          let data= res.data.data.filter(e => e.type == "city")
+          return data
+          }
+        case Status.NO_CONTENT: return []
+        default: return []
       }
+      
     }).catch(err => {
-      this.setState({refreshing:false})
+      return []
     })
+    console.log(data,'data')
+    this.formatData(data)
+  }
+
+  formatData = (data)=>{
+    if(data.length == 0){
+      this.setState({ refreshing: false,loading:false,threshold:0 })
+      console.log(1)
+    }else{
+      console.log(2)
+      this.setState({
+        listCity: [...this.state.listCity, ...data],
+        refreshing: false,
+        loading:true,
+        threshold:0.1,
+        page: this.state.page + 1
+      })
+    }
   }
   componentDidMount = () => {
     this.getData()

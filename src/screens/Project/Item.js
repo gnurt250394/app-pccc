@@ -83,7 +83,7 @@ showList=()=>{
                 <TouchableOpacity style={styles.button}
                 onPress={this.showList}
                 >
-                <Text style={{fontSize:15,fontWeight:'500',color:'#333333'}}>{this.props.item.user_name}</Text>
+                <Text numberOfLines={1} style={styles.user_name}>{this.props.item.user_name}</Text>
                 <Animated.Image source={images.icon_up}
                 resizeMode="contain"
                     style={[{transform:[{rotate}]},styles.ticker]}
@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
     containerList:{
         flex:1,
         marginTop: 10,
+    },
+    user_name:{
+        width:'90%'
     },
     txt:{
         color:'#333131',

@@ -24,35 +24,25 @@ class InfoProject extends Component {
             keyword: '',
             follow: this.props.navigation.getParam('follow', false),
         };
+        this.refress = this.props.navigation.getParam('refress','')
     }
 
     /**
      * check thêm phần chuyển từ màn tracking qua => param follow: true
      */
 
-    _nextPage = (router, params,index) => () => {
-       this.setState({page:1})
-        if (this.state.follow) {
-            console.log(this.state.listProject,'stateList')
-            let listProject = [...this.state.listProject]
-            listProject[index].change = 1
-            console.log(listProject,'listproject')
-           let listChange= listProject.filter(item=>item.change ==1)
-           if(listChange.length ==0){
-               AsyncStorage.setItem(typeScreen.project,`${0}`)
-            this.props.changeProject(0)
-           }else{
-            AsyncStorage.setItem(typeScreen.project,`${1}`)
-            this.props.changeProject(1)
-           }
-            this.setState({listProject})
-        }
+    _nextPage = (router, params) => () => {
+       this.setState({page:1,})
+       if(this.state.follow){
+           this.setState({listProject:[]})
+       }
+        
         navigation.navigate(router, params)
     }
     _renderItem = count => ({ item, index }) => {
         return (
             <ListItem
-                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.getData },index)}
+                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.getData })}
                 item={item}
                 follow={this.state.follow}
                 count={count}
@@ -62,7 +52,7 @@ class InfoProject extends Component {
     }
     onEndReached = () => {
 
-        this.state.loading ? this.setState({ loading: true, page: this.state.page + 1 }, this.getData) : null
+        this.state.loading ? this.setState({ page: this.state.page + 1 }, this.getData) : null
     }
     ListFooterComponent = () => {
         if (this.state.loading && this.state.listProject.length > 3) {
@@ -81,6 +71,10 @@ class InfoProject extends Component {
         return `${item.id || index}`
     }
     _goBack = () => {
+       if(this.state.follow){
+        this.refress()
+       } 
+        
         navigation.pop()
     }
     onChangeText = key => val => {
@@ -94,7 +88,7 @@ class InfoProject extends Component {
         } else {
             this.setState({ refreshing: true, page:1},()=>{
                 searchProject(keyword, this.state.page).then(res => {
-
+                    
                     if (res.data.code == Status.SUCCESS) {
     
                         if (this.state.page == 1) {
@@ -199,7 +193,7 @@ class InfoProject extends Component {
         // this.search.onClear()
         // check thêm api follow khi chuyển từ màn tracking qua
         let listProject = [];
-        console.log(this.state.page,'page')
+        
         if (this.state.follow) {
             let params = toParams({
                 page: this.state.page,
@@ -219,16 +213,17 @@ class InfoProject extends Component {
 
 
         }
-        console.log(listProject, 'list')
-
+        
+console.log(listProject,'pppp')
+console.log(this.state.page,'p[age')
         if (listProject.length == 0) {
             this.setState({ loading: false, refreshing: false, Threshold: 0 })
-
         } else {
             if (this.state.page == 1) {
-
+console.log(2)
                 this.setState({ listProject, loading: true, refreshing: false, Threshold: 0.1 })
             } else {
+                console.log(3)
                 this.setState({ listProject: [...this.state.listProject, ...listProject], refreshing: false })
             }
         }

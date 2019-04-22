@@ -11,7 +11,7 @@ export default class ListItem extends React.Component {
         this.state = {
             datas: this.props.datas || [],
             keyword: this.props.keyword || '' ,
-            keyword: this.props.loading || true ,
+            loading: this.props.loading || true ,
         }
     }
 
@@ -78,7 +78,7 @@ export default class ListItem extends React.Component {
                     refreshing={this.props.loading}
                     colors={["#2166A2",'white']}
                 />}
-                data={this.state.datas}
+                data={this.props.datas}
                 renderItem={this.renderItem}
                 ListEmptyComponent={this.ListEmptyComponent}
                 keyExtractor={(item, index) => index.toString()} />

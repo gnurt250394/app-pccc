@@ -21,7 +21,7 @@ export default class Header extends React.Component {
                             source={images.backLight} />
                     </TouchableOpacity>
                         :
-                        <View style={style.view} />}
+                        <View style={style.end} />}
                     <View style={style.flex}>
                         <Text style={[style.title, fontStyles.Acumin_bold]}>{this.props.title}</Text>
                         {/* {this.props.status && (
@@ -54,7 +54,11 @@ export default class Header extends React.Component {
 
 const style = StyleSheet.create({
     flex: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        alignItems:'center',
+        justifyContent:'center',
+        flex:1,
+        marginLeft:40,
     },
     row:{
         flexDirection:'row',
@@ -83,6 +87,13 @@ const style = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
     },
+    end:{
+        paddingLeft: 12,
+        paddingBottom: 8,
+        paddingTop: 0,
+        marginTop: 7,
+        width:16
+    },
     container: {
         backgroundColor: color,
     },
@@ -92,23 +103,21 @@ const style = StyleSheet.create({
         resizeMode: 'contain',
     },
     right: {
-        flex: 1 / 9,
+        height: '90%',
+        width: '18%',
     },
     title: {
         // fontFamily: fontStyle.Acumin_bold,
         // flex: 1, 
         fontSize: 18,
         color: '#fff',
-        // textAlign: 'center', 
-        // paddingRight: 20, 
+        textAlign: 'center', 
     },
     btn: {
         paddingLeft: 12,
         paddingBottom: 8,
         paddingTop: 0,
         marginTop: 7,
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     view: {
         // flex:1/9,
@@ -124,7 +133,8 @@ const style = StyleSheet.create({
     },
     btnAdd: {
         height: '90%',
-        width: '13%',
+        width: '18%',
+        paddingLeft:10,
         alignItems: 'center',
         justifyContent: 'center',
     },

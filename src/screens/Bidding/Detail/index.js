@@ -27,12 +27,17 @@ class LI extends React.Component {
 
 
 class DetailBidding extends React.Component {
-    state = {
-        loading: true,
-        bidding_id: this.props.navigation.getParam('id'),
-        bidding: {},
-        follow: this.props.navigation.getParam('follow') || false,
+    constructor(props){
+        super(props);
+        this.state = {
+            loading: true,
+            bidding_id: this.props.navigation.getParam('id'),
+            bidding: {},
+            follow: this.props.navigation.getParam('follow') || false,
+        }
+        this.refress = this.props.navigation.getParam('refress','')
     }
+    
     token = null
     // set status bar
     async componentDidMount() {
@@ -175,31 +180,38 @@ class DetailBidding extends React.Component {
         if(!this.token){
             popupCancel('Bạn phải đăng nhập để sử dụng tính năng này.', () => this.props.navigation.navigate(SigninScreen))
         }else{
-            UnFolowUser({bidding_id , table: Follow.table_bidding}).then(res => {
-                switch (res.data.code) {
-                    case Status.TOKEN_EXPIRED:
-                        popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
-                        break;
-                    case Status.SUCCESS:
-                        SimpleToast.show('Bỏ theo dõi thành công.')
-                        this.setState({bidding: {...this.state.bidding, follow: Follow.unfollow}})
-                        break;
-                    default:
-                        SimpleToast.show('Bỏ theo dõi thất bại.')
-                        break;
-                }
-            }).catch(err => {
-                
-                SimpleToast.show('Bỏ theo dõi thất bại.')
+            popupCancel('Bạn có muốn bỏ theo dõi tin này không', () => {
+                UnFolowUser({bidding_id , table: Follow.table_bidding}).then(res => {
+                    switch (res.data.code) {
+                        case Status.TOKEN_EXPIRED:
+                            popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
+                            break;
+                        case Status.SUCCESS:
+                            SimpleToast.show('Bỏ theo dõi thành công.')
+                            this.setState({bidding: {...this.state.bidding, follow: Follow.unfollow}})
+                            break;
+                        default:
+                            SimpleToast.show('Bỏ theo dõi thất bại.')
+                            break;
+                    }
+                }).catch(err => {
+                    
+                    SimpleToast.show('Bỏ theo dõi thất bại.')
+                })
             })
+           
         }
     }
 
     _navTo = (screen, params = {} ) => () => {
+       
         this.props.navigation.navigate(screen, params)
     }
 
     _goBack = () => {
+        if(this.state.follow){
+            this.refress()
+        }
         this.props.navigation.goBack()
     }
 

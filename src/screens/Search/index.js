@@ -19,6 +19,7 @@ class Search extends React.Component {
           StatusBar.setBarStyle('light-content');
           StatusBar.setBackgroundColor(color);
         });
+        
     }
     
     componentWillUnmount() {

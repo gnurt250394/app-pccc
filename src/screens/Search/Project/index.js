@@ -18,21 +18,19 @@ class SearchProject extends React.Component {
 
     // set status bar
     async componentDidMount() {
-        this.props.navigation.addListener('willFocus', () => this.loadData())
+        this.props.navigation.addListener('willFocus', () => this.loadData(this.props.screenProps.keyword))
     }
 
     componentWillReceiveProps(props){
-        if(props.screenProps && props.screenProps.isSearch) this.loadData()
+        if(props.screenProps && props.screenProps.isSearch) this.loadData(props.screenProps.keyword)
     }
 
-    loadData = () => {
-        let keyword = this.props.screenProps ? this.props.screenProps.keyword : ""
-        console.log('111')
-        if(keyword != "")
-            this.setState({loading: true, keyword: keyword}, async () => {
+    loadData = (keywordProps) => {
+        if(keywordProps != "")
+            this.setState({loading: true, keyword: keywordProps}, async () => {
                 let params = toParams({
                     table: 'news_projects',
-                    keyword: keyword
+                    keyword: keywordProps
                 })
                 search(params).then(res => {
                     console.log('res: Project', res);
@@ -42,7 +40,7 @@ class SearchProject extends React.Component {
                             loading: false
                         })
                     }else{
-                        this.setState({ loading: false })
+                        this.setState({ loading: false,datas:[] })
                     }
                 }).catch(err => {
                     console.log('err Project: ', err.response);

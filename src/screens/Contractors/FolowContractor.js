@@ -24,6 +24,7 @@ class FolowContractor extends Component {
       refresing: true,
       loading: true
     };
+    this.refress = this.props.navigation.getParam('refress','')
   }
 
   /**
@@ -31,7 +32,8 @@ class FolowContractor extends Component {
    */
 
   _nextPage = (router, params) => () => {
-    this.props.changeContractor(1)
+    this.setState({page:1,listProject:[]})
+
     navigation.navigate(router, params)
   }
   _renderItem = ({ item, index }) => {
@@ -72,6 +74,7 @@ class FolowContractor extends Component {
     return `${item.id || index}`
   }
   _goBack = () => {
+    this.refress()
     navigation.pop()
   }
   handleRefresh = () => {
@@ -101,7 +104,7 @@ class FolowContractor extends Component {
   }
   getData = async () => {
     listUserFollows().then(res => {
-      console.log(res.data, 'aaaa')
+      
       if (res.data.code == Status.SUCCESS) {
         this.setState({ listProject: res.data.data,loading:false })
       } else if (res.data.code == Status.ID_NOT_FOUND) {
@@ -114,7 +117,7 @@ class FolowContractor extends Component {
         this.setState({loading:false,listProject:[]})
       }
     }).catch(err=>{
-      console.log(err.response)
+      
       this.setState({loading:false})
     })
 

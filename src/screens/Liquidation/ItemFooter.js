@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions,TouchableOpacity } from 'react-native';
 import navigation from 'navigation/NavigationService';
 import images from 'assets/images'
 const { width } = Dimensions.get('window')
@@ -49,6 +49,7 @@ export default class ItemFooter extends Component {
                 resizeMode="contain"
                 />
         }
+       
       render() {
             if (this.props.index >= 2 && this.props.listFile.length != 3) {
                   return (
@@ -63,7 +64,14 @@ export default class ItemFooter extends Component {
             } else {
                   return (
                         <View style={styles.containerList}>
-                              
+                              <TouchableOpacity 
+                              onPress={this.props.deleteItem}
+                              style={styles.btnClose}>
+                                    <Image
+                                    source={images.closeBlue}
+                                    style={styles.closeBlue}
+                                    />
+                              </TouchableOpacity>
                               {this.showImage(this.props.item)}
                         </View>
                   )
@@ -75,6 +83,20 @@ const styles = StyleSheet.create({
             color: '#FFFFFF',
             fontSize:16,
             fontWeight:'bold'
+      },
+      btnClose:{
+            height:20,
+            width:20,
+            alignItems:'center',
+            justifyContent:'center',
+            position:'absolute',
+            top:0,
+            right:0,
+            zIndex:1
+      },
+      closeBlue:{
+            height:11,
+            width:11
       },
       viewOpacity: {
             opacity: 0.8,

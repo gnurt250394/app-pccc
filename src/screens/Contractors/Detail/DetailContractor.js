@@ -4,11 +4,13 @@ import { Header } from 'components';
 import { fontStyle, color, Status, typeScreen, removeItem, popup } from 'config/Controller';
 import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
-import { DetailUserFollows, UnFolowUser } from 'config/apis/Project';
+import { DetailUserFollows, UnFolowUser, FolowUser } from 'config/apis/Project';
 import { fontStyles } from 'config/fontStyles';
 import { DetailProject, DetailBiddingScreen, SigninScreen } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
 import { Btn } from 'components';
+import { popupOk } from 'config';
+import { Messages } from 'config/Status';
 const { width, height } = Dimensions.get('window')
 
 const HEADER_MAX_HEGHT = 120
@@ -71,7 +73,7 @@ export default class DetailContractor extends Component {
         navigation.pop()
     }
     _refresshing = () => {
-        console.log(this.state.refreshing,'re')
+        
         return (
             <RefreshControl
                 refreshing={this.state.refreshing}
@@ -81,8 +83,31 @@ export default class DetailContractor extends Component {
             />
         )
     }
+    _folowUser =  () => {
+     
+        let {UserObject} =this.state
+          FolowUser({ investor_id: UserObject.id, table: 'UserInvestor' }).then(res => {
+            
+            if (res.data.code == Status.SUCCESS) {
+              this.setState({ show:!this.state.show})
+              SimpleToast.show('Bạn đã theo dõi nhà thầu ' + UserObject.name + ' thành công')
+            } else if (res.data.code == Status.TOKEN_EXPIRED) {
+                SimpleToast.show('Phiên đăng nhập hết hạn')
+              navigation.reset(SigninScreen)
+              removeItem('token')
+            } else if (res.data.code == Status.ID_NOT_FOUND) {
+                SimpleToast.show('Dự án không tồn tại')
+            } else if (res.data.code == Status.USER_PERMISSION) {
+              popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+            }
+          }).catch(err => {
+            SimpleToast.show('Lỗi hệ thống' + ' ' + err.response.status)
+          })
+        
+      }
+    
     _addItem=()=>{
-        popup('Bạn có muốn mua bỏ theo dõi không?',null,()=> this._UnfolowUser())
+        popup('Bạn có muốn bỏ theo dõi nhà thầu này không?',null,()=> this._UnfolowUser())
             
        
     }
@@ -91,7 +116,7 @@ export default class DetailContractor extends Component {
           let {UserObject} =this.state
           UnFolowUser({ investor_id: UserObject.id, table: 'UserInvestor' }).then(res => {
             if (res.data.code == Status.SUCCESS) {
-              this.setState({show:false,refreshing:false})
+              this.setState({show:!this.state.show,refreshing:false})
                 SimpleToast.show('Bạn đã bỏ theo dõi nhà thầu ' + UserObject.name + ' thành công')
             } else if (res.data.code == Status.TOKEN_EXPIRED ) {
               SimpleToast.show('Phiên đăng nhập hết hạn')
@@ -99,7 +124,9 @@ export default class DetailContractor extends Component {
               removeItem('token')
             } else if (res.data.code == Status.ID_NOT_FOUND) {
                 SimpleToast.show('Dự án không tồn tại')
-            }
+            }else if (res.data.code == Status.USER_PERMISSION) {
+                popup('Bạn phải mua gói để sử dụng tính năng này.', null, () => popupOk('Tính năng đang phát triển. Vui lòng quay lại sau.'))
+              }
           }).catch(err => {
             SimpleToast.show('Lỗi hệ thống' + ' ' + err.response.status)
           })
@@ -173,10 +200,12 @@ export default class DetailContractor extends Component {
                    {this.state.show? <Btn name={"Bỏ theo dõi"}
                         onPress={this._addItem}
                         textStyle={styles.textUnFollow}
-                        customStyle={styles.btnUnFollow} />:<Btn name={"Bỏ theo dõi"}
-                        onPress={this._addItem}
-                        textStyle={styles.textUnFollow}
-                        customStyle={styles.btnUnFollow} />}
+                        customStyle={styles.btnUnFollow} />
+                        :
+                        <Btn name={"Theo dõi"}
+                        onPress={this._folowUser}
+                        textStyle={styles.textFollow}
+                        customStyle={styles.btnFollow} />}
                 </View>
                 <View style={styles.containerFooter}>
                     <Text style={[styles.txtFooter, fontStyles.Acumin_bold]}>Tin tức nhà thầu</Text>
@@ -194,9 +223,9 @@ export default class DetailContractor extends Component {
     }
     getData = () => {
         if (this.props.navigation.state && this.props.navigation.state.params.id) {
-            console.log(this.props.navigation.state.params.id)
+            
             DetailUserFollows(this.props.navigation.state.params.id).then(res => {
-                console.log(res.data, 'ddd')
+                
                 if (res.data.code == Status.SUCCESS) {
                     this.setState({
                         UserObject: res.data.data,
@@ -210,7 +239,7 @@ export default class DetailContractor extends Component {
                 }
             }).catch(err => {
                 this.setState({ refreshing: false })
-                console.log(err.response, 'eeerrr')
+                
             })
         }
     }
@@ -240,6 +269,18 @@ const styles = StyleSheet.create({
         marginBottom:0,
         marginTop:0,
         backgroundColor:'#2166A2'
+    },
+    textFollow:{
+        color:'#2166A2'
+    },
+    btnFollow: {
+        width: '30%',
+        borderRadius: 5,
+        marginBottom:0,
+        marginTop:0,
+        borderWidth:1,
+        borderColor:'#2166A2',
+        backgroundColor:'#FFFFFF'
     },
     containerList: {
         flex: 1,

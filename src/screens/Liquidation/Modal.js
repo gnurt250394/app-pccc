@@ -140,7 +140,7 @@ export default class ModalScreen extends PureComponent {
   }
   getData = () => {
     getOtherData({ table: 'taxonomies' }).then(res => {
-
+      console.log(res.data,'rescity')
       this.setState({
         listCity: res.data.data.filter(e => e.type == "city"),
         Country: res.data.data.filter(e => e.type == "district")

@@ -37,6 +37,7 @@ export default class BaseSearch extends React.PureComponent {
                         style={[style.flex, style.txtSearch]}
                         value={this.state.keyword}
                         returnKeyLabel="Tìm"
+                        onBlur={this.hideBtnClose}
                         onFocus={this.showBtnClose}
                         onSubmitEditing={this.props.onSearch}
                         onChangeText={this.onChangeText}
@@ -56,7 +57,9 @@ export default class BaseSearch extends React.PureComponent {
             </SafeAreaView>
         )
     }
-
+    hideBtnClose=()=>{
+        this.setState({clear:false})
+    }
     showBtnClose = () => {
         this.setState({clear: true})
     }

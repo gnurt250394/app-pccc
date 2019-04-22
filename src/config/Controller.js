@@ -131,6 +131,7 @@ export const callNumber = phone => {
 export const typeScreen = {
     Liquidation: 'liquidation',
     postPurchase: 'buy',
+    product:'product',
     catalog: 'catalog',
     document: 'document',
     project: "project",

@@ -29,7 +29,8 @@ const constant ={
     LIST_LIQUIDATION:'new-post',
     UPDATE_LIQUIDATION:'update-post',
     MESSAGE:'message-chat',
-    LIST_MESSAGE:'list-chat'
+    LIST_MESSAGE:'list-chat',
+    STATUS_FOLLOW:'status-follow'
 }
 
 export default constant;
