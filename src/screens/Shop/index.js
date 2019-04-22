@@ -2,34 +2,69 @@ import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
 import { Slide, ViewMore, BaseHeader, Header } from 'components'
-import { ViewAllProductScreen, HomeScreen } from 'config/screenNames'
+import { ViewAllProductScreen, HomeScreen, SigninScreen, Liquidation } from 'config/screenNames'
 import ListItem from './ListItem'
 import TabShop from './TabShop';
 import { popupCancel } from 'config';
 import navigation from 'navigation/NavigationService';
 import { NavigationEvents } from 'react-navigation';
+import { typeScreen, Status, removeItem, getItem } from 'config/Controller';
+import { getListLiquidation } from 'config/apis/liquidation';
 class Shop extends React.Component {
-    state={
-        routerName:this.props.navigation.getParam('routerName','')
+    state = {
+        routerName: this.props.navigation.getParam('routerName', ''),
+        type: ''
     }
-    componentDidMount = () => {
-        console.log(this.state.routerName, 'tab')
-        // popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
-    };
-    _nextPage=()=>{
-        // if(routerName.ProductShop)
+    // componentDidMount = () => {
+    //     console.log(this.state.routerName, 'tab')
+    //     // popupCancel('Tính năng đang phát triển. Vui lòng quay lại sau.', navigation.navigate(HomeScreen))
+    // };
+    _nextPage = () => {
+        const { type } = this.state
+        navigation.navigate(Liquidation, { refress: this.getData, type: type })
     }
+    setTypeScreen = (type) => {
+        this.setState({ type })
+    }
+
+    getData = async (params) => {
+        
+        let data = []
+        let token = await getItem('token')
+        data = await getListLiquidation(params, token).then(res => {
+            console.log(res.data, 'refres')
+            switch (res.data.code) {
+                case Status.SUCCESS: return res.data.data
+                case Status.NO_CONTENT: return []
+                case Status.TOKEN_EXPIRED:
+                    return (
+                        navigation.reset(SigninScreen),
+                        removeItem('token')
+                    )
+                    default: return []
+            }
+            
+        }).catch(err => {
+                return []
+        })
+        return data
+    }
+   
     render() {
         return (
             <View style={styles.flex}>
                 <Header
                     title="Shop của tôi"
                     check={1}
-                    finish={2}
+                    finish={this.state.type == typeScreen.product ? null : 2}
                     onFinish={this._nextPage}
                     onPress={this._goBack}
                 />
                 <TabShop
+                    screenProps={{ 
+                        next: this.setTypeScreen,
+                        getList:this.getData 
+                    }}
                     ref={ref => this.tabShop = ref}
                 />
             </View>

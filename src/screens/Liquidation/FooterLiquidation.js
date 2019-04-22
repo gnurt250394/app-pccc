@@ -10,6 +10,7 @@ const { width } = Dimensions.get('window')
 export default class FooterLiquidation extends Component {
     state = {
         listFile: [],
+        id:1
     }
 
     _choseFile = () => {
@@ -21,6 +22,8 @@ export default class FooterLiquidation extends Component {
 
             let dataName = []
             if (res) {
+                res.id = res.fileName + new Date().getTime()
+                console.log(res,'dddd')
                 dataName.push(res)
                 this.setState({ listFile: [...this.state.listFile, ...dataName] })
             }
@@ -51,17 +54,23 @@ export default class FooterLiquidation extends Component {
             </TouchableOpacity>
         )
     }
+    deleteItem=(item)=>()=>{
+        let data = this.state.listFile.filter(e=> e.id != item.id)
+        console.log(data,'ddddwwww')
+        this.setState({listFile:data})
+    }
     _renderItem = ({ item, index }) => {
         return (
             <ItemFooter
                 index={index}
+                deleteItem={this.deleteItem(item)}
                 item={item}
                 listFile={this.state.listFile}
             />
         )
 
     }
-    _keyExtractor = (item, index) => `${item.fileName || index}`
+    _keyExtractor = (item, index) => `${item.id || index}`
     render() {
         return (
             <View style={styles.container}>

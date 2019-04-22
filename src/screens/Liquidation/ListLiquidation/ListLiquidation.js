@@ -86,7 +86,7 @@ export default class ListLiquidation extends Component {
                 }).catch(err => {
                     return err.response
                 })
-                console.log(datas,'ddaa')
+                
                 if (datas.length == 0) {
                     this.setState({
                         loading: false,
@@ -159,7 +159,7 @@ export default class ListLiquidation extends Component {
             page:page
         }
         getListLiquidation(params).then(res => {
-            console.log(res.data,'get')
+            
             if (res.data.code == Status.SUCCESS) {
                 if (page == 1) {
                     this.setState({
@@ -191,7 +191,7 @@ export default class ListLiquidation extends Component {
                 popupCancel(Messages.LOGIN_REQUIRE, () => navigation.navigate(SigninScreen))
             }
         }).catch(err => {
-            console.log(err)
+            
             this.setState({ Thresold: 0, loading: false, refreshing: false })
 
         })
@@ -202,7 +202,7 @@ export default class ListLiquidation extends Component {
         this.getData(page)
     }
     getLiquidation = async () => {
-        console.log(this.state.page,'page')
+        
         this.search.resetFilter()
         this.getData(this.state.page)
     }
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 10,
-        backgroundColor: '#CCCCCC'
+        backgroundColor: '#F1F1F1'
     },
     notFound: {
         fontSize: 16,

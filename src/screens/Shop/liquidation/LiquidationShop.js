@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator,BackHandler } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, BackHandler, TouchableWithoutFeedback } from 'react-native';
 import images from "assets/images"
 import moment from 'moment'
 import { Status, removeItem, getItem, popup, typeScreen } from 'config/Controller';
@@ -31,7 +31,7 @@ export default class LiquidationShop extends Component {
         let listLiqiudation = this.state.listLiqiudation
         listLiqiudation.forEach(item => item.isShow = false)
         this.setState({ listLiqiudation })
-        console.log(listLiqiudation, 'aaa')
+
 
     }
     showMenu = (item) => () => {
@@ -57,15 +57,15 @@ export default class LiquidationShop extends Component {
         })
         this.setState({ listLiqiudation: listFinal })
         deleteLiquidation(item.id).then(res => {
-            console.log(res, 'res')
+
         }).catch(err => {
-            console.log(err.response, 'err')
+
         })
     }
     _editLiquidation = (item) => () => {
-        this.setState({page:1})
+        this.setState({ page: 1 })
         this._hideMenu()
-        navigation.navigate(EditLiquidation, { id: item.id, type: this.state.type, item: item ,refress:this.getLiquidation})
+        navigation.navigate(EditLiquidation, { id: item.id, type: this.state.type, item: item, refress: this.getLiquidation })
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -90,129 +90,152 @@ export default class LiquidationShop extends Component {
     }
 
     _loadMore = () => {
-        !this.state.loading ? null : this.setState({ page: this.state.page + 1 }, () => this.getLiquidation(this.state.page))
+        !this.state.loading ? null : this.setState({ page: this.state.page + 1 }, this.getData)
     }
-    _nextPage = () => {
-        this.setState({page:1})
-        navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type })
-    }
+    // _nextPage = () => {
+    //     this.setState({ page: 1 })
+    //     navigation.navigate(Liquidation, { refress: this.getLiquidation, type: this.state.type })
+    // }
     _goBack = () => {
         navigation.pop()
     }
 
     _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
 
-    handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
-    onDidFocus=()=>{
-        this.props.navigation.setParams('type',this.props.navigation.state.key)
+    handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getData)
+    onDidFocus = () => {
+        this.props.navigation.setParams('type', this.props.navigation.state.key)
     }
     render() {
         const { type } = this.state
         return (
-            <View style={styles.container}
+            <TouchableWithoutFeedback style={styles.container}
+                onPress={this._hideMenu}
             >
-                <NavigationEvents
-                //   onDidFocus={this.onDidFocus}
-                    onDidBlur={this._hideMenu}
-                />
-                <FlatList
-                    data={this.state.listLiqiudation}
-                    renderItem={this._renderItem}
-                    extraData={this.state}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefress}
-                    ListEmptyComponent={this._listEmpty}
-                    keyExtractor={this._keyExtractor}
-                    ListFooterComponent={this._renderFooter}
-                    onEndReached={this._loadMore}
-                    onEndReachedThreshold={this.state.Thresold}
-                />
-                <TouchableOpacity style={styles.btnAdd}
-                    onPress={this._nextPage}
+                <View style={styles.container}
                 >
-                    <Image
-                        source={images.shopAdd}
-                        style={styles.add}
-                        resizeMode="contain"
+                    <NavigationEvents
+                        //   onDidFocus={this.onDidFocus}
+                        onDidBlur={this._hideMenu}
                     />
-                </TouchableOpacity>
-            </View>
+                    <FlatList
+                        data={this.state.listLiqiudation}
+                        renderItem={this._renderItem}
+                        extraData={this.state}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefress}
+                        ListEmptyComponent={this._listEmpty}
+                        keyExtractor={this._keyExtractor}
+                        ListFooterComponent={this._renderFooter}
+                        onEndReached={this._loadMore}
+                        onEndReachedThreshold={this.state.Thresold}
+                    />
+                    {/* <TouchableOpacity style={styles.btnAdd}
+                        onPress={this._nextPage}
+                    >
+                        <Image
+                            source={images.shopAdd}
+                            style={styles.add}
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity> */}
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
-    getData = async (params) => {
+    getData = async () => {
+        let params = {
+            type: this.state.type,
+            page: this.state.page
+        }
 
         let token = await getItem('token')
-        getListLiquidation(params, token).then(res => {
-            console.log(res.data, 'refres')
-            if (res.data.code == Status.SUCCESS) {
-                if (this.state.page == 1) {
-                    this.setState({
-                        listLiqiudation: res.data.data,
-                        Thresold: 0.1,
-                        loading: true,
-                        refreshing: false
-                    })
-                } else {
-                    this.setState({
-                        listLiqiudation: [...this.state.listLiqiudation, ...res.data.data],
-                        Thresold: 0.1,
-                        loading: true,
-                        refreshing: false
-                    })
+        let data = await getListLiquidation(params, token).then(res => {
+
+            switch (res.data.code) {
+                case Status.SUCCESS: return res.data.data
+                case Status.NO_CONTENT: return []
+                case Status.TOKEN_EXPIRED: {
+                    this.setState({ Thresold: 0, loading: false, refreshing: false })
+                    navigation.reset(SigninScreen)
+                    removeItem('token')
+                    return
                 }
-            } else if (res.data.code == Status.NO_CONTENT) {
-                this.setState({
-                    Thresold: 0,
-                    loading: false,
-                    refreshing: false
-                })
-            } else if (res.data.code == Status.TOKEN_EXPIRED) {
-                this.setState({ Thresold: 0, loading: false, refreshing: false })
-                navigation.reset(SigninScreen)
-                removeItem('token')
-            } else {
-                this.setState({ Thresold: 0, loading: false, refreshing: false })
+                default: return []
             }
         }).catch(err => {
             this.setState({ Thresold: 0, loading: false, refreshing: false })
-
+            return []
         })
+        this.formatData(data)
     }
-    refressData = () => {
+    formatData = (data) => {
+        if (data.length == 0) {
+            this.setState({ Thresold: 0, loading: false, refreshing: false, page: 1 })
+        } else {
+            if (this.state.page == 1) {
+                this.setState({
+                    listLiqiudation: data,
+                    loading: true,
+                    refreshing: false
+                })
+            } else {
+                this.setState({
+                    listLiqiudation: [...this.state.listLiqiudation, ...data],
+                    loading: true,
+                    refreshing: false
+                })
+            }
+        }
+    }
+    // refressData = () => {
+    //     let params = {
+    //         type: this.state.type,
+    //         page: 1
+    //     }
+    //     this.getData(params)
+    // }
+    // getLiquidation = async (page = 1) => {
+    //     if (this.state.page == 1) { this.setState({ refreshing: true }) }
+    //     let params = {
+    //         type: this.state.type,
+    //         page: page
+    //     }
+    //     
+    //     this.getData(params)
+    // }
+
+    getDataFromParent =async()=>{
         let params = {
             type: this.state.type,
-            page: 1
+            page: this.state.page
         }
-        this.getData(params)
-    }
-    getLiquidation = async (page = 1) => {
-        if (this.state.page == 1) { this.setState({ refreshing: true }) }
-        let params = {
-            type: this.state.type,
-            page: page
+        if (this.state.type == typeScreen.Liquidation) {
+            this.props.screenProps.next(typeScreen.Liquidation)
+            let data = await this.props.screenProps.getList(params)
+            this.formatData(data)
+        } else {
+            this.props.screenProps.next(typeScreen.postPurchase)
+            let data = await this.props.screenProps.getList(params)
+            this.formatData(data)
         }
-        console.log(params, 'params')
-        this.getData(params)
+
     }
-    handleBackPress = () => {
-        this.goBack(); // works best when the goBack is async
-        return true;
-      }
     componentDidMount = () => {
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            console.log('11111112222')
             navigation.pop(); // works best when the goBack is async
             return true;
-          });
-        this._willFocus = this.props.navigation.addListener('willFocus', () => {
-            this.getLiquidation(this.state.page)
+        });
+        this._willFocus = this.props.navigation.addListener('willFocus', async () => {
+            // this.getData()
+            this.getDataFromParent()
         }
         )
     };
     componentWillUnmount() {
         this.backHandler.remove();
         this._willFocus.remove()
-        
+
     }
 }
 

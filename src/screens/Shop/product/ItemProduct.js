@@ -85,7 +85,9 @@ export default class ItemProduct extends React.PureComponent {
                 // } else {
                 Animated.spring(
                     this.state.pan,
-                    { toValue: { x: 0, y: 0 } }
+                    {
+                        speed:15,
+                        toValue: { x: 0, y: 0 } }
                 ).start();
                 // }
             } //Step 4
@@ -93,7 +95,7 @@ export default class ItemProduct extends React.PureComponent {
     }
     isDropZone(gesture) {     //Step 2
         let dz = this.state.dropZoneValues;
-
+        console.log(dz,'dzzz')
 
 
 
@@ -101,13 +103,11 @@ export default class ItemProduct extends React.PureComponent {
         return gesture.moveY > dz.y && gesture.moveY > dz.y + dz.height;
     }
     setDropZoneValues = (event) => {   
-        console.log(event.nativeEvent.layout,'eeeevvvveee')   //Step 1
         this.setState({
             dropZoneValues: event.nativeEvent.layout
         });
     }
     componentDidMount() {
-      console.log(this.state.dropZoneValues,'drop')
     }
     
     renderDraggable(item) {
@@ -162,7 +162,12 @@ export default class ItemProduct extends React.PureComponent {
         const { item } = this.props
         if (item.add == true) {
             return (
-                    <View style={styles.containerAdd}>
+                    <View style={styles.containerAdd}
+                    onLayout={(event)=>{
+                        this.setState({dropZoneValues:event.nativeEvent.layout})
+                        console.log(event.nativeEvent.layout,'layout')
+                    }}
+                    >
 
                     <TouchableOpacity
                         style={styles.btnAdd}

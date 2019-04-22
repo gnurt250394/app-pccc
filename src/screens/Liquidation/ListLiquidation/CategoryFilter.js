@@ -83,7 +83,7 @@ export default class CategoryFilter extends Component {
   }
   getData = () => {
     getOtherData({ table: 'categories' }).then(res => {
-      console.log(res.data, 'ddd')
+      
       if (res.data.code == Status.SUCCESS) {
         let data = res.data.data.filter(e=>e.parent_id==0).sort(this.sortData)
         let obj = {

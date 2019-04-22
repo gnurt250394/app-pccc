@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity, ActivityIndicator, Alert,TouchableWithoutFeedback } from 'react-native';
 import images from "assets/images"
 import { getProduct } from 'config/apis/myShop';
-import { Status, removeItem, formatNumber, showPopup } from 'config/Controller';
+import { Status, removeItem, formatNumber, showPopup, typeScreen } from 'config/Controller';
 import navigation from 'navigation/NavigationService';
 import { SigninScreen, HomeScreen, BuyProduct, ShopScreen } from 'config/screenNames';
 import { height } from 'config';
@@ -64,15 +64,17 @@ export default class ProductShop extends Component {
     
     render() {
         return (
+            <TouchableWithoutFeedback style={styles.container}
+            onPress={this.hideMenu}
+            >
             <View style={styles.container}
-                onStartShouldSetResponderCapture={this.hideMenu}
                 onLayout={(event)=>{
                     const ProductShop = new ItemProduct()
                     ProductShop.setDropZoneValues(event)
                     
                 }}
             >
-                <View style={{
+                {/* <View style={{
                     height: 100,
                     width: '100%',
                     backgroundColor: 'green',
@@ -83,9 +85,8 @@ export default class ProductShop extends Component {
                
                 >
 
-                </View>
+                </View> */}
                 <FlatList
-                    style={{ marginTop: 100, zIndex: 2 }}
                     data={this.state.ListProduct}
                     showsVerticalScrollIndicator={false}
                     numColumns={3}
@@ -94,6 +95,7 @@ export default class ProductShop extends Component {
                     keyExtractor={this._keyExtractor}
                 />
             </View>
+            </TouchableWithoutFeedback>
         );
     }
     _renderItem = ({ item, index }) => {
@@ -115,7 +117,7 @@ export default class ProductShop extends Component {
         this._didFocus = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                
+                this.props.screenProps.next(typeScreen.product)
             }
         );
         // this.getDetail()

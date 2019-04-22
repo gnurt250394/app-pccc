@@ -10,7 +10,7 @@ export default class ListItem extends React.Component {
         this.state = {
             datas: this.props.datas || [],
             keyword: this.props.keyword || '' ,
-            keyword: this.props.loading || true ,
+            loading: this.props.loading || true ,
         }
         
     }
@@ -44,20 +44,20 @@ export default class ListItem extends React.Component {
     renderItem = ({item, index}) => {
         return <View style={style.box}>
                 <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
-                    <Image source={images.maybom} style={style.image}/>
+                    <Image source={item.image && item.image.full_path?{uri:item.image.full_path}:images.maybom} style={style.image}/>
                 </TouchableOpacity>
                 <View style={style.flex}>
-                    {this._showName(item.name)}
+                    {this._showName(item.title)}
                     <Text style={style.desc}>{ellipsis(item.description, 80)}</Text>
                     <View style={style.bottomBox}>
                         <View style={style.boxIcon}>
                             <Image source={images.sLocation} style={style.iconLocation}/>
-                            <Text style={style.location}>{item.address}</Text>
+                            <Text style={style.location}>{item.city}</Text>
                         </View>
-                        <View style={style.boxIcon}>
+                        {/* <View style={style.boxIcon}>
                             <Image source={images.sDolla} style={style.iconLocation}/>
                             <Text style={style.location}>{toPrice(item.price)}</Text>
-                        </View>
+                        </View> */}
                         
                         <Text style={style.desc}>{item.time}</Text>
                     </View>
@@ -76,7 +76,7 @@ export default class ListItem extends React.Component {
     render(){
         return (
             <FlatList
-                data={this.state.datas}
+                data={this.props.datas}
                 refreshControl={
                 <RefreshControl
                     refreshing={this.props.loading}
@@ -108,7 +108,7 @@ const style = StyleSheet.create({
     desc: {},
     boxIcon: {flexDirection: 'row', alignItems: 'center'},
     iconLocation: {width: 15, height: 15, resizeMode: 'contain', marginRight: 5},
-    bottomBox: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10},
+    bottomBox: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',alignContent:'flex-end', paddingTop: 10},
     notFound: {
         fontSize: 16,
         fontWeight: 'bold',
