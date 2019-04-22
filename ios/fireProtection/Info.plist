@@ -66,6 +66,8 @@
 	<string>Cho phép quyền sử dụng địa chỉ để cập nhật vị trí hiện tại của bạn</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Cho phép quyền này để bạn có thể thay đổi ảnh đại diện từ thư viện ảnh</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Cho phép quyền này để bạn có thể thay đổi ảnh đại diện từ camera</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Acumin-BdItPro_0.otf</string>

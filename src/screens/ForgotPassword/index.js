@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Alert, ActivityIndicator, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Alert, ActivityIndicator, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard ,AsyncStorage} from 'react-native'
 import { connect } from 'react-redux'
 import images from "assets/images"
 import styles from "assets/styles"
@@ -7,6 +7,7 @@ import { forgotPassword } from 'config/apis/users'
 import { Header, BaseInput, Btn } from 'components'
 import { StatusCode, CodeToMessage, popupOk, color } from 'config'
 import { SigninScreen } from 'config/screenNames'
+import OneSignal from 'react-native-onesignal';
 class ChangePassword extends React.Component {
     state = {
         token: this.props.navigation.getParam('token'),
@@ -70,7 +71,17 @@ class ChangePassword extends React.Component {
     _dismiss = () => {
         Keyboard.dismiss()
     }
-
+    _sendTagOneSignal =(id)=>{
+        if(id){
+            AsyncStorage.setItem('user_id',`${id}`)
+            OneSignal.sendTags({
+                userId: `${id}`
+              })
+              
+        }
+        console.log(id,'id')
+        
+    }
     _onSuccess = () => () => {
         let password = this.password ? this.password.getValue() : "";
         let rePassword = this.rePassword ? this.rePassword.getValue() : "";
@@ -86,7 +97,7 @@ class ChangePassword extends React.Component {
             } else {
                 this.setState({ loading: true, editable: false })
                 forgotPassword({ password: password }, this.state.token).then(res => {
-
+                        console.log(res.data,'res')
                     this.setState({ loading: false, editable: true })
                     if (res.data.code != StatusCode.Success || res.data == "") {
                         popupOk(CodeToMessage[res.data.code])
@@ -94,11 +105,12 @@ class ChangePassword extends React.Component {
                         this.setState({ loading: false, editable: true })
                         Alert.alert(
                             'Thông báo',
-                            'Thay đổi mật khẩu thành công. Quay lại đăng nhập.',
+                            'Thay đổi mật khẩu thành công.',
                             [
                                 {
                                     text: 'OK', onPress: async () => {
-                                        this.props.navigation.navigate(SigninScreen)
+                                        this._sendTagOneSignal(res.data.data.id)
+                                        this.props.navigation.navigate(HomeScreen)
                                     }
                                 },
                             ],
