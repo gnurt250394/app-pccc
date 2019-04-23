@@ -12,11 +12,11 @@ let instance = axios.create({
     }
 });
 
-export const getMessage=async(page)=>{
+export const getMessage=async(body)=>{
  
     let token = await getItem('token')
         instance.defaults.headers.common['Authorization'] = "Bearer " + token;
-        return instance.get(constant.MESSAGE,{params:{page:page}})
+        return instance.get(constant.MESSAGE,{params:body})
 }
 export const postMessage=async(body)=>{
  

@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
-import { Text, View, ScrollView, TextInput, StyleSheet, TouchableOpacity ,Modal,Dimensions} from 'react-native'
+import { Text, View, ScrollView, TextInput, StyleSheet, TouchableOpacity, Modal, Dimensions } from 'react-native'
 import CustomDialog from 'components/CustomDialog';
 import DropDown from 'components/Dropdown';
 import { getOtherData } from 'config/apis/myShop';
 import SimpleToast from 'react-native-simple-toast';
 import { fontStyles } from 'config/fontStyles';
-const {height,width} = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 export default class ModalScreen extends PureComponent {
   state = {
     visible: this.props.visible,
@@ -34,15 +34,23 @@ export default class ModalScreen extends PureComponent {
     } else {
       this.setState({ [state]: value })
     }
+  }
 
+  city=(value)=>{
+  console.log(value,2)
+    this.setState({cityName:value.name,idCity:value.id,listCountry: this.state.Country.filter(e => e.parent_id == value.id)})
+  }
+  country=(value)=>{
+  
+    this.setState({districtName:value.name,idDistrict:value.id})
   }
   _onChangeText = (state) => (value) => {
 
     this.setState({ [state]: value })
   }
 
-  handleAdress=(val)=>{
-    this.setState({value:val})
+  handleAdress = (val) => {
+    this.setState({ value: val })
   }
   _save = () => {
     if (this.validate() == '') {
@@ -50,9 +58,6 @@ export default class ModalScreen extends PureComponent {
     } else {
       SimpleToast.show(this.validate())
     }
-
-
-
   }
   validate = () => {
     let msg = ''
@@ -74,7 +79,7 @@ export default class ModalScreen extends PureComponent {
       this.setState({ enableScrollViewScroll: true });
     }
   }
-  closeModal=()=>{
+  closeModal = () => {
     this.setState({ visible: false })
   }
   render() {
@@ -140,7 +145,7 @@ export default class ModalScreen extends PureComponent {
   }
   getData = () => {
     getOtherData({ table: 'taxonomies' }).then(res => {
-      console.log(res.data,'rescity')
+      console.log(res.data, 'rescity')
       this.setState({
         listCity: res.data.data.filter(e => e.type == "city"),
         Country: res.data.data.filter(e => e.type == "district")
@@ -191,29 +196,29 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#00000040",
-    position:'absolute'
+    position: 'absolute'
   },
-  container:{
+  container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center" 
+    alignItems: "center"
   },
-  txtHeader:{
+  txtHeader: {
     textAlign: "center",
     color: "#2166A2",
-    marginTop:5,
+    marginTop: 5,
     fontSize: 19
   },
-  position:{
+  position: {
     backgroundColor: "gray",
     height: 1,
-    width: width -50,
+    width: width - 50,
     marginTop: 10,
     alignSelf: "center"
   },
   modal: {
     backgroundColor: "#FFFFFF",
-    width: width -50,
+    width: width - 50,
     borderColor: "#2166A2",
     borderWidth: 0.5,
     borderRadius: 7,

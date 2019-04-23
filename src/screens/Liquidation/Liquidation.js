@@ -43,23 +43,7 @@ class Liquidation extends Component {
             this.refress = this.props.navigation.getParam('refress', '')
       }
       componentDidMount() {
-          this.getDetail()
-      }
- getDetail = () => {
-
-            getInfoAcount().then(res => {
-                  console.log(res, 'dadads')
-                  if (res.data.code == Status.SUCCESS) {
-                       const data = res.data.data;
-                       console.log(this.Modal,'mo');
-                      
-                        this.Modal.handleAdress(data.address)
-                  } else if (res.data.code == Status.ID_NOT_FOUND) {
-                        this.setState({ loading: false, Liquidation: {}, loading: false })
-                  }
-            }).catch(err => {
-                  this.setState({ loading: false })
-            })
+            this.Modal.handleAdress(this.props.users.address)
       }
 
       _showModal = () => {

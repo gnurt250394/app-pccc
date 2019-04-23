@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
       Image: {
             height: 13,
             width: 13,
-            marginRight:7
+            marginRight:7,
+            marginTop:2
       },
       txtAddress: {
             color: '#999999',
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
       },
       rowChil: {
             flexDirection: 'row',
-            alignItems:'center'
+            alignItems:'flex-start'
       },
       row: {
             flexDirection: 'row',

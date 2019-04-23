@@ -98,7 +98,7 @@ export default class CategoryFilter extends Component {
     let data = await getOtherData({ table: 'categories', page: this.state.page }).then(res => {
       switch (res.data.code) {
         case Status.SUCCESS: {
-          let data = res.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
+          let data = res.data.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
           return data
         }
         case Status.NO_CONTENT: return []

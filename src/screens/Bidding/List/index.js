@@ -117,7 +117,7 @@ class ListBidding extends React.Component {
 
     renderItem = count => ({ item, index }) => {
         return <TouchableOpacity
-            onPress={this._navTo(DetailBiddingScreen, { id: item.id, follow: this.state.follow,refress:this.getData }, index)}
+            onPress={this._navTo(DetailBiddingScreen, { id: item.id, follow: this.state.follow,refress:this.refressData }, index)}
             style={index == count - 1 ? [style.box, style.btw0] : style.box}>
             <Text style={style.name}>{item.name || item.name_bidding}  {this.state.follow && (item.change == 1 && <Image style={style.iconNotify} source={images.dotYellow} />)}</Text>
             {/* <View style={[style.row, style.calender]}>
@@ -149,6 +149,44 @@ class ListBidding extends React.Component {
         return this.state.loading && this.state.datas.length > 3 ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
     }
 
+    refressData=async()=>{
+        let datas = [];
+        // log(this.state.follow);
+        if (this.state.follow) {
+            let params = toParams({
+                page: this.state.page,
+                type: 'bidding'
+            })
+            datas = await listFollows(params).then(res => {
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                return []
+            })
+
+        } else {
+            datas = await listBiddings(this.state.page).then(res => {
+                // log('res: ', res);
+                return res.data.code == StatusCode.Success ? res.data.data : []
+            }).catch(err => {
+                // 
+                return []
+            })
+
+        }
+        if (datas.length == 0) {
+            this.setState({
+                loading: false,
+                refreshing: false,
+                threshold: 0,
+                page:1,
+                datas
+            })
+        } else {
+                this.setState({ datas, loading: true, refreshing: false, threshold: 0.1 })
+           
+        }
+        
+    }
     getData = async () => {
         // lần đầu chạy cả componentDidMount =>  handleLoadmore
         let datas = [];
@@ -174,12 +212,18 @@ class ListBidding extends React.Component {
             })
 
         }
-        log(datas);
+        this.formatData(datas);
+        
+
+    }
+
+    formatData=(datas)=>{
         if (datas.length == 0) {
             this.setState({
                 loading: false,
                 refreshing: false,
                 threshold: 0,
+                page:1
             })
         } else {
             if (this.state.page == 1) {
@@ -188,13 +232,11 @@ class ListBidding extends React.Component {
                 this.setState({ datas: [...this.state.datas, ...datas], loading: true, refreshing: false })
             }
         }
-
     }
-
     _navTo = (screen, params = {}, index) => () => {
         this.setState({page:1})
         if(this.state.follow){
-            this.setState({datas:[]})
+            // this.setState({datas:[]})
         }
         this.props.navigation.navigate(screen, params)
     }

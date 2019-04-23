@@ -68,7 +68,7 @@ export default class LiquidationShop extends Component {
     _editLiquidation = (item) => () => {
         this.setState({ page: 1 })
         this._hideMenu()
-        navigation.navigate(EditLiquidation, { id: item.id, type: this.state.type, item: item, refress: this.getLiquidation })
+        navigation.navigate(EditLiquidation, { id: item.id, type: this.state.type, item: item, refress: this.getDataFromParent })
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -180,14 +180,17 @@ export default class LiquidationShop extends Component {
                 this.setState({
                     listLiqiudation: data,
                     loading: true,
-                    refreshing: false
+                    refreshing: false,
+                    
                 })
+                this.props.screenProps.stopGetData()
             } else {
                 this.setState({
                     listLiqiudation: [...this.state.listLiqiudation, ...data],
                     loading: true,
                     refreshing: false
                 })
+                this.props.screenProps.stopGetData()
             }
         }
     }

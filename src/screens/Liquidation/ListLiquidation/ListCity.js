@@ -19,7 +19,7 @@ export default class ListCity extends Component {
       refreshing: true,
       loading: true,
       page: 1,
-      threshold:0.1
+      threshold: -1
     };
   }
   _goBack = () => {
@@ -58,16 +58,16 @@ export default class ListCity extends Component {
   _keyExtractor = (item, index) => {
     return `${item.id || index}`
   }
-  handleRefress = () => this.setState({ refreshing: true,page:1 }, this.getData)
+  handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getData)
   loadMore = () => this.state.loading ? this.getData() : null
   _listFooter = () => {
-    
+
 
     return this.state.loading && this.state.listCity.length > 8 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
   }
   _refreshControl = () => {
     return <RefreshControl
-      refreshing={true }
+      refreshing={true}
       style={styles.refreshControl}
       onRefresh={this.handleRefress}
       colors={["#2166A2", 'white']}
@@ -102,36 +102,40 @@ export default class ListCity extends Component {
     if (a.name > b.name) return -1;
     return 0;
   }
-  getData =async () => {
-   let data=await getOtherData({ table: 'taxonomies', page: this.state.page }).then(res => {
-      switch(res.data.code){
-        case Status.SUCCESS: {
-          let data= res.data.data.filter(e => e.type == "city").sort(this.sortData)
-          return data
-          }
-        case Status.NO_CONTENT: return []
-        default: return []
+  getData = async () => {
+    console.log(this.state.page,'page')
+    let data = await getOtherData({ table: 'taxonomies', page: this.state.page }).then(res => {
+      console.log(res.data.data.data, 'dadada')
+      if (res.data.code == Status.SUCCESS) {
+        let data = res.data.data.data.filter(e => e.type == "city").sort(this.sortData)
+        return data
+      } else if (res.data.code == Status.NO_CONTENT) {
+        return []
+
+      } else {
+        return []
       }
-      
+
     }).catch(err => {
       return []
     })
-    
+    console.log(data, 'data')
     this.formatData(data)
   }
 
-  formatData = (data)=>{
-    if(data.length == 0){
-      this.setState({ refreshing: false,loading:false,threshold:0,page:1 })
-      
-    }else{
-      
-      this.setState({
-        listCity: [...this.state.listCity, ...data],
-        refreshing: false,
-        loading:true,
-        threshold:0.1,
-        page: this.state.page + 1
+  formatData = (data) => {
+    if (data.length == 0) {
+      this.setState({ refreshing: false, loading: false, threshold: 0, page: 1 })
+
+    } else {
+      this.setState((pre) => {
+        return {
+          listCity: [...pre.listCity, ...data],
+          refreshing: false,
+          loading: true,
+          threshold: 0.1,
+          page: pre.page + 1
+        }
       })
     }
   }
@@ -146,8 +150,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  refreshControl:{
-    top:30
+  refreshControl: {
+    top: 30
   },
   ticker: {
     height: 14,

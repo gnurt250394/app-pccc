@@ -34,15 +34,14 @@ class InfoProject extends Component {
     _nextPage = (router, params) => () => {
        this.setState({page:1,})
        if(this.state.follow){
-           this.setState({listProject:[]})
+        //    this.setState({listProject:[]})
        }
-        
         navigation.navigate(router, params)
     }
     _renderItem = count => ({ item, index }) => {
         return (
             <ListItem
-                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.getData })}
+                onPress={this._nextPage(DetailProject, { id: item.id, name: item.name, follow: this.state.follow,refress:this.refressData })}
                 item={item}
                 follow={this.state.follow}
                 count={count}
@@ -103,6 +102,7 @@ class InfoProject extends Component {
                         this.setState({ refreshing: false, loading: false, Threshold: 0 })
                     }
                 }).catch(err => {
+                    console.log(err.response,'eerrr')
                     SimpleToast.show("Lỗi hệ thống")
                     this.setState({  refreshing: false, loading: false, Threshold: 0 })
                 })
@@ -180,7 +180,7 @@ class InfoProject extends Component {
 
         }
         if (listProject.length == 0) {
-            this.setState({ loading: false, refreshing: false, Threshold: 0 })
+            this.setState({ loading: false, refreshing: false, Threshold: 0,listProject:[] })
 
         } else {
 

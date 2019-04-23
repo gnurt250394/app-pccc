@@ -47,7 +47,7 @@ export default class ListItem extends Component {
                         <Text numberOfLines={1} style={[styles.txtName,fontStyles.Acumin_bold]} 
                         >{this.props.item.name} 
                             </Text>
-                           {this.props.item.status==0? <Image  style={styles.iconNotify} source={images.dotYellow} />:null}
+                           {this.props.item.status==1? <Image  style={styles.iconNotify} source={images.dotYellow} />:null}
                         {/* </View> */}
                     </View>
                     <Item source={images.proEmail} name={this.props.item.email} />

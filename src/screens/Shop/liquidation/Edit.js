@@ -29,6 +29,7 @@ class Edit extends Component {
                   district_id: '',
                   address: '',
                   location: 'Chọn địa chỉ',
+                  file_attach:[],
                   isVisible: false,
                   item:this.props.navigation.getParam('item',''),
                   value: '',
@@ -53,22 +54,26 @@ class Edit extends Component {
             return arr
       }
       getDetail = () => {
-            console.log(this.state.item, 'iii')
+            
             getDetailLiquidation(this.state.id).then(res => {
                   if (res.data.code == Status.SUCCESS) {
                         const data = res.data.data;
-                        console.log(data, 'sss')
+                        console.log('data: ', this.state.item);
+                        console.log(data,'dddd')
                         this.inputTitle.handleText(data.title)
                         this.inputDescription.handleText(data.description)
                         this.Modal.handleAdress(data.address)
+                        this.Modal.city(this.state.item.city)
+                        this.Modal.country(this.state.item.district)
                         this.setState({
                               name: data.category,
+                              file_attach:data.file_attach,
                               category_id:this.handleCategory(this.state.item.category),
                               location: data.address + " - " + data.district + " - " + data.city
                         })
-                        console.log(this.state.category_id,'id')
+                        
                         this.footer.forrmatData(data.file_attach)
-                        console.log(this.state.location, 'location')
+                        
                   } else if (res.data.code == Status.ID_NOT_FOUND) {
                         this.setState({ loading: false, })
                   }
@@ -165,7 +170,7 @@ class Edit extends Component {
 
                   let idCity = this.Modal.state.idCity || this.state.item.city.id,
                         idCountry = this.Modal.state.idDistrict || this.state.item.district.id,
-                        listFile = this.footer.state.listFile || [],
+                        listFile = this.footer.state.listFile || this.state.file_attach,
                         title = this.inputTitle.state.text || '',
                         decription = this.inputDescription.state.text || '',
                         address = this.Modal.state.value || ''
@@ -186,11 +191,11 @@ class Edit extends Component {
                   params.append('address', address)
                   params.append('district_id', idCountry)
                   params.append('post_id', this.state.id)
-                  console.log(params, 'params')
+                  console.log([params,'params'])
                   if (this.validate() == '') {
                         this.setState({ loading: true })
                         updateLiquidation(params).then(res => {
-                              console.log(res.data,'aaaa')
+                              
                               if (res.data.code == Status.SUCCESS) {
                                     this.refress()
                                     this.setState({ loading: false })
@@ -206,7 +211,7 @@ class Edit extends Component {
                               }
                         }).catch(err => {
                               this.setState({ loading: false })
-                              console.log(err, 'err')
+                              console.log(err,'err')
                               SimpleToast.show("Server ERROR")
 
                         })

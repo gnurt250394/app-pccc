@@ -32,7 +32,7 @@ class FolowContractor extends Component {
    */
 
   _nextPage = (router, params) => () => {
-    this.setState({page:1,listProject:[]})
+    this.setState({page:1})
 
     navigation.navigate(router, params)
   }
@@ -104,6 +104,7 @@ class FolowContractor extends Component {
   }
   getData = async () => {
     listUserFollows().then(res => {
+      console.log('res: ', res);
       
       if (res.data.code == Status.SUCCESS) {
         this.setState({ listProject: res.data.data,loading:false })

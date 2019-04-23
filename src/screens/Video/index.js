@@ -249,7 +249,7 @@ const style = StyleSheet.create({
     p8: {padding: 8},
     flex: {flex: 1,backgroundColor:'#CCCCCC'},
     cancel: {color: 'white', padding: 10},
-    iconPlay: {position: 'absolute', top: 48, left: '44%', width: 60, resizeMode: 'contain'},
+    iconPlay: {position: 'absolute', top: 48, alignSelf:'center', width: 60, resizeMode: 'contain'},
     posR: {position: 'relative'},
     iconBack: {
         height: 18,
