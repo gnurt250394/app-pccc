@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, View ,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native'
 import images from 'assets/images'
 import { chooseImage } from 'config/uploadImage';
+import Emoji from '../Emoji/Emoji';
 export default class FooterMsg extends Component {
     state={
         text:'',
@@ -39,6 +40,7 @@ export default class FooterMsg extends Component {
            source={images.capture}
            />
        </TouchableOpacity>
+       
        <TouchableOpacity>
            <Image
            style={styles.imgIcon}

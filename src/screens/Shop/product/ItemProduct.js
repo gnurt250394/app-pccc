@@ -103,6 +103,8 @@ export default class ItemProduct extends React.PureComponent {
         return gesture.moveY > dz.y && gesture.moveY > dz.y + dz.height;
     }
     setDropZoneValues = (event) => {   
+        let e =event.nativeEvent.layout
+        console.log(e,'event')
         this.setState({
             dropZoneValues: event.nativeEvent.layout
         });

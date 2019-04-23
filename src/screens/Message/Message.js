@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import SocketIOClient from 'socket.io-client/dist/socket.io';
 import constant from 'config/apis/constant';
 import SimpleToast from 'react-native-simple-toast';
+import TabEmoji from './Emoji/Tab'
 export default class Message extends Component {
   constructor(props) {
     super(props);
@@ -134,24 +135,26 @@ export default class Message extends Component {
       sender_id: user_id,
       loading: true
     }
-    this.setState({ listMessage: [obj, ...data] },()=>{this.postMsg(obj)})
+    this.setState({ listMessage: [obj, ...data] },()=>{
+      postMessage(params).then(res => {
+        if (res.data.code == Status.SUCCESS) {
+           obj = res.data.data
+          obj.loading = false
+          this.setState({ listMessage: [obj, ...data] })
+  
+        } else {
+          SimpleToast.show("Không thể gửi tin nhắn")
+        }
+      }).catch(err => {
+        SimpleToast.show("Không thể gửi tin nhắn")
+      })
+    })
     
     this.Footer.onClear()
 
   }
-  postMsg=(obj)=>{
-    postMessage(params).then(res => {
-      if (res.data.code == Status.SUCCESS) {
-         obj = res.data.data
-        obj.loading = false
-        this.setState({ listMessage: [obj, ...data] })
-
-      } else {
-        SimpleToast.show("Không thể gửi tin nhắn")
-      }
-    }).catch(err => {
-      SimpleToast.show("Không thể gửi tin nhắn")
-    })
+  postMsg=(obj,params)=>{
+    
   }
   _headerComponent = () => {
     return this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
@@ -171,6 +174,7 @@ export default class Message extends Component {
           // status={"Đang hoạt động"}
           title={this.state.title}
         />
+        
         {this.state.link ? <HeaderMsg /> : null}
         <FlatList
           renderItem={this._renderItem}
@@ -189,6 +193,7 @@ export default class Message extends Component {
           onPress={this._sentMessage}
           selectImage={this.selectImage}
         />
+       <TabEmoji/>
       </View>
     )
   }
