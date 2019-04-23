@@ -5,6 +5,7 @@ import images from 'assets/images'
 import ItemFooter from './ItemFooter';
 import { fontStyles } from 'config/fontStyles';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import { chooseFile } from 'config/uploadImage';
 const { width } = Dimensions.get('window')
 
 export default class FooterLiquidation extends Component {
@@ -14,12 +15,8 @@ export default class FooterLiquidation extends Component {
     }
 
     _choseFile = () => {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
-            // Android
-
-
+        chooseFile().then(res=>{
+            console.log(res,'res')
             let dataName = []
             if (res) {
                 res.id = res.fileName + new Date().getTime()
@@ -27,7 +24,8 @@ export default class FooterLiquidation extends Component {
                 dataName.push(res)
                 this.setState({ listFile: [...this.state.listFile, ...dataName] })
             }
-        });
+        })
+       
     }
 
     forrmatData = (data) => {
@@ -106,8 +104,9 @@ const styles = StyleSheet.create({
     },
 
     containerAdd: {
-        marginVertical: 7,
-        marginLeft: 10,
+        // marginVertical: 7,
+        // marginLeft: 10,
+        margin:10,
         height: 70,
         width: 80,
         paddingVertical: 10,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity,ActivityIndicator, Image } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
@@ -119,7 +119,9 @@ export default class ListCategory extends Component {
   }
   handleRefress = () => this.setState({ refreshing: true }, this.getData)
   _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
-
+  loadMore = () => this.state.loading ? this.getData() : null
+  _listFooter = () => this.state.loading && this.state.listCategory.length > 8 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
+  
   render() {
     return (
       <View style={styles.container}>
@@ -146,40 +148,59 @@ export default class ListCategory extends Component {
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefress}
           ListEmptyComponent={this._listEmpty}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={this.state.Thresold}
+          ListFooterComponent={this._listFooter}
         />
       </View>
     );
   }
-
-  getData = () => {
-    getOtherData({ table: 'categories' }).then(res => {
-      
-      if (res.data.code == Status.SUCCESS) {
-        let data =res.data.data.filter(e=>e.parent_id==0)
-        if(this.state.listIdCheck.length >0){
-          this.state.listIdCheck.forEach(item=>{
-              data.forEach(e=>{
-                if(item == e.id ){
-                  e.checked = true
-                }
-              })
-          })
-        }
-        this.setState({
-          listCategory: data,
-          refreshing:false
-        })
-      } else if (res.data.code == Status.NO_CONTENT) {
-        this.setState({
-          listCategory: [],
-          refreshing:false
-        })
-      }
-
-    }).catch(err => {
-      this.setState({refreshing:false})
-    })
+  sortData = (a, b) => {
+    if (a.name < b.name) return 1;
+    if (a.name > b.name) return -1;
+    return 0;
   }
+  getData = async () => {
+    let data = await getOtherData({ table: 'categories', page: this.state.page }).then(res => {
+      switch (res.data.code) {
+        case Status.SUCCESS: {
+          let data = res.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
+          if(this.state.listIdCheck.length >0){
+            this.state.listIdCheck.forEach(item=>{
+                data.forEach(e=>{
+                  if(item == e.id ){
+                    e.checked = true
+                  }
+                })
+            })
+          }
+          return data
+        }
+        case Status.NO_CONTENT: return []
+        default: return []
+      }
+    }).catch(err => {
+      return []
+    })
+    console.log(data,'data')
+    this.formatData(data)
+  }
+  formatData = (data) => {
+    if (data.length == 0) {
+      this.setState({ refreshing: false, loading: false, threshold: 0, page: 1 })
+
+    } else {
+      
+      this.setState({
+        listCategory: [...this.state.listCategory, ...data],
+        refreshing: false,
+        loading: true,
+        threshold: 0.1,
+        page: this.state.page + 1
+      })
+    }
+  }
+  
   componentDidMount = () => {
     this.getData()
   };
