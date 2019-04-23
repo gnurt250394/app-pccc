@@ -48,19 +48,22 @@ export default class LiquidationShop extends Component {
         this.setState({ listLiqiudation })
     }
     _deleteItem = (item) => () => {
-        let data = this.state.listLiqiudation
-        let listFinal = []
-        data.forEach(e => {
-            if (e.id == item.id) {
-                listFinal = data.filter(e => e.id != item.id)
-            }
-        })
-        this.setState({ listLiqiudation: listFinal })
-        deleteLiquidation(item.id).then(res => {
+        popupCancel('Bạn có muốn xoá tin này không?', () => {
+            let data = this.state.listLiqiudation
+            let listFinal = []
+            data.forEach(e => {
+                if (e.id == item.id) {
+                    listFinal = data.filter(e => e.id != item.id)
+                }
+            })
+            this.setState({ listLiqiudation: listFinal })
+            deleteLiquidation(item.id).then(res => {
 
-        }).catch(err => {
+            }).catch(err => {
 
+            })
         })
+
     }
     _editLiquidation = (item) => () => {
         this.setState({ page: 1 })
@@ -204,21 +207,44 @@ export default class LiquidationShop extends Component {
     //     
     //     this.getData(params)
     // }
+    componentWillReceiveProps = (nextProps) => {
+        console.log(nextProps.screenProps.isLoading, 'loading')
+        if (nextProps.screenProps && nextProps.screenProps.isLoading) this.getData()
+    }
 
-    getDataFromParent =async()=>{
-        let params = {
-            type: this.state.type,
-            page: this.state.page
-        }
-        if (this.state.type == typeScreen.Liquidation) {
-            this.props.screenProps.next(typeScreen.Liquidation)
-            let data = await this.props.screenProps.getList(params)
-            this.formatData(data)
-        } else {
-            this.props.screenProps.next(typeScreen.postPurchase)
-            let data = await this.props.screenProps.getList(params)
-            this.formatData(data)
-        }
+    getDataFromParent = () => {
+        this.setState({ page: 1, refreshing: true }, async () => {
+            let params = {
+                type: this.state.type,
+                page: this.state.page
+            }
+            console.log('params: ', params);
+            let token = await getItem('token')
+            let data = await getListLiquidation(params, token).then(res => {
+
+                switch (res.data.code) {
+                    case Status.SUCCESS: return res.data.data
+                    case Status.NO_CONTENT: return []
+                    case Status.TOKEN_EXPIRED: {
+                        this.setState({ Thresold: 0, loading: false, refreshing: false })
+                        navigation.reset(SigninScreen)
+                        removeItem('token')
+                        return
+                    }
+                    default: return []
+                }
+            }).catch(err => {
+                return []
+            })
+            if (this.state.type == typeScreen.Liquidation) {
+                this.props.screenProps.next(typeScreen.Liquidation)
+                this.formatData(data)
+            } else {
+                this.props.screenProps.next(typeScreen.postPurchase)
+                this.formatData(data)
+            }
+        })
+
 
     }
     componentDidMount = () => {
@@ -227,8 +253,14 @@ export default class LiquidationShop extends Component {
             return true;
         });
         this._willFocus = this.props.navigation.addListener('willFocus', async () => {
-            // this.getData()
-            this.getDataFromParent()
+            this.getData()
+            if (this.state.type == typeScreen.Liquidation) {
+                this.props.screenProps.next(typeScreen.Liquidation)
+
+            } else {
+                this.props.screenProps.next(typeScreen.postPurchase)
+
+            }
         }
         )
     };

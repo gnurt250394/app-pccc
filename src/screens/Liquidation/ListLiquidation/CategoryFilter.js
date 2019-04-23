@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
@@ -10,9 +10,15 @@ export default class CategoryFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listCategory: [],
-      loading: true,
-      refreshing: true
+      listCategory: [{
+        id: 0,
+        name: "Tất cả danh mục"
+
+      }],
+      checking: true,
+      refreshing: true,
+      page:1,
+      threshold:0.1
     };
   }
   _goBack = () => {
@@ -20,8 +26,8 @@ export default class CategoryFilter extends Component {
   }
   _selectList = (item) => () => {
 
-    if (this.state.loading) {
-      this.setState({ loading: false })
+    if (this.state.checking) {
+      this.setState({ checking: false })
       if (this.props.navigation.state && this.props.navigation.state.params.fun) {
         this.props.navigation.state.params.fun(item)
         navigation.pop()
@@ -51,10 +57,13 @@ export default class CategoryFilter extends Component {
 
 
   }
-  handleRefress = () => this.setState({ refreshing: true }, this.getData)
+  handleRefress = () => this.setState({ refreshing: true,page:1 }, this.getData)
   _keyExtractor = (item, index) => {
     return `${item.id || index}`
   }
+  loadMore = () => this.state.loading ? this.getData() : null
+  _listFooter = () => this.state.loading && this.state.listCategory.length > 8 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
+  
   render() {
     return (
       <View style={styles.container}>
@@ -71,6 +80,10 @@ export default class CategoryFilter extends Component {
           keyExtractor={this._keyExtractor}
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefress}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={this.state.threshold}
+          ListFooterComponent={this._listFooter}
+          // ListEmptyComponent={this._listEmpty}
         />
       </View>
     );
@@ -81,27 +94,36 @@ export default class CategoryFilter extends Component {
     if (a.name > b.name) return -1;
     return 0;
   }
-  getData = () => {
-    getOtherData({ table: 'categories' }).then(res => {
-      
-      if (res.data.code == Status.SUCCESS) {
-        let data = res.data.data.filter(e=>e.parent_id==0).sort(this.sortData)
-        let obj = {
-          id: 0,
-          name: "Tất cả danh mục"
-
+  getData = async () => {
+    let data = await getOtherData({ table: 'categories', page: this.state.page }).then(res => {
+      switch (res.data.code) {
+        case Status.SUCCESS: {
+          let data = res.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
+          return data
         }
-        this.setState({
-          listCategory: [obj,...data],
-          refreshing: false
-        })
-      } else {
-        this.setState({ refreshing: false })
+        case Status.NO_CONTENT: return []
+        default: return []
       }
-
     }).catch(err => {
-      this.setState({ refreshing: false })
+      return []
     })
+    
+    this.formatData(data)
+  }
+  formatData = (data) => {
+    if (data.length == 0) {
+      this.setState({ refreshing: false, loading: false, threshold: 0, page: 1 })
+
+    } else {
+
+      this.setState({
+        listCategory: [...this.state.listCategory, ...data],
+        refreshing: false,
+        loading: true,
+        threshold: 0.1,
+        page: this.state.page + 1
+      })
+    }
   }
   componentDidMount = () => {
     this.getData()

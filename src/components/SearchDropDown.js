@@ -122,11 +122,13 @@ const styles = StyleSheet.create({
   images: {
     height: 13,
     width: 13,
-    marginLeft: 5,
     resizeMode: 'contain',
+    position:'absolute',
+    right:10,
   },
   textInput: {
-    width:'90%',
-    fontWeight:'bold'
+    width:'100%',
+    height:'100%',
+    fontWeight:'bold',
   }
 })

@@ -115,7 +115,7 @@ export default class ListLiquidation extends Component {
     }
     _listEmpty = () => !this.state.refreshing && <Text style={styles.notFound}>Không có dữ liệu</Text>
 
-    handleRefress = () => this.setState({ refreshing: true, page: 1 }, this.getLiquidation)
+    handleRefress = () => this.setState({ refreshing: true, page: 1 },()=>{ this.getLiquidation(), this.search.resetFilter()})
     render() {
         const { type } = this.state
         return (
@@ -203,7 +203,7 @@ export default class ListLiquidation extends Component {
     }
     getLiquidation = async () => {
         
-        this.search.resetFilter()
+       
         this.getData(this.state.page)
     }
     componentDidMount = () => {

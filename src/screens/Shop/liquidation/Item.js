@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
       btnMenu:{
             flexDirection:'row',
             alignItems:'center',
-            // justifyContent:'space-around',
-            marginBottom:6,
+            height:'45%',
+            // marginBottom:6,
             zIndex:3
         },
         txtMenu:{
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
             height:14,
             width:14,
             marginRight:15,
+            marginBottom:2,
             tintColor:'#333333'
         },
       wrap: {
@@ -119,17 +120,21 @@ const styles = StyleSheet.create({
             right:10,
             elevation:2,
             height:'50%',
-            width:'30%',
+            width:'25%',
+            shadowColor:'#333333',
+            shadowOffset:{width:1,height:0},
+            shadowOpacity:0.6,
+            shadowRadius:5,
             justifyContent:'space-between',
             padding:4,
             borderRadius:5,
             backgroundColor:'#FFFFFF',
             zIndex:5,
-            top: 10,
+            top: 15,
             flex:1,
         },
       dots:{
-            height:30,
+            height:50,
             width:50,
             position:'absolute',
             right:5,

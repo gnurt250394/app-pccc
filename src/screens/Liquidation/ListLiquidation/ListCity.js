@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, RefreshControl, ActivityIndicator } from 'react-native';
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import { getOtherData } from 'config/apis/myShop';
@@ -10,7 +10,11 @@ export default class ListCity extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listCity: [],
+      listCity: [{
+        id: 0,
+        name: "Toàn quốc"
+
+      }],
       checking: true,
       refreshing: true,
       loading: true,
@@ -54,12 +58,21 @@ export default class ListCity extends Component {
   _keyExtractor = (item, index) => {
     return `${item.id || index}`
   }
-  handleRefress = () => this.setState({ refreshing: true }, this.getData)
+  handleRefress = () => this.setState({ refreshing: true,page:1 }, this.getData)
   loadMore = () => this.state.loading ? this.getData() : null
   _listFooter = () => {
-    console.log(this.state.loading)
+    
 
     return this.state.loading && this.state.listCity.length > 8 ? <ActivityIndicator size={"large"} color={"#2166A2"} /> : null
+  }
+  _refreshControl = () => {
+    return <RefreshControl
+      refreshing={true }
+      style={styles.refreshControl}
+      onRefresh={this.handleRefress}
+      colors={["#2166A2", 'white']}
+      tintColor="#2166A2"
+    />
   }
   render() {
     return (
@@ -75,7 +88,6 @@ export default class ListCity extends Component {
           data={this.state.listCity}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
-          bounces={false}
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefress}
           onEndReached={this.loadMore}
@@ -85,12 +97,16 @@ export default class ListCity extends Component {
       </View>
     );
   }
-
+  sortData = (a, b) => {
+    if (a.name < b.name) return 1;
+    if (a.name > b.name) return -1;
+    return 0;
+  }
   getData =async () => {
    let data=await getOtherData({ table: 'taxonomies', page: this.state.page }).then(res => {
       switch(res.data.code){
         case Status.SUCCESS: {
-          let data= res.data.data.filter(e => e.type == "city")
+          let data= res.data.data.filter(e => e.type == "city").sort(this.sortData)
           return data
           }
         case Status.NO_CONTENT: return []
@@ -100,16 +116,16 @@ export default class ListCity extends Component {
     }).catch(err => {
       return []
     })
-    console.log(data,'data')
+    
     this.formatData(data)
   }
 
   formatData = (data)=>{
     if(data.length == 0){
-      this.setState({ refreshing: false,loading:false,threshold:0 })
-      console.log(1)
+      this.setState({ refreshing: false,loading:false,threshold:0,page:1 })
+      
     }else{
-      console.log(2)
+      
       this.setState({
         listCity: [...this.state.listCity, ...data],
         refreshing: false,
@@ -129,6 +145,9 @@ export default class ListCity extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  refreshControl:{
+    top:30
   },
   ticker: {
     height: 14,

@@ -90,13 +90,16 @@ const styles = StyleSheet.create({
             alignItems:'center',
             justifyContent:'center',
             position:'absolute',
-            top:0,
-            right:0,
+            top:-10,
+            borderRadius:10,
+            backgroundColor:'#2166A2',
+            right:-7,
             zIndex:1
       },
       closeBlue:{
-            height:11,
-            width:11
+            height:10,
+            width:10,
+            tintColor:'#FFFFFF'
       },
       viewOpacity: {
             opacity: 0.8,
@@ -111,8 +114,9 @@ const styles = StyleSheet.create({
             justifyContent: 'center'
       },
       containerList: {
-            marginVertical: 7,
-            marginLeft: 7,
+            // marginVertical: 7,
+            margin:10,
+            // marginLeft: 7,
             height:70,
             width:80,
             alignItems: 'center',

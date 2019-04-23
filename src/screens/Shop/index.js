@@ -13,7 +13,8 @@ import { getListLiquidation } from 'config/apis/liquidation';
 class Shop extends React.Component {
     state = {
         routerName: this.props.navigation.getParam('routerName', ''),
-        type: ''
+        type: '',
+        isLoading:false
     }
     // componentDidMount = () => {
     //     console.log(this.state.routerName, 'tab')
@@ -21,34 +22,39 @@ class Shop extends React.Component {
     // };
     _nextPage = () => {
         const { type } = this.state
-        navigation.navigate(Liquidation, { refress: this.getData, type: type })
+        console.log(this.tabShop,'ref')
+        navigation.navigate(Liquidation, { refress: this.loadData, type: type })
     }
     setTypeScreen = (type) => {
         this.setState({ type })
     }
 
-    getData = async (params) => {
-        
-        let data = []
-        let token = await getItem('token')
-        data = await getListLiquidation(params, token).then(res => {
-            console.log(res.data, 'refres')
-            switch (res.data.code) {
-                case Status.SUCCESS: return res.data.data
-                case Status.NO_CONTENT: return []
-                case Status.TOKEN_EXPIRED:
-                    return (
-                        navigation.reset(SigninScreen),
-                        removeItem('token')
-                    )
-                    default: return []
-            }
-            
-        }).catch(err => {
-                return []
-        })
-        return data
+    loadData=()=>{
+        this.setState({isLoading:true})
     }
+
+    // getData = async (params) => {
+        
+    //     let data = []
+    //     let token = await getItem('token')
+    //     data = await getListLiquidation(params, token).then(res => {
+    //         console.log(res.data, 'refres')
+    //         switch (res.data.code) {
+    //             case Status.SUCCESS: return res.data.data
+    //             case Status.NO_CONTENT: return []
+    //             case Status.TOKEN_EXPIRED:
+    //                 return (
+    //                     navigation.reset(SigninScreen),
+    //                     removeItem('token')
+    //                 )
+    //                 default: return []
+    //         }
+            
+    //     }).catch(err => {
+    //             return []
+    //     })
+    //     return data
+    // }
    
     render() {
         return (
@@ -63,7 +69,8 @@ class Shop extends React.Component {
                 <TabShop
                     screenProps={{ 
                         next: this.setTypeScreen,
-                        getList:this.getData 
+                        // getList:this.getData ,
+                        isLoading:this.state.isLoading
                     }}
                     ref={ref => this.tabShop = ref}
                 />
