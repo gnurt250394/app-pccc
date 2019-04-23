@@ -17,7 +17,7 @@ import { Messages } from 'config/Status';
 class ListChat extends React.Component {
     state = {
         keyword: "",
-        refreshing: false,
+        refreshing: true,
         listMessage:[]
     }
     getData=()=>{
@@ -104,7 +104,7 @@ class ListChat extends React.Component {
                         renderItem={this.renderItem}
                         refreshing={this.state.refreshing}
                         onRefresh={this.handleRefress}
-                        ListEmptyComponent={this._listEmpty}
+                        ListEmptyComponent={this._ListEmpty}
                         keyExtractor={this._keyExtractor} />
             </View>
         )
@@ -146,7 +146,7 @@ const style = StyleSheet.create({
     w20: { width: 20},
     p8: {padding: 8},
     flex: {flex: 1},
-    avatar: {width: 60, height: 60, resizeMode: 'contain', borderRadius: 30},
+    avatar: {width: 60, height: 60,  borderRadius: 30},
     box: {borderBottomWidth: 1,padding: 10, borderBottomColor: '#ddd',backgroundColor:'#FFFFFF'},
     time: {position:'absolute',right:8,top:10, fontSize: 11},
     timeUnread: {position:'absolute',right:8,top:10, color: '#111111', fontSize: 11},

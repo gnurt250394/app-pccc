@@ -3,7 +3,11 @@ import {TouchableWithoutFeedback,StyleSheet,ImageBackground,StatusBar, Image,Asy
 import images from "assets/images"
 import { HelloScreen, HomeScreen } from 'config/screenNames';
 import navigation from 'navigation/NavigationService'
-export default class SplashScreen extends Component {
+import { getInfoAcount } from 'config/apis/users';
+import { connect } from 'react-redux'
+import { Status } from 'config/Controller';
+import { updateUserAction } from 'reduxs/actions/actionCreator';
+class SplashScreen extends Component {
     constructor(props) {
         super(props);
             this.state = {
@@ -11,6 +15,7 @@ export default class SplashScreen extends Component {
     }
   
     componentDidMount = async()=>{
+      
         this._navListener = this.props.navigation.addListener('didFocus', () => {
             StatusBar.setBarStyle('light-content');
             StatusBar.setBackgroundColor('#179ECE');
@@ -19,6 +24,7 @@ export default class SplashScreen extends Component {
         let token = await AsyncStorage.getItem('token')
         let Remember = await AsyncStorage.getItem('Remember')
         if(token){
+            this.getDetail()
             setTimeout(()=>{
                 navigation.reset(HomeScreen)
             }, 2000)
@@ -34,7 +40,20 @@ export default class SplashScreen extends Component {
         }
        
     }
+    getDetail = () => {
 
+        getInfoAcount().then(res => {
+              console.log(res, 'dadads')
+              if (res.data.code == Status.SUCCESS) {
+                   const data = res.data.data;
+                    this.props.updateUsers(data)                  
+              } else if (res.data.code == Status.ID_NOT_FOUND) {
+                    this.setState({ loading: false, Liquidation: {}, loading: false })
+              }
+        }).catch(err => {
+              this.setState({ loading: false })
+        })
+  }
    
     
     componentWillUnmount() {
@@ -66,3 +85,16 @@ const styles = StyleSheet.create({
     slogan: {width: 130, resizeMode: 'contain', alignSelf: 'center',},
     flex:  {flex: 1}
 })
+const mapStateToProps = (state) => {
+  return{
+      
+  }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    updateUsers:(data)=>dispatch(updateUserAction(data))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(SplashScreen)

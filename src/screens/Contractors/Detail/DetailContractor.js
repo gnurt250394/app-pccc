@@ -6,7 +6,7 @@ import images from 'assets/images'
 import navigation from 'navigation/NavigationService';
 import { DetailUserFollows, UnFolowUser, FolowUser } from 'config/apis/Project';
 import { fontStyles } from 'config/fontStyles';
-import { DetailProject, DetailBiddingScreen, SigninScreen } from 'config/screenNames';
+import { DetailProject, DetailBiddingScreen, SigninScreen, DetailLiquidation } from 'config/screenNames';
 import SimpleToast from 'react-native-simple-toast';
 import { Btn } from 'components';
 import { popupOk } from 'config';
@@ -49,6 +49,10 @@ export default class DetailContractor extends Component {
             navigation.navigate(DetailBiddingScreen,{id:item.common_id})
         } else if (item.type == typeScreen.user) {
             navigation.navigate(DetailContractor,{id:item.common_id})
+        }else if(item.type == typeScreen.Liquidation){
+            navigation.navigate(DetailLiquidation,{id:item.common_id,type:typeScreen.Liquidation})
+        }else if(item.type == typeScreen.postPurchase){
+            navigation.navigate(DetailLiquidation,{id:item.common_id,type:typeScreen.postPurchase})
         }
     }
     _renderItem = ({ item }) => {
@@ -133,58 +137,13 @@ export default class DetailContractor extends Component {
       }
     render() {
         let { UserObject } = this.state
-        const headerHeight = this.state.scrollY.interpolate({
-            inputRange: [0, HEADER_MAX_HEGHT - HEADER_MIN_HEGHT],
-            outputRange: [HEADER_MAX_HEGHT, HEADER_MIN_HEGHT],
-            extrapolate: 'clamp'
-        })
-        const marginTop = this.state.scrollY.interpolate({
-            inputRange: [0, HEADER_MAX_HEGHT - HEADER_MIN_HEGHT],
-            outputRange: [HEADER_MAX_HEGHT - 120, HEADER_MAX_HEGHT + 5],
-            extrapolate: 'clamp'
-        })
-        const zIndex = this.state.scrollY.interpolate({
-            inputRange: [0, HEADER_MAX_HEGHT - HEADER_MIN_HEGHT],
-            outputRange: [0, 1],
-            extrapolate: 'clamp'
-        })
+       
         return (
             <View style={styles.container}>
-                {/* <SafeAreaView> */}
-                {/* <Animated.View
-                        style={[styles.header, {
-                            height: headerHeight,
-                            zIndex
-                        }]}
-                    >
-
-
-                    </Animated.View> */}
+               
                 <View style={styles.header} />
 
-                {/* <Animated.View
-        style={[styles.header,{
-            height:headerHeight,
-            zIndex
-            }]}
-        >
-      <Header
-            check={1}
-            style={styles.header}
-            onPress={this._goBack}
-            title={"Thông tin nhà thầu"}
-        />
-
-        </Animated.View> */}
-                {/* </SafeAreaView> */}
-                {/* <ScrollView
-                    refreshControl={this._refresshing()}
-                    style={{ flex: 1 }}
-                    scrollEventThrottle={15}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-                    )}
-                > */}
+               
                 <Header
                     check={1}
                     // style={styles.header}
@@ -199,10 +158,12 @@ export default class DetailContractor extends Component {
                     <Item source={images.proCompany} name={UserObject.company} />
                    {this.state.show? <Btn name={"Bỏ theo dõi"}
                         onPress={this._addItem}
+                        UpperCase={true}
                         textStyle={styles.textUnFollow}
                         customStyle={styles.btnUnFollow} />
                         :
                         <Btn name={"Theo dõi"}
+                        UpperCase={true}
                         onPress={this._folowUser}
                         textStyle={styles.textFollow}
                         customStyle={styles.btnFollow} />}
@@ -264,7 +225,7 @@ const styles = StyleSheet.create({
         color:'#FFFFFF'
     },
     btnUnFollow: {
-        width: '30%',
+        width: '35%',
         borderRadius: 5,
         marginBottom:0,
         marginTop:0,

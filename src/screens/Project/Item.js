@@ -23,6 +23,7 @@ export default class Item extends React.PureComponent {
     this.state = {
         show:false,
         checked:true,
+        numberOfLines:1
     };
     this.rotate = new Animated.Value(0)
   }
@@ -42,16 +43,20 @@ showList=()=>{
     if(this.state.show){
         this._rolate(0)
         this.setState({
-            show:false
+            show:false,
+            numberOfLines:1
         })
     } else{
         this._rolate(1)
         this.setState({
-            show:true
+            show:true,
+            numberOfLines:null
         })
     }
    
 }
+
+
   render() {
       let {show} = this.state
       const rotate = this.rotate.interpolate({
@@ -83,7 +88,7 @@ showList=()=>{
                 <TouchableOpacity style={styles.button}
                 onPress={this.showList}
                 >
-                <Text numberOfLines={1} style={styles.user_name}>{this.props.item.user_name}</Text>
+                <Text numberOfLines={this.state.numberOfLines} style={styles.user_name}>{this.props.item.user_name}</Text>
                 <Animated.Image source={images.icon_up}
                 resizeMode="contain"
                     style={[{transform:[{rotate}]},styles.ticker]}
@@ -111,7 +116,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     user_name:{
-        width:'90%'
+        width:'90%',
+        fontWeight:'500',
+        color:'#333333'
     },
     txt:{
         color:'#333131',

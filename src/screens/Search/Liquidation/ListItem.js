@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet, Dimensions,RefreshControl} from 'react-native'
 import images from "assets/images"
-import { ProductDetailScreen } from 'config/screenNames'
+import { ProductDetailScreen, DetailLiquidation } from 'config/screenNames'
 import { toPrice, color, ellipsis } from 'config'
+import { typeScreen } from 'config/Controller';
 const {width} = Dimensions.get('screen')
 export default class ListItem extends React.Component {
     constructor(props){
@@ -43,12 +44,13 @@ export default class ListItem extends React.Component {
     }
     renderItem = ({item, index}) => {
         return <View style={style.box}>
-                <TouchableOpacity onPress={this._navTo(ProductDetailScreen)}>
+                <TouchableOpacity onPress={this._navTo(DetailLiquidation,{type:typeScreen.Liquidation,id:item.id})}>
                     <Image source={item.image && item.image.full_path?{uri:item.image.full_path}:images.maybom} style={style.image}/>
                 </TouchableOpacity>
                 <View style={style.flex}>
-                    {this._showName(item.title)}
-                    <Text style={style.desc}>{ellipsis(item.description, 80)}</Text>
+                <Text style={style.title}>{item.title}</Text>
+                    {/* {this._showName(item.title)} */}
+                    <Text numberOfLines={2} style={style.desc}>{ellipsis(item.description, 80)}</Text>
                     <View style={style.bottomBox}>
                         <View style={style.boxIcon}>
                             <Image source={images.sLocation} style={style.iconLocation}/>
@@ -59,7 +61,7 @@ export default class ListItem extends React.Component {
                             <Text style={style.location}>{toPrice(item.price)}</Text>
                         </View> */}
                         
-                        <Text style={style.desc}>{item.time}</Text>
+                        <Text style={style.time}>{item.time}</Text>
                     </View>
                     
                 </View>
@@ -104,8 +106,18 @@ const style = StyleSheet.create({
     price: { fontSize: 13, textAlign: 'left', color , paddingTop: 0,},
     iconHeart: {alignSelf: 'flex-end', marginRight: 5,},
     keyword: {color, textAlign: 'left',},
-    flex: { flex: 1},
-    desc: {},
+    flex: { flex: 1,
+    justifyContent:'center'},
+    desc: {
+        color: '#333333'
+    },
+    time:{
+       color:'#999999',
+       fontSize:11 
+    },
+    location:{
+        color:'#333333'
+    },
     boxIcon: {flexDirection: 'row', alignItems: 'center'},
     iconLocation: {width: 15, height: 15, resizeMode: 'contain', marginRight: 5},
     bottomBox: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',alignContent:'flex-end', paddingTop: 10},
@@ -120,5 +132,11 @@ const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent:'center',
         marginTop: 50,
+    },
+    title:{
+        color:'#333333',
+        fontSize:15,
+        fontWeight:'700',
+        marginBottom:5
     }
 })

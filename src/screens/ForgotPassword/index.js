@@ -6,7 +6,7 @@ import styles from "assets/styles"
 import { forgotPassword } from 'config/apis/users'
 import { Header, BaseInput, Btn } from 'components'
 import { StatusCode, CodeToMessage, popupOk, color } from 'config'
-import { SigninScreen } from 'config/screenNames'
+import { SigninScreen, HomeScreen } from 'config/screenNames'
 import OneSignal from 'react-native-onesignal';
 class ChangePassword extends React.Component {
     state = {
@@ -110,6 +110,7 @@ class ChangePassword extends React.Component {
                                 {
                                     text: 'OK', onPress: async () => {
                                         this._sendTagOneSignal(res.data.data.id)
+                                        AsyncStorage.setItem('token',res.data.token)
                                         this.props.navigation.navigate(HomeScreen)
                                     }
                                 },

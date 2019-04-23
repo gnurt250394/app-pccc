@@ -33,6 +33,9 @@ class Shop extends React.Component {
         this.setState({isLoading:true})
     }
 
+    stopGetData=()=>{
+        this.setState({isLoading:false})
+    }
     // getData = async (params) => {
         
     //     let data = []
@@ -69,7 +72,7 @@ class Shop extends React.Component {
                 <TabShop
                     screenProps={{ 
                         next: this.setTypeScreen,
-                        // getList:this.getData ,
+                        stopGetData:this.stopGetData ,
                         isLoading:this.state.isLoading
                     }}
                     ref={ref => this.tabShop = ref}

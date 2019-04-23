@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StatusBar, StyleSheet, FlatList, TouchableWithoutFeedback,ActivityIndicator, Keyboard } from 'react-native'
+import { Text, View, StatusBar, StyleSheet, FlatList, TouchableWithoutFeedback, ActivityIndicator, Keyboard } from 'react-native'
 import { Header } from 'components';
 import navigation from 'navigation/NavigationService';
 import HeaderMsg from './MessageComponent/HeaderMsg';
@@ -21,9 +21,9 @@ export default class Message extends Component {
       listMessage: [],
       loading: true,
       image: null,
-      page:1,
+      page: 1,
       Threshold: 0.1,
-      link:this.props.navigation.getParam('link','')
+      link: this.props.navigation.getParam('link', '')
     }
     this.configSocket()
   }
@@ -45,20 +45,20 @@ export default class Message extends Component {
 
     echo.channel('chatroom').listen('MessagePosted', data => {
       // 
-      console.log(data,'event')
+      console.log(data, 'event')
       if (data && data.message) {
         if (data.message.sender_id == user_id) {
           return null
-        } else if(data.message.receiver_id == this.state.id){
+        } else if (data.message.receiver_id == this.state.id) {
           let obj = data.message
-          if(data.image){
-            
+          if (data.image) {
+
             let list = [{
               full_path: data.image
             }]
             obj.get_image = list
           }
-          
+
           this.setState({ listMessage: [obj, ...this.state.listMessage] })
         }
 
@@ -69,7 +69,7 @@ export default class Message extends Component {
     // this.setState({image:value})
     let user_id = await getItem('user_id')
 
-console.log(user_id,'id')
+    console.log(user_id, 'id')
     let data = this.state.listMessage
     // if (message == '') return null
     let params = new FormData()
@@ -94,10 +94,11 @@ console.log(user_id,'id')
       console.log(res.data)
       if (res.data.code == Status.SUCCESS) {
         obj.loading = false
-        obj.get_image[0].full_path = res.data.data.image
+        obj.id = res.data.data.id
+        // obj.get_image[0].full_path = value
         obj.created_at = res.data.data.created_at
-        this.setState({ listMessage: [obj, ...data] },console.log(this.state.listMessage))
-        
+        this.setState({ listMessage: [obj, ...data] })
+
       } else {
         SimpleToast.show("Không thể gửi tin nhắn")
       }
@@ -133,10 +134,15 @@ console.log(user_id,'id')
       sender_id: user_id,
       loading: true
     }
-    this.setState({ listMessage: [obj, ...data] })
+    this.setState({ listMessage: [obj, ...data] },()=>{this.postMsg(obj)})
+    
+    this.Footer.onClear()
+
+  }
+  postMsg=(obj)=>{
     postMessage(params).then(res => {
       if (res.data.code == Status.SUCCESS) {
-        let obj = res.data.data
+         obj = res.data.data
         obj.loading = false
         this.setState({ listMessage: [obj, ...data] })
 
@@ -146,17 +152,16 @@ console.log(user_id,'id')
     }).catch(err => {
       SimpleToast.show("Không thể gửi tin nhắn")
     })
-    this.Footer.onClear()
-
   }
   _headerComponent = () => {
-   return this.state.loading   ? <ActivityIndicator size={"large"} color="#2166A2" />: null
-}
-onEndReached = () => {
+    return this.state.loading ? <ActivityIndicator size={"large"} color="#2166A2" /> : null
+  }
+  onEndReached = () => {
 
-  this.state.loading ? this.getMessage() : null
-}
+    this.state.loading ? this.getMessage() : null
+  }
   _keyExtractor = (item, index) => `${item.id || index}`
+  _listEmpty=()=> <Text style={styles.notFound}>Không có dữ liệu</Text>
   render() {
     return (
       <View style={styles.container}>
@@ -166,7 +171,7 @@ onEndReached = () => {
           // status={"Đang hoạt động"}
           title={this.state.title}
         />
-        {this.state.link?<HeaderMsg />:null}
+        {this.state.link ? <HeaderMsg /> : null}
         <FlatList
           renderItem={this._renderItem}
           ref={ref => this.flatlit = ref}
@@ -174,6 +179,7 @@ onEndReached = () => {
           extraData={this.state}
           keyExtractor={this._keyExtractor}
           data={this.state.listMessage}
+          ListEmptyComponent={this._listEmpty}
           onEndReachedThreshold={this.state.Threshold}
           onEndReached={this.onEndReached}
           ListFooterComponent={this._headerComponent}
@@ -192,40 +198,38 @@ onEndReached = () => {
     return 0;
   }
   getMessage = async () => {
-    let user_id = await getItem('user_id')
+    // let user_id = await getItem('user_id')
+    let params = {
+      page: this.state.page,
+      user_chat: this.state.id
+    }
+    getMessage(params).then(res => {
 
-    getMessage(this.state.page).then(res => {
-
-console.log(res.data,'dddd')
+      console.log(res.data, 'dddd')
 
       if (res.data.code == Status.SUCCESS) {
-        
-        let data = res.data.data.data
-        let listSend = data.filter(e => e.receiver_id == user_id && e.sender_id == this.state.id)
-        let listReciver = data.filter(e => e.receiver_id == this.state.id && e.sender_id == user_id)
-        let listFinal = listSend.concat(listReciver).sort(this.sortData)
-        this.setState({ listMessage: [...this.state.listMessage,...listFinal],page:this.state.page+1 ,loading:true})
-      } else if(res.data.code == Status.NO_CONTENT){
-        
-        
-          this.setState({loading:false,Threshold:0})
-          
-      }else{
-        
-        this.setState({loading:false,Threshold:0})
+
+        let data = res.data.data
+        // let listSend = data.filter(e => e.receiver_id == user_id && e.sender_id == this.state.id)
+        // let listReciver = data.filter(e => e.receiver_id == this.state.id && e.sender_id == user_id)
+        // let listFinal = listSend.concat(listReciver).sort(this.sortData)
+        this.setState({ listMessage: [...this.state.listMessage, ...data], page: this.state.page + 1, loading: true })
+      } else if (res.data.code == Status.NO_CONTENT) {
+        this.setState({ loading: false, Threshold: 0 })
+      } else {
+        this.setState({ loading: false, Threshold: 0 })
       }
 
-
     }).catch(err => {
-      
-      this.setState({loading:false,Threshold:0})
+
+      this.setState({ loading: false, Threshold: 0 })
     })
   }
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor('#2166A2');
-      
+
 
     });
     this.getMessage()
@@ -241,6 +245,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3'
+  },
+  notFound:{
+    alignSelf:'center',
+    marginTop:30,
+    fontWeight:'600',
+    color:'#333333',
+    fontSize:16
   }
 })
 

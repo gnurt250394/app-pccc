@@ -14,7 +14,7 @@ export default class ShowImage extends Component {
       render() {
             return (
                   <View style={styles.container}>
-                       {/* <StatusBar backgroundColor={"#333333"} barStyle="light-content" /> */}
+                       <StatusBar backgroundColor={"#333333"} barStyle="light-content" />
                         <Image
                               source={{ uri: this.state.image }}
                               style={styles.conatinerImage}

@@ -164,7 +164,8 @@ export default class ListCategory extends Component {
     let data = await getOtherData({ table: 'categories', page: this.state.page }).then(res => {
       switch (res.data.code) {
         case Status.SUCCESS: {
-          let data = res.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
+          console.log(res.data,'ddd')
+          let data = res.data.data.data.filter(e => e.parent_id == 0).sort(this.sortData)
           if(this.state.listIdCheck.length >0){
             this.state.listIdCheck.forEach(item=>{
                 data.forEach(e=>{

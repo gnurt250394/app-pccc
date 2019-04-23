@@ -1,7 +1,8 @@
 const constant ={
-    BASEURL:'http://app-pccc.yez.vn/api/',
-    // BASEURL:'http://giaxd.com/',
-    BASE_SOCKET:'http://app-pccc.yez.vn:6006',
+    // BASEURL:'http://app-pccc.yez.vn/api/',
+    BASEURL:'http://giaxd.com/api/',
+    // BASE_SOCKET:'http://app-pccc.yez.vn:6006',
+    BASE_SOCKET:'http://giaxd.com:6006',
     SERVER_TIMEOUT:10000,
     USER: 'user',
     UPDATE_PHONE:'update-phone',

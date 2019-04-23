@@ -223,17 +223,17 @@ class Catalog extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        Toast.show('Theo dõi thành công.')
+                        Toast.show('Quan tâm thành công.')
                         this.changeButtonFollow(index, Follow.follow)
                         break;
 
                     default:
-                        Toast.show('Theo dõi thất bại.')
+                        Toast.show('Quan tâm thất bại.')
                         break;
                 }
             }).catch(err => {
 
-                Toast.show('Theo dõi thất bại.')
+                Toast.show('Quan tâm thất bại.')
             })
         }
     }
@@ -254,17 +254,17 @@ class Catalog extends React.Component {
                         popupCancel('Phiên đăng nhập đã hết hạn', () => this.props.navigation.navigate(SigninScreen))
                         break;
                     case Status.SUCCESS:
-                        Toast.show('Bỏ theo dõi thành công.')
+                        Toast.show('Bỏ quan tâm thành công.')
                         this.changeButtonFollow(index, Follow.unfollow)
                         break;
 
                     default:
-                        Toast.show('Bỏ theo dõi thất bại.')
+                        Toast.show('Bỏ quan tâm thất bại.')
                         break;
                 }
             }).catch(err => {
 
-                Toast.show('Bỏ theo dõi thất bại.')
+                Toast.show('Bỏ quan tâm thất bại.')
             })
         }
     }
@@ -476,6 +476,7 @@ const style = StyleSheet.create({
         padding: 8,
         borderWidth: 1,
         borderColor: color,
+        width:'40%',
         alignItems: 'center',
         borderRadius: 8
     },
